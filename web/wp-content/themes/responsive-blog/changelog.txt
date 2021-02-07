@@ -1,0 +1,9 @@
+Responsive Blog Changelog
+
+****************************
+
+Version 1.1 (03/10/17)
+- Fixed CyberChimps account validation issue
+
+Version 1.0 (03/06/17)
+- Initial release

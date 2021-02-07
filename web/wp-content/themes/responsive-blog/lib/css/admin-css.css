@@ -1,0 +1,14 @@
+/* =============== CSS for theme options page */
+.options-description
+{
+	margin-top: 1em;
+	color: grey;
+}
+.old_home_page
+{
+	font-style: italic;
+}
+.button.upgrade
+{
+	display:none;
+}
