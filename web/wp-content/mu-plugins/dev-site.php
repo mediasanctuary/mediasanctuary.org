@@ -7,7 +7,7 @@ adjust the site to use the $dev_theme and load $dev_plugins.
 See: https://addons.mozilla.org/en-US/firefox/addon/modify-header-value/
 
 */
-$dev_host = 'locals.mediasanctuary.org';
+$dev_host = 'local.mediasanctuary.org';
 $dev_theme = 'mediasanctuary';
 $dev_plugins = array();
 
