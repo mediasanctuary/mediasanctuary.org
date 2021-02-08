@@ -9,13 +9,14 @@ See: https://addons.mozilla.org/en-US/firefox/addon/modify-header-value/
 */
 $dev_host = 'local.mediasanctuary.org';
 $dev_theme = 'mediasanctuary';
-$dev_plugins = array();
+$dev_plugins = array(
+	'advanced-custom-fields-pro/acf.php'
+);
 
 $headers = array();
 if ( function_exists( 'apache_request_headers' ) ) {
 	$headers = apache_request_headers();
 }
-
 
 if ( ! empty( $headers['Host'] ) && $headers['Host'] == $dev_host ||
      ! empty( $headers['X-Dev-Site'] ) && $headers['X-Dev-Site'] == '1' ) {
