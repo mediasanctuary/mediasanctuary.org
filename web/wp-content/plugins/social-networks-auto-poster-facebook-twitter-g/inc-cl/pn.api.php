@@ -27,7 +27,9 @@ if (!class_exists("nxs_class_SNAP_PN")) { class nxs_class_SNAP_PN {
       //## Get Saved Login Info
       if (function_exists('nxs_getOption')) { $opVal = array(); $opNm = 'nxs_snap_pn_'.sha1('nxs_snap_pn'.$options['uName'].$options['uPass']); $opVal = nxs_getOption($opNm); if (!empty($opVal) & is_array($opVal)) $options = array_merge($options, $opVal); } 
       
-      $nt = new nxsAPI_PN(); $nt->debug = false; if(!empty($options['ck'])) $nt->ck = $options['ck']; if (!empty($options['proxy'])&&!empty($options['proxyOn'])){ $nt->proxy['proxy'] = $options['proxy']['proxy']; if (!empty($options['proxy']['up'])) $nt->proxy['up'] = $options['proxy']['up'];};      
+      $nt = new nxsAPI_PN();  if(!empty($options['ck'])) $nt->ck = $options['ck']; if(!empty($options['session'])&& property_exists ('nxsAPI_PN', 'sess')) $nt->sess['sid'] = $options['session'];
+
+      if (!empty($options['proxy'])&&!empty($options['proxyOn'])){ $nt->proxy['proxy'] = $options['proxy']['proxy']; if (!empty($options['proxy']['up'])) $nt->proxy['up'] = $options['proxy']['up'];};
       $loginErr = $nt->connect($options['uName'], $pass); if ($loginErr) { $badOut['Error'] .= 'Can\'t Connect - '.print_r($loginErr, true); return $badOut; }       
             
       if (preg_match ( '/\$(\d+\.\d+)/', $msg, $matches )) $price = $matches[0];  else $price = ''; // prr($imgURL);

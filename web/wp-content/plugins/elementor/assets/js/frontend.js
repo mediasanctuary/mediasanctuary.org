@@ -1,4 +1,4 @@
-/*! elementor - v3.1.0 - 24-01-2021 */
+/*! elementor - v3.1.1 - 31-01-2021 */
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["frontend"],{
 
 /***/ "../node_modules/@babel/runtime-corejs2/core-js/array/from.js":
@@ -3000,7 +3000,8 @@ var _stretchedSection = _interopRequireDefault(__webpack_require__(/*! ./stretch
 
 var _shapes = _interopRequireDefault(__webpack_require__(/*! ./shapes */ "../assets/dev/js/frontend/handlers/section/shapes.js"));
 
-var _default = [_backgroundSlideshow.default, _backgroundVideo.default, _handlesPosition.default, _stretchedSection.default, _shapes.default];
+var _default = [_stretchedSection.default, // Must run before BackgroundSlideshow to init the slideshow only after the stretch.
+_backgroundSlideshow.default, _backgroundVideo.default, _handlesPosition.default, _shapes.default];
 exports.default = _default;
 
 /***/ }),
@@ -3504,7 +3505,7 @@ module.exports = elementorModules.ViewModule.extend({
         attributes: {
           tabindex: 0,
           role: 'button',
-          'aria-label': wp.i18n.__('Close', 'elementor') + ' (Esc)'
+          'aria-label': elementorFrontend.config.i18n.close + ' (Esc)'
         }
       },
       selectors: {
@@ -3622,9 +3623,9 @@ module.exports = elementorModules.ViewModule.extend({
 
     var i18n = elementorFrontend.config.i18n,
         socialNetworks = {
-      facebook: wp.i18n.__('Share on Facebook', 'elementor'),
-      twitter: wp.i18n.__('Share on Twitter', 'elementor'),
-      pinterest: wp.i18n.__('Share on Twitter', 'elementor')
+      facebook: i18n.shareOnFacebook,
+      twitter: i18n.shareOnTwitter,
+      pinterest: i18n.pinIt
     },
         $ = jQuery,
         classes = this.getSettings('classes'),
@@ -3658,9 +3659,9 @@ module.exports = elementorModules.ViewModule.extend({
       $linkList.append($('<a>', {
         href: itemUrl,
         download: ''
-      }).text(wp.i18n.__('Download image', 'elementor')).prepend($('<i>', {
+      }).text(i18n.downloadImage).prepend($('<i>', {
         class: 'eicon-download-bold',
-        'aria-label': wp.i18n.__('Download', 'elementor')
+        'aria-label': i18n.download
       })));
     }
 
@@ -3704,7 +3705,7 @@ module.exports = elementorModules.ViewModule.extend({
       elements.$iconShare = $('<i>', {
         class: slideshowClasses.iconShare,
         role: 'button',
-        'aria-label': wp.i18n.__('Share', 'elementor'),
+        'aria-label': i18n.share,
         'aria-expanded': false
       }).append($('<span>'));
       var $shareLinks = $('<div>');
@@ -3724,7 +3725,7 @@ module.exports = elementorModules.ViewModule.extend({
         class: slideshowClasses.iconZoomIn,
         role: 'switch',
         'aria-checked': false,
-        'aria-label': wp.i18n.__('Zoom', 'elementor')
+        'aria-label': i18n.zoom
       });
       elements.$iconZoom.on('click', this.toggleZoomMode);
       elements.$header.append(elements.$iconZoom);
@@ -3736,7 +3737,7 @@ module.exports = elementorModules.ViewModule.extend({
         class: slideshowClasses.iconExpand,
         role: 'switch',
         'aria-checked': false,
-        'aria-label': wp.i18n.__('Fullscreen', 'elementor')
+        'aria-label': i18n.fullscreen
       }).append($('<span>'), $('<span>'));
       elements.$iconExpand.on('click', this.toggleFullscreen);
       elements.$header.append(elements.$iconExpand);
@@ -3881,7 +3882,7 @@ module.exports = elementorModules.ViewModule.extend({
           class: classes.playButton
         }).html($('<i>', {
           class: classes.playButtonIcon,
-          'aria-label': wp.i18n.__('Play Video', 'elementor')
+          'aria-label': i18n.playVideo
         }));
         $slide.append($playIcon);
       } else {
@@ -3918,13 +3919,13 @@ module.exports = elementorModules.ViewModule.extend({
     if (!isSingleSlide) {
       $prevButton = $('<div>', {
         class: slideshowClasses.prevButton + ' ' + classes.preventClose,
-        'aria-label': wp.i18n.__('Previous', 'elementor')
+        'aria-label': i18n.previous
       }).html($('<i>', {
         class: slideshowClasses.prevButtonIcon
       }));
       $nextButton = $('<div>', {
         class: slideshowClasses.nextButton + ' ' + classes.preventClose,
-        'aria-label': wp.i18n.__('Next', 'elementor')
+        'aria-label': i18n.next
       }).html($('<i>', {
         class: slideshowClasses.nextButtonIcon
       }));

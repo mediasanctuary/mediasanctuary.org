@@ -1,4 +1,4 @@
-/*! elementor - v3.1.0 - 24-01-2021 */
+/*! elementor - v3.1.1 - 31-01-2021 */
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({});
@@ -83,7 +83,7 @@
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if (chunkId === "node_modules_babel_runtime-corejs2_helpers_objectSpread2_js-assets_dev_js_frontend_handlers_b-376ec2") return "3d9686bea0cd5be6e707.bundle.js";
+/******/ 			if (chunkId === "node_modules_babel_runtime-corejs2_helpers_objectSpread2_js-assets_dev_js_frontend_handlers_b-376ec2") return "b652ef4fbfb3884eba25.bundle.js";
 /******/ 			if (chunkId === "accordion") return "" + chunkId + ".e9e0c47570d3bc2ea472.bundle.js";
 /******/ 			if (chunkId === "alert") return "" + chunkId + ".170eb40d830a3ae2d4a2.bundle.js";
 /******/ 			if (chunkId === "counter") return "" + chunkId + ".651270dd8ea8d31d348e.bundle.js";

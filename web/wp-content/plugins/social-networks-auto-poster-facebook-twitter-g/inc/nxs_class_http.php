@@ -316,4 +316,25 @@ if (!function_exists("nxs_mkRemOptsArr")) {function nxs_mkRemOptsArr($hdrsArr, $
   if (empty($hdrsArr)) $hdrsArr = nxs_makeHeaders('http://'.$_SERVER['HTTP_HOST']); $a = array('headers' => $hdrsArr, 'httpversion' => '1.1', 'timeout' => $timt, 'redirection' => $rdr, 'sslverify'=>$sslverify, 'user-agent'=>$ua); 
   if (!empty($flds)) $a['body'] = $flds; if (!empty($p)) $a['proxy'] = $p;  if (!empty($ck)) $a['cookies'] = $ck; return $a;
 }}
+//##########################################################
+//## AdvSet & Headers (V5)
+//##########################################################
+//## Headers and Remote Options Array (WP_Http Version)
+if (!function_exists("nxs_makeHdrs")) { function nxs_makeHdrs($args=[], $hdrs=[]){  $hdrsArr = array(); $args = array_merge(['ref'=>'', 'org'=>'', 'type'=>'GET', 'aj'=>false], $args);
+    $hdrsArr['Cache-Control']='max-age=0'; $hdrsArr['Connection']='keep-alive'; $hdrsArr['Referer']=$args['ref'];
+    if (empty($args['ua'])) $hdrsArr['User-Agent']='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36';
+    if($args['type']=='JSON') $hdrsArr['Content-Type']='application/json;charset=UTF-8'; elseif($args['type']=='POST') $hdrsArr['Content-Type']='application/x-www-form-urlencoded';
+    elseif($args['type']=='JS') $hdrsArr['Content-Type']='application/javascript; charset=UTF-8'; elseif($args['type']=='PUT') $hdrsArr['Content-Type']='application/octet-stream';
+    if($args['aj']===true) $hdrsArr['X-Requested-With']='XMLHttpRequest';  if ($args['org']!='') $hdrsArr['Origin']=$args['org'];
+    if ($args['type']=='GET') $hdrsArr['Accept']='text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'; else $hdrsArr['Accept']='*/*';
+    if (function_exists('gzdeflate')) $hdrsArr['Accept-Encoding']='deflate,sdch';  $hdrsArr['Accept-Language']='en-US,en;q=0.8'; $hdrsArr = array_merge($hdrsArr, $hdrs); return $hdrsArr;
+}}
+//## AdvSet
+if (!function_exists("nxs_mkRmReqArgs")) {function nxs_mkRmReqArgs($args){
+    $ua = !empty($args['mblUA'])?'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36';
+    $def = array('method'=>'GET', 'ref'=>'http://'.$_SERVER['HTTP_HOST'], 'org'=>'', 'aj'=>false, 'hdrsArr'=>'', 'ck'=>'', 'flds'=>'', 'proxy'=>'', 'rdr'=>0, 'limit'=>45, 'sslverify' => false, 'ua'=>$ua, 'extraHeaders'=>[]); $args = array_merge($def, $args);
+    if (!empty($args['flds'])) $args['method']='POST'; if (empty($args['hdrsArr'])) $args['hdrsArr'] = nxs_makeHdrs(['ref'=>$args['ref'], 'org'=>$args['org'], 'type'=>$args['method'], 'aj'=>$args['aj'], 'ua'=>$args['ua']], $args['extraHeaders']);
+    $a = array('method'=>$args['method'], 'headers' => $args['hdrsArr'], 'httpversion' => '1.1', 'timeout' => $args['limit'], 'redirection' =>  $args['rdr'], 'sslverify'=> $args['sslverify'], 'user-agent'=>$args['ua']);
+    if (!empty($args['flds'])) $a['body'] = $args['flds']; if (!empty($args['proxy'])) $a['proxy'] = $args['proxy'];  if (!empty($args['ck'])) $a['cookies'] = $args['ck']; return $a;
+}}
 ?>

@@ -1,4 +1,4 @@
-/*! elementor - v3.1.0 - 24-01-2021 */
+/*! elementor - v3.1.1 - 31-01-2021 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -13952,10 +13952,11 @@ var _default = /*#__PURE__*/function (_Marionette$Composite) {
   }, {
     key: "ui",
     value: function ui() {
-      return {
+      this.selectors = {
         noResults: '#elementor-finder__no-results',
         categoryItem: '.elementor-finder__results__item'
       };
+      return this.selectors;
     }
   }, {
     key: "events",
@@ -13994,7 +13995,7 @@ var _default = /*#__PURE__*/function (_Marionette$Composite) {
   }, {
     key: "activateNextItem",
     value: function activateNextItem(reverse) {
-      var $allItems = jQuery(this.ui.categoryItem.selector);
+      var $allItems = jQuery(this.selectors.categoryItem);
       var nextItemIndex = 0;
 
       if (this.$activeItem) {

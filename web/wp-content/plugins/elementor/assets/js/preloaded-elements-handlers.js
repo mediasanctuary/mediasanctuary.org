@@ -1,4 +1,4 @@
-/*! elementor - v3.1.0 - 24-01-2021 */
+/*! elementor - v3.1.1 - 31-01-2021 */
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["preloaded-elements-handlers"],{
 
 /***/ "../node_modules/@babel/runtime-corejs2/core-js/object/define-properties.js":
@@ -1411,7 +1411,7 @@ var baseTabs = /*#__PURE__*/function (_elementorModules$fro) {
       this.elements.$tabTitles.on({
         keydown: function keydown(event) {
           // Support for old markup that includes an `<a>` tag in the tab
-          if ($(event.target).is('a') && "Enter" === event.key) {
+          if (jQuery(event.target).is('a') && "Enter" === event.key) {
             event.preventDefault();
           } // We listen to keydowon event for these keys in order to prevent undesired page scrolling
 

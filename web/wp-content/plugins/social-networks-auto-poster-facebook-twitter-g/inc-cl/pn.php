@@ -34,6 +34,16 @@ if (!class_exists("nxs_snapClassPN")) { class nxs_snapClassPN extends nxs_snapCl
   }
   
   function accTab($ii, $options, $isNew=false){  $ntInfo = $this->ntInfo; $nt = $ntInfo['lcode']; $this->elemUserPass($ii, $options['uName'], $options['uPass']); $options = $this->getMergeOptInfo($options, $ii); ?>
+
+      <div class="container nxsNtSetContainer">
+          <?php if (empty($options['session'])) $options['session'] = ''; //prr($conn); ?>
+          <br/><div style="width:100%;"><strong><?php _e('Session Info', 'social-networks-auto-poster-facebook-twitter-g'); ?>:</strong>
+              <div style="font-size: 11px; margin: 0px;"><?php _e('[Optional] Please use this only if you are having troubles to login/post without it.', 'social-networks-auto-poster-facebook-twitter-g'); ?></div>
+          </div>
+          <label for="sesDiv<?php echo $nt; ?><?php echo $ii; ?>session">Session ID</label>
+          <input style="max-width:400px;" class="nxAccEdElem form-control" id="sesDiv<?php echo $nt; ?><?php echo $ii; ?>session" name="<?php echo $nt; ?>[<?php echo $ii; ?>][session]" value="<?php echo($options['session']); ?>" /><br/>
+
+      </div>
     
      <br/ ><div style="width:100%;"><b><?php _e('Board', 'nxs_snap'); ?></b>&nbsp;(<?php _e('Please select the board to post to', 'nxs_snap'); ?>)</div>
     <div id="nxsPNInfoDiv<?php echo $ii; ?>">
@@ -78,7 +88,8 @@ if (!class_exists("nxs_snapClassPN")) { class nxs_snapClassPN extends nxs_snapCl
     foreach ($post as $ii => $pval){       
       if (!empty($pval['uPass']) && !empty($pval['uPass'])){ if (!isset($options[$ii])) $options[$ii] = array(); $options[$ii] = $this->saveCommonNTSettings($pval,$options[$ii]); 
         
-        if (isset($pval['cImgURL'])) $options[$ii]['cImgURL'] = trim($pval['cImgURL']); 
+        if (isset($pval['cImgURL'])) $options[$ii]['cImgURL'] = trim($pval['cImgURL']);
+     //   if (isset($pval['session'])) $options[$ii]['session'] = trim($pval['session']);
         if (isset($pval['pnBoard'])) $options[$ii]['pnBoard'] = trim($pval['pnBoard']); 
         if (isset($pval['isAttachVid'])) $options[$ii]['isAttachVid'] = trim($pval['isAttachVid']); else  $options[$ii]['isAttachVid'] = '0';
         if (isset($pval['defImg'])) $options[$ii]['defImg'] = trim($pval['defImg']); 
@@ -144,10 +155,12 @@ if (!class_exists("nxs_snapClassPN")) { class nxs_snapClassPN extends nxs_snapCl
   } 
    //## PN Specific
   function getListOfPNBoards($networks){ $opVal = array(); $pass = 'g9c1a'.nsx_doEncode($_POST['p']); $opNm = 'nxs_snap_pn_'.sha1('nxs_snap_pn'.$_POST['u'].$pass); $opVal = nxs_getOption($opNm); $ii = $_POST['ii']; 
-     if (!class_exists("nxsAPI_PN")) { $outMsg = '<b style="color:red;">'.__('API Not Found').'&nbsp;-&nbsp;'.$loginError.'</b>'; if (!empty($_POST['isOut'])) echo $outMsg; return $outMsg; }  $nt = new nxsAPI_PN(); $nt->debug = false; // prr($opVal);
+     if (!class_exists("nxsAPI_PN")) { $outMsg = '<b style="color:red;">'.__('API Not Found').'&nbsp;-&nbsp;'.$loginError.'</b>'; if (!empty($_POST['isOut'])) echo $outMsg; return $outMsg; }  $nt = new nxsAPI_PN(); // prr($opVal);
      $currPstAs = !empty($_POST['pnBoard'])?$_POST['pnBoard']:(!empty($networks['pn'][$ii])?$networks['pn'][$ii]['pnBoard']:'');
-     if (empty($_POST['force']) && !empty($opVal['ck']) && !empty($opVal['pnBoardsList']) ) $pgs = $opVal['pnBoardsList']; else { if (!empty($opVal['ck'])) $nt->ck = $opVal['ck']; 
-     if (!empty($networks['pn'][$ii]['proxy'])&&!empty($networks['pn'][$ii]['proxyOn'])){ $nt->proxy['proxy'] = $networks['pn'][$ii]['proxy']['proxy']; if (!empty($networks['pn'][$ii]['proxy']['up'])) $nt->proxy['up'] = $networks['pn'][$ii]['proxy']['up']; } $loginError=$nt->connect($_POST['u'],$_POST['p']);// var_dump($loginError);
+     if (empty($_POST['force']) && !empty($opVal['ck']) && !empty($opVal['pnBoardsList']) ) $pgs = $opVal['pnBoardsList']; else { if (!empty($opVal['ck'])) $nt->ck = $opVal['ck'];
+     if(!empty($_POST['s'])&& property_exists ('nxsAPI_PN', 'sess')) $nt->sess['sid'] = $_POST['s'];
+     if (!empty($networks['pn'][$ii]['proxy'])&&!empty($networks['pn'][$ii]['proxyOn'])){ $nt->proxy['proxy'] = $networks['pn'][$ii]['proxy']['proxy']; if (!empty($networks['pn'][$ii]['proxy']['up'])) $nt->proxy['up'] = $networks['pn'][$ii]['proxy']['up']; }
+     $loginError=$nt->connect($_POST['u'],$_POST['p']);// var_dump($loginError);
        if (!$loginError){ $opVal['ck'] = $nt->ck; $pgs = $nt->getBoards($currPstAs); }
          else { $outMsg = '<b style="color:red;">'.__('Login Problem').'&nbsp;-&nbsp;'.$loginError.'</b>'; if (!empty($_POST['isOut'])) echo $outMsg; return $outMsg; }
      } $pgCust = (!empty($pgs) && !empty($currPstAs) && stripos($pgs,$currPstAs)===false)?'<option selected="selected" value="'.$currPstAs.'">'.$currPstAs.'</option>':'';     

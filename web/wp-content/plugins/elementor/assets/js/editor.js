@@ -1,4 +1,4 @@
-/*! elementor - v3.1.0 - 24-01-2021 */
+/*! elementor - v3.1.1 - 31-01-2021 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -19331,7 +19331,7 @@ exports.default = _default;
   \********************************************************************/
 /*! unknown exports (runtime-defined) */
 /*! runtime requirements: module */
-/*! CommonJS bailout: module.exports is used directly at 174:0-14 */
+/*! CommonJS bailout: module.exports is used directly at 185:0-14 */
 /***/ ((module) => {
 
 "use strict";
@@ -19402,6 +19402,9 @@ SortableBehavior = Marionette.Behavior.extend({
   getChildViewContainer: function getChildViewContainer() {
     return this.view.getChildViewContainer(this.view);
   },
+  // This method is used to fix widgets index detection when dragging or sorting using the preview interface,
+  // The natural widget index in the column is wrong, since there is a `.elementor-background-overlay` element
+  // at the beginning of the column
   getSortedElementNewIndex: function getSortedElementNewIndex($element) {
     var draggedModel = elementor.channels.data.request('dragging:model'),
         draggedElType = draggedModel.get('elType');
@@ -19426,17 +19429,21 @@ SortableBehavior = Marionette.Behavior.extend({
     elementor.channels.data.reply('dragging:model', container.model).reply('dragging:view', container.view).reply('dragging:parent:view', this.view).trigger('drag:start', container.model).trigger(container.model.get('elType') + ':drag:start');
   },
   // On sorting element
-  updateSort: function updateSort(ui) {
+  updateSort: function updateSort(ui, newIndex) {
+    if (undefined === newIndex) {
+      newIndex = ui.item.index();
+    }
+
     $e.run('document/elements/move', {
       container: elementor.channels.data.request('dragging:view').getContainer(),
       target: this.view.getContainer(),
       options: {
-        at: this.getSortedElementNewIndex(ui.item)
+        at: newIndex
       }
     });
   },
   // On receiving element from another container
-  receiveSort: function receiveSort(event, ui) {
+  receiveSort: function receiveSort(event, ui, newIndex) {
     event.stopPropagation();
 
     if (this.view.isCollectionFilled()) {
@@ -19454,11 +19461,15 @@ SortableBehavior = Marionette.Behavior.extend({
       return;
     }
 
+    if (undefined === newIndex) {
+      newIndex = ui.item.index();
+    }
+
     $e.run('document/elements/move', {
       container: elementor.channels.data.request('dragging:view').getContainer(),
       target: this.view.getContainer(),
       options: {
-        at: this.getSortedElementNewIndex(ui.item)
+        at: newIndex
       }
     });
   },
@@ -19493,7 +19504,7 @@ SortableBehavior = Marionette.Behavior.extend({
     this.$el.removeClass('elementor-dragging-on-child');
   },
   onSortReceive: function onSortReceive(event, ui) {
-    this.receiveSort(event, ui);
+    this.receiveSort(event, ui, this.getSortedElementNewIndex(ui.item));
   },
   onSortUpdate: function onSortUpdate(event, ui) {
     event.stopPropagation();
@@ -19502,7 +19513,7 @@ SortableBehavior = Marionette.Behavior.extend({
       return;
     }
 
-    this.updateSort(ui);
+    this.updateSort(ui, this.getSortedElementNewIndex(ui.item));
   },
   onAddChild: function onAddChild(view) {
     view.$el.attr('data-model-cid', view.model.cid);
