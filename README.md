@@ -21,3 +21,10 @@ The `mediasanctuary` theme is a work in progress and we welcome your contributio
 cd themes/mediasanctuary/
 npm install
 ```
+
+## Start the Sass watcher
+
+```
+cd themes/mediasanctuary/
+npm run start
+```
