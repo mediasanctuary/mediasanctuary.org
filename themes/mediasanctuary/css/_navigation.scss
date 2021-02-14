@@ -1,0 +1,80 @@
+.logo {
+	position: relative;
+	width: 320px;
+
+	img {
+		width: 100%;
+		height: auto;
+	}
+}
+
+.top-nav {
+	font-family: $f-fira-sans;
+	font-weight: bold;
+	color: $c-river-fog;
+	position: relative;
+	vertical-align: middle;
+
+	h1 {
+		display: inline-block;
+		margin-right: 5px;
+	}
+
+	img {
+		vertical-align: top;
+	}
+
+	a {
+		display: inline-block;
+		color: $c-river-fog;
+		text-decoration: none;
+
+		&:hover {
+			color: $c-lilac;
+			text-decoration: underline;
+		}
+	}
+
+	.nav-link {
+		display: none;
+	}
+
+	@include breakpoint(nav) {
+		.nav-link {
+			display: inline-block;
+			transform: translateY(-11px);
+			margin-left: 15px;
+		}
+	}
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 60px;
+		background-color: $c-raisin;
+	}
+
+	.container {
+		position: relative;
+	}
+
+	.donate {
+		color: $c-raisin;
+		position: absolute;
+		top: 9px;
+		right: 15px;
+		display: inline-block;
+		padding: 5px 15px;
+		border-radius: 4px;
+		background: $c-river-fog;
+
+		&:hover {
+			color: $c-raisin;
+			background: $c-lilac;
+			text-decoration: none;
+		}
+	}
+}
