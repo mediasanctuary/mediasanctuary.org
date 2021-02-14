@@ -1,0 +1,17 @@
+@font-face {
+	font-family: 'Fira Sans Condensed';
+	src: url('../fonts/fira-sans-condensed-bold.woff2') format('woff2'),
+	     url('../fonts/fira-sans-condensed-bold.woff') format('woff');
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Fira Sans Condensed';
+	src: url('../fonts/fira-sans-condensed-bold-italic.woff2') format('woff2'),
+	     url('../fonts/fira-sans-condensed-bold-italic.woff') format('woff');
+	font-weight: bold;
+	font-style: italic;
+}
+
+$f-fira-sans: 'Fira Sans Condensed', sans-serif;
