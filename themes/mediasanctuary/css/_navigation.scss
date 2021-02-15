@@ -16,8 +16,10 @@
 	vertical-align: middle;
 
 	h1 {
+		position: relative;
 		display: inline-block;
 		margin-right: 5px;
+		z-index: 1;
 	}
 
 	img {
@@ -75,6 +77,50 @@
 			color: $c-raisin;
 			background: $c-lilac;
 			text-decoration: none;
+		}
+	}
+}
+
+.heading {
+	position: relative;
+	width: 100vw;
+	height: 300px;
+	margin-top: -30px;
+	background-image: url('../img/tiles.jpg');
+	background-size: auto 300px;
+	background-repeat: repeat-x;
+	background-position: center;
+
+	.heading__items {
+		display: flex;
+		justify-content: flex-start;
+		padding-top: 50px;
+
+		.heading__item {
+			text-decoration: none;
+			width: 200px;
+			font-size: 16px;
+			line-height: 1.2;
+			color: $c-raisin;
+			background: $c-river-fog;
+			padding: 15px;
+			border-radius: 4px;
+			margin-right: 15px;
+			padding-left: 60px;
+
+			&--wooc {
+				background: $c-robin-egg url('../img/wooc-80.png') no-repeat 13px 13px;
+				background-size: 40px auto;
+			}
+
+			&--sanctuary-tv {
+				background: $c-robin-egg url('../img/sanctuary-tv-80.png') no-repeat 16px 12px;
+				background-size: 30px auto;
+			}
+
+			h2 {
+				font-size: 1.15em;
+			}
 		}
 	}
 }

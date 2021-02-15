@@ -14,8 +14,21 @@
 				<a href="#" class="nav-link">Initiatives</a>
 				<a href="#" class="nav-link">Get Involved</a>
 				<a href="#" class="nav-link">About</a>
-
 				<a href="#" class="donate">Donate</a>
 			</div>
 		</nav>
+		<div class="heading">
+			<div class="container">
+				<div class="heading__items">
+					<a href="#" class="heading__item heading__item--wooc">
+						<h2>WOOC 105.3 FM</h2>
+						Listen Online
+					</a>
+					<a href="#" class="heading__item heading__item--sanctuary-tv">
+						<h2>Sanctuary TV</h2>
+						Streaming Live!
+					</a>
+				</div>
+			</div>
+		</div>
 		<div class="container">
