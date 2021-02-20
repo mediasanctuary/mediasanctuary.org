@@ -14,12 +14,12 @@
 				<div class="nav-link-container">
 					<a href="#" class="nav-link nav-link--menu">Menu</a>
 					<div class="nav-links">
-						<a href="#" class="nav-link">Events</a>
-						<a href="#" class="nav-link">Initiatives</a>
-						<a href="#" class="nav-link">Get Involved</a>
-						<a href="#" class="nav-link">About</a>
+						<a href="/events/" class="nav-link">Events</a>
+						<a href="/initiatives/" class="nav-link">Initiatives</a>
+						<a href="/get-involved/" class="nav-link">Get Involved</a>
+						<a href="/about/" class="nav-link">About</a>
 					</div>
-					<a href="#" class="nav-link nav-link--donate">Donate</a>
+					<a href="/get-involved/give/donate/" class="nav-link nav-link--donate">Donate</a>
 				</div>
 			</div>
 			<div class="mobile-menu">
@@ -27,13 +27,13 @@
 					The Sanctuary for Independent Media
 					<div class="close-menu">&times;</div>
 					<div class="nav-links">
-						<a href="#" class="nav-link">Home</a>
-						<a href="#" class="nav-link">Events</a>
-						<a href="#" class="nav-link">Initiatives</a>
-						<a href="#" class="nav-link">Get Involved</a>
-						<a href="#" class="nav-link">About</a>
+						<a href="/" class="nav-link">Home</a>
+						<a href="/events/" class="nav-link">Events</a>
+						<a href="/initiatives/" class="nav-link">Initiatives</a>
+						<a href="/get-involved/" class="nav-link">Get Involved</a>
+						<a href="/about/" class="nav-link">About</a>
 					</div>
-					<a href="#" class="nav-link nav-link--donate">Donate</a>
+					<a href="/get-involved/give/donate/" class="nav-link nav-link--donate">Donate</a>
 				</div>
 			</div>
 		</nav>
@@ -49,8 +49,8 @@
 						Streaming Live!
 					</a>
 				</div>
-				<form action="/search" class="search">
-					<input type="text" class="search-input" placeholder="Search">
+				<form action="/" class="search">
+					<input type="text" name="s" class="search-input" placeholder="Search">
 					<button type="submit" class="search-button">
 						<span class="visually-hidden">Search</span>
 					</button>
