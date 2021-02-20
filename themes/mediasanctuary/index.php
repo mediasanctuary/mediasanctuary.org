@@ -1,3 +1,5 @@
-<?php get_header(); ?>
-<h2>Hello</h2>
-<?php get_footer(); ?>
+<?php
+
+get_header();
+get_template_part('initiatives');
+get_footer();

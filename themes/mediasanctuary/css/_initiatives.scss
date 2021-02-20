@@ -1,0 +1,42 @@
+.initiatives {
+	color: $c-river-fog;
+	background: url('../img/initiatives-bg.jpg');
+
+	.container {
+		padding-bottom: 2em;
+	}
+}
+
+.initiatives__about {
+	float: left;
+	width: 30%;
+	font-size: 0.8em;
+}
+
+.initiatives__list {
+	float: right;
+	width: 67%;
+	display: flex;
+	flex-flow: row wrap;
+
+	.initiative {
+		width: calc(33% - 6.66px);
+		background-color: rgba(0, 0, 0, 0.2);
+		margin-right: 10px;
+		margin-bottom: 10px;
+		transition: 0.2s background-color ease-out;
+
+		&:nth-child(3n) {
+			margin-right: 0;
+		}
+
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.5);
+		}
+
+		img {
+			width: 100%;
+			height: auto;
+		}
+	}
+}
