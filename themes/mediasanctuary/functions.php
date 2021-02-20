@@ -10,7 +10,7 @@ add_action('wp_enqueue_scripts', function() {
 	list($src, $version) = get_asset_url('js/main.js', true);
 	wp_enqueue_script('main', $src, array(
 		'jquery'
-	), $version);
+	), $version, true);
 });
 
 function asset_url($file) {

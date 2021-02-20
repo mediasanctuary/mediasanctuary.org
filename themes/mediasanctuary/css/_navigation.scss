@@ -4,7 +4,6 @@
 	left: 15px;
 	width: 220px;
 	max-width: 280px;
-	z-index: 1;
 
 	@include breakpoint(full-nav) {
 		width: 33%;
@@ -96,7 +95,6 @@
 }
 
 .heading {
-	position: relative;
 	width: 100vw;
 	height: 240px;
 	background-image: url('../img/tiles.jpg');
@@ -139,5 +137,58 @@
 				font-size: 1.15em;
 			}
 		}
+	}
+}
+
+.mobile-menu {
+	position: fixed;
+	top: 0;
+	left: 100vw;
+	width: 100vw;
+	height: 100vh;
+	background: $c-raisin;
+	transition: 0.3s left ease-out;
+	padding: 15px 0;
+
+	.nav-links, .nav-link--donate {
+		display: block;
+	}
+
+	.nav-links {
+		display: flex;
+		flex-direction: column;
+		margin-top: 10px;
+	}
+
+	.nav-link {
+		font-size: $s-lg;
+		padding: 5px 0;
+		border-top: 1px solid $c-lilac;
+	}
+
+	.nav-link--donate {
+		color: $c-lilac;
+		border-bottom: 1px solid $c-lilac;
+	}
+}
+
+.close-menu {
+	display: none;
+	position: fixed;
+	right: 0;
+	top: 0;
+	font-size: $s-lg;
+	line-height: 15px;
+	cursor: pointer;
+	padding: 20px;
+}
+
+.show-mobile-menu {
+	.mobile-menu {
+		left: 0;
+	}
+
+	.close-menu {
+		display: block;
 	}
 }

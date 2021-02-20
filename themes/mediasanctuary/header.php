@@ -22,6 +22,20 @@
 					<a href="#" class="nav-link nav-link--donate">Donate</a>
 				</div>
 			</div>
+			<div class="mobile-menu">
+				<div class="container">
+					The Sanctuary for Independent Media
+					<div class="close-menu">&times;</div>
+					<div class="nav-links">
+						<a href="#" class="nav-link">Home</a>
+						<a href="#" class="nav-link">Events</a>
+						<a href="#" class="nav-link">Initiatives</a>
+						<a href="#" class="nav-link">Get Involved</a>
+						<a href="#" class="nav-link">About</a>
+					</div>
+					<a href="#" class="nav-link nav-link--donate">Donate</a>
+				</div>
+			</div>
 		</nav>
 		<div class="heading">
 			<div class="container">
