@@ -57,3 +57,4 @@
 				</form>
 			</div>
 		</div>
+		<div id="content" class="main">
