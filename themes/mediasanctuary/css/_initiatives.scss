@@ -39,7 +39,7 @@
 		}
 
 		@include breakpoint(full-nav) {
-			width: calc(33% - 6.66px);
+			width: calc(33.33% - 6.67px);
 
 			&:nth-child(2n) {
 				margin-right: 10px;

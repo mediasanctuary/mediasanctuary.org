@@ -67,8 +67,12 @@
 		flex-grow: 2;
 		padding: 10px 15px;
 		font-family: $f-system;
-		font-size: $s-xs;
+		font-size: $s-xxs;
 		border: none;
+
+		@include breakpoint(md) {
+			font-size: $s-xs;
+		}
 
 		&:focus {
 			border: none;
