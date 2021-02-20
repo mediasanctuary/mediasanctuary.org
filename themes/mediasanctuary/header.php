@@ -40,11 +40,11 @@
 		<div class="header">
 			<div class="container">
 				<div class="header__items">
-					<a href="#" class="header__item header__item--wooc">
+					<a href="http://stream.woocfm.org:8000/wooc" class="header__item header__item--wooc">
 						<h2>WOOC 105.3 FM</h2>
 						Listen Online
 					</a>
-					<a href="#" class="header__item header__item--sanctuary-tv">
+					<a href="/sanctuary-tv/" class="header__item header__item--sanctuary-tv">
 						<h2>Sanctuary TV</h2>
 						Streaming Live!
 					</a>
