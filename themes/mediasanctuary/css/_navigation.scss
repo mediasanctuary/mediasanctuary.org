@@ -78,13 +78,13 @@
 
 		&--donate {
 			display: none;
+			padding: 5px 10px;
+			border-radius: 4px;
+			color: $c-raisin;
+			background: $c-river-fog;
 
 			@include breakpoint(sm) {
 				display: block;
-				padding: 5px 10px;
-				border-radius: 4px;
-				color: $c-raisin;
-				background: $c-river-fog;
 			}
 
 			@include breakpoint(full-nav) {
@@ -150,6 +150,10 @@
 	transition: 0.3s left ease-out;
 	padding: 15px 0;
 
+	@include breakpoint(full-nav) {
+		display: none;
+	}
+
 	.nav-links, .nav-link--donate {
 		display: block;
 	}
@@ -164,11 +168,16 @@
 		font-size: $s-lg;
 		padding: 5px 0;
 		border-top: 1px solid $c-lilac;
+
+		&:last-child {
+			border-bottom: 1px solid $c-lilac;
+		}
 	}
 
 	.nav-link--donate {
-		color: $c-lilac;
-		border-bottom: 1px solid $c-lilac;
+		margin-top: 10px;
+		padding-left: 15px;
+		border-top: none;
 	}
 }
 
