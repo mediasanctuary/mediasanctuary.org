@@ -103,29 +103,35 @@
 	background-position: center;
 
 	.heading__items {
+		display: flex;
+		flex-direction: column;
 		justify-content: flex-start;
-		padding-top: 12px;
+		align-items: flex-start;
 		transform: rotate(-2.5deg);
+
+		@include breakpoint(sm) {
+			flex-direction: row;
+		}
 
 		.heading__item {
 			text-decoration: none;
-			width: 200px;
-			font-size: 16px;
+			font-size: 0.8em;
 			line-height: 1.2;
 			color: $c-raisin;
 			background: $c-river-fog;
-			padding: 15px;
+			padding: 0.8em;
+			margin-top: 15px;
 			margin-right: 15px;
-			padding-left: 60px;
+			padding-left: 3.5em;
 
 			&--wooc {
-				background: $c-lilac url('../img/wooc-80.png') no-repeat 13px 13px;
-				background-size: 40px auto;
+				background: $c-lilac url('../img/wooc-80.png') no-repeat 0.65em 0.65em;
+				background-size: 2.5em auto;
 			}
 
 			&--sanctuary-tv {
-				background: $c-lilac url('../img/sanctuary-tv-80.png') no-repeat 16px 12px;
-				background-size: 30px auto;
+				background: $c-lilac url('../img/sanctuary-tv-80.png') no-repeat 0.8em 0.6em;
+				background-size: 2em auto;
 			}
 
 			&:hover {
@@ -141,6 +147,7 @@
 
 .mobile-menu {
 	position: fixed;
+	z-index: 100;
 	top: 0;
 	left: 100vw;
 	width: 100vw;
