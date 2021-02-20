@@ -29,7 +29,7 @@
 
 	.initiative {
 		width: calc(50% - 5px);
-		background-color: rgba(0, 0, 0, 0.2);
+		background-color: rgba(0, 66, 78, 0.5);
 		margin-right: 10px;
 		margin-bottom: 10px;
 		transition: 0.2s background-color ease-out;
@@ -51,7 +51,7 @@
 		}
 
 		&:hover {
-			background-color: rgba(0, 0, 0, 0.5);
+			background-color: $c-blue-beetle;
 		}
 
 		img {
