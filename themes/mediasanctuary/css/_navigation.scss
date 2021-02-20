@@ -65,9 +65,11 @@
 		padding: 6px 7.5px 4px 7.5px;
 		white-space: nowrap;
 
-		&:hover {
-			color: $c-river-fog;
-			background-color: lighten($c-raisin, 33%);
+		@include breakpoint(full-nav) {
+			&:hover {
+				color: $c-river-fog;
+				background-color: lighten($c-raisin, 33%);
+			}
 		}
 
 		&--menu {
@@ -86,28 +88,9 @@
 				background: $c-river-fog;
 			}
 
-			@include breakpoint(nav) {
+			@include breakpoint(full-nav) {
 				padding: 5px 15px;
 			}
-		}
-	}
-
-	.container {
-		position: relative;
-	}
-
-	.donate {
-
-		position: absolute;
-		top: 9px;
-		right: 15px;
-		display: inline-block;
-
-
-		&:hover {
-			color: $c-raisin;
-			background: $c-lilac;
-			text-decoration: none;
 		}
 	}
 }
