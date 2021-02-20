@@ -37,18 +37,24 @@
 				</div>
 			</div>
 		</nav>
-		<div class="heading">
+		<div class="header">
 			<div class="container">
-				<div class="heading__items">
-					<a href="#" class="heading__item heading__item--wooc">
+				<div class="header__items">
+					<a href="#" class="header__item header__item--wooc">
 						<h2>WOOC 105.3 FM</h2>
 						Listen Online
 					</a>
-					<a href="#" class="heading__item heading__item--sanctuary-tv">
+					<a href="#" class="header__item header__item--sanctuary-tv">
 						<h2>Sanctuary TV</h2>
 						Streaming Live!
 					</a>
 				</div>
+				<form action="/search" class="search">
+					<input type="text" class="search-input" placeholder="Search">
+					<button type="submit" class="search-button">
+						<span class="visually-hidden">Search</span>
+					</button>
+				</form>
 			</div>
 		</div>
 		<div class="container">
