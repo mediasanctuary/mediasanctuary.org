@@ -8,26 +8,46 @@
 }
 
 .initiatives__about {
-	float: left;
-	width: 30%;
-	font-size: 0.8em;
+	margin-bottom: 30px;
+
+	@include breakpoint(full-nav) {
+		float: left;
+		width: 33.3%;
+		padding-right: 30px;
+		margin-bottom: 0;
+	}
 }
 
 .initiatives__list {
-	float: right;
-	width: 67%;
 	display: flex;
 	flex-flow: row wrap;
 
+	@include breakpoint(full-nav) {
+		float: right;
+		width: 66.6%;
+	}
+
 	.initiative {
-		width: calc(33% - 6.66px);
+		width: calc(50% - 5px);
 		background-color: rgba(0, 0, 0, 0.2);
 		margin-right: 10px;
 		margin-bottom: 10px;
 		transition: 0.2s background-color ease-out;
 
-		&:nth-child(3n) {
+		&:nth-child(2n) {
 			margin-right: 0;
+		}
+
+		@include breakpoint(full-nav) {
+			width: calc(33% - 6.66px);
+
+			&:nth-child(2n) {
+				margin-right: 10px;
+			}
+
+			&:nth-child(3n) {
+				margin-right: 0;
+			}
 		}
 
 		&:hover {
