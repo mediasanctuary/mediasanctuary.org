@@ -1,8 +1,18 @@
+$s-xs: 16px;
+$s-sm: 20px;
+$s-md: 28px;
+$s-lg: 36px;
+$s-xl: 48px;
+
 body {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-	font-size: 20px;
+	font-size: $s-xs;
 	line-height: 1.5;
 	background: $c-river-fog;
+
+	@include breakpoint(md) {
+		font-size: $s-sm;
+	}
 }
 
 .container {
@@ -17,5 +27,5 @@ h1, h2, h3, h4, h5 {
 }
 
 h1 {
-	font-size: 48px;
+	font-size: $s-xl;
 }

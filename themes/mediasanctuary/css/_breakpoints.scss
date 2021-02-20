@@ -1,11 +1,11 @@
 $breakpoints: (
-	xs: 0,
-	sm: 576px,
-	md: 768px,
+	sm: 376px,
+	md: 769px,
 	lg: 992px,
 	xl: 1200px,
 	xxl: 1400px,
-	nav: 840px
+	full-nav: 660px,
+	flexible-logo: 820px
 );
 
 @mixin breakpoint($size) {

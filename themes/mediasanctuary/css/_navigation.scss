@@ -1,6 +1,14 @@
 .logo {
-	position: relative;
-	width: 320px;
+	position: absolute;
+	top: 0;
+	left: 15px;
+	width: 220px;
+	max-width: 280px;
+	z-index: 1;
+
+	@include breakpoint(full-nav) {
+		width: 33%;
+	}
 
 	img {
 		width: 100%;
@@ -9,54 +17,79 @@
 }
 
 .top-nav {
+	position: relative;
 	font-family: $f-fira-sans;
 	font-weight: bold;
+	text-transform: uppercase;
 	color: $c-river-fog;
-	position: relative;
-	vertical-align: middle;
+	background-color: $c-raisin;
 
-	h1 {
-		position: relative;
-		display: inline-block;
-		margin-right: 5px;
-		z-index: 1;
+	.nav-link-container {
+		display: flex;
+		margin-left: 220px;
+		padding: 7.5px 0;
+		justify-content: flex-end;
+
+		@include breakpoint(full-nav) {
+			margin-left: calc(33% + 10px);
+			padding: 10px 0;
+		}
+
+		@include breakpoint(flexible-logo) {
+			margin-left: 280px;
+		}
+
+		@include breakpoint(sm) {
+			justify-content: space-between;
+		}
 	}
 
-	img {
-		vertical-align: top;
+	.nav-links {
+		display: none;
 	}
 
-	a {
-		display: inline-block;
-		color: $c-river-fog;
-		text-decoration: none;
+	@include breakpoint(full-nav) {
+		.nav-links {
+			display: flex;
+			padding: 0 10px;
+		}
 
-		&:hover {
-			color: $c-lilac;
-			text-decoration: underline;
+		.nav-link--menu {
+			display: none;
 		}
 	}
 
 	.nav-link {
-		display: none;
-	}
+		color: $c-river-fog;
+		text-decoration: none;
+		padding: 6px 7.5px 4px 7.5px;
+		white-space: nowrap;
 
-	@include breakpoint(nav) {
-		.nav-link {
-			display: inline-block;
-			transform: translateY(-11px);
-			margin-left: 15px;
+		&:hover {
+			color: $c-river-fog;
+			background-color: lighten($c-raisin, 33%);
 		}
-	}
 
-	&::before {
-		content: "";
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 60px;
-		background-color: $c-raisin;
+		&--menu {
+			padding-left: 15px;
+			padding-right: 0;
+		}
+
+		&--donate {
+			display: none;
+
+			@include breakpoint(sm) {
+				display: block;
+				padding: 5px 10px;
+				border-radius: 4px;
+				color: $c-raisin;
+				background: $c-river-fog;
+			}
+
+			@include breakpoint(nav) {
+				padding: 5px 15px;
+			}
+		}
 	}
 
 	.container {
@@ -64,14 +97,12 @@
 	}
 
 	.donate {
-		color: $c-raisin;
+
 		position: absolute;
 		top: 9px;
 		right: 15px;
 		display: inline-block;
-		padding: 5px 15px;
-		border-radius: 4px;
-		background: $c-river-fog;
+
 
 		&:hover {
 			color: $c-raisin;
@@ -85,16 +116,15 @@
 	position: relative;
 	width: 100vw;
 	height: 240px;
-	margin-top: -30px;
 	background-image: url('../img/tiles.jpg');
 	background-size: auto 240px;
 	background-repeat: repeat-x;
 	background-position: center;
 
 	.heading__items {
-		display: flex;
+		display: none;
 		justify-content: flex-start;
-		padding-top: 25px;
+		padding-top: 12px;
 		transform: rotate(-2.5deg);
 
 		.heading__item {
