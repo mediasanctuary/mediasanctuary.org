@@ -103,7 +103,6 @@
 	background-position: center;
 
 	.heading__items {
-		display: none;
 		justify-content: flex-start;
 		padding-top: 12px;
 		transform: rotate(-2.5deg);
@@ -162,20 +161,17 @@
 		display: flex;
 		flex-direction: column;
 		margin-top: 10px;
+		border-top: 1px solid $c-lilac;
 	}
 
 	.nav-link {
 		font-size: $s-lg;
 		padding: 5px 0;
-		border-top: 1px solid $c-lilac;
-
-		&:last-child {
-			border-bottom: 1px solid $c-lilac;
-		}
+		border-bottom: 1px solid $c-lilac;
 	}
 
 	.nav-link--donate {
-		margin-top: 10px;
+		margin-top: 15px;
 		padding-left: 15px;
 		border-top: none;
 	}
