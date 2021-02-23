@@ -1,2 +1,3 @@
-@import 'reset', 'colors', 'breakpoints', 'fonts', 'typography', 'navigation', 'header';
-@import 'initiatives', 'events', 'news';
+@import 'global/global';
+@import 'partials/partials';
+@import 'pages/pages';
