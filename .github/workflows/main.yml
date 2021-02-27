@@ -27,11 +27,19 @@ jobs:
 
     - name: Sync
       env:
-        dest: 'devmediasan@claudette.mayfirst.org:/home/members/nyma/sites/dev.mediasanctuary.org/web/wp-content'
+        dest: 'devmediasan@claudette.mayfirst.org:/home/members/nyma/sites/dev.mediasanctuary.org/web/wp-content/'
       run: |
         echo "${{secrets.DEPLOY_KEY}}" > deploy_key
         chmod 600 ./deploy_key
-        rsync -chav --delete \
+        rsync \
+          --checksum \
+          --recursive \
+          --human-readable \
+          --verbose \
+          --delete \
+          --exclude=uploads \
+          --exclude=.gitignore \
+          --exclude=README.md \
           -e 'ssh -i ./deploy_key -o StrictHostKeyChecking=no' \
           --exclude /deploy_key \
           --exclude /.git/ \
