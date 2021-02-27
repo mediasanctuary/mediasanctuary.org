@@ -1,0 +1,38 @@
+name: Deploy to dev
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-node@v1.1.0
+      with:
+        version: 14.x
+
+    - name: Install dependencies
+      run: |
+        cd themes/mediasanctuary
+        npm install
+
+    - name: Build
+      run: npm run build
+
+    - name: Sync
+      env:
+        dest: 'devmediasan@claudette.mayfirst.org:/home/members/nyma/sites/dev.mediasanctuary.org/web/wp-content’
+      run: |
+        echo "${{secrets.DEPLOY_KEY}}" > deploy_key
+        chmod 600 ./deploy_key
+        rsync -chav --delete \
+          -e 'ssh -i ./deploy_key -o StrictHostKeyChecking=no' \
+          --exclude /deploy_key \
+          --exclude /.git/ \
+          --exclude /.github/ \
+          --exclude /node_modules/ \
+          ./ ${{env.dest}}
