@@ -32,17 +32,16 @@ jobs:
         echo "${{secrets.DEPLOY_KEY}}" > deploy_key
         chmod 600 ./deploy_key
         rsync \
+          --rsh='ssh -i ./deploy_key -o StrictHostKeyChecking=no' \
+          --delete \
           --checksum \
           --recursive \
-          --human-readable \
           --verbose \
-          --delete \
-          --exclude=uploads \
-          --exclude=.gitignore \
-          --exclude=README.md \
-          -e 'ssh -i ./deploy_key -o StrictHostKeyChecking=no' \
+          --human-readable \
+          --exclude /uploads \
+          --exclude /.gitignore \
+          --exclude /README.md \
           --exclude /deploy_key \
           --exclude /.git/ \
           --exclude /.github/ \
-          --exclude /node_modules/ \
           ./ ${{env.dest}}
