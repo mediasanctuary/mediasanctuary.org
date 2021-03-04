@@ -8,9 +8,7 @@ add_action('after_setup_theme', function() {
 
 add_action('wp_enqueue_scripts', function() {
 	list($src, $version) = get_asset_url('js/main.js', true);
-	wp_enqueue_script('main', $src, array(
-		'jquery'
-	), $version, true);
+	wp_enqueue_script('main', $src, ['jquery'], $version, true);
 });
 
 add_action('acf/init', function() {
@@ -30,7 +28,7 @@ function get_asset_url($file, $return_version = false) {
 	$path = get_stylesheet_directory() . "/$file";
 	$ver  = filemtime($path);
 	if ($return_version) {
-		return array($url, $ver);
+		return [$url, $ver];
 	} else {
 		return "$url?$ver";
 	}
