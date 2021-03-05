@@ -13,9 +13,14 @@ $block_defaults = [
 
 $blocks = [
 	'introduction' => [
-		'title'           => 'Introduction',
-		'description'     => 'Larger text section.',
-		'icon'            => 'text',
+		'title'       => 'Introduction',
+		'description' => 'Larger text section.',
+		'icon'        => 'text',
+	],
+	'features' => [
+		'title'       => 'Features',
+		'description' => 'Hero images with buttons.',
+		'icon'        => 'format-image'
 	]
 ];
 

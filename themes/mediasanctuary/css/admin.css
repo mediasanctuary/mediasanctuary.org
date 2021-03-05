@@ -1,12 +1,17 @@
 .block-editor .wp-block[data-type^="acf/"]::before {
 	content: attr(data-title);
 	position: absolute;
-	top: -18px;
+	top: -24px;
 	left: 0;
 	font: bold 12px sans-serif;
 	text-transform: uppercase;
 }
 
 .block-editor .wp-block[data-type^="acf/"] {
-	margin-top: 46px;
+	margin-top: 52px;
+}
+
+.block-features .feature__title {
+	font-size: 1em;
+	margin: 0;
 }
