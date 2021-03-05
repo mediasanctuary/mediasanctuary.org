@@ -1,0 +1,21 @@
+.editor-styles-wrapper {
+	.block-features {
+		&__title {
+			font-size: 1em;
+			margin: 0;
+		}
+
+		&__list {
+			margin-left: 0;
+			padding-left: 0;
+		}
+
+		&__item {
+			list-style: none;
+		}
+
+		&__button {
+			margin-bottom: 10px;
+		}
+	}
+}

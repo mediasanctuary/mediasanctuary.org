@@ -21,8 +21,8 @@ add_filter('acf/settings/save_json', function($path) {
 
 add_action('admin_enqueue_scripts', function() {
 	$dir = get_template_directory();
-	$css_src = get_template_directory_uri() . '/css/admin.css';
-	$css_version = filemtime("$dir/css/admin.css");
+	$css_src = get_template_directory_uri() . '/css/admin/admin.css';
+	$css_version = filemtime("$dir/css/admin/admin.css");
 	wp_enqueue_style('custom-admin', $css_src, array(), $css_version);
 });
 

@@ -78,22 +78,8 @@
 
 		&--donate {
 			display: none;
-			padding: 6px 10px 4px 10px;
-			border-radius: 4px;
-			color: $c-raisin;
-			background: $c-river-fog;
-
-			&:hover {
-				color: $c-raisin;
-				background: $c-lilac;
-			}
-
 			@include breakpoint(sm) {
 				display: block;
-			}
-
-			@include breakpoint(full-nav) {
-				padding: 6px 15px 4px 15px;
 			}
 		}
 	}

@@ -1,0 +1,26 @@
+.block-editor .wp-block[data-type^="acf/"]::before {
+  content: attr(data-title);
+  position: absolute;
+  top: 8px;
+  left: -220px;
+  width: 200px;
+  font: bold 12px sans-serif;
+  text-transform: uppercase;
+  text-align: right;
+  color: #808080; }
+
+.editor-styles-wrapper .block-features__title {
+  font-size: 1em;
+  margin: 0; }
+
+.editor-styles-wrapper .block-features__list {
+  margin-left: 0;
+  padding-left: 0; }
+
+.editor-styles-wrapper .block-features__item {
+  list-style: none; }
+
+.editor-styles-wrapper .block-features__button {
+  margin-bottom: 10px; }
+
+/*# sourceMappingURL=admin.css.map */

@@ -1,17 +1,13 @@
 .block-editor .wp-block[data-type^="acf/"]::before {
 	content: attr(data-title);
 	position: absolute;
-	top: -24px;
-	left: 0;
+	top: 8px;
+	left: -220px;
+	width: 200px;
 	font: bold 12px sans-serif;
 	text-transform: uppercase;
+	text-align: right;
+	color: #808080;
 }
 
-.block-editor .wp-block[data-type^="acf/"] {
-	margin-top: 52px;
-}
-
-.block-features .feature__title {
-	font-size: 1em;
-	margin: 0;
-}
+@import 'features';
