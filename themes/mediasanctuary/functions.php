@@ -19,6 +19,13 @@ add_filter('acf/settings/save_json', function($path) {
 	return get_stylesheet_directory() . '/acf';
 });
 
+add_action('admin_enqueue_scripts', function() {
+	$dir = get_template_directory();
+	$css_src = get_template_directory_uri() . '/css/admin.css';
+	$css_version = filemtime("$dir/css/admin.css");
+	wp_enqueue_style('custom-admin', $css_src, array(), $css_version);
+});
+
 function asset_url($file) {
 	echo get_asset_url($file);
 }

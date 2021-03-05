@@ -1,5 +1,5 @@
 <div class="block-introduction">
 	<div class="container">
-		<?php echo $block['data']['introduction']; ?>
+		<?php echo get_field('introduction'); ?>
 	</div>
 </div>

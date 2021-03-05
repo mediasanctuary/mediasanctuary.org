@@ -7,7 +7,7 @@
     "build-task:compile": "node-sass-chokidar --source-map true css/main.scss -o dist",
     "build-task:autoprefixer": "postcss dist/*.css --use autoprefixer -d dist",
     "sass:build": "npm-run-all -p build-task:*",
-    "sass:watch": "chokidar 'css/*.scss' -c 'npm run sass:build'",
+    "sass:watch": "chokidar 'css/**.scss' -c 'npm run sass:build'",
     "start": "npm-run-all -p sass:*",
     "build": "npm-run-all -p sass:build"
   },
