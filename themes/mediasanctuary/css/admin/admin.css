@@ -20,7 +20,8 @@
 .editor-styles-wrapper .block-features__item {
   list-style: none; }
 
-.editor-styles-wrapper .block-features__button {
-  margin-bottom: 10px; }
+.editor-styles-wrapper .block-features__image {
+  display: block;
+  margin-top: 10px; }
 
 /*# sourceMappingURL=admin.css.map */

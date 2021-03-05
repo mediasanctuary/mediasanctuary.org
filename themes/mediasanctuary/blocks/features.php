@@ -1,22 +1,28 @@
 <div class="block-features">
 	<div class="container">
-		<?php $class = 'block-features__item block-features__item--large'; ?>
+		<?php $size = 'large'; ?>
 		<ol class="block-features__list">
 			<?php while ( have_rows('features') ) { ?>
+				<?php $class = "block-features__item block-features__item--$size"; ?>
 				<?php the_row(); ?>
 				<li class="<?php echo $class; ?>">
-					<h2 class="block-features__title"><?php the_sub_field('title'); ?></h2>
-					<a href="<?php the_sub_field('button_url'); ?>" class="button">
-						<?php the_sub_field('button_label'); ?>
+					<a href="<?php the_sub_field('button_url'); ?>">
+						<h2 class="block-features__title"><?php the_sub_field('title'); ?></h2>
+						<span class="button">
+							<?php the_sub_field('button_label'); ?>
+						</span>
+						<?php
+
+						$image_id = get_sub_field('image');
+						$attrs = [
+							'class' => 'block-features__image'
+						];
+						echo wp_get_attachment_image($image_id, $size, false, $attrs);
+
+						?>
 					</a>
-					<?php
-
-					$image_id = get_sub_field('image');
-					echo wp_get_attachment_image($image_id, 'large');
-
-					?>
 				</li>
-				<?php $class = 'block-features__item block-features__item--small'; ?>
+				<?php $size = 'medium'; ?>
 			<?php } ?>
 		</ol>
 	</div>
