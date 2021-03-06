@@ -4,7 +4,7 @@ Website for The Sanctuary For Independent Media
 
 ## Basics
 
-This repository is designed to be checked out in the `wp-content` directory. The site themes and plugins are managed here.
+This is a WordPress site, the themes and plugins are managed here.
 
 ## Developer dependencies
 
