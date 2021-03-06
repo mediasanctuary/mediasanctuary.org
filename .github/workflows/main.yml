@@ -38,4 +38,5 @@ jobs:
           --recursive \
           --verbose \
           --human-readable \
+          --exclude wp/wp-content/uploads \
           ./wp/wp-content/ ${{env.dest}}
