@@ -6,25 +6,19 @@ Website for The Sanctuary For Independent Media
 
 This repository is designed to be checked out in the `wp-content` directory. The site themes and plugins are managed here.
 
-## Development
+## Developer dependencies
 
-The `mediasanctuary` theme is a work in progress and we welcome your contributions. There isn't a whole lot of scaffolding in place for you yet, but it will grow in due time.
+* [node.js](https://nodejs.org/) v14
+* [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
-## Dependencies
+## How to run locally
 
-* [Advanced Custom Fields](https://www.advancedcustomfields.com/) plugin (included)
-* [node.js](https://nodejs.org/) (v14)
-
-## Install
+Start the Docker containers:
 
 ```
-cd themes/mediasanctuary/
-npm install
+./bin/start
 ```
 
-## Start the Sass watcher
+## Continuous depoyment
 
-```
-cd themes/mediasanctuary/
-npm run start
-```
+Commits to the `main` branch end up getting deployed to `https://dev.mediasanctuary.org/` using GitHub Actions.

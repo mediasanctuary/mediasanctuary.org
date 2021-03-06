@@ -38,11 +38,4 @@ jobs:
           --recursive \
           --verbose \
           --human-readable \
-          --exclude /uploads \
-          --exclude /.gitignore \
-          --exclude /README.md \
-          --exclude /deploy_key \
-          --exclude /.git/ \
-          --exclude /.github/ \
-          --exclude /stack.yml \
-          ./ ${{env.dest}}
+          ./wp/wp-content/ ${{env.dest}}
