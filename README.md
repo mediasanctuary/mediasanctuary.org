@@ -25,7 +25,7 @@ Exiting the `start` script (ctrl-C) stops the containers.
 
 ## Care and maintenance
 
-Rebuild if necessary:
+Rebuild the container if necessary:
 
 ```
 cd wp
@@ -48,9 +48,9 @@ docker-compose exec web bash
 
 ## About the image
 
-The `Dockerfile` is derived from the official `wordpress` image, which in turn is built off of `php`. It uses Debian-style package management. We don't modify it very much, just installing some tools like [WP-CLI](https://wp-cli.org/).
+The `Dockerfile` uses the official `wordpress` image, which in turn is built off of `php`. The `web` container uses Debian-style package management. We don't modify it very much, just installing some tools like [WP-CLI](https://wp-cli.org/).
 
-There won't be any database tables setup first time you run the container, but you can set up the install by visiting [localhost:8080](http://localhost:8080/).
+There won't be any database tables setup first time you run the container, but you can install the site by visiting [localhost:8080](http://localhost:8080/).
 
 ## Updating plugins
 
@@ -72,10 +72,10 @@ cd wp
 docker-compose exec web wp core upgrade
 ```
 
-Updating WordPress on the dev or prod servers requires that you SSH in and run WP-CLI on the server.
+Updating WordPress on the dev or prod servers requires that you SSH in and run `wp core upgrade` on the server.
 
-## Continuous depoyment
+## Continuous integration
 
 Commits to the `main` branch end up getting deployed to `https://dev.mediasanctuary.org/` using [GitHub Actions](https://github.com/mediasanctuary/mediasanctuary.org/actions).
 
-We do not have a prod deployment setup yet, but we will once we launch.
+We do not have a production deployment action setup yet, but we will once we launch.
