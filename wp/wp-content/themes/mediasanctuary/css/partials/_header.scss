@@ -6,7 +6,6 @@
 	padding-bottom: 15px;
 
 	.container {
-		width: 100vw;
 		height: 225px;
 	}
 
@@ -92,5 +91,6 @@
 		border: 2px solid $c-river-fog;
 		border-radius: 8px;
 		cursor: pointer;
+		text-indent: -99999em;
 	}
 }

@@ -5,36 +5,6 @@ $s-md: 28px;
 $s-lg: 36px;
 $s-xl: 48px;
 
-body {
-	font-family: $f-system;
-	font-size: $s-xs;
-	line-height: 1.5;
-	background: $c-river-fog;
-
-	@include breakpoint(md) {
-		font-size: $s-sm;
-	}
-}
-
-.container {
-	position: relative;
-	max-width: 1200px;
-	margin: 0 auto;
-	padding: 0 15px;
-
-	.main > & {
-		padding-bottom: 2em;
-	}
-}
-
-.visually-hidden {
-	display: none;
-}
-
-.clear {
-	clear: both;
-}
-
 h1, h2, h3, h4, h5 {
 	font-family: $f-fira-sans;
 	font-weight: bold;
