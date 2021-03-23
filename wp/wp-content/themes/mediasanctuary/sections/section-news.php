@@ -1,4 +1,4 @@
-<div id="news" class="news">
+<section id="news" class="news">
 	<div class="container">
 		<h2>News</h2>
 		<div class="news__about">
@@ -21,6 +21,5 @@
 				<img src="https://www.mediasanctuary.org/wp-content/uploads/2020/10/120069850_10158967175348746_8209873448639366946_o-e1603228955471.jpg" alt="">
 			</a>
 		</div>
-		<br class="clear">
 	</div>
-</div>
+</section>

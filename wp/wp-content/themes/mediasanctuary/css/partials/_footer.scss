@@ -1,6 +1,6 @@
 #about {
   position: relative;
-  background: #692727 url('../img/bg-about-sanctuary.jpg') center center;
+  background: $c-red-oxide url('../img/bg-about-sanctuary.jpg') center center;
   background-size: contain;
   color:#FFF;
   &:before {
@@ -10,8 +10,8 @@
     left: 0;
     right: 0;
     bottom:0;
-    background: #692727;
-    opacity: .7
+    background: $c-red-oxide;
+    opacity: .85;
   }
   .container {
     position: relative;
@@ -23,7 +23,7 @@
   }
   
   .initiatives {
-    background:#BA4341;
+    background:#BA4341; // Pulled from New Homepage. Not accurate. 
     padding: 30px;
     overflow: hidden;
     position: relative;

@@ -23,7 +23,7 @@ strong {
 }
 
 a {
-  transition: ease 0.2s all;
+  transition: ease 0.3s all;
 }
 
 
@@ -80,25 +80,64 @@ a {
 }
 
 
-/* Columns 
+section.p30 {
+  padding: 30px 0;
+}
+
+section.p60 {
+  padding: 60px 0;
+}
+
+
+.desc {
+  font-size:16px;
+}
+
+
+/* Buttons 
 ----------------------------------------------------- */  
 .btn {
 	color: #FFF;
-	background: #000;
+	background: $c-asphalt;
 	padding: 10px 25px;
 	border-radius: 0px;
 	display: inline-block;
 	border: 3px solid #FFF;
 	text-decoration: none;
-  transition: ease 0.2s all;
+  transition: ease 0.3s all;
   font-family: 'Fira Sans Condensed', sans-serif;
   font-weight: 400;
   font-size:22px;
   line-height: normal;
   text-transform: uppercase;
+  cursor: pointer;
 
 	&:hover {
 		background: $c-ladybug;
+	}
+	
+	&.ladybug {
+  	background-color: $c-ladybug;
+	}
+	
+	&.news {
+  	line-height: 35px;
+  	&:before {
+    	content:'';
+    	background-image: url('../img/icon-newspaper.svg');
+    	background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 100%;
+      display: block;
+      height: 35px;
+      width: 35px;
+      float: left;	
+      margin-right:15px;
+      font-size:26px;      
+  	}
+  	&:hover {
+    	background:$c-asphalt;  
+  	}
 	}
 
 }

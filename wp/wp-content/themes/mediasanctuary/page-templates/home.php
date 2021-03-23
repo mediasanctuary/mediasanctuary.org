@@ -12,4 +12,6 @@ get_header();
 
 the_content();
 
+include get_template_directory() . '/sections/section-newsletter.php';
+
 get_footer();
