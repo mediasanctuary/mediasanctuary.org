@@ -3,10 +3,12 @@
 	background-size: auto 240px;
 	background-repeat: repeat-x;
 	background-position: center;
-	padding-bottom: 15px;
-
-	.container {
-		height: 225px;
+	padding-bottom: 30px;
+	
+	&:before {
+		content:'';
+		position: absolute;
+		
 	}
 
 	.header__items {

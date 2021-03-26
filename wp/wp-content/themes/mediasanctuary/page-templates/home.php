@@ -12,6 +12,9 @@ get_header();
 
 the_content();
 
+include get_template_directory() . '/sections/section-wooc.php';
+include get_template_directory() . '/sections/section-initiatives.php';
+include get_template_directory() . '/sections/section-news.php';
 include get_template_directory() . '/sections/section-newsletter.php';
 
 get_footer();

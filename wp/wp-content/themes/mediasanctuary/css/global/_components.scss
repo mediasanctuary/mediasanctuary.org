@@ -35,11 +35,19 @@ a {
 	margin: 0 auto;
 	padding: 0 30px;
 	box-sizing: border-box;
+	
+	&:after {
+		visibility: hidden;
+		display: block;
+		content: "";
+		clear: both;
+		height: 0;
+	}
 }
 
 /* Columns 
 ----------------------------------------------------- */  
-.two-col, .three-col {
+.two-col, .three-col, .four-col {
   display: flex;
   flex-wrap: wrap;  
 }
@@ -65,18 +73,19 @@ a {
 }
 
 .three-col {
+	margin: 0 -10px;
   .col {
     width: 33.33333333%;
     padding: 0 10px;
-
-    &:first-child {
-      padding: 0 0 0 10px;
-    }
-    
-    &:last-child {
-      padding: 0 0 0 10px;
-    }
   }  
+}
+
+.four-col {
+	margin: 0 -10px;
+	.col {
+		width: 25%;
+		padding: 10px;
+	}
 }
 
 
