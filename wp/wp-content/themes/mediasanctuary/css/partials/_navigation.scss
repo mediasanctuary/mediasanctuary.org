@@ -4,6 +4,7 @@
 	left: 25px;
 	width: 220px;
 	max-width: 280px;
+	z-index: 10;
 
 	@include breakpoint(full-nav) {
 		width: 33%;
@@ -61,8 +62,8 @@
 	.nav-link {
 		color: $c-river-fog;
 		text-decoration: none;
-		padding: 6px 7.5px 4px 7.5px;
-		white-space: nowrap;
+    padding: 4px 12px;
+    white-space: nowrap;
 
 		@include breakpoint(full-nav) {
 			&:hover {

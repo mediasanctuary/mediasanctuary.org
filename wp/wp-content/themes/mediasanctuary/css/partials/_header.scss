@@ -58,7 +58,7 @@
 		background: $c-river-fog;
 		position: absolute;
 		right: 15px;
-		bottom: 0;
+		top: 0;
 		width: calc(100vw - 30px);
 
 		@include breakpoint(full-nav) {

@@ -1,4 +1,4 @@
-.news {
+.posts {
 	font-size:23px;
 	h2 {
 		color: $c-blue-beetle;
@@ -22,7 +22,7 @@
 			padding: 5px 5px 15px;
 		}
 		
-		.news__thumbnail {
+		.post__thumbnail {
 			position: relative;
 			display: block;
 			border: 5px solid #FFF;
@@ -81,7 +81,7 @@
 				color: $c-raisin;
 			}
 			
-			.news__thumbnail {
+			.post__thumbnail {
 				&:after {
 					opacity: 1;
 					visibility: visible;				

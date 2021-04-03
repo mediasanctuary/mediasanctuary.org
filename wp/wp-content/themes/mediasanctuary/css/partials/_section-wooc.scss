@@ -1,0 +1,36 @@
+#wooc {
+  .spin-time {
+    padding-right: 10px;    
+  }
+  .artist {
+    display: block;
+    font-size: 18px;
+    color:$c-ladybug;
+  }
+  .song {
+    font-size:20px;
+  }
+  
+  .info {
+    font-size: 13px;
+  }
+  
+  .spin-text {
+    padding:10px;
+    .release {
+      color:#666;
+      &:before {
+        color:#999;
+      }
+    }
+  }
+  
+  .two-col {
+    img {
+      width: 100%;
+      max-width: 450px;
+      margin: 0 auto;
+      display: block;
+    }
+  }
+}

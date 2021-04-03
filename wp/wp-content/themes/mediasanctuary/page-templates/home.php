@@ -12,6 +12,8 @@ get_header();
 
 the_content();
 
+include get_template_directory() . '/sections/section-podcasts.php';
+include get_template_directory() . '/sections/section-events.php';
 include get_template_directory() . '/sections/section-wooc.php';
 include get_template_directory() . '/sections/section-initiatives.php';
 include get_template_directory() . '/sections/section-news.php';
