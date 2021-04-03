@@ -3,11 +3,12 @@
 	background-size: auto 240px;
 	background-repeat: repeat-x;
 	background-position: center;
-	padding-bottom: 15px;
-
-	.container {
-		width: 100vw;
-		height: 225px;
+	padding-bottom: 30px;
+	
+	&:before {
+		content:'';
+		position: absolute;
+		
 	}
 
 	.header__items {
@@ -57,7 +58,7 @@
 		background: $c-river-fog;
 		position: absolute;
 		right: 15px;
-		bottom: 0;
+		top: 0;
 		width: calc(100vw - 30px);
 
 		@include breakpoint(full-nav) {
@@ -87,10 +88,11 @@
 		width: 45px;
 		height: 45px;
 		color: $c-river-fog;
-		background: $c-ironweed url('../img/search.png') no-repeat 8px 8px;
+		background: $c-ironweed url('../img/icon-search.png') no-repeat 8px 8px;
 		background-size: 25px 25px;
 		border: 2px solid $c-river-fog;
 		border-radius: 8px;
 		cursor: pointer;
+		text-indent: -99999em;
 	}
 }

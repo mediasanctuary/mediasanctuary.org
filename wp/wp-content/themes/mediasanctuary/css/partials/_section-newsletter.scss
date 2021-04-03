@@ -1,0 +1,14 @@
+#newsletter {
+  background: $c-concrete;
+  font-size:23px;
+  h2 {
+    color:$c-ladybug;
+    padding-top:0;
+  }
+  .btn.news {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    padding: 18px 0;    
+  }
+}

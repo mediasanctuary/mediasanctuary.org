@@ -1,15 +1,152 @@
-.button {
-	color: $c-raisin;
+body {
+	font-family: 'Noto Sans', sans-serif;
+	font-size: $s-sm;
+	line-height: 1.5;
 	background: $c-river-fog;
-	padding: 6px 10px 4px 10px;
-	border-radius: 4px;
+}
+
+.hidden {
+	display: none;
+}
+
+.clear {
+	clear: both;
+}
+
+p {
+  padding: 0 0 20px;
+  margin: 0;
+}
+
+strong {
+  font-weight: bold;
+}
+
+a {
+  transition: ease 0.3s all;
+}
+
+
+/* Layout 
+----------------------------------------------------- */  
+.container {
+	position: relative;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 30px;
+	box-sizing: border-box;
+	
+	&:after {
+		visibility: hidden;
+		display: block;
+		content: "";
+		clear: both;
+		height: 0;
+	}
+}
+
+/* Columns 
+----------------------------------------------------- */  
+.two-col, .three-col, .four-col {
+  display: flex;
+  flex-wrap: wrap;  
+}
+
+.two-col {  
+  .col {
+    width: 50%;
+    padding: 0 20px 0 0;
+    
+    &:last-child {
+      padding: 0 0 0 20px;
+    }
+    
+    &.w45 {
+      width: 45%;
+    }
+
+    &.w55 {
+      width: 55%;
+    }
+
+  }
+}
+
+.three-col {
+	margin: 0 -10px;
+  .col {
+    width: 33.33333333%;
+    padding: 0 10px;
+  }  
+}
+
+.four-col {
+	margin: 0 -10px;
+	.col {
+		width: 25%;
+		padding: 10px;
+	}
+}
+
+
+section.p30 {
+  padding: 30px 0;
+}
+
+section.p60 {
+  padding: 60px 0;
+}
+
+
+.desc {
+  font-size:16px;
+}
+
+
+/* Buttons 
+----------------------------------------------------- */  
+.btn {
+	color: #FFF;
+	background: $c-asphalt;
+	padding: 10px 25px;
+	border-radius: 0px;
+	display: inline-block;
+	border: 3px solid #FFF;
+	text-decoration: none;
+  transition: ease 0.3s all;
+  font-family: 'Fira Sans Condensed', sans-serif;
+  font-weight: 400;
+  font-size:22px;
+  line-height: normal;
+  text-transform: uppercase;
+  cursor: pointer;
 
 	&:hover {
-		color: $c-raisin;
-		background: $c-lilac;
+		background: $c-ladybug;
+	}
+	
+	&.ladybug {
+  	background-color: $c-ladybug;
+	}
+	
+	&.news {
+  	line-height: 35px;
+  	&:before {
+    	content:'';
+    	background-image: url('../img/icon-newspaper.svg');
+    	background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 100%;
+      display: block;
+      height: 35px;
+      width: 35px;
+      float: left;	
+      margin-right:15px;
+      font-size:26px;      
+  	}
+  	&:hover {
+    	background:$c-asphalt;  
+  	}
 	}
 
-	@include breakpoint(full-nav) {
-		padding: 6px 15px 4px 15px;
-	}
 }

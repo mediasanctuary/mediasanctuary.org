@@ -1,0 +1,131 @@
+#about {
+  position: relative;
+  background: $c-red-oxide url('../img/bg-about-sanctuary.jpg') center center;
+  background-size: contain;
+  color:#FFF;
+  &:before {
+    content: '';
+    position: absolute;
+    top:0;
+    left: 0;
+    right: 0;
+    bottom:0;
+    background: $c-red-oxide;
+    opacity: .85;
+  }
+  .container {
+    position: relative;
+    z-index: 1;
+  } 
+  
+  .w55 {
+    padding-top:30px;
+  }
+  
+  .initiatives {
+    background:#BA4341; // Pulled from New Homepage. Not accurate. 
+    padding: 30px;
+    overflow: hidden;
+    position: relative;
+    
+    &:before {
+      position: absolute;
+      content: '';
+      background: rgba(0,0,0,.8);
+      top: -12px;
+      left: -10px;
+      right: -12px;
+      height: 120px;
+      display: block;
+      transform: rotate(-2.5deg) skew(-2.5deg);
+    }
+    
+    img {
+      max-width: 315px;
+      width: 100%;
+      display: block;
+      margin-bottom:30px;
+      position: relative;
+      z-index: 10;
+    }
+    
+    ul {
+      li {
+        a {
+          display: block;
+          padding: 5px 10px;
+          color:#FFF;
+          font-size: 17px;
+          text-decoration: none;
+          max-width: 250px;
+          border-radius: 3px;
+          font-family: $f-fira-sans;
+          color:rgba(255,255,255,.75);
+          &:hover {
+            background: rgba(0,0,0,.5);
+            color: rgba(255,255,255,1);
+            max-width: 270px;
+          }
+        }
+      }
+    }
+  } 
+  
+}
+
+footer {
+  background: #3A3C3C;
+  color:#FFF;
+  padding: 60px 0;
+  font-size: 16px;
+  line-height: 1.8;  
+
+  p, address {
+    padding: 0;
+  }
+  
+  .social {
+    display: flex;
+    li {
+      margin: 0 5px;
+      
+      a {
+        display: block;
+        text-indent: -99999em;
+        height: 60px;
+        width: 60px;
+        background-size: auto 30px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-color: transparent;
+        color: $c-faded-brick;
+        border: 3px solid $c-faded-brick;
+        
+        &.fb {
+          background-image: url('../img/social/icon-facebook.svg');
+        }
+        
+        &.ig {
+          background-image: url('../img/social/icon-instagram.svg');
+        }
+        
+        &.tw {
+          background-image: url('../img/social/icon-twitter.svg');
+        }
+        
+        &.yt {
+          background-image: url('../img/social/icon-youtube.svg');
+        }
+        
+        &.vimeo {
+          background-image: url('../img/social/icon-vimeo.svg');
+        }
+        
+        &:hover {
+          background-color: rgba(0,0,0,.5);
+        }
+        
+      }
+    }
+  }
+}
