@@ -52,6 +52,8 @@ The `Dockerfile` uses the official `wordpress` image, which in turn is built off
 
 There won't be any database tables setup first time you run the container, but you can install the site by visiting [localhost:8080](http://localhost:8080/).
 
+You can connect to the MySQL database on port 3307.
+
 ## Updating plugins
 
 We use WP-CLI to keep the plugin files up-to-date, and commit the changes to source control. Note that updates to the [Advanced Custom Fields](https://www.advancedcustomfields.com/) plugin require that you [configure it](http://localhost:8080/wp-admin/edit.php?post_type=acf-field-group&page=acf-settings-updates) with a license key.
