@@ -42,8 +42,7 @@ add_action('admin_menu', function() {
 });
 
 add_action('init', function() {
-	news_post_type();
-	podcasts_post_type();
+	setup_post_types();
 });
 
 function asset_url($file) {
