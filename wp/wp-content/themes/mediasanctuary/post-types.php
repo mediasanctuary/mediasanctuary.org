@@ -50,7 +50,7 @@ function podcast_post_type() {
 			'show_ui'       => true,
 			'menu_position' => 4,
 			'menu_icon'     => 'dashicons-microphone',
-			'supports'      => ['title', 'editor', 'thumbnail'],
+			'supports'      => ['title', 'editor', 'thumbnail', 'revisions'],
 			'taxonomies'    => [],
 			'rewrite'       => [
 				'slug'      => 'podcasts'
@@ -84,7 +84,7 @@ function project_post_type() {
 			'show_ui'       => true,
 			'menu_position' => 4,
 			'menu_icon'     => 'dashicons-format-aside',
-			'supports'      => ['title', 'editor', 'thumbnail'],
+			'supports'      => ['title', 'editor', 'thumbnail', 'revisions'],
 			'taxonomies'    => [],
 		)
 	);
