@@ -52,7 +52,7 @@
 					</a>
 					<a href="/sanctuary-tv/" class="header__item header__item--sanctuary-tv">
 						<h3>Sanctuary TV</h3>
-						Streaming Live!
+						Watch Online
 					</a>
 				</div>
 				<form action="/" class="search">
