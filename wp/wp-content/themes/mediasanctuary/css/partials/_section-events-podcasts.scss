@@ -16,13 +16,32 @@
   }
   
   .posts__item {
+    background:#FFF;
+    padding: 10px;
     h5 {
       color:$c-robin-egg;
+      font-size: .8em;
+      transition: ease 0.2s all;
+    }
+    .posts__date {
+      font-size:.75em;
+      font-weight: bold;
+      letter-spacing: -.5px;
+      color:$c-lilac;
+      transition: ease 0.2s all;      
+    }
+    .post__thumbnail {
+      border: 1px solid #e1e1e1;
+      box-shadow: none;
+      margin: 5px 0 10px 0;
     }
     &:hover {
       h5 {
         color:$c-lilac;
       }
+      .posts__date {
+        color:#000;
+      } 
     }
   }
 }

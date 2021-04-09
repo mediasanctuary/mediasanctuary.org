@@ -79,6 +79,13 @@ footer {
   padding: 60px 0;
   font-size: 16px;
   line-height: 1.8;  
+  
+  a {
+    color: $c-faded-brick;      
+    &:hover {
+      color: $c-robin-egg;      
+    }
+  }
 
   p, address {
     padding: 0;
@@ -86,15 +93,16 @@ footer {
   
   .social {
     display: flex;
+    flex-wrap: wrap;
     li {
-      margin: 0 5px;
+      margin: 5px;
       
       a {
         display: block;
         text-indent: -99999em;
-        height: 60px;
-        width: 60px;
-        background-size: auto 30px;
+        height: 55px;
+        width: 55px;
+        background-size: auto 25px;
         background-repeat: no-repeat;
         background-position: center center;
         background-color: transparent;
@@ -120,6 +128,18 @@ footer {
         &.vimeo {
           background-image: url('../img/social/icon-vimeo.svg');
         }
+
+        &.sc {
+          background-image: url('../img/social/icon-soundcloud.svg');
+        }
+        
+        &.in {
+          background-image: url('../img/social/icon-linkedin.svg');
+        }
+        
+        &.spotify {
+          background-image: url('../img/social/icon-spotify.svg');
+        }                
         
         &:hover {
           background-color: rgba(0,0,0,.5);

@@ -39,15 +39,16 @@
     					<li><a href="https://www.instagram.com/mediasanctuary" target="_blank" class="ig">Instagram</a></li>
     					<li><a href="https://www.twitter.com/mediasanctuary" target="_blank" class="tw">Twitter</a></li>
     					<li><a href="https://www.youtube.com/channel/UC5JTfy24J7STy5lwDeNHq6g" target="_blank" class="yt">YouTube</a></li>
-    					<li><a href="https://www.vimeo.com/mediasanctuary" target="_blank" class="vimeo">Vimeo</a></li>
+    					<li><a href="https://www.linkedin.com/company/mediasanctuary" target="_blank" class="in">LinkedIn</a></li>
+    					<li><a href="https://soundcloud.com/mediasanctuary" target="_blank" class="sc">Sound Cloud</a></li>
+    					<li><a href="https://open.spotify.com/user/woocfm" target="_blank" class="spotify">Spotify</a></li>
+
         		</ul>			
           </div>
           <div class="col w55">									      		
-            <p>&copy; 2020 <strong>&nbsp;The Sanctuary for Independent Media</strong></p>
+            <p>The Sanctuary for Independent Media is a project of <strong>Media Alliance Inc</strong>, a <a href="https://www.guidestar.org/profile/11-2538804" target="_blank">501c(3) non-profit organization</a> located at 3361 6th Avenue in North Troy, New&nbsp;York.</p>
             <address>
-              3361 6th Avenue in North Troy, New York<br/>
-              P.O. Box 35 Troy, NY 12181<br/>
-              (518) 272-2390
+              P.O. Box 35 Troy, NY 12181
             </address>
           </div>
         </div>
