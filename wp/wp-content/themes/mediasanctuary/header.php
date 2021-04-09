@@ -65,7 +65,6 @@
 				
 				<?php if(is_front_page()) {?>
 				<div class="about">
-          <h1>Welcome to The Sanctuary</h1>
           <p>We use art, science and participatory action to promote social and environmental justice and freedom of creative expression.</p>
           <?php } ?>				
 				</div>

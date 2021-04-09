@@ -1,7 +1,7 @@
 <section id="news" class="posts p60">
 	<div class="container">
-		<h2>News</h2>
-		<p>The latest happenings at The Santuary for Independent Media. You can also view the archive or listen to WOOC 105.7 for more updates.</p>
+		<h2>Sanctuary News</h2>
+		<p>The latest happenings at The Sanctuary for Independent Media. You can also view the archive or listen to WOOC 105.3 FM Troy for more updates.</p>
 		<ul class="posts__list three-col">
 			<li class="col">
 				<a href="https://www.mediasanctuary.org/time-for-reckoning-on-wmht-examines-post-protest-response/" class="posts__item">

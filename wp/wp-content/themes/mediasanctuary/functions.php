@@ -59,3 +59,5 @@ function get_asset_url($file, $return_version = false) {
 		return "$url?$ver";
 	}
 }
+
+add_theme_support( 'post-thumbnails' );
