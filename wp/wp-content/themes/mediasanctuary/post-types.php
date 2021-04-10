@@ -59,6 +59,44 @@ function podcast_post_type() {
 			]
 		)
 	);
+
+	$podcast_category_labels = [
+		'name'                       => 'Podcast Categories',
+		'singular_name'              => 'Podcast Category',
+		'menu_name'                  => 'Podcast Categories',
+		'all_items'                  => 'All Podcast Categories',
+		'parent_item'                => 'Parent Category',
+		'parent_item_colon'          => 'Parent Category:',
+		'new_item_name'              => 'New Podcast Category',
+		'add_new_item'               => 'Add New Podcast Category',
+		'edit_item'                  => 'Edit Podcast Category',
+		'update_item'                => 'Update Podcast Category',
+		'view_item'                  => 'View Podcast Category',
+		'separate_items_with_commas' => 'Separate Podcast Categories with commas',
+		'add_or_remove_items'        => 'Add or remove Podcast Categories',
+		'choose_from_most_used'      => 'Choose from the most used',
+		'popular_items'              => 'Popular Podcast Categories',
+		'search_items'               => 'Search Podcast Categories',
+		'not_found'                  => 'Not Found',
+		'no_terms'                   => 'No Podcast Category',
+		'items_list'                 => 'Podcast Category list',
+		'items_list_navigation'      => 'Podcast Category list navigation'
+	];
+
+	$podcast_category_args = [
+		'labels'             => $podcast_category_labels,
+		'hierarchical'       => false,
+		'public'             => true,
+		'show_ui'            => true,
+		'show_in_quick_edit' => false,
+		'meta_box_cb'        => false,
+		'show_admin_column'  => false,
+		'show_in_nav_menus'  => true,
+		'show_in_rest'       => true,
+		'show_tagcloud'      => false
+	];
+
+	register_taxonomy('podcast_category', ['podcast'], $podcast_category_args);
 }
 
 function project_post_type() {
