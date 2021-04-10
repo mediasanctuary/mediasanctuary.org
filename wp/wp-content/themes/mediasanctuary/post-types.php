@@ -85,10 +85,10 @@ function podcast_post_type() {
 
 	$podcast_category_args = [
 		'labels'             => $podcast_category_labels,
-		'hierarchical'       => false,
+		'hierarchical'       => true,
 		'public'             => true,
 		'show_ui'            => true,
-		'show_in_quick_edit' => false,
+		'show_in_quick_edit' => true,
 		'meta_box_cb'        => false,
 		'show_admin_column'  => false,
 		'show_in_nav_menus'  => true,
@@ -96,7 +96,7 @@ function podcast_post_type() {
 		'show_tagcloud'      => false
 	];
 
-	register_taxonomy('podcast_category', ['podcast'], $podcast_category_args);
+	register_taxonomy('podcast_categories', ['podcast'], $podcast_category_args);
 }
 
 function project_post_type() {
