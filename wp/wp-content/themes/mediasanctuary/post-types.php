@@ -51,8 +51,8 @@ function podcast_post_type() {
 			'menu_position' => 4,
 			'menu_icon'     => 'dashicons-microphone',
 			'supports'      => ['title', 'editor', 'thumbnail', 'revisions'],
-      'has_archive' => true,			
-      'show_in_rest' => true,
+			'has_archive'   => true,
+			'show_in_rest'  => true,
 			'taxonomies'    => [],
 			'rewrite'       => [
 				'slug'      => 'podcasts'
@@ -86,8 +86,8 @@ function project_post_type() {
 			'show_ui'       => true,
 			'menu_position' => 4,
 			'menu_icon'     => 'dashicons-format-aside',
-      'has_archive' => true,						
-      'show_in_rest' => true,						
+			'has_archive'   => true,
+			'show_in_rest'  => true,
 			'supports'      => ['title', 'editor', 'thumbnail', 'revisions'],
 			'taxonomies'    => [],
 		)
