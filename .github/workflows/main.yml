@@ -38,5 +38,6 @@ jobs:
           --recursive \
           --verbose \
           --human-readable \
+          --filter='P uploads' \
           --exclude wp/wp-content/uploads \
           ./wp/wp-content/ ${{env.dest}}
