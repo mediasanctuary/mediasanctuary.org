@@ -27,7 +27,7 @@ function db_migrate($args) {
 			echo "----------------\n";
 			$migrate_step();
 			echo "\n";
-			//update_option('db_migrate_version', $version, false);
+			update_option('db_migrate_version', $version, false);
 		} catch (\Exception $err) {
 			echo "ERROR: " . $err->getMessage() . "\n";
 			echo "Rolling back database transaction\n";
