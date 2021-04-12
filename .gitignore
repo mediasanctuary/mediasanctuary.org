@@ -1,10 +1,10 @@
 .DS_Store
 node_modules/
+/db/
 /wp/wp-content/plugins/akismet/
 /wp/wp-content/plugins/hello.php
 /wp/wp-content/themes/twentynineteen/
 /wp/wp-content/themes/twentytwenty/
 /wp/wp-content/themes/twentytwentyone/
 /wp/wp-content/themes/mediasanctuary/dist/
-/wp/wp-content/themes/mediasanctuary/db/
 /wp/wp-content/uploads/
