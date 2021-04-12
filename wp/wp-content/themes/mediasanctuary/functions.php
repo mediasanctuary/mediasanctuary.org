@@ -1,6 +1,7 @@
 <?php
 
 require_once 'post-types.php';
+require_once 'db/migrate.php';
 
 add_filter('show_admin_bar', '__return_false');
 
