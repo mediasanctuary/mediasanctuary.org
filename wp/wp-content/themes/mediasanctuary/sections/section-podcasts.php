@@ -7,7 +7,7 @@
   		
   		<?php 
         $args = array(
-          'posts_per_page' => 6,
+          'posts_per_page' => 8,
           'offset' => 0,
           'orderby' => 'post_date',
           'order' => 'DESC',
@@ -21,6 +21,7 @@
               get_template_part( 'partials/post', 'none' );
             endwhile;
         endif;
+        wp_reset_query();
   		?>
 		
 		</ul>
