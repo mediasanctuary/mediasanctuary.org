@@ -19,16 +19,25 @@
 }
 
 .soundcloud-podcast {
-	margin: 20px 0;
-	line-height: 20px;
+  margin: 20px 0;
+  line-height: 20px;
 
-	&__player {
-		width: 100%;
-	}
+  &__player {
+    width: 100%;
+  }
 
-	&__link {
-		font-size: 0.7em;
-	}
+  audio::-webkit-media-controls-panel {
+    background: $c-concrete;
+  }
+
+  &__link {
+    color: $c-slate;
+    font-size: 0.7em;
+
+    &:hover {
+      color: $c-raisin;
+    }
+  }
 }
 
 #content {
@@ -49,6 +58,7 @@
       float: left;
       margin-right: 20px;
       margin-top: 4px;
+      max-width: calc(50% - 10px);
     }
     .clear {
       clear: both;
