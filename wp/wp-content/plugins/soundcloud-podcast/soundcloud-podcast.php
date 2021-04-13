@@ -30,7 +30,7 @@ function soundcloud_podcast() {
 	$soundcloud_link = '';
 	$soundcloud_url = get_post_meta($post->ID, 'soundcloud_podcast_url', true);
 	if (! empty($soundcloud_url)) {
-		$soundcloud_link = "<a href=\"$soundcloud_url\" class=\"soundcloud-podcast__link\" target=\"_blank\">Listen on SoundCloud</a>";
+		$soundcloud_link = "<a href=\"$soundcloud_url\" class=\"soundcloud-podcast__link\">Listen on SoundCloud</a>";
 	}
 
 	echo <<<END

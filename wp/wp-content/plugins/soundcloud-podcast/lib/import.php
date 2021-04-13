@@ -9,7 +9,7 @@ function soundcloud_podcast_import($import_all = false, $url = null) {
 		$user_id = SOUNDCLOUD_PODCAST_USER_ID;
 		$args = http_build_query([
 			'client_id'           => $client_id,
-			'limit'               => 10,
+			'limit'               => 20,
 			'linked_partitioning' => 'true'
 		]);
 		$url = "https://api.soundcloud.com/users/$user_id/tracks?$args";
@@ -61,9 +61,10 @@ function soundcloud_podcast_import($import_all = false, $url = null) {
 			fwrite($stderr, "Creating new post for {$track['title']}\n");
 			$id = wp_insert_post([
 				'post_type' => 'podcast',
-				'post_status' => 'draft',
+				'post_status' => 'publish',
 				'post_title' => $track['title'],
-				'post_content' => $track['description']
+				'post_content' => soundcloud_podcast_track_content($track),
+				'post_date' => soundcloud_podcast_track_date($track)
 			]);
 		} else {
 			fwrite($stderr, "Updating existing post for {$track['title']}\n");
@@ -71,14 +72,14 @@ function soundcloud_podcast_import($import_all = false, $url = null) {
 			wp_update_post([
 				'ID' => $id,
 				'post_title' => $track['title'],
-				'post_content' => $track['description']
+				'post_content' => soundcloud_podcast_track_content($track)
 			]);
 		}
 		update_post_meta($id, 'soundcloud_podcast_id', $track['id']);
 		update_post_meta($id, 'soundcloud_podcast_hash', $sc_hash);
 		update_post_meta($id, 'soundcloud_podcast_url', $track['permalink_url']);
 
-		$image_id = get_post_meta($id, '_thumbnail_id');
+		$image_id = get_post_meta($id, '_thumbnail_id', true);
 		if (! empty($image_id)) {
 			$image = get_post($image_id);
 			if (! empty($image)) {
@@ -166,14 +167,57 @@ function soundcloud_podcast_get_post($track) {
 }
 
 function soundcloud_podcast_hash($track) {
+	$content = soundcloud_podcast_track_content($track);
 	$plaintext = $track['id'];
 	$plaintext .= "|{$track['title']}";
-	$plaintext .= "|{$track['description']}";
+	$plaintext .= "|$content";
 	$plaintext .= "|{$track['permalink_url']}";
 	$plaintext .= "|{$track['artwork_url']}";
 	return md5($plaintext);
 }
 
 function soundcloud_podcast_track_content($track) {
-	return $track['description'];
+	$content = $track['description'];
+
+	// The following looks for URL-shaped text and adds hyperlinks.
+	// The regex is slightly modified from https://www.urlregex.com/
+	$regex = '%(?:(?:https?|ftp)://)(?:\S+(?::\S*)?@|\d{1,3}(?:\.\d{1,3}){3}|(?:(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)(?:\.(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)*(?:\.[a-z\x{00a1}-\x{ffff}]{2,6}))(?::\d+)?(?:[^\s]*)?%iu';
+	$content = preg_replace_callback($regex, function($matches) {
+
+		$url = $matches[0];
+		$last_char = substr($url, -1, 1);
+		$punctuation = ['.', ',', '!', ';'];
+		$postfix = '';
+
+		if ($last_char == ')') {
+			if (strpos($url, '(') === false) {
+				// do not link ) of "(https://www.mediasanctuary.org/)"
+				// but do link the ) of "https://en.wikipedia.org/wiki/Douglas_Davis_(artist)"
+				$url = substr($url, 0, -1);
+				$postfix = ')';
+			}
+		} else if (in_array($last_char, $punctuation)) {
+			// do not link . of "https://www.mediasanctuary.org/."
+			$url = substr($url, 0, -1);
+			$postfix = $last_char;
+		}
+
+		$label = $url;
+
+		// Remove the "https://www" part at the front of the label
+		$label = preg_replace('%^https?://%i', '', $label);
+
+		// Remove the trailing slash part of the label
+		$label = preg_replace('%^([^/]+)/$%', '$1', $label);
+
+		return "<a href=\"$url\">$label</a>$postfix";
+
+	}, $content);
+
+	return $content;
+}
+
+function soundcloud_podcast_track_date($track) {
+	$date = new \DateTime($track['created_at'], wp_timezone());
+	return $date->format('Y-m-d H:i:s');
 }
