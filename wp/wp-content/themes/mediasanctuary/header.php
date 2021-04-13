@@ -67,6 +67,7 @@
 				<div class="banner">
   				<div class="about">
             <p>We use art, science and participatory action to promote social and environmental justice and freedom of creative expression.</p>
+      		<a href="" class="btn ironweed">Learn more About Us</a>            
   				</div>
   				<div class="callout">
     				<h2>CCG April Work Parties!</h2>

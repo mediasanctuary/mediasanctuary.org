@@ -34,40 +34,47 @@
     
     .about {
       text-align: left;
-      padding: 20px 0;
-      // background: rgba(0,0,0,.5);
+      padding: 20px 70px 20px 0;
+      max-width: none;
       box-sizing: border-box;
-      width: 34%;
-      p {
-        padding: 0;
+      width: 70%;
+      font-style: italic;
+      font-size: 36px;
+      
+      .btn {
+        font-style: normal;
       }
     }
         
     .callout {
-      width: 66%;
-      padding-left: 50px;
+      width: 30%;
       box-sizing: border-box;
+      padding: 20px;
+      color: #000;
+      background: rgba(255,255,255,.7);
       h2 {
         padding-top:0;
-        font-size:1.6em;
+        font-size:1.4em;
       }      
       div {
-        margin-left:37%;
-        font-size: 18px;
+        line-height: normal;
+        font-size: 16px;
       }
       .btn {
         font-size: 16px;
         border-width: 2px;
-        padding: 8px 18px;
+        padding: 10px;
+        width: 100%;
+        text-align: center;
       }
       span {
         background: url('../img/bg-banner.jpg') no-repeat center center;
         border: 5px solid #FFF;
         background-size:cover;
         height: 150px;
-        width: 33%;
+        width: 100%;
         display: block;
-        float: left;
+        margin-bottom: 10px;
       }
     }
   }  
