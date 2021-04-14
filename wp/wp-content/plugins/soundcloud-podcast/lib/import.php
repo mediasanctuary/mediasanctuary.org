@@ -1,15 +1,50 @@
 <?php
 
-function soundcloud_podcast_import($import_all = false, $url = null) {
+function soundcloud_podcast_import($num = null, $url = null) {
+
 	$stdout = fopen('php://stdout', 'w');
 	$stderr = fopen('php://stderr', 'w');
+
+	$import_all = false;
+	if ($num == 'all') {
+		$num = 200;
+		$import_all = true;
+		if (empty($url)) {
+			fwrite($stderr, "*** Importing all SoundCloud tracks ***\n");
+			fputcsv($stdout, [
+				'post id',
+				'action',
+				'track id',
+				'title',
+				'content',
+				'link',
+				'image',
+				'date'
+			]);
+		}
+	} else if (empty($num)) {
+		$num = 30;
+		fputcsv($stdout, [
+			'post id',
+			'action',
+			'track id',
+			'title',
+			'content',
+			'link',
+			'image',
+			'date'
+		]);
+	} else if (! is_numeric($num)) {
+		fwrite($stderr, "Error: invalid argument $num\n");
+		return;
+	}
 
 	if (empty($url)) {
 		$client_id = SOUNDCLOUD_PODCAST_CLIENT_ID;
 		$user_id = SOUNDCLOUD_PODCAST_USER_ID;
 		$args = http_build_query([
 			'client_id'           => $client_id,
-			'limit'               => 20,
+			'limit'               => $num,
 			'linked_partitioning' => 'true'
 		]);
 		$url = "https://api.soundcloud.com/users/$user_id/tracks?$args";
@@ -36,6 +71,7 @@ function soundcloud_podcast_import($import_all = false, $url = null) {
 	}
 	$json = wp_remote_retrieve_body($rsp);
 	$tracks = json_decode($json, 'as hash');
+
 	foreach ($tracks['collection'] as $track) {
 
 		if (preg_match('/^HMM \d+ - \d+ - \d+$/', $track['title'])) {
@@ -52,10 +88,10 @@ function soundcloud_podcast_import($import_all = false, $url = null) {
 			$wp_hash = get_post_meta($post->ID, 'soundcloud_podcast_hash', true);
 		}
 
-		/*if ($wp_hash == $sc_hash) {
+		if ($wp_hash == $sc_hash) {
 			fwrite($stderr, "No change to {$track['title']}\n");
 			continue;
-		}*/
+		}
 
 		if (empty($post)) {
 			fwrite($stderr, "Creating new post for {$track['title']}\n");
@@ -66,6 +102,16 @@ function soundcloud_podcast_import($import_all = false, $url = null) {
 				'post_content' => soundcloud_podcast_track_content($track),
 				'post_date' => soundcloud_podcast_track_date($track)
 			]);
+			fputcsv($stdout, [
+				$id,
+				'create',
+				$track['id'],
+				$track['title'],
+				soundcloud_podcast_track_content($track),
+				$track['permalink_url'],
+				$track['artwork_url'],
+				soundcloud_podcast_track_date($track)
+			]);
 		} else {
 			fwrite($stderr, "Updating existing post for {$track['title']}\n");
 			$id = $post->ID;
@@ -73,6 +119,16 @@ function soundcloud_podcast_import($import_all = false, $url = null) {
 				'ID' => $id,
 				'post_title' => $track['title'],
 				'post_content' => soundcloud_podcast_track_content($track)
+			]);
+			fputcsv($stdout, [
+				$id,
+				'update',
+				$track['id'],
+				$track['title'],
+				soundcloud_podcast_track_content($track),
+				$track['permalink_url'],
+				$track['artwork_url'],
+				soundcloud_podcast_track_date($track)
 			]);
 		}
 		update_post_meta($id, 'soundcloud_podcast_id', $track['id']);

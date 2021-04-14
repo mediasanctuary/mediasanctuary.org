@@ -16,8 +16,11 @@ add_action('after_setup_theme', function() {
 			if ($args[0] == 'inventory') {
 				soundcloud_podcast_inventory();
 			} else if ($args[0] == 'import') {
-				$import_all = in_array('--all', $args);
-				soundcloud_podcast_import($import_all);
+				$num = null;
+				if (! empty($args[1])) {
+					$num = $args[1];
+				}
+				soundcloud_podcast_import($num);
 			}
 		});
 	}
