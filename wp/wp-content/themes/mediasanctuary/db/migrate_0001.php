@@ -2,7 +2,7 @@
 
 function db_migrate_v1() {
 	echo "Migration number 1:\n";
-	echo "- For each 'podcast' add a 'soundcloud_podcast_track_id' or 'soundcloud_podcast_url'\n";
+	echo "- For each 'podcast' add a 'soundcloud_podcast_id' or 'soundcloud_podcast_url'\n";
 	echo "- For each 'podcast' remove 'WOOC 105.3 FM: ' prefix from title\n";
 	echo "\n";
 
@@ -24,7 +24,7 @@ function db_migrate_v1() {
 			]);
 		}
 
-		$track_id = get_post_meta($post->ID, 'soundcloud_podcast_track_id', true);
+		$track_id = get_post_meta($post->ID, 'soundcloud_podcast_id', true);
 		if (! empty($track_id)) {
 			echo "    skipped (has track id)\n";
 			continue;
@@ -46,7 +46,7 @@ function db_migrate_v1() {
 		$regex = '#api.soundcloud.com/tracks/(\d+)#';
 		if (preg_match($regex, $post->post_content, $matches)) {
 			$track_id = $matches[1];
-			update_post_meta($post->ID, 'soundcloud_podcast_track_id', $track_id);
+			update_post_meta($post->ID, 'soundcloud_podcast_id', $track_id);
 			echo "    added track id: $track_id\n";
 			continue;
 		}
