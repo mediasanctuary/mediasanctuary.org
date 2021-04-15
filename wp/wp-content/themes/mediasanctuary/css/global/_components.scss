@@ -109,7 +109,7 @@ section.p60 {
 
 /* Buttons 
 ----------------------------------------------------- */  
-.btn {
+.btn, .wp-block-button .wp-block-button__link {
 	color: #FFF;
 	background: $c-asphalt;
 	padding: 10px 25px;
@@ -131,6 +131,14 @@ section.p60 {
 	
 	&.ladybug {
   	background-color: $c-ladybug;
+	}
+	
+	&.ironweed {
+  	background-color: $c-ironweed;
+  	&:hover {
+    	background-color: $c-lilac;
+    	color:#000;
+  	}
 	}
 	
 	&.news {

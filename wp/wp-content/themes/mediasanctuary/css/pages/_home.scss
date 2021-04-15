@@ -9,8 +9,9 @@
     left: 0;
     right: 0;
     bottom:0;
-    background:rgba(0,0,0,.6);
+    background:rgba(0,0,0,.7);
   }
+  
   
   .about {
     color:#FFF;
@@ -19,13 +20,63 @@
     margin: 0 auto;
     padding: 60px 0 0;
     font-size: 23px;
-    
-    h1 {
-      font-size: 2.5em;
-      padding: 0 0 10px;
-    }
+  
     p {
-      color:$c-concrete;
+      color:$c-robin-egg;
     }
   }
+  
+  
+  .banner {
+    display: flex;
+    color:#FFF;
+    padding:60px 0 0;
+    
+    .about {
+      text-align: left;
+      padding: 20px 70px 20px 0;
+      max-width: none;
+      box-sizing: border-box;
+      width: 70%;
+      font-style: italic;
+      font-size: 36px;
+      
+      .btn {
+        font-style: normal;
+      }
+    }
+        
+    .callout {
+      width: 30%;
+      box-sizing: border-box;
+      padding: 20px;
+      color: #000;
+      background: rgba(255,255,255,.7);
+      h2 {
+        padding-top:0;
+        font-size:1.4em;
+      }      
+      div {
+        line-height: normal;
+        font-size: 16px;
+      }
+      .btn {
+        font-size: 16px;
+        border-width: 2px;
+        padding: 10px;
+        width: 100%;
+        text-align: center;
+      }
+      span {
+        background: url('../img/bg-banner.jpg') no-repeat center center;
+        border: 5px solid #FFF;
+        background-size:cover;
+        height: 150px;
+        width: 100%;
+        display: block;
+        margin-bottom: 10px;
+      }
+    }
+  }  
+  
 }

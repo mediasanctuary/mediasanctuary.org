@@ -64,10 +64,22 @@
 				
 				
 				<?php if(is_front_page()) {?>
-				<div class="about">
-          <p>We use art, science and participatory action to promote social and environmental justice and freedom of creative expression.</p>
-          <?php } ?>				
+				<div class="banner">
+  				<div class="about">
+            <p>We use art, science and participatory action to promote social and environmental justice and freedom of creative expression.</p>
+      		<a href="" class="btn ironweed">Learn more About Us</a>            
+  				</div>
+  				<div class="callout">
+    				<h2>CCG April Work Parties!</h2>
+    				<span></span> 
+    				<div> 				
+      				<p>Join us (socially distanced, of course) to celebrate the spring together and clean up the CCG garden!</p>
+      				<a href="" class="btn ironweed">Learn more</a>
+    				</div>
+  				</div>
 				</div>
+        <?php } ?>				
+				
 			</div>
 		</div>
 		<div id="content" class="main">
