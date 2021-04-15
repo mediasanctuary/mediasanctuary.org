@@ -44,7 +44,7 @@
   overflow-x: hidden;
 }
 
-.post--podcast {
+.post--single {
   display: flex;
   main {
     width: calc(70% - 20px);
@@ -154,7 +154,7 @@
   font-size:16px;
   line-height: normal;
   display: inline-block;
-  margin-bottom:20px;
+  margin-bottom:5px;
   font-weight: normal;
   position: relative;
   color:$c-slate;
@@ -171,6 +171,16 @@
     left:0;
     opacity: .3;
   }
+}
+
+.categories {
+	margin-bottom: 10px;
+	font-size: 16px;
+	margin-bottom:20px;
+
+	a {
+		color: $c-blue-beetle;
+	}
 }
 
 .meta {
