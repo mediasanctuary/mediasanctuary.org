@@ -5,8 +5,17 @@ require_once 'db/migrate.php';
 
 add_filter('show_admin_bar', '__return_false');
 
+add_filter('category_link', function($url) {
+	$home_url = home_url();
+	return str_replace("$home_url/category", $home_url, $url);
+});
+
 add_action('after_setup_theme', function() {
 	add_theme_support('title-tag');
+	add_theme_support('post-formats', [
+		'audio',
+		'video'
+	]);
 });
 
 add_action('wp_enqueue_scripts', function() {
@@ -31,15 +40,6 @@ add_action('admin_enqueue_scripts', function() {
 	$css_src = get_template_directory_uri() . '/css/admin/admin.css';
 	$css_version = filemtime("$dir/css/admin/admin.css");
 	wp_enqueue_style('custom-admin', $css_src, [], $css_version);
-});
-
-// Change the 'post' type to be labeled 'News'
-add_action('admin_menu', function() {
-	global $menu;
-	global $submenu;
-	$menu[5][0] = 'News';
-	$submenu['edit.php'][5][0] = 'News Posts';
-	$submenu['edit.php'][10][0] = 'Add News Post';
 });
 
 add_action('init', function() {
