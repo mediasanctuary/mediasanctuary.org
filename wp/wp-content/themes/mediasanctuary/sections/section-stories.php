@@ -4,14 +4,13 @@
 		<p>Much of the coverage from <a href="https://www.mediasanctuary.org/podcast-categories/hudson-mohawk-magazine/">Hudson Mohawk Magazine</a> that airs on WOOC 105.3 can also be found on our site. </p>
 
 		<ul class="four-col">
-  		
-  		<?php 
+
+  		<?php
         $args = array(
           'posts_per_page' => 8,
           'offset' => 0,
           'orderby' => 'post_date',
           'order' => 'DESC',
-          'post_type' => 'podcast',
           'post_status' => 'publish',
         );
         $queryLatest = new WP_Query($args);
@@ -23,7 +22,7 @@
         endif;
         wp_reset_query();
   		?>
-		
+
 		</ul>
 	</div>
 </section>
