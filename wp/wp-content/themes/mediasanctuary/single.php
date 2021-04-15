@@ -13,10 +13,16 @@
       $thumb_url = false;
     }
 
-    $cat = null;
+    $cat = '';
     $categories = get_the_category();
-    if ( ! empty( $categories ) ) {
-      $cat = '<span class="categoryTag"><a href="' . esc_url( get_category_link( $categories[0]->term_id ) ) . '" class="tag alt" >' . esc_html( $categories[0]->name ) . '</a></span>';
+    foreach ($categories as $category) {
+      if ($category->slug == 'stories') {
+        continue;
+      }
+      if (! empty($cat)) {
+        $cat .= ", ";
+      }
+      $cat .= '<span class="categoryTag"><a href="' . esc_url( get_category_link( $category->term_id ) ) . '" class="tag alt" >' . esc_html( $category->name ) . '</a></span>';
     }
 
     if ($thumb_url) {
@@ -26,14 +32,16 @@
 
 <section class="p40">
 <div class="container ">
-  <article class="post post--podcast">
+  <article class="post post--single">
     <main>
       <span class="date" ><?php the_time('F d, Y'); ?></span>
-      <?php echo $cat; ?>
+      <div class="categories">
+        <?php echo $cat; ?>
+      </div>
       <h1><?php the_title();?></h1>
       <div><?php
 
-      if (function_exists('soundcloud_podcast')) {
+      if (function_exists('soundcloud_podcast') && get_post_format($post->ID) == 'audio') {
         soundcloud_podcast();
       }
       echo $thumb;
