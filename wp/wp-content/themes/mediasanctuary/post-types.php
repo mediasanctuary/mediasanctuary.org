@@ -121,6 +121,7 @@ function project_post_type() {
 		array(
 			'labels'        => $labels,
 			'public'        => true,
+			'hierarchical'  => true,
 			'show_ui'       => true,
 			'menu_position' => 4,
 			'menu_icon'     => 'dashicons-format-aside',
