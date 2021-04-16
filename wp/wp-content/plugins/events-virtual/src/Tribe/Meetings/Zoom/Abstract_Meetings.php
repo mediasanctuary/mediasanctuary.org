@@ -12,6 +12,7 @@ namespace Tribe\Events\Virtual\Meetings\Zoom;
 use Tribe\Events\Virtual\Event_Meta as Virtual_Events_Meta;
 use Tribe\Events\Virtual\Meetings\Zoom\Event_Meta as Zoom_Meta;
 use Tribe__Date_Utils as Dates;
+use Tribe__Timezones as Timezones;
 
 /**
  * Class Abstract_Meetings
@@ -511,6 +512,7 @@ class Abstract_Meetings {
 	 * Handles update of Zoom meeting when Event details change.
 	 *
 	 * @since 1.0.2
+	 * @since 1.2.0 Utilize the datepicker format when parse the Event Date to prevent the wrong date in Zoom.
 	 *
 	 * @param \WP_Post|int $event The event (or event ID) we're updating the meeting for.
 	 *
@@ -538,11 +540,7 @@ class Abstract_Meetings {
 			$time_zone = $event->timezone;
 		}
 
-		$timezone_object = \Tribe__Timezones::build_timezone_object( 'UTC' );
-
-		$zoom_date = Dates::build_date_object( $start_date . ' ' . $start_time, $time_zone )
-		                  ->setTimezone( $timezone_object )
-		                  ->format( 'Y-m-d\TH:i:s\Z' );
+		$zoom_date = $this->format_date_for_zoom( $start_date, $start_time, $time_zone );
 
 		// Note the time format - because Zoom stores all dates as UTC with the trailing 'Z'.
 		$event_body = [
@@ -695,5 +693,25 @@ class Abstract_Meetings {
 		);
 
 		return $success;
+	}
+
+	/**
+	 * Format the event start date for zoom.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string $start_date The start date of the event.
+	 * @param string $start_time The start time of the event.
+	 * @param string $time_zone  The timezone of the event.
+	 *
+	 * @return string The time formatted for Zoom using 'Y-m-d\TH:i:s\Z'.
+	 */
+	public function format_date_for_zoom( $start_date, $start_time, $time_zone ) {
+		$timezone_object = Timezones::build_timezone_object( 'UTC' );
+		// Utilize the datepicker format when parse the Event Date to prevent the wrong date in Zoom.
+		$datepicker_format = Dates::datepicker_formats( tribe_get_option( 'datepickerFormat' ) );
+		$start_date_time   = Dates::datetime_from_format( $datepicker_format, $start_date ) . ' ' . $start_time;
+
+		return Dates::build_date_object( $start_date_time, $time_zone )->setTimezone( $timezone_object )->format( 'Y-m-d\TH:i:s\Z' );
 	}
 }

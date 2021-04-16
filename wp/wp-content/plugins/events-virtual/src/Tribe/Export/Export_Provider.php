@@ -41,7 +41,7 @@ class Export_Provider extends \tad_DI52_ServiceProvider {
 	 */
 	public function filter_google_calendar_parameters( $output, $event_id ) {
 
-		return $this->container->make( Event_Export::class )->modify_export_output( $output, $event_id, 'location' );
+		return $this->container->make( Event_Export::class )->modify_export_output( $output, $event_id, 'location', 'gcal' );
 	}
 
 	/**
@@ -55,7 +55,6 @@ class Export_Provider extends \tad_DI52_ServiceProvider {
 	 * @return array  The various iCal file format components of this specific event item.
 	 */
 	public function filter_ical_feed_items( $item, $event_post ) {
-
-		return $this->container->make( Event_Export::class )->modify_export_output( $item, $event_post->ID, 'LOCATION' );
+		return $this->container->make( Event_Export::class )->modify_export_output( $item, $event_post->ID, 'LOCATION', 'ical' );
 	}
 }

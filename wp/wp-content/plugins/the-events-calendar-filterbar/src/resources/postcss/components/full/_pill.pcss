@@ -13,6 +13,7 @@
 	}
 
 	.tribe-filter-bar-c-pill--button .tribe-filter-bar-c-pill__pill {
+		background-color: var(--color-background);
 		transition: var(--transition);
 
 		&:hover,
@@ -28,8 +29,9 @@
 	}
 
 	.tribe-filter-bar-c-pill--has-selections .tribe-filter-bar-c-pill__pill {
-		border: 1px solid var(--color-icon-primary);
 		background-color: var(--color-background-secondary);
+		border: 1px solid var(--color-icon-primary);
+		border-radius: 14px;
 		font-weight: var(--font-weight-bold);
 	}
 
@@ -59,6 +61,10 @@
 				opacity: var(--opacity-icon-hover);
 			}
 		}
+	}
+
+	.tribe-filter-bar-c-pill__remove-button-icon path {
+		stroke: var(--color-icon-active);
 	}
 
 	/* -------------------------------------------------------------------------

@@ -200,6 +200,7 @@ class Event_Meta {
 	 * Determine if the current user has an RSVP for the event.
 	 *
 	 * @since 1.0.4
+	 * @since 1.1.2 Simplify attendee check.
 	 *
 	 * @param WP_Post|int $event The post object or ID of the viewed event.
 	 * @param int         $user_id ID of the current user.
@@ -217,18 +218,6 @@ class Event_Meta {
 		/** @var Tribe__Tickets__Tickets_View $tickets_view */
 		$tickets_view = Tickets_View::instance();
 
-		$attendees = $tickets_view->get_event_rsvp_attendees( $event->ID, $user_id );
-
-		if ( empty( $attendees ) ) {
-			return false;
-		}
-
-		foreach ( $attendees as $attendee ) {
-			if ( ! empty( $attendee['order_status'] ) && tribe_is_truthy( $attendee['order_status'] ) ) {
-				return true;
-			}
-		}
-
-		return false;
+		return $tickets_view->has_rsvp_attendees( $event->ID, $user_id );
 	}
 }

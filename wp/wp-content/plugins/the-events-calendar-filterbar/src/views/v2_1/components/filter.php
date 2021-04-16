@@ -7,7 +7,7 @@
  *
  * See more documentation about our views templating system.
  *
- * @link http://m.tri.be/1aiy
+ * @link http://evnt.is/1aiy
  *
  * @var string       $style                Style of filter, can be `pill` or `accordion`.
  * @var bool         $is_open              Whether the filter is open or not.
@@ -18,8 +18,9 @@
  * @var string       $selections_count     Selections count for the filter toggle.
  * @var string       $selections           Selections for the filter toggle.
  * @var array<array> $fields               Array of field data.
+ * @var string       $type                 Type of filter.
  *
- * @version 5.0.0
+ * @version 5.0.2
  *
  */
 
@@ -45,12 +46,10 @@ if ( $is_pill_style ) {
 	$classes[] = 'tribe-filter-bar-c-filter--pill';
 } elseif ( $is_accordion_style ) {
 	$classes[] = 'tribe-filter-bar-c-filter--accordion';
+}
 
-
-	if ( ! empty($fields[0]['type']) ) {
-		$classes[] = 'tribe-filter-bar-c-filter--' . $fields[0]['type'];
-	}
-
+if ( ! empty( $type ) ) {
+	$classes[] = "tribe-filter-bar-c-filter--$type";
 }
 ?>
 <div <?php tribe_classes( $classes ); ?>>

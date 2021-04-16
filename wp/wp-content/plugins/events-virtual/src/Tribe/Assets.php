@@ -19,6 +19,8 @@ use Tribe\Events\Views\V2\Assets as Event_Assets;
 use Tribe\Events\Views\V2\Template_Bootstrap;
 use Tribe__Events__Templates;
 
+use Tribe\Events\Views\V2\Widgets\Widget_List;
+
 /**
  * Register Assets.
  *
@@ -113,6 +115,46 @@ class Assets extends \tad_DI52_ServiceProvider {
 
 		tribe_asset(
 			$plugin,
+			'tribe-events-virtual-widgets-v2-common-skeleton',
+			'widgets-events-common-skeleton.css',
+			[],
+			'wp_print_footer_scripts',
+			[
+				'print'        => true,
+				'priority'     => 5,
+				'conditionals' => [
+					[ Widget_List::class, 'is_widget_in_use' ],
+				],
+				'groups' => [
+					Widget_List::get_css_group(),
+				],
+			]
+		);
+
+		tribe_asset(
+			$plugin,
+			'tribe-events-virtual-widgets-v2-common-full',
+			'widgets-events-common-full.css',
+			[
+				'tribe-events-virtual-widgets-v2-common-skeleton',
+			],
+			'wp_print_footer_scripts',
+			[
+				'print'        => true,
+				'priority'     => 5,
+				'conditionals' => [
+					'operator' => 'AND',
+					[ Widget_List::class, 'is_widget_in_use' ],
+					[ tribe( Event_Assets::class ), 'should_enqueue_full_styles' ],
+				],
+				'groups' => [
+					Widget_List::get_css_group(),
+				],
+			]
+		);
+
+		tribe_asset(
+			$plugin,
 			'tribe-events-virtual-single-skeleton',
 			'events-virtual-single-skeleton.css',
 			[],
@@ -158,6 +200,38 @@ class Assets extends \tad_DI52_ServiceProvider {
 				]
 			);
 		}
+
+		tribe_asset(
+			$plugin,
+			'tribe-events-virtual-single-v2-skeleton',
+			'events-virtual-single-v2-skeleton.css',
+			[],
+			'wp_enqueue_scripts',
+			[
+				'priority' => 15,
+				'conditionals' => [
+					[ $this, 'should_enqueue_single_event_styles' ],
+				],
+			]
+		);
+
+		tribe_asset(
+			$plugin,
+			'tribe-events-virtual-single-v2-full',
+			'events-virtual-single-v2-full.css',
+			[
+				'tribe-events-virtual-single-v2-skeleton',
+			],
+			'wp_enqueue_scripts',
+			[
+				'priority' => 15,
+				'conditionals' => [
+					'operator' => 'AND',
+					[ $this, 'should_enqueue_single_event_styles' ],
+					[ tribe( Event_Assets::class ), 'should_enqueue_full_styles' ],
+				],
+			]
+		);
 	}
 
 	/**
@@ -225,6 +299,32 @@ class Assets extends \tad_DI52_ServiceProvider {
 	 */
 	public function load_on_shortcode() {
 		tribe_asset_enqueue_group( static::$group_key );
+	}
+
+	/**
+	 * Verifies if we are on V2 and on Event Single in order to enqueue the override styles for Single Event
+	 *
+	 * @since 1.2.0
+	 *
+	 * @return boolean
+	 */
+	public function should_enqueue_single_event_styles() {
+		// Bail if not V2.
+		if ( ! tribe_events_single_view_v2_is_enabled() ) {
+			return false;
+		}
+
+		// Bail if not Single Event.
+		if ( ! tribe( Template_Bootstrap::class )->is_single_event() ) {
+			return false;
+		}
+
+		// Bail if Block Editor.
+		if ( has_blocks( get_queried_object_id() ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
 }

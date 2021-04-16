@@ -374,7 +374,7 @@
 
 	} );
 
-	$( document ).ready( function() {
+	$( function() {
 		// We should not run on singles. Unless we enable it for shortcodes in the future.
 		if ( $( 'body' ).hasClass( 'single' ) ) {
 			return;

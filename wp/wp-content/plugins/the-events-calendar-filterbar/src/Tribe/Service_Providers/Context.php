@@ -25,6 +25,8 @@ class Context extends \tad_DI52_ServiceProvider {
 	 */
 	public function register() {
 		add_filter( 'tribe_context_locations', [ $this, 'filter_context_locations' ] );
+
+		$this->container->singleton( static::class, static::class );
 	}
 
 	/**
@@ -49,7 +51,7 @@ class Context extends \tad_DI52_ServiceProvider {
 			}
 
 			// As we filter, we also sanitize and update the value.
-			$is_ecp_custom_field = static function ( &$value, $key ) {
+			$is_ecp_custom_field = static function ( $value, $key ) {
 				return 0 === strpos( $key, 'tribe__ecp_custom_' )
 					? (bool) tribe_sanitize_deep( $value )
 					: false;

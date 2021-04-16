@@ -68,7 +68,7 @@ tribe.filterBar.filterClear = {};
 				}
 
 				return tribe.filterBar.filters.removeKeyValueFromQuery( loc, name, true );
-			}, window.location );
+			}, tribe.filterBar.filters.getCurrentUrlAsObject( $container ) );
 
 		tribe.filterBar.filters.submitRequest( $container, location.href );
 	};
@@ -147,5 +147,5 @@ tribe.filterBar.filterClear = {};
 	};
 
 	// Configure on document ready.
-	$document.ready( obj.ready );
+	$( obj.ready );
 } )( jQuery, tribe.filterBar.filterClear );

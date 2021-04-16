@@ -62,6 +62,8 @@ describe( 'Filter Checkboxes', () => {
 				addKeyValueToQuery: jest.fn(),
 				removeKeyValueFromQuery: jest.fn(),
 				submitRequest: jest.fn(),
+				getCurrentUrl: jest.fn(),
+				getCurrentUrlAsObject: jest.fn(),
 			};
 			$rangeSlider = $( '<div data-min="0" data-max="100"></div>' );
 			$rangeInput = $( '<input name="range" />' );

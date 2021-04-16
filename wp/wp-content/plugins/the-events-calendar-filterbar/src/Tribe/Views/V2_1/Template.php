@@ -19,6 +19,7 @@ use Tribe__Template as Base_Template;
  * @package Tribe\Events\Filterbar\Views\V2_1
  */
 class Template extends Base_Template {
+	use \Tribe\Events\Filterbar\Views\V2\With_Shortcode_Support;
 
 	/**
 	 * Template constructor.

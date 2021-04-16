@@ -61,9 +61,11 @@ tribe.filterBar.filterCheckboxes = {};
 			return;
 		}
 
+		var urlObject = tribe.filterBar.filters.getCurrentUrlAsObject( event.data.container );
+
 		var location = event.target.checked
-			? tribe.filterBar.filters.addKeyValueToQuery( window.location, key, value )
-			: tribe.filterBar.filters.removeKeyValueFromQuery( window.location, key, value );
+			? tribe.filterBar.filters.addKeyValueToQuery( urlObject, key, value )
+			: tribe.filterBar.filters.removeKeyValueFromQuery( urlObject, key, value );
 
 		tribe.filterBar.filters.submitRequest( event.data.container, location.href );
 	};
@@ -141,5 +143,5 @@ tribe.filterBar.filterCheckboxes = {};
 	};
 
 	// Configure on document ready.
-	$document.ready( obj.ready );
+	$( obj.ready );
 } )( jQuery, tribe.filterBar.filterCheckboxes );

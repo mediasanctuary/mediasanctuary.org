@@ -75,7 +75,8 @@ tribe.filterBar.filterRange = {};
 			return;
 		}
 
-		var location = tribe.filterBar.filters.removeKeyValueFromQuery( window.location, key, true );
+		var urlObject = tribe.filterBar.filters.getCurrentUrlAsObject( event.data.container );
+		var location = tribe.filterBar.filters.removeKeyValueFromQuery( urlObject, key, true );
 
 		// If range slider low is greater than min or high is less than max, add range to query.
 		if ( ui.values[ 0 ] > min || ui.values[ 1 ] < max ) {
@@ -246,5 +247,5 @@ tribe.filterBar.filterRange = {};
 	};
 
 	// Configure on document ready.
-	$document.ready( obj.ready );
+	$( obj.ready );
 } )( jQuery, _, tribe.filterBar.filterRange );

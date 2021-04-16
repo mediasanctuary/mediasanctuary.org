@@ -11,7 +11,7 @@
  *
  * @version 1.0.0
  *
- * @link    http://m.tri.be/1aiy
+ * @link    http://evnt.is/1aiy
  *
  * @var Api $api An instance of the Zoom API handler.
  * @var Url $url An instance of the URL handler.

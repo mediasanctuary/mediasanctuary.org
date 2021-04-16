@@ -48,6 +48,8 @@ describe( 'Filter Radios', () => {
 				addKeyValueToQuery: jest.fn().mockImplementation( () => ( {} ) ),
 				removeKeyValueFromQuery: jest.fn().mockImplementation( () => ( {} ) ),
 				submitRequest: jest.fn(),
+				getCurrentUrl: jest.fn().mockImplementation( () => ( {} ) ),
+				getCurrentUrlAsObject: jest.fn().mockImplementation( () => ( {} ) ),
 			};
 		} );
 

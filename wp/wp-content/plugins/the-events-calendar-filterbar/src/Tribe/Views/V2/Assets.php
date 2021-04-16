@@ -130,7 +130,7 @@ class Assets extends \tad_DI52_ServiceProvider {
 		 *
 		 * @param bool $should_enqueue
 		 */
-		return apply_filters( 'tribe_events_pro_views_v2_assets_should_enqueue_frontend', $should_enqueue );
+		return apply_filters( 'tribe_events_filter_bar_views_v2_assets_should_enqueue_frontend', $should_enqueue );
 	}
 
 	/**

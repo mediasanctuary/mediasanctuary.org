@@ -61,7 +61,8 @@ tribe.filterBar.filterRadios = {};
 			return;
 		}
 
-		var modifiedLocation = tribe.filterBar.filters.removeKeyValueFromQuery( window.location, key, true );
+		var urlObject = tribe.filterBar.filters.getCurrentUrlAsObject( event.data.container );
+		var modifiedLocation = tribe.filterBar.filters.removeKeyValueFromQuery( urlObject, key, true );
 		var newLocation = tribe.filterBar.filters.addKeyValueToQuery( modifiedLocation, key, value );
 
 		tribe.filterBar.filters.submitRequest( event.data.container, newLocation.href );
@@ -140,5 +141,5 @@ tribe.filterBar.filterRadios = {};
 	};
 
 	// Configure on document ready.
-	$document.ready( obj.ready );
+	$( obj.ready );
 } )( jQuery, tribe.filterBar.filterRadios );

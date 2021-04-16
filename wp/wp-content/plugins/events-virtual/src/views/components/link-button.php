@@ -7,9 +7,9 @@
  *
  * See more documentation about our views templating system.
  *
- * @link http://m.tri.be/1aiy
+ * @link http://evnt.is/1aiy
  *
- * @version 1.0.0
+ * @version 1.1.2
  *
  * @var string $url   The URL of the link button.
  * @var string $label The label of the link button.
@@ -22,7 +22,7 @@
 	class="tribe-events-virtual-link-button"
 	<?php tribe_attributes( $attrs ); ?>
 >
-	<?php $this->template( 'components/icons/play', [ 'classes' => [ 'tribe-events-virtual-link-button__icon' ] ] ); ?>
+	<?php $this->template( 'v2/components/icons/play', [ 'classes' => [ 'tribe-events-virtual-link-button__icon' ] ] ); ?>
 	<span class="tribe-events-virtual-link-button__label">
 		<?php echo esc_html( $label ); ?>
 	</span>

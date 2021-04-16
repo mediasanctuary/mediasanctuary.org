@@ -119,6 +119,7 @@ class Factory extends Compatibility_Factory {
 			$is_open = apply_filters( "tribe_events_filter_bar_views_v2_1_{$layout}_{$filter->slug}_filter_open", $is_open, $filter, $context );
 
 			$filter_data = [
+				'filter_object'    => $filter,
 				'label'            => $filter->name,
 				'selections_count' => $current_value,
 				'selections'       => $filter->get_current_value_for_display(),
@@ -128,6 +129,7 @@ class Factory extends Compatibility_Factory {
 				'is_open'          => $is_open,
 				'name'             => $filter->get_name_field(),
 				'fields'           => $filter->get_fields_data_by_type(),
+				'type'             => 'select' === $filter->type ? 'dropdown' : $filter->type,
 			];
 
 			$template_var_filters[] = $filter_data;

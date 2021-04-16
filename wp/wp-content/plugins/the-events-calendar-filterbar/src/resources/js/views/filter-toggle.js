@@ -199,6 +199,9 @@ tribe.filterBar.filterToggle = {};
 	obj.handleResize = function( event ) {
 		var $container = event.data.container;
 		var $filterBar = $container.find( obj.selectors.filterBar );
+		if ( 0 === $filterBar.length ) {
+			return;
+		}
 		var state = $filterBar.data( 'tribeEventsState' );
 		var containerState = $container.data( 'tribeEventsState' );
 		var isMobile = containerState.isMobile;
@@ -406,5 +409,5 @@ tribe.filterBar.filterToggle = {};
 	};
 
 	// Configure on document ready.
-	$document.ready( obj.ready );
+	$( obj.ready );
 } )( jQuery, tribe.filterBar.filterToggle );

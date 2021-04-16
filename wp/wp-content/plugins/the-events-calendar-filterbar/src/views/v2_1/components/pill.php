@@ -7,7 +7,7 @@
  *
  * See more documentation about our views templating system.
  *
- * @link http://m.tri.be/1aiy
+ * @link http://evnt.is/1aiy
  *
  * @var array<string>        $classes    Array of classes to add to pill.
  * @var array<string,string> $attrs      Associative array of key and value for attributes.

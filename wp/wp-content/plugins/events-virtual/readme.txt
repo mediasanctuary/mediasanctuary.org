@@ -1,11 +1,11 @@
 === Virtual Events ===
 
-Contributors: ModernTribe, aguseo, borkweb, bordoni, brianjessee, Camwyn, dcronian, hazelquimpo, juanfra, leahkoerper, lirianojoel, lucatume, neillmcshea, paulskim, rafsuntaskin, remaworksattribe, sc0ttkclark, zbtirrell
-Tags: virtual events, events, calendar, event, venue, organizer, dates, date, schema, conference, online events, concert, meeting, seminar, summit, class, modern tribe, tribe, zoom, livestream
-Donate link: http://m.tri.be/29
+Contributors: theeventscalendar, aguseo, borkweb, bordoni, brianjessee, Camwyn, dcronian, hazelquimpo, juanfra, leahkoerper, lirianojoel, lucatume, neillmcshea, paulskim, rafsuntaskin, remaworksattribe, sc0ttkclark, zbtirrell
+Tags: virtual events, events, calendar, event, venue, organizer, dates, date, schema, conference, online events, concert, meeting, seminar, summit, class, the events calendar, tec, zoom, livestream
+Donate link: https://evnt.is/29
 Requires at least: 4.9.14
-Tested up to: 5.5.1
-Stable tag: 1.1.1
+Tested up to: 5.7.0
+Stable tag: 1.2.0.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -16,7 +16,7 @@ Virtual Events is an add-on to The Events Calendar suite of products that optimi
 
 Virtual Events comes loaded with features and integrations to optimize your calendar for online gatherings, webinars, classes, and performances. Whether you want to easily showcase virtual events, embed livestreams, integrate with tools like Zoom, or assure that your virtual events show up properly in Google results, Virtual Events has you covered.
 
-See the <a href="http://m.tri.be/ve-started">Virtual Events Getting Started Guide</a> to jump in now.
+See the <a href="https://evnt.is/ve-started">Virtual Events Getting Started Guide</a> to jump in now.
 
 Virtual Events is an add-on for The Events Calendar and is compatible with Events Calendar Pro. Plus, when combined with Event Tickets (or Event Tickets Plus), it does even more for ticketed virtual events.
 
@@ -34,11 +34,11 @@ When running Event Tickets (and Plus) alongside The Events Calendar, Virtual Eve
 ✔️ Give the option of hiding the virtual event link (to Zoom, webinar or elsewhere) until the attendees submits and RSVP or buys a ticket
 ✔️ Will give the option to only email the virtual event link after RSVP or ticket purchase
 
-For a full list of The Events Calendar features, check out that plugin's readme.txt or check out <a href="http://m.tri.be/1akd">the product page</a>.
+For a full list of The Events Calendar features, check out that plugin's readme.txt or check out <a href="https://evnt.is/1akd">the product page</a>.
 
 Looking for additional features like recurring events, ticket sales, user-submitted events, automatic imports, and more?
 
-<strong>Check out [Events Calendar Pro](http://m.tri.be/1akf), [Event Aggregator](http://m.tri.be/1akh), and [more add-ons](http://m.tri.be/1akd)</strong>
+<strong>Check out [Events Calendar Pro](https://evnt.is/1akf), [Event Aggregator](https://evnt.is/1akh), and [more add-ons](https://evnt.is/1akd)</strong>
 
 == Installation ==
 
@@ -49,7 +49,7 @@ Remember, to use Virtual Events you need to also be running The Events Calendar.
 3. When the popup appears select the the-events-calendar-x.x.zip file or events-virtual-x.x.zip file from your desktop. (The 'x.x' will change depending on the current version number).
 4. Follow the on-screen instructions and wait as the upload completes.
 5. When it's finished, activate the plugin via the prompt. A message will show confirming activation was successful. A link to access the calendar directly on the frontend will be presented here as well.
-6. For access to new updates, make sure you have added your valid License Key under Events --> Settings --> Licenses. You can find your license key on your tri.be account at http://m.tri.be/1akc.
+6. For access to new updates, make sure you have added your valid License Key under Events --> Settings --> Licenses. You can find your license key on your tri.be account at https://evnt.is/1akc.
 
 That's it! You're ready to get started creating virtual events!
 
@@ -62,64 +62,103 @@ That's it! You're ready to get started creating virtual events!
 
 = Where to Begin =
 
-If you're just getting started and haven't used The Events Calendar before, get started with our <a href="http://m.tri.be/1akb">New User Primer</a>. If you're familiar with TEC and ready to get started with Virtual Events, head over to our <a href="http://m.tri.be/1aka">knowledgebase</a> to read the article on <a href="http://m.tri.be/1ak0">creating a virtual event</a>.
+If you're just getting started and haven't used The Events Calendar before, get started with our <a href="https://evnt.is/1akb">New User Primer</a>. If you're familiar with TEC and ready to get started with Virtual Events, head over to our <a href="https://evnt.is/1aka">knowledgebase</a> to read the article on <a href="https://evnt.is/1ak0">creating a virtual event</a>.
 
 == Frequently Asked Questions ==
 
 = I'm still stuck. Where do I go to file a bug or ask a question? =
 
-If you have a license for Virtual Events, you're entitled access to our <a href="http://m.tri.be/1ak9">premium support</a> at the theeventscalendar.com website.
+If you have a license for Virtual Events, you're entitled access to our <a href="https://evnt.is/1ak9">premium support</a> at the theeventscalendar.com website.
 
 = What add-ons are available for The Events Calendar, and where can I read more about them? =
 
 Currently, the following add-ons are available for The Events Calendar:
-⚡ [Events Calendar PRO](https://m.tri.be/18wi)
+⚡ [Events Calendar PRO](https://evnt.is/18wi)
 🎟️ [Event Tickets](https://wordpress.org/plugins/event-tickets/)
-🎟️ [Event Tickets Plus](https://m.tri.be/18wk)
-↪️ [Event Aggregator](https://m.tri.be/197u) (service)
-✉️ [Promoter](https://m.tri.be/1ajt)
-👥 [Community Events](https://m.tri.be/2g)
-🎟️ [Community Tickets](https://m.tri.be/18wl)
-✏️ [Filter Bar](https://m.tri.be/fa)
-🗓️ [Eventbrite Tickets](https://m.tri.be/2e)
+🎟️ [Event Tickets Plus](https://evnt.is/18wk)
+↪️ [Event Aggregator](https://evnt.is/197u) (service)
+✉️ [Promoter](https://evnt.is/1ajt)
+👥 [Community Events](https://evnt.is/2g)
+🎟️ [Community Tickets](https://evnt.is/18wl)
+✏️ [Filter Bar](https://evnt.is/fa)
+🗓️ [Eventbrite Tickets](https://evnt.is/2e)
 
 == Documentation ==
 
-All of our dev documentation can be found at http://m.tri.be/1ak8. Tutorials, tips, and snippets can be found in the <a href="http://m.tri.be/1aka">knowledgebase</a>
+All of our dev documentation can be found at https://evnt.is/1ak8. Tutorials, tips, and snippets can be found in the <a href="https://evnt.is/1aka">knowledgebase</a>
 
 Additional resources:
-* [Release Schedule](http://m.tri.be/1ak7)
-* [Known Issues](http://m.tri.be/1ak6)
-* [Release Notes](http://m.tri.be/1ak5)
+* [Release Schedule](https://evnt.is/1ak7)
+* [Known Issues](https://evnt.is/1ak6)
+* [Release Notes](https://evnt.is/1ak5)
 
 = Translations =
 
-Modern Tribe’s premium plugins are translated by volunteers at <a href=“http://m.tri.be/1ak4”>translations.theeventscalendar.com</a>. There you can find a list of available languages, download translation files, or help update the translations. Thank you to everyone who helps to maintain our translations!
+The Events Calendar’s premium plugins are translated by volunteers at <a href=“https://evnt.is/1ak4”>translations.theeventscalendar.com</a>. There you can find a list of available languages, download translation files, or help update the translations. Thank you to everyone who helps to maintain our translations!
 
 == Add-Ons ==
 
-But wait: there's more! We've got a whole stable of plugins available to help you be awesome at what you do. Check out a full list of the products below, and over at the <a href="http://m.tri.be/1ake">Modern Tribe website.</a>
+But wait: there's more! We've got a whole stable of plugins available to help you be awesome at what you do. Check out a full list of the products below, and over at the <a href="https://evnt.is/1ake">The Events Calendar website.</a>
 
 Our free plugins:
 
-* <a href="http://m.tri.be/1akf" target="_blank">The Events Calendar</a>
-* <a href="http://m.tri.be/1akg" target="_blank">Event Tickets</a>
+* <a href="https://evnt.is/1akf" target="_blank">The Events Calendar</a>
+* <a href="https://evnt.is/1akg" target="_blank">Event Tickets</a>
 * <a href="http://wordpress.org/extend/plugins/advanced-post-manager/" target="_blank">Advanced Post Manager</a>
-* <a href="http://m.tri.be/1akn" target="_blank">Elastic Events</a>
+* <a href="https://evnt.is/1akn" target="_blank">Elastic Events</a>
 
 Our premium products:
 
-* <a href="http://m.tri.be/1akf" target="_blank">Events Calendar Pro</a>
-* <a href="http://m.tri.be/1akg" target="_blank">Event Tickets Plus</a>
-* <a href="http://m.tri.be/1akm" target="_blank">Eventbrite Tickets</a>
-* <a href="http://m.tri.be/1aki" target="_blank">Community Events</a>
-* <a href="http://m.tri.be/1akj" target="_blank">Community Tickets</a>
-* <a href="http://m.tri.be/1akl" target="_blank">Filter Bar</a>
-* <a href="http://m.tri.be/1akh" target="_blank">Event Aggregator</a>
-* <a href="http://m.tri.be/1akk" target="_blank">Promoter</a>
-* <a href="http://m.tri.be/1ako" target="_blank">Image Widget Plus</a>
+* <a href="https://evnt.is/1akf" target="_blank">Events Calendar Pro</a>
+* <a href="https://evnt.is/1akg" target="_blank">Event Tickets Plus</a>
+* <a href="https://evnt.is/1akm" target="_blank">Eventbrite Tickets</a>
+* <a href="https://evnt.is/1aki" target="_blank">Community Events</a>
+* <a href="https://evnt.is/1akj" target="_blank">Community Tickets</a>
+* <a href="https://evnt.is/1akl" target="_blank">Filter Bar</a>
+* <a href="https://evnt.is/1akh" target="_blank">Event Aggregator</a>
+* <a href="https://evnt.is/1akk" target="_blank">Promoter</a>
+* <a href="https://evnt.is/1ako" target="_blank">Image Widget Plus</a>
 
 == Changelog ==
+
+= [1.2.0.1] 2021-03-29 =
+
+* Version - Virtual Events 1.2.0.1 is only compatible with The Events Calendar 5.5.0 and higher
+* Fix - Prevent fatals on undefined method from The Events Calendar Widgets by bumping the major version requirement.
+
+= [1.2.0] 2021-03-29 =
+
+* Fix - Fix when using the a non-default compact date format from creating the wrong date and time for Zoom meetings.  [VE-233]
+* Language - 0 new strings added, 2 updated, 0 fuzzied, and 0 obsoleted
+
+= [1.1.5] 2021-02-24 =
+
+* Fix - Compatibility with WordPress 5.7 and jQuery 3.5.X
+* Fix - Improve how the Zoom link is included in the iCal Export based on the visibility settings of the event. [VE-208]
+* Tweak - Consolidate widget (icon) styles into one common sheet. [VE-212]
+* Language - 1 new strings added, 0 updated, 0 fuzzied, and 1 obsoleted
+
+= [1.1.4] 2021-01-28 =
+
+* Tweak - Change the filter bar option label from Show only non-virtual events to Hide virtual events [VE-228]
+* Tweak - Consolidate the widget icons styles to reduce duplication. [ECP-624]
+* Fix - Linked button label misalignment in the Virtual Event meta box [VE-194]
+* Fix - Fix when using the filter bar option to hide virtual events [VE-218]
+* Language - 2 new strings added, 0 updated, 0 fuzzied, and 2 obsoleted
+
+= [1.1.3.1] 2020-12-21 =
+
+* Fix - Update The Events Calendar minimum required version to avoid activation issues.
+
+= [1.1.3] 2020-12-15 =
+
+* Fix - Add the correct prefix to the Zoom Link in the iCal Export [VE-208]
+* Fix - Correctly set and use transients while connecting to Zoom API to avoid issues when real object caching is activated. [VE-216]
+
+= [1.1.2] 2020-12-02 =
+
+* Fix - Prevent content incorrectly showing to logged-out users when there are RSVPs and set to only show to users with RSVPs. [BTRIA-550]
+* Language - 0 new strings added, 0 updated, 1 fuzzied, and 0 obsoleted
 
 = [1.1.1] 2020-10-22 =
 

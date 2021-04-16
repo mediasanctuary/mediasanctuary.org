@@ -66,7 +66,8 @@ tribe.filterBar.filterDropdowns = {};
 			return;
 		}
 
-		var location = tribe.filterBar.filters.removeKeyValueFromQuery( window.location, key, true );
+		var urlObject = tribe.filterBar.filters.getCurrentUrlAsObject( event.data.container );
+		var location = tribe.filterBar.filters.removeKeyValueFromQuery( urlObject, key, true );
 		var value = event.data.target.attr( 'value' );
 
 		if ( value ) {
@@ -184,5 +185,5 @@ tribe.filterBar.filterDropdowns = {};
 	};
 
 	// Configure on document ready.
-	$document.ready( obj.ready );
+	$( obj.ready );
 } )( jQuery, tribe.filterBar.filterDropdowns );

@@ -7,7 +7,7 @@
  *
  * See more documentation about our views templating system.
  *
- * @link http://m.tri.be/1aiy
+ * @link http://evnt.is/1aiy
  *
  * @var string       $layout                       Layout of the filter bar, `vertical` or `horizontal`.
  * @var string       $filterbar_state              Current state of the entire Filter Bar, `open` or `closed`.

@@ -57,8 +57,8 @@ class Template_Modifications {
 			return false;
 		}
 
-		$show  = ! in_array( Event_Meta::$value_show_embed_to_logged_in, $event->virtual_show_embed_to )
-					|| is_user_logged_in();
+		$show = ! in_array( Event_Meta::$value_show_embed_to_logged_in, $event->virtual_show_embed_to, true )
+		        || is_user_logged_in();
 
 		/**
 		 * Filters whether the virtual content should show or not.
@@ -66,7 +66,7 @@ class Template_Modifications {
 		 * @since 1.0.4
 		 *
 		 * @param boolean     $show  If the virtual content should show or not.
-		 * @param int\WP_Post $event The post object or ID of the viewed event.
+		 * @param int|WP_Post $event The post object or ID of the viewed event.
 		 */
 		return apply_filters( 'tribe_events_virtual_show_virtual_content', $show, $event );
 	}
@@ -178,9 +178,7 @@ class Template_Modifications {
 			return $schedule;
 		}
 
-		$args     = [
-			'event' => tribe_get_event( get_the_ID() ),
-		];
+		$args = [ 'event' => $event ];
 
 		return $schedule . $this->template->template( 'single/virtual-marker', $args, false );
 	}
@@ -221,7 +219,7 @@ class Template_Modifications {
 
 		$args = [ 'event' => $event ];
 
-		$this->template->template( 'single/virtual-marker', $args, true );
+		$this->template->template( 'single/virtual-marker', $args );
 	}
 
 	/**

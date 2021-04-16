@@ -58,4 +58,5 @@ return array(
     'Tribe\\Events\\Virtual\\Views\\V2\\Repository' => $baseDir . '/src/Tribe/Views/V2/Repository.php',
     'Tribe\\Events\\Virtual\\Views\\V2\\Title' => $baseDir . '/src/Tribe/Views/V2/Title.php',
     'Tribe\\Events\\Virtual\\Views\\V2\\Views_Provider' => $baseDir . '/src/Tribe/Views/V2/Views_Provider.php',
+    'Tribe\\Events\\Virtual\\Views\\V2\\Widgets\\Widget' => $baseDir . '/src/Tribe/Views/V2/Widgets/Widget.php',
 );

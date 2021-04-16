@@ -42,6 +42,7 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 ( function( $, obj, virtualAdmin ) {
 	'use-strict';
 	var $document = $( document ); // eslint-disable-line no-var
+	var $window = $( window );
 
 	/**
 	 * Selectors used for configuration and setup
@@ -270,5 +271,9 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 	};
 
 	// Configure on document ready
-	$document.ready( obj.ready );
+	$( obj.ready );
+
+	// obj.handleMeetingDetailsClass should be called on Window Load again
+	// since the page needs to be fully loaded for the necessary DOM calculations
+	$window.on( 'load', obj.handleMeetingDetailsClasses );
 } )( jQuery, tribe.events.virtualAdminZoom, tribe.events.virtualAdmin );

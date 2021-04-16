@@ -100,7 +100,7 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
 			.done( function() {
 				obj.hideOembedNotice();
 			} )
-			.error( function( response ) {
+			.fail( function( response ) {
 				obj.showOembedNotice( response );
 			} );
 	};
@@ -196,5 +196,5 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
 	};
 
 	// Configure on document ready
-	$document.ready( obj.ready );
+	$( obj.ready );
 } )( jQuery, tribe.events.virtualAdmin );

@@ -463,15 +463,15 @@ describe( 'Filters', () => {
 			const windowHold = global.window;
 			delete global.window.location;
 			global.window = Object.create( window );
-			// url = 'https://test.tri.be/events/month/?hello=world'
 			global.window.location = {
-				href: 'https://test.tri.be/events/month/?hello=world',
+				href: 'https://test.tri.be/events/month/?diff-url-on-purpose',
 			};
 			global.tribe.events = {
 				views: {
 					manager: {
 						request: jest.fn(),
 						shouldManageUrl: jest.fn().mockImplementation( () => true ),
+						getContainerData: jest.fn().mockImplementation( () => ( { prevUrl: '', url: 'https://test.tri.be/events/month/?hello=world' } ) ),
 					},
 				},
 			};

@@ -11,7 +11,7 @@
  *
  * @version 1.0.4
  *
- * @link    http://m.tri.be/1aiy
+ * @link    http://evnt.is/1aiy
  *
  * @var boolean  $disabled   Should the control be disabled?
  * @var string   $metabox_id The current metabox id.

@@ -35,12 +35,7 @@
 		}
 
 		.select2-selection__clear {
-			bottom: 24px;
-			line-height: 10px;
-			margin: 0;
-			padding: 3px;
-			position: absolute;
-			right: 10px;
+			@mixin hidden;
 		}
 
 		.select2-selection__choice {
@@ -50,7 +45,7 @@
 			float: none;
 			margin: 0 var(--spacer-0) var(--spacer-1);
 			max-width: calc(100% - (2 * var(--spacer-0)));
-			padding: 5px 11px 7px 12px;
+			padding: 6px 11px 6px 12px;
 		}
 
 		.select2-selection__choice__text {

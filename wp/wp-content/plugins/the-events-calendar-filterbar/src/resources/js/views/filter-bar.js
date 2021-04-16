@@ -789,5 +789,5 @@ tribe.events.views.filterBar = {};
 	};
 
 	// Configure on document ready
-	$document.ready( obj.ready );
+	$( obj.ready );
 } )( jQuery, _, tribe.events.views.filterBar );
