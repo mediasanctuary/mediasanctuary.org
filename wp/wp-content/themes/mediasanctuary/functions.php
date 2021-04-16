@@ -39,6 +39,14 @@ add_action('wp_enqueue_scripts', function() {
 
 add_action('acf/init', function() {
 	require_once('blocks/blocks.php');
+	if (function_exists('acf_add_options_page')) {
+		acf_add_options_page([
+			'page_title' => 'Site Options',
+			'menu_title' => 'Site Options',
+			'menu_slug'  => 'options',
+			'capability' => 'edit_others_posts'
+		]);
+	}
 });
 
 add_filter('acf/settings/load_json', function($path) {
@@ -47,6 +55,27 @@ add_filter('acf/settings/load_json', function($path) {
 
 add_filter('acf/settings/save_json', function($path) {
 	return get_stylesheet_directory() . '/acf';
+});
+
+add_action('wp_head', function() {
+	if (! function_exists('get_field')) {
+		return;
+	}
+	$ua_code = get_field('ga_ua_code', 'options');
+	if (empty($ua_code)) {
+		return;
+	}
+	echo <<<END
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=$ua_code"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '$ua_code');
+</script>
+
+END;
 });
 
 add_action('admin_enqueue_scripts', function() {
