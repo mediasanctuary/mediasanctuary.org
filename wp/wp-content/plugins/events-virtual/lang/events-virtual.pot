@@ -1,0 +1,586 @@
+# Copyright (C) 2020 Modern Tribe
+# This file is distributed under the same license as the The Events Calendar: Virtual Events package.
+msgid ""
+msgstr ""
+"Project-Id-Version: The Events Calendar: Virtual Events 1.1.0\n"
+"Report-Msgid-Bugs-To: http://m.tri.be/191x\n"
+"POT-Creation-Date: 2020-10-20 15:45:57+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2020-10-20 15:45\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+
+#: events-virtual.php:55
+msgid "Events Virtual"
+msgstr ""
+
+#: src/Tribe/Compatibility/Events_Control_Extension/metabox-container.php:23
+msgctxt "Event status label the select field"
+msgid "Set status:"
+msgstr ""
+
+#: src/Tribe/Compatibility/Events_Control_Extension/metabox-container.php:29
+msgctxt "Event status default option"
+msgid "Scheduled"
+msgstr ""
+
+#: src/Tribe/Compatibility/Events_Control_Extension/metabox-container.php:34
+msgctxt "Event status of being canceled in the select field"
+msgid "Canceled"
+msgstr ""
+
+#: src/Tribe/Compatibility/Events_Control_Extension/metabox-container.php:40
+msgctxt "Event status of being postponed in the select field"
+msgid "Postponed"
+msgstr ""
+
+#: src/Tribe/Compatibility/Events_Control_Extension/metabox-container.php:51
+msgctxt "Label for postponed reason field"
+msgid "Reason (optional)"
+msgstr ""
+
+#: src/Tribe/Compatibility/Events_Control_Extension/metabox-container.php:67
+msgctxt "Label for canceled reason field"
+msgid "Reason (optional)"
+msgstr ""
+
+#. Translators: %1$s is the lowercase plural event term.
+#: src/Tribe/Compatibility/Filter_Bar/Events_Virtual_Filter.php:121
+msgid "Show all %1$s"
+msgstr ""
+
+#. Translators: %1$s is the lowercase plural virtual event term.
+#: src/Tribe/Compatibility/Filter_Bar/Events_Virtual_Filter.php:129
+msgid "Show only %1$s"
+msgstr ""
+
+#. Translators: %1$s is the lowercase plural virtual event term.
+#: src/Tribe/Compatibility/Filter_Bar/Events_Virtual_Filter.php:137
+msgid "Show only non-%1$s"
+msgstr ""
+
+#. Translators: Opening and closing tags.
+#: src/Tribe/Compatibility/Online_Event_Extension/Settings.php:39
+msgid ""
+"%1$sYou have the %2$sVirtual Events%3$s plugin installed, these settings are "
+"superseded by it.%4$s"
+msgstr ""
+
+#. Translators: Opening and closing tags.
+#: src/Tribe/Compatibility/Online_Event_Extension/Settings.php:50
+msgid ""
+"%1$sYou should deactivate The Events Control extension as all functionality "
+"is handled by the Virtual Events plugin.%2$s"
+msgstr ""
+
+#: src/Tribe/Event_Meta.php:186
+msgctxt "Default label of the virtual event URL call-to-action link."
+msgid "Watch"
+msgstr ""
+
+#: src/Tribe/Event_Meta.php:205
+msgctxt "Default placeholder text for the virtual event URL input."
+msgid "Enter URL for YouTube, Facebook, etc."
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Abstract_Meetings.php:298
+msgctxt "Ajax error message."
+msgid "The provided nonce is not valid."
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Abstract_Meetings.php:326
+msgctxt "An error raised in the context of the Zoom API integration."
+msgid "The post ID is missing from the request."
+msgstr ""
+
+#. translators: the placeholder is for the error as returned from Zoom API.
+#: src/Tribe/Meetings/Zoom/Api.php:263
+msgctxt ""
+"The prefix of a message reporting a Zoom API communication error, the "
+"placeholder is for the error."
+msgid ""
+"Error while trying to communicate with Zoom API: %s. Please try again in a "
+"minute."
+msgstr ""
+
+#. translators: the placeholders are, respectively, for the expected and actual
+#. response codes.
+#: src/Tribe/Meetings/Zoom/Api.php:294
+msgctxt ""
+"The message reporting a Zoom API unexpected response code, placeholders are "
+"the codes."
+msgid ""
+"Zoom API response is not the expected one, expected %1$s, received %2$s. "
+"Please, try again in a minute."
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:203
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:418
+msgctxt ""
+"The label for the admin UI control that allows removing the Zoom Meeting or "
+"Webinar link from the event."
+msgid "Remove Zoom link"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:213
+msgctxt ""
+"The label of the button to try and generate a Zoom Meeting or Webinar link "
+"again."
+msgid "Try again"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:247
+msgctxt ""
+"Label for the link to set up the Zoom integration in the event classic "
+"editor UI."
+msgid "Set up Zoom integration"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:263
+msgctxt ""
+"A message to indicate an unknown error happened while interacting with the "
+"Zoom API integration."
+msgid "Unknown error"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:289
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:394
+msgctxt ""
+"The lowercase \"or\" label used to offer the creation of a Zoom Meetings or "
+"Webinars API link."
+msgid "or"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:294
+msgctxt ""
+"The label of the toggle to show the links to generate Zoom Meetings or "
+"Webinars."
+msgid "Generate Zoom Link"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:318
+msgctxt ""
+"Label for the control to generate a Zoom meeting link in the event classic "
+"editor UI."
+msgid "Generate Zoom Meeting"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:323
+msgctxt ""
+"Label for the control to generate a Zoom meeting link in the event classic "
+"editor UI, w/o the \"Generate\" prefix."
+msgid "Zoom Meeting"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:328
+msgctxt ""
+"Label for the control to generate a Zoom webinar link in the event classic "
+"editor UI."
+msgid "Generate Zoom Webinar"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:333
+msgctxt ""
+"Label for the control to generate a Zoom webinar link in the event classic "
+"editor UI, w/o the \"Generate\" prefix."
+msgid "Zoom Webinar"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:430
+msgctxt ""
+"Title of the details box shown for a generated Zoom Webinar link in the "
+"backend."
+msgid "Zoom Webinar"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:435
+msgctxt ""
+"Title of the details box shown for a generated Zoom Meeting link in the "
+"backend."
+msgid "Zoom Meeting"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:448
+msgctxt "The label used to prefix a Zoom Meeting or Webinar ID in the backend."
+msgid "ID: "
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:477
+msgctxt ""
+"The lowercase \"or\" label used to offer the creation of a Zoom Meetings API "
+"link."
+msgid "or"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/OAuth.php:98
+msgctxt ""
+"The message shown to a user providing a wrong Zoom API OAuth authorization "
+"nonce."
+msgid "You are not authorized to do this"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/OAuth.php:237
+msgid "Disconnected from Zoom API."
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom_Provider.php:432
+msgid "Zoom link generated"
+msgstr ""
+
+#: src/Tribe/Metabox.php:83
+msgctxt "Meta box title for the Virtual Event controls"
+msgid "Virtual Event"
+msgstr ""
+
+#. Translators: %1$s: opening anchor tag, %2$s: closing anchor tag
+#: src/Tribe/OEmbed.php:127
+msgctxt ""
+"Tells user that URL cannot be embedded, and links to the WordPress oEmbed "
+"page for a list of embeddable sites."
+msgid ""
+"The URL you have entered is not embeddable because the source is not "
+"supported by %1$sWordPress oEmbed%2$s."
+msgstr ""
+
+#. Translators: %1$s: singular ticket term.
+#: src/admin-views/virtual-metabox/container/compatibility/event-tickets/share-tickets.php:37
+msgctxt "Include virtual link in ticket emails."
+msgid "Include link in %1$s emails"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/container/compatibility/event-tickets/share.php:25
+msgid "Share:"
+msgstr ""
+
+#. Translators: %1$s: singular RSVP term.
+#: src/admin-views/virtual-metabox/container/compatibility/event-tickets/share.php:47
+msgctxt "Include virtual link in RSVP emails."
+msgid "Include link in %1$s emails"
+msgstr ""
+
+#. Translators: %1$s: singular RSVP term.
+#: src/admin-views/virtual-metabox/container/compatibility/event-tickets/show-to-rsvp.php:45
+msgctxt "Only show virtual content to users with RSVPs."
+msgid "%1$s Attendees only"
+msgstr ""
+
+#. Translators: %1$s is the URL
+#: src/admin-views/virtual-metabox/container/compatibility/event-tickets/show-to-rsvp.php:64
+msgctxt ""
+"Explains why the radio button is disabled and how to enable it via ticket "
+"settings."
+msgid ""
+"Login requirements for RSVPs must be active to use this option. <a href="
+"\"%1$s\">Go to Tickets settings.</a>"
+msgstr ""
+
+#. Translators: %1$s: singular ticket term.
+#: src/admin-views/virtual-metabox/container/compatibility/event-tickets/show-to-tickets.php:46
+msgctxt "Only show virtual content to users with tickets."
+msgid "%1$s Attendees only"
+msgstr ""
+
+#. Translators: %1$s is the URL
+#: src/admin-views/virtual-metabox/container/compatibility/event-tickets/show-to-tickets.php:65
+msgctxt ""
+"Explains why the radio button is disabled and how to enable it via ticket "
+"settings."
+msgid ""
+"Login requirements for tickets must be active to use this option. <a href="
+"\"%1$s\">Go to Tickets settings.</a>"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/container/compatibility/event-tickets/show-to.php:25
+#: src/admin-views/virtual-metabox/container/show-to.php:26
+msgid "Show to:"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/container/compatibility/event-tickets/show-to.php:45
+#: src/admin-views/virtual-metabox/container/show-to.php:46
+msgctxt "Show virtual content to all users."
+msgid "Everyone"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/container/compatibility/event-tickets/show-to.php:65
+#: src/admin-views/virtual-metabox/container/show-to.php:66
+msgctxt "Show virtual content to logged-in users only."
+msgid "Logged in users"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/container/display.php:39
+msgid "Display:"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/container/display.php:53
+msgctxt "Option to embed video in event."
+msgid "Embed Video"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/container/display.php:74
+msgctxt "Show watch button or embed only at the start of the event."
+msgid "Linked Button"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/container/display.php:91
+msgctxt "Label for virtual events watch button, defaults to watch"
+msgid "Label"
+msgstr ""
+
+#. Translators: single event term.
+#: src/admin-views/virtual-metabox/container/head.php:36
+msgid "Virtual %1$s"
+msgstr ""
+
+#. Translators: single event term.
+#: src/admin-views/virtual-metabox/container/head.php:59
+msgid "Configure Virtual %1$s"
+msgstr ""
+
+#. Translators: single event term.
+#: src/admin-views/virtual-metabox/container/head.php:82
+msgctxt "Event State of being virtual-only checkbox label"
+msgid "Mark as a virtual %1$s"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/container/label.php:25
+msgid "Virtual Event Label:"
+msgstr ""
+
+#. Translators: single event term.
+#: src/admin-views/virtual-metabox/container/label.php:41
+msgctxt "Show virtual events marker on single event page."
+msgid "Show on %1$s page"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/container/label.php:62
+msgctxt "Show virtual events marker on calendar views."
+msgid "Show on calendar views"
+msgstr ""
+
+#. Translators: plural event term.
+#: src/admin-views/virtual-metabox/container/label.php:76
+msgid "Virtual %1$s will be indexed on Google as online %1$s."
+msgstr ""
+
+#: src/admin-views/virtual-metabox/container/show-when.php:26
+msgid "Show when:"
+msgstr ""
+
+#. Translators: single event term.
+#: src/admin-views/virtual-metabox/container/show-when.php:42
+msgctxt "Show watch button or embed when the event is published."
+msgid "%1$s is published"
+msgstr ""
+
+#. Translators: single event term.
+#: src/admin-views/virtual-metabox/container/show-when.php:66
+msgctxt "Show watch button or embed only at the start of the event."
+msgid "%1$s starts"
+msgstr ""
+
+#. Translators: %1$d: number of minutes of lead-up before event %2$s: single
+#. event term.
+#: src/admin-views/virtual-metabox/container/show-when.php:89
+msgctxt "Explains when the link will show."
+msgid ""
+"Link and/or embed will appear on the page %1$d minutes before the %2$s start "
+"time."
+msgstr ""
+
+#: src/admin-views/virtual-metabox/container/video-source.php:38
+msgid "Add Video Source:"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/container/video-source.php:49
+msgctxt "Resets the virtual settings"
+msgid "Remove Virtual Settings"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/container/video-source.php:58
+msgctxt "Label for live stream URL field"
+msgid "Live Stream URL"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/zoom/display.php:42
+msgctxt "Option to display Zoom Meeting link in event."
+msgid "Zoom link with details"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/zoom/meeting-link-error-details.php:24
+msgctxt ""
+"Accessible label of the control to dismiss a failure to generate a Zoom "
+"Meeting link."
+msgid "Dismiss"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/zoom/meeting-link-error-details.php:48
+msgctxt ""
+"Header of the details shown when an attempt to generate a Zoom Meeting link "
+"fails."
+msgid "Zoom Link"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/zoom/meeting-link-error-details.php:59
+msgctxt "Message shown when an attempt to generate a Zoom Meeting link fails."
+msgid "We were not able to generate a Zoom link."
+msgstr ""
+
+#: src/admin-views/virtual-metabox/zoom/meeting-link-error-details.php:70
+msgctxt ""
+"Header of the error details section shown when an attempt to generate a Zoom "
+"Meeting link fails."
+msgid "Zoom error:"
+msgstr ""
+
+#: src/admin-views/zoom/api/authorize-fields/connect-link.php:23
+msgctxt "Label to connect to Zoom API."
+msgid "Connect to Zoom"
+msgstr ""
+
+#: src/admin-views/zoom/api/authorize-fields/connect-link.php:24
+msgctxt "Label to refresh connection to Zoom API."
+msgid "Refresh Zoom Connection"
+msgstr ""
+
+#: src/admin-views/zoom/api/authorize-fields/disabled-button.php:17
+msgctxt "Label to connect to Zoom API (disabled button)."
+msgid "Connect to Zoom"
+msgstr ""
+
+#: src/admin-views/zoom/api/authorize-fields/disabled-button.php:21
+msgid "Enter client app information to connect to Zoom"
+msgstr ""
+
+#: src/admin-views/zoom/api/authorize-fields/disconnect-link.php:19
+msgid "Disconnect"
+msgstr ""
+
+#: src/admin-views/zoom/api/authorize-fields.php:22
+msgid "Zoom Connection"
+msgstr ""
+
+#: src/admin-views/zoom/api/intro-text.php:21
+msgctxt "API connection header"
+msgid "Zoom"
+msgstr ""
+
+#. Translators: %1$s is the lowercase plural virtual event term.
+#: src/admin-views/zoom/api/intro-text.php:28
+msgctxt "Settings Description"
+msgid ""
+"You need to connect your site to your Zoom account to be able to generate "
+"Zoom links for your %1$s."
+msgstr ""
+
+#: src/functions/load.php:26
+msgid "To begin using Virtual Events, please install the latest version of"
+msgstr ""
+
+#: src/functions/load.php:31
+msgid "The Events Calendar"
+msgstr ""
+
+#: src/functions/php-min-version.php:50
+msgctxt "Plugin A \"and\" Plugin B"
+msgid " and "
+msgstr ""
+
+#: src/functions/php-min-version.php:51
+msgctxt "Plugin A\",\" Plugin B"
+msgid ", "
+msgstr ""
+
+#. Translators: %1$s - plugin name(s) %2$s - php version
+#: src/functions/php-min-version.php:65
+msgid "<b>%1$s</b> requires <b>PHP %2$s</b> or higher."
+msgid_plural "<b>%1$s</b> require <b>PHP %2$s</b> or higher."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/functions/php-min-version.php:76
+msgid ""
+"To allow better control over dates, advanced security improvements and "
+"performance gain."
+msgstr ""
+
+#: src/functions/php-min-version.php:78
+msgid ""
+"Contact your Host or your system administrator and ask to upgrade to the "
+"latest version of PHP."
+msgstr ""
+
+#: src/functions/template-tags/general.php:20
+msgctxt "Capitalized version of the \"virtual\" term."
+msgid "Virtual"
+msgstr ""
+
+#: src/functions/template-tags/general.php:46
+msgctxt "Lowercase version of the \"virtual\" term."
+msgid "virtual"
+msgstr ""
+
+#: src/functions/template-tags/general.php:74
+msgctxt "Capitalized \"virtual\" term, capitalized singular event term."
+msgid "%1$s %2$s"
+msgstr ""
+
+#: src/functions/template-tags/general.php:111
+msgctxt "Lowercase \"virtual\" term, singular lowercase event term."
+msgid "%1$s %2$s"
+msgstr ""
+
+#: src/functions/template-tags/general.php:148
+msgctxt "Capitalized \"virtual\" term, capitalized plural event term."
+msgid "%1$s %2$s"
+msgstr ""
+
+#: src/functions/template-tags/general.php:185
+msgctxt "Lowercase \"virtual\" term, lowercase plural event term."
+msgid "%1$s %2$s"
+msgstr ""
+
+#: src/views/compatibility/event-tickets/email/ticket-email-link.php:27
+msgid "Join"
+msgstr ""
+
+#. translators: %1$s: country, %2$s: Zoom meeting phone number.
+#: src/views/zoom/email/details/dial-in-content.php:33
+#: src/views/zoom/single/zoom-details.php:111
+msgctxt "The country and phone number for Zoom meeting."
+msgid "(%1$s) %2$s"
+msgstr ""
+
+#: src/views/zoom/email/details/dial-in-header.php:18
+msgid "Join Zoom Call"
+msgstr ""
+
+#. translators: %1$s: ID label, %2$s: Zoom meeting ID.
+#: src/views/zoom/email/details/join-content.php:44
+#: src/views/zoom/single/zoom-details.php:71
+msgctxt "The label for the Zoom Meeting ID, prefixed by ID label."
+msgid "%1$s: %2$s"
+msgstr ""
+
+#: src/views/zoom/email/details/join-header.php:18
+msgid "Join Zoom Video"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "The Events Calendar: Virtual Events"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Virtual Events is an add-on to The Events Calendar suite of products that "
+"optimizes your calendar, tickets, and email notifications for virtual events."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Modern Tribe, Inc."
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://m.tri.be/20"
+msgstr ""
