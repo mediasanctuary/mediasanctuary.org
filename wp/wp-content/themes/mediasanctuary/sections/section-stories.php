@@ -8,10 +8,7 @@
   		<?php
         $args = array(
           'posts_per_page' => 8,
-          'offset' => 0,
-          'orderby' => 'post_date',
-          'order' => 'DESC',
-          'post_status' => 'publish',
+          'category_name' => 'stories'
         );
         $queryLatest = new WP_Query($args);
         if ($queryLatest->have_posts()) :
