@@ -1,11 +1,11 @@
 #events {
   background:$c-eggplant;
   color:#FFF;
-  
+
   h2 {
     color:$c-robin-egg;
   }
-  
+
   p {
     a {
       color: $c-lilac;
@@ -14,7 +14,7 @@
       }
     }
   }
-  
+
   .posts__item {
     background:#FFF;
     padding: 10px;
@@ -28,7 +28,7 @@
       font-weight: bold;
       letter-spacing: -.5px;
       color:$c-lilac;
-      transition: ease 0.2s all;      
+      transition: ease 0.2s all;
     }
     .post__thumbnail {
       border: 1px solid #e1e1e1;
@@ -41,12 +41,12 @@
       }
       .posts__date {
         color:#000;
-      } 
+      }
     }
   }
 }
 
-#podcasts {
+#stories {
   background:$c-concrete;
   h2 {
     color:$c-ladybug;
@@ -58,14 +58,14 @@
       &:hover {
         color: $c-lilac;
       }
-      
+
     }
   }
   .posts__item {
     h5 {
       color:$c-ladybug;
     }
-    
+
     .post__thumbnail {
       background-size: cover;
       background-repeat: no-repeat;
@@ -79,7 +79,7 @@
     }
     &:hover {
       h5 {
-        color:$c-teal-duck;      
+        color:$c-teal-duck;
       }
     }
   }
