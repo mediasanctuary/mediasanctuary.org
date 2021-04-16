@@ -21,5 +21,6 @@
   		?>
 
 		</ul>
+		<a href="<?php echo home_url('/stories/'); ?>">View all stories</a>
 	</div>
 </section>
