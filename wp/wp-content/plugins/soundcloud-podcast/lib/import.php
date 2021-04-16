@@ -86,7 +86,7 @@ function soundcloud_podcast_import($num = null, $url = null) {
 				'post_content' => soundcloud_podcast_track_content($track),
 				'post_date' => soundcloud_podcast_track_date($track)
 			]);
-			wp_set_post_terms($id, 'post-format-audio', 'post_format');
+			set_post_format($id, 'audio');
 			wp_set_post_tags($id, soundcloud_podcast_track_tags($track));
 
 			fputcsv($stdout, [
