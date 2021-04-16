@@ -15,23 +15,27 @@
 
     $cat = '';
     $categories = get_the_category();
-    foreach ($categories as $category) {
-      if ($category->slug == 'stories') {
-        continue;
+    if (! empty($categories)) {
+      foreach ($categories as $category) {
+        if ($category->slug == 'stories') {
+          continue;
+        }
+        if (! empty($cat)) {
+          $cat .= ", ";
+        }
+        $cat .= '<a href="' . esc_url( get_category_link( $category->term_id ) ) . '" class="category" >' . esc_html( $category->name ) . '</a>';
       }
-      if (! empty($cat)) {
-        $cat .= ", ";
-      }
-      $cat .= '<a href="' . esc_url( get_category_link( $category->term_id ) ) . '" class="category" >' . esc_html( $category->name ) . '</a>';
     }
 
     $tags = '';
     $terms = get_the_terms($post, 'post_tag');
-    foreach ($terms as $term) {
-      if (! empty($tags)) {
-        $tags .= ", ";
+    if (! empty($terms)) {
+      foreach ($terms as $term) {
+        if (! empty($tags)) {
+          $tags .= ", ";
+        }
+        $tags .= '<a href="' . esc_url( get_term_link( $term ) ) . '" class="tag" >' . esc_html( $term->name ) . '</a>';
       }
-      $tags .= '<a href="' . esc_url( get_term_link( $term ) ) . '" class="tag" >' . esc_html( $term->name ) . '</a>';
     }
 
     if ($thumb_url) {
