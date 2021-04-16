@@ -52,6 +52,11 @@ function soundcloud_podcast_import($num = null, $url = null) {
 	$json = wp_remote_retrieve_body($rsp);
 	$tracks = json_decode($json, 'as hash');
 
+	if (empty($tracks['collection'])) {
+		fwrite($stderr, "Error: invalid JSON\n");
+		return;
+	}
+
 	foreach ($tracks['collection'] as $track) {
 
 		if (preg_match('/^HMM \d+ - \d+ - \d+$/', $track['title'])) {
@@ -81,7 +86,7 @@ function soundcloud_podcast_import($num = null, $url = null) {
 				'post_content' => soundcloud_podcast_track_content($track),
 				'post_date' => soundcloud_podcast_track_date($track)
 			]);
-			wp_set_post_terms($id, 'post-format-audio', 'post_format');
+			set_post_format($id, 'audio');
 			wp_set_post_tags($id, soundcloud_podcast_track_tags($track));
 
 			fputcsv($stdout, [

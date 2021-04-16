@@ -22,7 +22,16 @@
       if (! empty($cat)) {
         $cat .= ", ";
       }
-      $cat .= '<span class="categoryTag"><a href="' . esc_url( get_category_link( $category->term_id ) ) . '" class="tag alt" >' . esc_html( $category->name ) . '</a></span>';
+      $cat .= '<a href="' . esc_url( get_category_link( $category->term_id ) ) . '" class="category" >' . esc_html( $category->name ) . '</a>';
+    }
+
+    $tags = '';
+    $terms = get_the_terms($post, 'post_tag');
+    foreach ($terms as $term) {
+      if (! empty($tags)) {
+        $tags .= ", ";
+      }
+      $tags .= '<a href="' . esc_url( get_term_link( $term ) ) . '" class="tag" >' . esc_html( $term->name ) . '</a>';
     }
 
     if ($thumb_url) {
@@ -44,11 +53,20 @@
       if (function_exists('soundcloud_podcast') && get_post_format($post->ID) == 'audio') {
         soundcloud_podcast();
       }
-      echo $thumb;
+      if (! empty($thumb)) {
+        echo $thumb;
+      }
       the_content();
       echo '<br class="clear">';
+      ?>
 
-      ?></div>
+      <?php if (! empty($tags)) { ?>
+        <div class="tags">
+          Tags: <?php echo $tags; ?>
+        </div>
+      <?php } ?>
+
+      </div>
       <div class="meta">
         <ul class="social top" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="800">
           <li><strong>Share</strong></li>
