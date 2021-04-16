@@ -1,7 +1,6 @@
 <?php
 
 function setup_post_types() {
-	press_coverage_post_type(); // for import purposes only
 	project_post_type();
 }
 
@@ -34,28 +33,6 @@ function project_post_type() {
 			'has_archive'   => true,
 			'show_in_rest'  => true,
 			'supports'      => ['title', 'editor', 'thumbnail', 'revisions'],
-			'taxonomies'    => [],
-		)
-	);
-}
-
-function press_coverage_post_type() {
-
-	// This is only here for the purposes of migrating content.
-
-	$labels = [
-		'name'               => 'Press Coverage',
-		'singular_name'      => 'Press Coverage'
-	];
-
-	register_post_type(
-		'press-coverage',
-		array(
-			'labels'        => $labels,
-			'public'        => false,
-			'hierarchical'  => true,
-			'show_ui'       => false,
-			'has_archive'   => true,
 			'taxonomies'    => [],
 		)
 	);
