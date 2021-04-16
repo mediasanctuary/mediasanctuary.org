@@ -124,10 +124,14 @@ function soundcloud_podcast_import($num = null, $url = null) {
 		update_post_meta($id, 'soundcloud_podcast_hash', $sc_hash);
 		update_post_meta($id, 'soundcloud_podcast_url', $track['permalink_url']);
 
+		$image_url = preg_replace('/-large\.(\w+)$/', '-original.$1', $track['artwork_url']);
+		$filename = preg_replace('/\/([^\/]+)-large\.(\w+)$/', '$1.$2', $track['artwork_url']);
+		$filename = basename($filename);
+
 		$image_id = get_post_meta($id, '_thumbnail_id', true);
 		if (! empty($image_id)) {
 			$image = get_post($image_id);
-			if (! empty($image)) {
+			if (! empty($image) && $image->post_title == $filename) {
 				continue;
 			}
 		}
@@ -135,10 +139,6 @@ function soundcloud_podcast_import($num = null, $url = null) {
 		if (empty($track['artwork_url'])) {
 			continue;
 		}
-
-		$image_url = preg_replace('/-large\.(\w+)$/', '-original.$1', $track['artwork_url']);
-		$filename = preg_replace('/\/([^\/]+)-large\.(\w+)$/', '$1.$2', $track['artwork_url']);
-		$filename = basename($filename);
 
 		fwrite($stderr, "Saving image $image_url\n");
 

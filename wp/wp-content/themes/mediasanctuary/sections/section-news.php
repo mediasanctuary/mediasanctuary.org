@@ -3,15 +3,11 @@
 		<h2>Sanctuary News</h2>
 		<p>The latest happenings at The Sanctuary for Independent Media. You can also view the <a href="">archive</a> or listen to WOOC 105.3 FM Troy for more updates.</p>
 		<ul class="posts__list three-col">
-  		
-  		<?php 
+
+  		<?php
         $args = array(
           'posts_per_page' => 3,
-          'offset' => 0,
-          'orderby' => 'post_date',
-          'order' => 'DESC',
-          'post_type' => 'post',
-          'post_status' => 'publish',
+          'category_name' => 'sanctuary-news'
         );
         $queryLatest = new WP_Query($args);
         if ($queryLatest->have_posts()) :
@@ -21,7 +17,7 @@
             endwhile;
         endif;
         wp_reset_query();
-  		?>  		
+  		?>
 
 		</ul>
 	</div>

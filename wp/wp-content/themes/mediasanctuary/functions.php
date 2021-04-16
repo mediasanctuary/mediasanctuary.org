@@ -5,6 +5,20 @@ require_once 'db/migrate.php';
 
 add_filter('show_admin_bar', '__return_false');
 
+add_filter('pre_get_posts', function($query) {
+	if (is_archive()) {
+		$query->set('posts_per_page', 20);
+	}
+	return $query;
+});
+
+add_filter('get_the_archive_title', function ($title) {
+	if (is_category()) {
+		return single_cat_title( '', false );
+	}
+	return $title;
+});
+
 add_filter('category_link', function($url) {
 	$home_url = home_url();
 	return str_replace("$home_url/category", $home_url, $url);
