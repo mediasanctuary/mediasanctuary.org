@@ -154,12 +154,15 @@ tribe.filterBar.filterBarSlider = {};
 			return;
 		}
 
-		// Initalize slider.
+		// Initialize slider.
 		new Swiper( $filtersSliderContainer[ 0 ], {
 			slidesPerView: 'auto',
 			resistanceRatio: 0,
 			freeMode: true,
 			freeModeMomentumBounce: false,
+			containerModifierClass: 'tribe-swiper-container-',
+			wrapperClass: 'tribe-swiper-wrapper',
+			slideClass: 'tribe-swiper-slide',
 			navigation: {
 				prevEl: $filtersSliderContainer.find( obj.selectors.filtersSliderNavButtonPrev )[ 0 ],
 				nextEl: $filtersSliderContainer.find( obj.selectors.filtersSliderNavButtonNext )[ 0 ],
@@ -278,5 +281,5 @@ tribe.filterBar.filterBarSlider = {};
 	};
 
 	// Configure on document ready.
-	$document.ready( obj.ready );
+	$( obj.ready );
 } )( jQuery, tribe.filterBar.filterBarSlider );

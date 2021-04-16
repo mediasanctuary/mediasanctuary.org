@@ -110,6 +110,10 @@ trait Context_Filter {
 		/** @var Context_Filter|Filter $filter */
 		$filter = ( new \ReflectionClass( static::class ) )->newInstanceWithoutConstructor();
 
+		if ( method_exists( $filter, 'set_meta_key' ) ) {
+			$filter->set_meta_key( $context_key );
+		}
+
 		$name = self::get_filter_name( static::class, $context_key );
 
 		$filter->set_context( $context );
@@ -566,8 +570,8 @@ trait Context_Filter {
 		$map = [
 			'month' => static function ( $date ) {
 				return [
-					Month::calculate_first_cell_date( $date ),
-					Month::calculate_final_cell_date( $date ),
+					tribe_beginning_of_day( Month::calculate_first_cell_date( $date ) ),
+					tribe_end_of_day( Month::calculate_final_cell_date( $date ) ),
 				];
 			},
 			'week'  => static function ( $date ) use ( $context ) {
@@ -589,12 +593,23 @@ trait Context_Filter {
 			return [ false, false ];
 		}
 
-		$dates= call_user_func( $map[ $view ], $context->get( 'event_date', false ) );
+		$dates = call_user_func( $map[ $view ], $context->get( 'event_date', false ) );
 
 		if ( 2 !== count( array_filter( $dates ) ) ) {
 			return [ false, false ];
 		}
 
 		return array_map( [ Dates::class, 'build_date_object' ], $dates );
+	}
+
+	/**
+	 * Returns the current filter meta key.
+	 *
+	 * @since 5.0.5
+	 *
+	 * @return string The current filter meta key.
+	 */
+	public function get_meta_key() {
+		return $this->meta_key;
 	}
 }

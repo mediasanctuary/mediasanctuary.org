@@ -47,6 +47,8 @@ describe( 'Filter Checkboxes', () => {
 			global.tribe.filterBar.filters = {
 				addKeyValueToQuery: jest.fn().mockImplementation( () => ( {} ) ),
 				removeKeyValueFromQuery: jest.fn().mockImplementation( () => ( {} ) ),
+				getCurrentUrl: jest.fn().mockImplementation( () => ( {} ) ),
+				getCurrentUrlAsObject: jest.fn().mockImplementation( () => ( {} ) ),
 				submitRequest: jest.fn(),
 			};
 		} );

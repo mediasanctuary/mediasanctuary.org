@@ -91,7 +91,7 @@ class Tribe__Events__Filterbar__Filters__Organizer extends Tribe__Events__Filter
 		if ( is_array( $this->currentValue ) ) {
 			$organizer_ids = implode( ',', array_map( 'intval', $this->currentValue ) );
 		} else {
-			$organizer_ids = '"' . esc_sql( (string) $this->currentValue ) . '"';
+			$organizer_ids = "'" . esc_sql( (string) $this->currentValue ) . "'";
 		}
 
 		$this->whereClause = " AND organizer_filter.meta_value IN ($organizer_ids) ";

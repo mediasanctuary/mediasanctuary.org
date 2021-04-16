@@ -67,7 +67,8 @@ tribe.filterBar.filterMultiselects = {};
 			return;
 		}
 
-		var location = tribe.filterBar.filters.removeKeyValueFromQuery( window.location, key, true );
+		var urlObject = tribe.filterBar.filters.getCurrentUrlAsObject( event.data.container );
+		var location = tribe.filterBar.filters.removeKeyValueFromQuery( urlObject, key, true );
 		var value = event.data.target.attr( 'value' );
 
 		if ( value ) {
@@ -162,7 +163,7 @@ tribe.filterBar.filterMultiselects = {};
 	 *
 	 * @todo: @paulmskim this will be removed once a more permanent solution can be put in place.
 	 *
-	 * @since  TBD
+	 * @since  5.0.2
 	 *
 	 * @param  {Event} event event object for 'keydown' event.
 	 *
@@ -177,7 +178,7 @@ tribe.filterBar.filterMultiselects = {};
 	 *
 	 * @todo: @paulmskim this will be removed once a more permanent solution can be put in place.
 	 *
-	 * @since  TBD
+	 * @since  5.0.2
 	 *
 	 * @param  {Event} event event object for 'focusin' event.
 	 *
@@ -192,7 +193,7 @@ tribe.filterBar.filterMultiselects = {};
 	 *
 	 * @todo: @paulmskim this will be removed once a more permanent solution can be put in place.
 	 *
-	 * @since  TBD
+	 * @since  5.0.2
 	 *
 	 * @param  {Event} event event object for 'focusout' event.
 	 *
@@ -253,5 +254,5 @@ tribe.filterBar.filterMultiselects = {};
 	};
 
 	// Configure on document ready.
-	$document.ready( obj.ready );
+	$( obj.ready );
 } )( jQuery, _, tribe.filterBar.filterMultiselects );

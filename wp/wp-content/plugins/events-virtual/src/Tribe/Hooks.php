@@ -22,6 +22,7 @@
 namespace Tribe\Events\Virtual;
 
 use Tribe\Events\Virtual\Meetings\Zoom_Provider;
+use Tribe\Events\Virtual\Views\V2\Widgets\Widget;
 use Tribe__Context as Context;
 use Tribe__Events__Main as Events_Plugin;
 use Tribe__Template as Template;
@@ -224,6 +225,32 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		add_action(
 			'tribe_events_pro_shortcode_tribe_events_before_assets',
 			[ $this, 'action_include_assets' ]
+		);
+		// Generic Widgets.
+
+		add_action(
+			'tribe_events_views_v2_widget_after_enqueue_assets',
+			[ $this, 'action_widget_after_enqueue_assets' ],
+			10,
+			3
+		);
+
+		// Widget Events List.
+
+		add_action(
+			'tribe_template_after_include:events/v2/widgets/widget-events-list/event/date/featured',
+			[ $this, 'action_add_virtual_event_marker' ],
+			10,
+			3
+		);
+
+		// Widget Featured Venue.
+
+		add_action(
+			'tribe_template_after_include:events-pro/v2/widgets/widget-featured-venue/events-list/event/date/featured',
+			[ $this, 'action_add_virtual_event_marker' ],
+			10,
+			3
 		);
 	}
 
@@ -637,5 +664,18 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 */
 	public function action_include_assets() {
 		return $this->container->make( Assets::class )->load_on_shortcode();
+	}
+
+	/**
+	 * Action to enqueue assets for virtual events for events list widget.
+	 *
+	 * @since 1.1.2
+	 *
+	 * @param boolean         $should_enqueue Whether assets are enqueued or not.
+	 * @param \Tribe__Context $context        Context we are using to build the view.
+	 * @param View_Interface  $view           Which view we are using the template on.
+	 */
+	public function action_widget_after_enqueue_assets( $should_enqueue, $context, $view ) {
+		$this->container->make( Widget::class )->action_enqueue_assets( $should_enqueue, $context, $view );
 	}
 }

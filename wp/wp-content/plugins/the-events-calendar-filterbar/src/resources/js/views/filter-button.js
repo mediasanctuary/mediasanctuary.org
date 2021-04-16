@@ -63,6 +63,9 @@ tribe.filterBar.filterButton = {};
 	obj.handleResize = function( event ) {
 		var $container = event.data.container;
 		var $filterBar = $container.find( obj.selectors.filterBar );
+		if ( 0 === $filterBar.length ) {
+			return;
+		}
 		var state = $filterBar.data( 'tribeEventsState' );
 		var containerState = $container.data( 'tribeEventsState' );
 		var isMobile = containerState.isMobile;
@@ -206,6 +209,9 @@ tribe.filterBar.filterButton = {};
 	 */
 	obj.initState = function( $container ) {
 		var $filterBar = $container.find( obj.selectors.filterBar );
+		if ( 0 === $filterBar.length ) {
+			return;
+		}
 		var containerState = $container.data( 'tribeEventsState' );
 		var isMobile = containerState.isMobile;
 
@@ -260,5 +266,5 @@ tribe.filterBar.filterButton = {};
 	};
 
 	// Configure on document ready.
-	$document.ready( obj.ready );
+	$( obj.ready );
 } )( jQuery, tribe.filterBar.filterButton );

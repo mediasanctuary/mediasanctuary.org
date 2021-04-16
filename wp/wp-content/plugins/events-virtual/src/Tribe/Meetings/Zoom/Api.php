@@ -442,10 +442,11 @@ class Api {
 		 */
 		$expiration = ( (int) $d['expires_in'] ) - 60;
 
-		// Since the access token is, by its own nature, transient, let's store it as that.
-		set_transient( Settings::$option_prefix . 'access_token', $access_token, $expiration );
 		// Save the refresh token.
 		tribe_update_option( Settings::$option_prefix . 'refresh_token', $refresh_token );
+
+		// Since the access token is, by its own nature, transient, let's store it as that.
+		set_transient( Settings::$option_prefix . 'access_token', $access_token, $expiration );
 
 		return $access_token;
 	}

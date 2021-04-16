@@ -52,6 +52,7 @@
 
 	.tribe-filter-bar__filters-slider-nav--overflow-start .tribe-filter-bar__filters-slider-nav-button--prev,
 	.tribe-filter-bar__filters-slider-nav--overflow-end .tribe-filter-bar__filters-slider-nav-button--next {
+		background-color: transparent;
 		display: block;
 	}
 
@@ -64,21 +65,6 @@
 		top: 50%;
 		transform: translateY(-50%);
 		z-index: 1;
-
-		&:hover,
-		&:focus {
-
-			.tribe-filter-bar__filters-slider-nav-button-icon path {
-				fill: var(--color-accent-secondary-hover);
-			}
-		}
-
-		&:active {
-
-			.tribe-filter-bar__filters-slider-nav-button-icon path {
-				fill: var(--color-accent-secondary-active);
-			}
-		}
 	}
 
 	.tribe-filter-bar__filters-slider-nav-button--prev {
@@ -94,7 +80,7 @@
 		width: 10px;
 
 		path {
-			fill: var(--color-border-tertiary);
+			fill: currentColor;
 		}
 	}
 }

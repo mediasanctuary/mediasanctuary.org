@@ -19,6 +19,7 @@ namespace Tribe\Events\Filterbar\Views\V2;
 
 use Tribe\Events\Views\V2\View_Interface;
 use Tribe__Context as Context;
+use Tribe__Template;
 
 /**
  * Class Hooks.
@@ -56,7 +57,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * @since 4.9.0
 	 */
 	public function register() {
-		$this->container->singleton( Customizer::class, Customizer::class );
 		$this->container->singleton( Body_Classes::class, Body_Classes::class );
 		tribe( Body_Classes::class )->register();
 
@@ -158,13 +158,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * @return string|void
 	 */
 	public function action_include_filter_bar( $file, $name, $template ) {
-
-		// Prevent Including the Filter Bar if on a Shortcode
-		$context = $template->get_context();
-		if ( $context->get( 'shortcode'  ) ) {
-			return;
-		}
-
 		if ( ! $this->container->make( Filters::class )->should_display_filters( $template->get_view() ) ) {
 			return;
 		}
@@ -227,10 +220,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * @since 4.9.0
 	 */
 	public function display_filters( $context ) {
-		if ( false !== $context->get( 'shortcode', false ) ) {
-			return;
-		}
-
 		$this->container->make( Filters\Factory::class )->for_display( $context );
 	}
 
@@ -280,19 +269,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		}
 
 		return $classes;
-	}
-
-	/**
-	 * Listens on the shortcode View hooks toggle to set the `render_filters` property and avoid displaying filters
-	 * on shortcodes.
-	 *
-	 * @since 4.9.0
-	 *
-	 * @param bool $toggle Whether View hooks are being toggled on or off. Before a shortcode HTML is rendered the
-	 *                     toggle will be `true`, `false` after a shortcode HTML rendered.
-	 */
-	public function on_shortcode_toggle_view_hooks( $toggle ) {
-		$this->should_display_filters = ! $toggle;
 	}
 
 	/**

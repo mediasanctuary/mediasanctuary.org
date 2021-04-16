@@ -9,7 +9,7 @@
  *
  * @link {INSERT_ARTICLE_LINK_HERE}
  *
- * @version 1.0.0
+ * @version 1.1.2
  *
  * @var WP_Post $event The event post object with properties added by the `tribe_get_event` function.
  *
@@ -30,7 +30,7 @@ $virtual_label = tribe_get_virtual_event_label_singular();
 		aria-label="<?php echo esc_attr( $virtual_label ); ?>"
 		title="<?php echo esc_attr( $virtual_label ); ?>"
 	>
-		<?php $this->template( 'components/icons/virtual', [ 'classes' => [ 'tribe-events-virtual-single-marker__icon-svg' ] ] ); ?>
+		<?php $this->template( 'v2/components/icons/virtual', [ 'classes' => [ 'tribe-events-virtual-single-marker__icon-svg' ] ] ); ?>
 	</em>
 	<?php echo esc_html( $virtual_label ); ?>
 </div>

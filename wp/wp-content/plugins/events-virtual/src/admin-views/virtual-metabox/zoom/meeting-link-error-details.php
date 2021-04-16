@@ -11,7 +11,7 @@
  *
  * @version 1.0.0
  *
- * @link    http://m.tri.be/1aiy
+ * @link    http://evnt.is/1aiy
  *
  * @var string $remove_link_url   The URL to remove the event Zoom Meeting.
  * @var string $remove_link_label The label of the button to remove the event Zoom Meeting link.

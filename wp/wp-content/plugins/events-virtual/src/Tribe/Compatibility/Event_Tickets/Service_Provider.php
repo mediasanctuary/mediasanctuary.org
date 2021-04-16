@@ -226,6 +226,7 @@ class Service_Provider extends \tad_DI52_ServiceProvider {
 	 * Filter wether the virtual event info should show or not on the front end.
 	 *
 	 * @since 1.0.4
+	 * @since 1.1.2 Bail earlier if the user isn't logged in.
 	 *
 	 * @param boolean     $show  If the virtual content should show or not.
 	 * @param WP_Post|int $event The post object or ID of the viewed event.
@@ -248,9 +249,14 @@ class Service_Provider extends \tad_DI52_ServiceProvider {
 			return true;
 		}
 
+		// Everything after this depends on the user being logged in.
+		if ( ! is_user_logged_in() ) {
+			return false;
+		}
+
 		// Do we need to be logged in?
 		if ( in_array( 'logged-in', $show_to ) ) {
-			return is_user_logged_in();
+			return true;
 		}
 
 		$user_id = get_current_user_id();
@@ -258,6 +264,7 @@ class Service_Provider extends \tad_DI52_ServiceProvider {
 		// Check RSVP first.
 		if ( in_array( 'rsvp', $show_to ) ) {
 			$rsvp = $this->container->make( Ticket_Meta::class )->user_is_rsvp_attendee( $event, $user_id );
+
 			if ( tribe_is_truthy( $rsvp ) ) {
 				return true;
 			}
@@ -266,6 +273,7 @@ class Service_Provider extends \tad_DI52_ServiceProvider {
 		// Then tickets.
 		if ( in_array( 'ticket', $show_to ) ) {
 			$ticket = $this->container->make( Ticket_Meta::class )->user_is_ticket_attendee( $event, $user_id );
+
 			if ( tribe_is_truthy( $ticket ) ) {
 				return true;
 			}

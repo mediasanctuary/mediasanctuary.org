@@ -322,8 +322,6 @@ class Event {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @TODO: add additional meta as needed.
-	 *
 	 * @param WP_Post $event Event post object.
 	 *
 	 * @return array virtual meta.

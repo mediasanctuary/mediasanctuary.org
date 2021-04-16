@@ -33,7 +33,7 @@ class Service_Provider extends \tad_DI52_ServiceProvider {
 
 		add_action( 'tribe_plugins_loaded', [ $this, 'handle_actions' ], 20 );
 		add_action( 'tribe_plugins_loaded', [ $this, 'handle_filters' ], 20 );
-		add_action( 'tribe_template_done', [ $this, 'short_circuit_templates' ], 10, 2 );
+		add_filter( 'tribe_template_done', [ $this, 'short_circuit_templates' ], 10, 2 );
 		add_filter( 'tribe_template_file', [ $this, 'replace_metabox_template' ], 20, 3 );
 		add_filter( 'get_post_metadata', [ $this, 'redirect_online_meta_to_virtual_meta' ], 20, 4 );
 	}

@@ -13,7 +13,7 @@
  *
  * @version 1.0.2
  *
- * @link    http://m.tri.be/1aiy
+ * @link    http://evnt.is/1aiy
  *
  * @var string   $metabox_id The current metabox id.
  * @var \WP_Post $post       The current event post object, as decorated by the `tribe_get_event` function.

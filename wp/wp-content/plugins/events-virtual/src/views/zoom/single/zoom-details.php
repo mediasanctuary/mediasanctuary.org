@@ -7,9 +7,9 @@
  *
  * See more documentation about our views templating system.
  *
- * @link http://m.tri.be/1aiy
+ * @link http://evnt.is/1aiy
  *
- * @version 1.0.0
+ * @version 1.1.2
  *
  * @var WP_Post $event             The event post object with properties added by the `tribe_get_event` function.
  * @var array   $link_button_attrs Associative array of link button attributes.
@@ -46,7 +46,7 @@ if ( ! empty( $event->zoom_join_url ) ) {
 		<div class="tribe-events-virtual-single-zoom-details__meta-group tribe-events-virtual-single-zoom-details__meta-group--zoom-link tribe-events-meta-group">
 			<?php
 			$this->template(
-				'components/icons/video',
+				'v2/components/icons/video',
 				[
 					'classes' => [
 						'tribe-events-virtual-single-zoom-details__icon',
@@ -87,7 +87,7 @@ if ( ! empty( $event->zoom_join_url ) ) {
 		<div class="tribe-events-virtual-single-zoom-details__meta-group tribe-events-virtual-single-zoom-details__meta-group--zoom-phone tribe-events-meta-group">
 			<?php
 			$this->template(
-				'components/icons/phone',
+				'v2/components/icons/phone',
 				[
 					'classes' => [
 						'tribe-events-virtual-single-zoom-details__icon',

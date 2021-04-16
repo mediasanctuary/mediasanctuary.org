@@ -1,14 +1,14 @@
-# Copyright (C) 2020 Modern Tribe
+# Copyright (C) 2021 Modern Tribe
 # This file is distributed under the same license as the The Events Calendar: Virtual Events package.
 msgid ""
 msgstr ""
-"Project-Id-Version: The Events Calendar: Virtual Events 1.1.0\n"
+"Project-Id-Version: The Events Calendar: Virtual Events 1.2.0\n"
 "Report-Msgid-Bugs-To: http://m.tri.be/191x\n"
-"POT-Creation-Date: 2020-10-20 15:45:57+00:00\n"
+"POT-Creation-Date: 2021-03-19 04:40:06+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-10-20 15:45\n"
+"PO-Revision-Date: 2021-03-19 04:40\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 
@@ -58,7 +58,7 @@ msgstr ""
 
 #. Translators: %1$s is the lowercase plural virtual event term.
 #: src/Tribe/Compatibility/Filter_Bar/Events_Virtual_Filter.php:137
-msgid "Show only non-%1$s"
+msgid "Hide %1$s"
 msgstr ""
 
 #. Translators: Opening and closing tags.
@@ -85,12 +85,12 @@ msgctxt "Default placeholder text for the virtual event URL input."
 msgid "Enter URL for YouTube, Facebook, etc."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Abstract_Meetings.php:298
+#: src/Tribe/Meetings/Zoom/Abstract_Meetings.php:299
 msgctxt "Ajax error message."
 msgid "The provided nonce is not valid."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Abstract_Meetings.php:326
+#: src/Tribe/Meetings/Zoom/Abstract_Meetings.php:327
 msgctxt "An error raised in the context of the Zoom API integration."
 msgid "The post ID is missing from the request."
 msgstr ""
@@ -578,9 +578,9 @@ msgid ""
 msgstr ""
 
 #. Author of the plugin/theme
-msgid "Modern Tribe, Inc."
+msgid "The Events calendar"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "http://m.tri.be/20"
+msgid "http://evnt.is/20"
 msgstr ""

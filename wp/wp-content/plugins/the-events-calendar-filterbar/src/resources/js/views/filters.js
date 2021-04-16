@@ -191,6 +191,24 @@ tribe.filterBar.filters = {};
 		// Remove key value from query string pieces.
 		var modifiedQueryStringPieces = obj.removeKeyValueFromQueryStringPieces( queryStringPieces, key, value );
 
+		var keyRegex = /([a-z\d_]+)(\[\])?/i;
+		var keyParts = key.match( keyRegex );
+
+		if (
+			typeof tribeFilterBarFilterMap !== 'undefined'
+			&& typeof tribeFilterBarFilterMap[ keyParts[1] ] !== 'undefined'
+		) {
+			var mapKey = tribeFilterBarFilterMap[ keyParts[1] ];
+			if ( typeof keyParts[2] !== 'undefined' ) {
+				mapKey += keyParts[2];
+			}
+			modifiedQueryStringPieces = obj.removeKeyValueFromQueryStringPieces(
+				modifiedQueryStringPieces,
+				mapKey,
+				value
+			);
+		}
+
 		// Build back query string if query string pieces exist.
 		var modifiedQueryString = '';
 		if ( modifiedQueryStringPieces.length ) {
@@ -340,7 +358,7 @@ tribe.filterBar.filters = {};
 	/**
 	 * Set flag for filter bar request.
 	 *
-	 * @since  TBD
+	 * @since  5.0.2
 	 *
 	 * @param  {jQuery} $container jQuery object of view container.
 	 *
@@ -372,12 +390,11 @@ tribe.filterBar.filters = {};
 	obj.submitRequest = function( $container, url ) {
 		$container.trigger( 'beforeFilterBarSubmitRequest.tribeEvents' );
 
-		var currentUrl = window.location.href;
 		var nonce = $container.data( 'view-rest-nonce' );
 		var shouldManageUrl = tribe.events.views.manager.shouldManageUrl( $container );
 
 		var data = {
-			prev_url: encodeURI( decodeURI( currentUrl ) ),
+			prev_url: encodeURI( decodeURI( obj.getCurrentUrl( $container ) ) ),
 			url: encodeURI( decodeURI( url ) ),
 			should_manage_url: shouldManageUrl,
 			_wpnonce: nonce,
@@ -388,6 +405,37 @@ tribe.filterBar.filters = {};
 		tribe.events.views.manager.request( data, $container );
 
 		$container.trigger( 'afterFilterBarSubmitRequest.tribeEvents' );
+	};
+
+	/**
+	 * Helper method to fetch the container's current URL.
+	 *
+	 * @since 5.1.0
+	 *
+	 * @param {jQuery} $container jQuery object of view controller.
+	 * @returns {string}
+	 */
+	obj.getCurrentUrl = function( $container ) {
+		var containerData = tribe.events.views.manager.getContainerData( $container );
+		return containerData.url;
+	};
+
+	/**
+	 * Helper method to fetch the container's current URL as an anchor object.
+	 *
+	 * An anchor object is the closest approximation to window.location. It has all of
+	 * the same properties (plus extra).
+	 *
+	 * @since 5.1.0
+	 *
+	 * @param {jQuery} $container jQuery object of view controller.
+	 * @returns {HTMLAnchorElement}
+	 */
+	obj.getCurrentUrlAsObject = function( $container ) {
+		var currentUrl = obj.getCurrentUrl( $container );
+		var urlObj     = document.createElement( 'a' );
+		urlObj.href    = currentUrl;
+		return urlObj;
 	};
 
 	/**
@@ -474,5 +522,5 @@ tribe.filterBar.filters = {};
 	};
 
 	// Configure on document ready.
-	$document.ready( obj.ready );
+	$( obj.ready );
 } )( jQuery, tribe.filterBar.filters );

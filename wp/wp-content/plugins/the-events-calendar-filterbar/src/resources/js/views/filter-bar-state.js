@@ -41,8 +41,8 @@ tribe.filterBar.filterBarState = {};
 	 */
 	obj.selectors = {
 		actionDone: '[data-js="tribe-filter-bar__action-done"]',
-		container: '[data-js="tribe-events-view"]', // @todo: @paulmskim remove when proper hooks are in place.
-		dataScript: '[data-js="tribe-events-view-data"]', // @todo: @paulmskim remove when proper hooks are in place.
+		container: '[data-js="tribe-events-view"]', // @todo [BTRIA-621]: @paulmskim remove when proper hooks are in place.
+		dataScript: '[data-js="tribe-events-view-data"]', // @todo [BTRIA-621]: @paulmskim remove when proper hooks are in place.
 		filterBar: '[data-js~="tribe-filter-bar"]',
 		filterBarOpen: '.tribe-filter-bar--open',
 		filterButton: '[data-js~="tribe-events-filter-button"]',
@@ -99,14 +99,14 @@ tribe.filterBar.filterBarState = {};
 	/**
 	 * Setup filter bar.
 	 *
-	 * @since  TBD
+	 * @since  5.0.2
 	 *
 	 * @param  {HTMLElement} container HTML element of the container containing the script tag calling setup
 	 *
 	 * @return {void}
 	 */
 	obj.setup = function( container ) {
-		// @todo: @paulmskim all of this is temporary, this will hook into the breakpoints.js in TEC when released with TEC containing the fixes.
+		// @todo [BTRIA-621]: @paulmskim all of this is temporary, this will hook into the breakpoints.js in TEC when released with TEC containing the fixes.
 		var $container = $( container );
 
 		if ( ! $container.is( obj.selectors.container ) ) {
@@ -125,7 +125,7 @@ tribe.filterBar.filterBarState = {};
 
 		// If we have data element set it up.
 		if ( $data.length ) {
-			data = JSON.parse( $.trim( $data.text() ) );
+			data = JSON.parse( $data.text().trim() );
 		}
 
 		var breakpoints = Object.keys( data.breakpoints );

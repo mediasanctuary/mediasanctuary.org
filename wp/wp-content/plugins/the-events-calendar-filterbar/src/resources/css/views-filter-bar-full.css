@@ -165,6 +165,10 @@
  * ----------------------------------------------------------------------------- */
 
 /* -----------------------------------------------------------------------------
+ * SVG - Guest
+ * ----------------------------------------------------------------------------- */
+
+/* -----------------------------------------------------------------------------
  * SVG - List
  * ----------------------------------------------------------------------------- */
 
@@ -194,6 +198,10 @@
 
 /* -----------------------------------------------------------------------------
  * SVG - No Map
+ * ----------------------------------------------------------------------------- */
+
+/* -----------------------------------------------------------------------------
+ * SVG - Paper Plane
  * ----------------------------------------------------------------------------- */
 
 /* -----------------------------------------------------------------------------
@@ -401,13 +409,9 @@
  *
  * ----------------------------------------------------------------------------- */
 
-/* -------------------------------------------------------------------------
-	 * Theme Overrides - Twenty Twenty
-	 * ------------------------------------------------------------------------- */
+/* .tribe-filter-bar {
 
-.tribe-theme-twentytwenty .tribe-filter-bar .tribe-common-form-control-checkbox__input {
-			top: 0;
-		}
+} */
 
 /* -----------------------------------------------------------------------------
  *
@@ -435,11 +439,24 @@
 				stroke: #141827;
 			}
 
+.tribe-filter-bar .tribe-filter-bar-c-clear-button__reset-icon path {
+		stroke: #5d5d5d;
+	}
+
 /* -----------------------------------------------------------------------------
  *
  * Dropdown
  *
  * ----------------------------------------------------------------------------- */
+
+.tribe-filter-bar {
+
+	/* -------------------------------------------------------------------------
+	 *
+	 * Dropdown: Theme Overrides
+	 *
+	 * ------------------------------------------------------------------------- */
+}
 
 .tribe-filter-bar .tribe-filter-bar-c-dropdown .select2-selection {
 			background-color: #141827;
@@ -480,9 +497,7 @@
 			line-height: 1.62;
 			font-weight: 400;
 
-			background: 12px center no-repeat;
-			background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 18.711l-6.044-6.044a7.782 7.782 0 0 0 1.688-4.845c0-2.089-.822-4.044-2.288-5.533C11.866.822 9.91 0 7.822 0S3.778.822 2.29 2.289A7.801 7.801 0 0 0 0 7.822c0 2.09.822 4.045 2.289 5.534a7.801 7.801 0 0 0 5.533 2.288c1.778 0 3.467-.6 4.845-1.688L18.71 20 20 18.711zM3.578 12.067c-2.334-2.334-2.334-6.156 0-8.49a5.968 5.968 0 0 1 4.244-1.755c1.6 0 3.111.622 4.245 1.756 2.333 2.333 2.333 6.155 0 8.489a5.968 5.968 0 0 1-4.245 1.755c-1.6 0-3.11-.622-4.244-1.755z' fill='%235d5d5d'/%3E%3C/svg%3E");
-			background-size: 14px;
+			background: url("data:image/svg+xml;charset=utf-8,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 18.711l-6.044-6.044a7.782 7.782 0 0 0 1.688-4.845c0-2.089-.822-4.044-2.288-5.533C11.866.822 9.91 0 7.822 0S3.778.822 2.29 2.289A7.801 7.801 0 0 0 0 7.822c0 2.09.822 4.045 2.289 5.534a7.801 7.801 0 0 0 5.533 2.288c1.778 0 3.467-.6 4.845-1.688L18.71 20 20 18.711zM3.578 12.067c-2.334-2.334-2.334-6.156 0-8.49a5.968 5.968 0 0 1 4.244-1.755c1.6 0 3.111.622 4.245 1.756 2.333 2.333 2.333 6.155 0 8.489a5.968 5.968 0 0 1-4.245 1.755c-1.6 0-3.11-.622-4.244-1.755z' fill='%235d5d5d'/%3E%3C/svg%3E") #fff 12px center / 14px no-repeat;
 			border: 1px solid #d5d5d5;
 			border-radius: 4px;
 		}
@@ -537,6 +552,10 @@
 			transition: opacity 0.2s ease;
 		}
 
+.tribe-filter-bar .tribe-filter-bar-c-dropdown .select2-dropdown {
+			background-color: transparent;
+		}
+
 /* -------------------------------------------------------------------------
 	 * Theme Overrides - Twenty Seventeen
 	 * ------------------------------------------------------------------------- */
@@ -560,15 +579,42 @@
 			padding: 5px 11px 7px 12px;
 		}
 
+/* -------------------------------------------------------------------------
+	 * Theme Overrides - Enfold
+	 * ------------------------------------------------------------------------- */
+
+#top.tribe-theme-enfold .tribe-filter-bar .tribe-filter-bar-c-dropdown .select2-search__field {
+				background: url("data:image/svg+xml;charset=utf-8,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 18.711l-6.044-6.044a7.782 7.782 0 0 0 1.688-4.845c0-2.089-.822-4.044-2.288-5.533C11.866.822 9.91 0 7.822 0S3.778.822 2.29 2.289A7.801 7.801 0 0 0 0 7.822c0 2.09.822 4.045 2.289 5.534a7.801 7.801 0 0 0 5.533 2.288c1.778 0 3.467-.6 4.845-1.688L18.71 20 20 18.711zM3.578 12.067c-2.334-2.334-2.334-6.156 0-8.49a5.968 5.968 0 0 1 4.244-1.755c1.6 0 3.111.622 4.245 1.756 2.333 2.333 2.333 6.155 0 8.489a5.968 5.968 0 0 1-4.245 1.755c-1.6 0-3.11-.622-4.244-1.755z' fill='%235d5d5d'/%3E%3C/svg%3E") #fff 12px center / 14px no-repeat;
+				padding: 0 20px 0 34px;
+			}
+
 /* -----------------------------------------------------------------------------
  *
  * Filter
  *
  * ----------------------------------------------------------------------------- */
 
+.tribe-filter-bar {
+
+	/* -------------------------------------------------------------------------
+	 *
+	 * Filter: Theme Overrides
+	 *
+	 * ------------------------------------------------------------------------- */
+}
+
 .tribe-filter-bar .tribe-filter-bar-c-filter {
 		border-top: 1px solid #e4e4e4;
 	}
+
+.tribe-filter-bar .tribe-filter-bar-c-filter__toggle,
+	.tribe-filter-bar .tribe-filter-bar-c-filter--accordion .tribe-filter-bar-c-filter__toggle {
+		font-weight: 700;
+	}
+
+.tribe-filter-bar .tribe-filter-bar-c-filter__toggle-minus-icon path, .tribe-filter-bar .tribe-filter-bar-c-filter__toggle-plus-icon path {
+			stroke: #5d5d5d;
+		}
 
 /* These styles mirror the styles in `_pill.pcss` and override the mobile styles. */
 
@@ -583,22 +629,23 @@
 			background-color: #fff;
 			border: 1px solid #d5d5d5;
 			border-radius: 18px;
+			font-weight: 400;
 		}
 
 .tribe-common--breakpoint-medium .tribe-filter-bar .tribe-filter-bar-c-filter--pill .tribe-filter-bar-c-filter__toggle:hover,
 			.tribe-common--breakpoint-medium .tribe-filter-bar .tribe-filter-bar-c-filter--pill .tribe-filter-bar-c-filter__toggle:focus {
-				border-color: #5d5d5d;
 				background-color: #f7f6f6;
+				border-color: #5d5d5d;
 			}
 
 .tribe-common--breakpoint-medium .tribe-filter-bar .tribe-filter-bar-c-filter--pill .tribe-filter-bar-c-filter__toggle:active {
-				border-color: #7d7d7d;
 				background-color: #fff;
+				border-color: #7d7d7d;
 			}
 
 .tribe-common--breakpoint-medium .tribe-filter-bar .tribe-filter-bar-c-filter--pill.tribe-filter-bar-c-filter--has-selections .tribe-filter-bar-c-filter__toggle {
-			border: 1px solid #5d5d5d;
 			background-color: #f7f6f6;
+			border: 1px solid #5d5d5d;
 			font-weight: 700;
 		}
 
@@ -608,8 +655,8 @@
 			}
 
 .tribe-common--breakpoint-medium .tribe-filter-bar .tribe-filter-bar-c-filter--pill.tribe-filter-bar-c-filter--has-selections .tribe-filter-bar-c-filter__toggle:active {
-				border-color: #7d7d7d;
 				background-color: #fff;
+				border-color: #7d7d7d;
 			}
 
 .tribe-common--breakpoint-medium .tribe-filter-bar .tribe-filter-bar-c-filter--pill .tribe-filter-bar-c-filter__remove-button path {
@@ -620,10 +667,36 @@
 					opacity: 0.8;
 				}
 
+.tribe-common--breakpoint-medium .tribe-filter-bar .tribe-filter-bar-c-filter--pill .tribe-filter-bar-c-filter__remove-button-icon path {
+				stroke: #141827;
+			}
+
 .tribe-common--breakpoint-medium .tribe-filter-bar .tribe-filter-bar-c-filter--pill .tribe-filter-bar-c-filter__container {
 			border: 1px solid #e4e4e4;
 			border-radius: 4px;
 			box-shadow: 0 2px 12px 0 rgba(0,0,0, 0.14);
+		}
+
+.tribe-common--breakpoint-medium .tribe-filter-bar .tribe-filter-bar-c-filter--pill .tribe-filter-bar-c-filter__filters-close:hover .tribe-filter-bar-c-filter__filters-close-icon path, .tribe-common--breakpoint-medium .tribe-filter-bar .tribe-filter-bar-c-filter--pill .tribe-filter-bar-c-filter__filters-close:focus .tribe-filter-bar-c-filter__filters-close-icon path {
+					stroke: #141827;
+				}
+
+.tribe-common--breakpoint-medium .tribe-filter-bar .tribe-filter-bar-c-filter--pill .tribe-filter-bar-c-filter__filters-close-icon path {
+			stroke: #5d5d5d;
+		}
+
+/* -------------------------------------------------------------------------
+	 * Theme Overrides - Twenty Seventeen
+	 * ------------------------------------------------------------------------- */
+
+.tribe-theme-twentyseventeen .tribe-filter-bar .tribe-filter-bar-c-filter__toggle,
+			.tribe-theme-twentyseventeen .tribe-filter-bar .tribe-filter-bar-c-filter__toggle:hover,
+			.tribe-theme-twentyseventeen .tribe-filter-bar .tribe-filter-bar-c-filter__toggle:focus {
+				background-color: transparent;
+			}
+
+.tribe-theme-twentyseventeen .tribe-filter-bar .tribe-filter-bar-c-filter__filters-fieldset {
+			background-color: transparent;
 		}
 
 /* -----------------------------------------------------------------------------
@@ -632,13 +705,27 @@
  *
  * ----------------------------------------------------------------------------- */
 
+.tribe-filter-bar {
+
+	/* -------------------------------------------------------------------------
+	 *
+	 * Multiselect: Theme Overrides
+	 *
+	 * ------------------------------------------------------------------------- */
+}
+
 .tribe-filter-bar .tribe-filter-bar-c-multiselect .select2-selection {
+			background-color: transparent;
 			border: none;
 			cursor: default;
 		}
 
 .tribe-filter-bar .tribe-filter-bar-c-multiselect .select2-selection__rendered {
 			border: none;
+		}
+
+.tribe-filter-bar .tribe-filter-bar-c-multiselect .select2-dropdown {
+			background-color: transparent;
 		}
 
 .tribe-filter-bar .tribe-filter-bar-c-multiselect .select2-search__field {
@@ -648,9 +735,7 @@
 			line-height: 1.62;
 			font-weight: 400;
 
-			background: 12px center no-repeat;
-			background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 18.711l-6.044-6.044a7.782 7.782 0 0 0 1.688-4.845c0-2.089-.822-4.044-2.288-5.533C11.866.822 9.91 0 7.822 0S3.778.822 2.29 2.289A7.801 7.801 0 0 0 0 7.822c0 2.09.822 4.045 2.289 5.534a7.801 7.801 0 0 0 5.533 2.288c1.778 0 3.467-.6 4.845-1.688L18.71 20 20 18.711zM3.578 12.067c-2.334-2.334-2.334-6.156 0-8.49a5.968 5.968 0 0 1 4.244-1.755c1.6 0 3.111.622 4.245 1.756 2.333 2.333 2.333 6.155 0 8.489a5.968 5.968 0 0 1-4.245 1.755c-1.6 0-3.11-.622-4.244-1.755z' fill='%235d5d5d'/%3E%3C/svg%3E");
-			background-size: 14px;
+			background: url("data:image/svg+xml;charset=utf-8,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 18.711l-6.044-6.044a7.782 7.782 0 0 0 1.688-4.845c0-2.089-.822-4.044-2.288-5.533C11.866.822 9.91 0 7.822 0S3.778.822 2.29 2.289A7.801 7.801 0 0 0 0 7.822c0 2.09.822 4.045 2.289 5.534a7.801 7.801 0 0 0 5.533 2.288c1.778 0 3.467-.6 4.845-1.688L18.71 20 20 18.711zM3.578 12.067c-2.334-2.334-2.334-6.156 0-8.49a5.968 5.968 0 0 1 4.244-1.755c1.6 0 3.111.622 4.245 1.756 2.333 2.333 2.333 6.155 0 8.489a5.968 5.968 0 0 1-4.245 1.755c-1.6 0-3.11-.622-4.244-1.755z' fill='%235d5d5d'/%3E%3C/svg%3E") #fff 12px center / 14px no-repeat;
 			border: 1px solid #d5d5d5;
 			border-radius: 4px;
 		}
@@ -667,10 +752,6 @@
 				color: #5d5d5d;
 			}
 
-.tribe-filter-bar .tribe-filter-bar-c-multiselect .select2-selection__clear {
-			display: none;
-		}
-
 .tribe-filter-bar .tribe-filter-bar-c-multiselect .select2-selection__choice {
 			color: #141827;
 			font-family: "Helvetica Neue", Helvetica, -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
@@ -680,7 +761,7 @@
 			font-weight: 700;
 
 			background-color: #141827;
-			border: none;
+			border: 1px solid #141827;
 			border-radius: 14px;
 			color: #fff;
 			transition: background-color 0.2s ease;
@@ -715,7 +796,7 @@
 
 .tribe-filter-bar .tribe-filter-bar-c-multiselect .select2-results__option--highlighted {
 			background-color: transparent;
-			opacity: 0.8;
+			opacity: 0.3;
 			transition: opacity 0.2s ease;
 		}
 
@@ -725,6 +806,16 @@
 
 .tribe-theme-twentyseventeen .tribe-filter-bar .tribe-filter-bar-c-multiselect .select2-search__field {
 				border-radius: 4px;
+				color: #141827;
+			}
+
+/* -------------------------------------------------------------------------
+	 * Theme Overrides - Enfold
+	 * ------------------------------------------------------------------------- */
+
+#top.tribe-theme-enfold .tribe-filter-bar .tribe-filter-bar-c-multiselect .select2-search__field {
+				background: url("data:image/svg+xml;charset=utf-8,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 18.711l-6.044-6.044a7.782 7.782 0 0 0 1.688-4.845c0-2.089-.822-4.044-2.288-5.533C11.866.822 9.91 0 7.822 0S3.778.822 2.29 2.289A7.801 7.801 0 0 0 0 7.822c0 2.09.822 4.045 2.289 5.534a7.801 7.801 0 0 0 5.533 2.288c1.778 0 3.467-.6 4.845-1.688L18.71 20 20 18.711zM3.578 12.067c-2.334-2.334-2.334-6.156 0-8.49a5.968 5.968 0 0 1 4.244-1.755c1.6 0 3.111.622 4.245 1.756 2.333 2.333 2.333 6.155 0 8.489a5.968 5.968 0 0 1-4.245 1.755c-1.6 0-3.11-.622-4.244-1.755z' fill='%235d5d5d'/%3E%3C/svg%3E") #fff 12px center / 14px no-repeat;
+				padding: 0 20px 0 34px;
 			}
 
 /* -----------------------------------------------------------------------------
@@ -740,6 +831,7 @@
 	}
 
 .tribe-filter-bar .tribe-filter-bar-c-pill--button .tribe-filter-bar-c-pill__pill {
+		background-color: #fff;
 		transition: all 0.2s ease;
 	}
 
@@ -755,8 +847,9 @@
 		}
 
 .tribe-filter-bar .tribe-filter-bar-c-pill--has-selections .tribe-filter-bar-c-pill__pill {
-		border: 1px solid #5d5d5d;
 		background-color: #f7f6f6;
+		border: 1px solid #5d5d5d;
+		border-radius: 14px;
 		font-weight: 700;
 	}
 
@@ -777,6 +870,10 @@
 .tribe-filter-bar .tribe-filter-bar-c-pill__remove-button:hover path, .tribe-filter-bar .tribe-filter-bar-c-pill__remove-button:focus path {
 				opacity: 0.8;
 			}
+
+.tribe-filter-bar .tribe-filter-bar-c-pill__remove-button-icon path {
+		stroke: #141827;
+	}
 
 /* -------------------------------------------------------------------------
 	 * Theme Overrides - Avada
@@ -848,19 +945,18 @@
 
 /* -----------------------------------------------------------------------------
  *
- * Checkbox
- *
- * ----------------------------------------------------------------------------- */
-
-/* .tribe-filter-bar {
-
-} */
-
-/* -----------------------------------------------------------------------------
- *
  * Filter Button
  *
  * ----------------------------------------------------------------------------- */
+
+.tribe-events {
+
+	/* -------------------------------------------------------------------------
+	 *
+	 * Filter Button: Theme Overrides
+	 *
+	 * ------------------------------------------------------------------------- */
+}
 
 .tribe-common--breakpoint-medium.tribe-events--filter-bar-horizontal.tribe-events .tribe-events-header--has-event-search .tribe-events-c-events-bar__filter-button-container {
 			border-right: 1px solid #e4e4e4;
@@ -900,9 +996,23 @@
 			display: block;
 		}
 
+.tribe-events .tribe-events-c-events-bar__filter-button-icon path {
+		fill: #141827;
+	}
+
 .tribe-events .tribe-events-c-events-bar__filter-button-text {
 		text-transform: capitalize;
 	}
+
+/* -------------------------------------------------------------------------
+	 * Theme Overrides - Twenty Seventeen
+	 * ------------------------------------------------------------------------- */
+
+.tribe-theme-twentyseventeen.colors-dark .tribe-events .tribe-events-c-events-bar__filter-button,
+			.tribe-theme-twentyseventeen.colors-dark .tribe-events .tribe-events-c-events-bar__filter-button:hover,
+			.tribe-theme-twentyseventeen.colors-dark .tribe-events .tribe-events-c-events-bar__filter-button:focus {
+				background-color: transparent;
+			}
 
 /* Views */
 
@@ -973,9 +1083,9 @@
 		}
 
 .tribe-filter-bar .tribe-filter-bar__filters-slider-nav--overflow-start:before {
-			content: '';
 			background: linear-gradient(-90deg, rgba(255,255,255, 0) 15%, #fff 70%);
-			left: 0;
+			content: '';
+			left: -1px;
 		}
 
 .tribe-filter-bar .tribe-filter-bar__filters-slider-nav--overflow-end:after {
@@ -983,6 +1093,24 @@
 			content: '';
 			right: 0;
 		}
+
+.tribe-filter-bar .tribe-filter-bar__filters-slider-nav-button:hover .tribe-filter-bar__filters-slider-nav-button-icon path, .tribe-filter-bar .tribe-filter-bar__filters-slider-nav-button:focus .tribe-filter-bar__filters-slider-nav-button-icon path {
+				fill: rgba(20,24,39, 0.8);
+			}
+
+.tribe-filter-bar .tribe-filter-bar__filters-slider-nav-button:active .tribe-filter-bar__filters-slider-nav-button-icon path {
+				fill: rgba(20,24,39, 0.9);
+			}
+
+.tribe-filter-bar .tribe-filter-bar__filters-slider-nav-button-icon path {
+		fill: #7d7d7d;
+	}
+
+/* Compatibility with Elementor */
+
+.tribe-filter-bar .tribe-swiper-slide {
+		width: auto;
+	}
 
 /* -----------------------------------------------------------------------------
  *

@@ -38,9 +38,7 @@
 		.select2-search__field {
 			@mixin desktop-body-1;
 
-			background: 12px center no-repeat;
-			background-image: svg-inline(search);
-			background-size: 14px;
+			background: svg-inline(search) var(--color-background) 12px center / 14px no-repeat;
 			border: 1px solid var(--color-border-default);
 			border-radius: var(--border-radius-default);
 
@@ -81,7 +79,17 @@
 			opacity: var(--opacity-icon-hover);
 			transition: var(--transition-opacity);
 		}
+
+		.select2-dropdown {
+			background-color: transparent;
+		}
 	}
+
+	/* -------------------------------------------------------------------------
+	 *
+	 * Dropdown: Theme Overrides
+	 *
+	 * ------------------------------------------------------------------------- */
 
 	/* -------------------------------------------------------------------------
 	 * Theme Overrides - Twenty Seventeen
@@ -111,6 +119,21 @@
 			@mixin desktop-body-3-sup;
 
 			padding: 5px 11px 7px 12px;
+		}
+	}
+
+	/* -------------------------------------------------------------------------
+	 * Theme Overrides - Enfold
+	 * ------------------------------------------------------------------------- */
+
+	#top.tribe-theme-enfold & {
+
+		.tribe-filter-bar-c-dropdown {
+
+			.select2-search__field {
+				background: svg-inline(search) var(--color-background) 12px center / 14px no-repeat;
+				padding: 0 20px 0 34px;
+			}
 		}
 	}
 }

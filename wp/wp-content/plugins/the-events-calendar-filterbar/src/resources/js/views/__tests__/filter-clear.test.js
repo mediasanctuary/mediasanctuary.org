@@ -48,6 +48,8 @@ describe( 'Filter Clear', () => {
 			global.tribe.filterBar.filters = {
 				removeKeyValueFromQuery: jest.fn().mockImplementation( () => ( {} ) ),
 				submitRequest: jest.fn(),
+				getCurrentUrl: jest.fn().mockImplementation( () => ( {} ) ),
+				getCurrentUrlAsObject: jest.fn().mockImplementation( () => ( {} ) ),
 			};
 		} );
 

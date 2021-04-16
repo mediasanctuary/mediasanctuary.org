@@ -7,7 +7,7 @@
  *
  * See more documentation about our views templating system.
  *
- * @link http://m.tri.be/1aiy
+ * @link http://evnt.is/1aiy
  *
  * @var string $breakpoint_pointer String we use as pointer to the current view we are setting up with breakpoints.
  * @var string $filterbar_state    Default state of the filter bar, `open` or `closed`.

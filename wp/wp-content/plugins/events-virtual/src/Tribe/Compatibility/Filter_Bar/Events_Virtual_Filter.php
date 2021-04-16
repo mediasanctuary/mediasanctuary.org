@@ -134,7 +134,7 @@ class Events_Virtual_Filter extends \Tribe__Events__Filterbar__Filter {
 			'non-virtual' => [
 				'name'  => sprintf(
 					/* Translators: %1$s is the lowercase plural virtual event term. */
-					esc_html__( 'Show only non-%1$s', 'events-virtual' ),
+					esc_html__( 'Hide %1$s', 'events-virtual' ),
 					tribe_get_virtual_event_label_plural_lowercase()
 				),
 				'value' => self::EXPLICITLY_NON_VIRTUAL,
@@ -172,7 +172,7 @@ class Events_Virtual_Filter extends \Tribe__Events__Filterbar__Filter {
 				return;
 			}
 
-			$clause = "INNER JOIN {$wpdb->postmeta} AS {$this->alias}
+			$clause = "LEFT JOIN {$wpdb->postmeta} AS {$this->alias}
 			 ON ( {$wpdb->posts}.ID = {$this->alias}.post_id
 			    AND {$this->alias}.meta_key = %s )";
 			// phpcs:ignore

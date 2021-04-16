@@ -95,7 +95,7 @@ class Tribe__Events__Filterbar__Filters__Venue extends Tribe__Events__Filterbar_
 		if ( is_array( $this->currentValue ) ) {
 			$venue_ids = implode( ',', array_map( 'intval', $this->currentValue ) );
 		} else {
-			$venue_ids = '"' . esc_sql( (string) $this->currentValue ) . '"';
+			$venue_ids = "'" . esc_sql( (string) $this->currentValue ) . "'";
 		}
 
 		$this->whereClause = " AND venue_filter.meta_value IN ($venue_ids) ";

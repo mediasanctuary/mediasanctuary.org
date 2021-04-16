@@ -379,4 +379,16 @@ class Filters_Stack {
 	public function get_filters_where_clauses() {
 		return $this->get_filters_prop( 'whereClause' );
 	}
+
+	/**
+	 * Returns the current matching post IDs pool.
+	 *
+	 * @since 5.0.5
+	 *
+	 * @return array<int>|null Either an array of the posts matching the current filter pool, or `null` to indicate the
+	 *                         matching post IDs pool has not been initialized yet.
+	 */
+	public function get_post_ids_pool() {
+		return $this->post_ids_pool;
+	}
 }

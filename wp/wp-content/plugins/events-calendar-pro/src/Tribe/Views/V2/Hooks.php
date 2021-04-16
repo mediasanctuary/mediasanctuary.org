@@ -37,6 +37,7 @@ use Tribe\Events\Views\V2\Messages as TEC_Messages;
 use Tribe\Events\Views\V2\View;
 use Tribe\Events\Views\V2\View_Interface;
 use Tribe__Context as Context;
+use Tribe__Customizer__Section as Customizer_Section;
 use Tribe__Events__Main as TEC;
 use Tribe__Events__Organizer as Organizer;
 use Tribe__Events__Pro__Main as Plugin;
@@ -69,8 +70,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * @since 4.7.5
 	 */
 	protected function add_actions() {
-		add_action( 'init', [ $this, 'action_disable_shortcode_v1' ], 15 );
-		add_action( 'init', [ $this, 'action_add_shortcodes' ], 20 );
 		add_action( 'tribe_template_after_include:events/v2/components/top-bar/actions/content', [ $this, 'action_include_hide_recurring_events' ], 10, 3 );
 		add_action( 'tribe_template_after_include:events/v2/components/events-bar/search/keyword', [ $this, 'action_include_location_form_field' ], 10, 3 );
 		add_action( 'tribe_template_after_include:events/v2/day/event/date/meta', [ $this, 'action_include_day_event_recurring_icon' ], 10, 3 );
@@ -80,9 +79,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		add_action( 'tribe_template_after_include:events/v2/month/mobile-events/mobile-day/mobile-event/date/meta', [ $this, 'action_include_month_mobile_event_recurring_icon' ], 10, 3 );
 		add_action( 'tribe_events_views_v2_view_messages_before_render', [ $this, 'before_view_messages_render' ], 10, 3 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_disable_assets_v1' ], 0 );
-		add_action( 'tribe_events_pro_shortcode_tribe_events_after_assets', [ $this, 'action_disable_shortcode_assets_v1' ] );
 		add_action( 'tribe_events_pre_rewrite', [ $this, 'on_pre_rewrite' ], 6 );
-
 		add_action( 'template_redirect', [ $this, 'on_template_redirect' ], 50 );
 		add_action( 'tribe_template_after_include:events/v2/components/breadcrumbs', [ $this, 'action_include_organizer_meta' ], 10, 3 );
 		add_action( 'tribe_template_after_include:events/v2/components/breadcrumbs', [ $this, 'action_include_venue_meta' ], 10, 3 );
@@ -105,22 +102,14 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		add_filter( 'tribe_events_views_v2_messages_map', [ $this, 'filter_tribe_events_views_v2_messages_map' ] );
 		add_filter( 'tribe_events_views_v2_messages_need_events_label_keys', [ $this, 'filter_tribe_events_views_v2_messages_need_events_label_keys' ] );
 		add_filter( 'tribe_events_pro_geocode_rewrite_rules', [ $this, 'filter_geocode_rewrite_rules' ], 10, 3 );
-		add_filter( 'tribe_context_locations', [ $this, 'filter_context_locations' ] );
+
 		add_filter( 'tribe_events_views_v2_view_all_breadcrumbs', [ $this, 'filter_view_all_breadcrumbs' ], 10, 2 );
-		add_filter( 'tribe_events_views_v2_view_repository_args', [ $this, 'filter_view_repository_args' ], 10, 2 );
+		add_filter( 'tribe_events_views_v2_view_page_reset_ignored_params', [ $this, 'filter_page_reset_ignored_params' ], 10, 2 );
 		add_filter( 'tribe_events_views_v2_view_venue_breadcrumbs', [ $this, 'filter_view_venue_breadcrumbs' ], 10, 2 );
 		add_filter( 'tribe_events_views_v2_view_organizer_breadcrumbs', [ $this, 'filter_view_organizer_breadcrumbs' ], 10, 2 );
 		add_filter( 'redirect_canonical', [ $this, 'filter_prevent_canonical_redirect' ] );
 
 		add_filter( 'tribe_events_views_v2_rest_params', [ $this, 'filter_rest_request_view_slug' ], 10, 2 );
-
-		add_filter( 'tribe_events_views_v2_view_url', [ $this, 'filter_shortcode_view_url' ], 10, 3 );
-		add_filter( 'tribe_events_views_v2_view_next_url', [ $this, 'filter_shortcode_view_url' ], 10, 3 );
-		add_filter( 'tribe_events_views_v2_view_prev_url', [ $this, 'filter_shortcode_view_url' ], 10, 3 );
-		add_filter( 'tribe_events_views_v2_view_url_query_args', [ $this, 'filter_shortcode_view_url_query_args' ], 10, 3 );
-		add_filter( 'tribe_events_views_v2_view_context', [ $this, 'filter_shortcode_view_context' ], 10, 3 );
-
-		add_filter( 'tribe_events_views_v2_manager_default_view', [ $this, 'filter_shortcode_default_view' ] );
 
 		add_filter( 'tribe_events_views_v2_all_view_html_classes', [ $this, 'filter_add_events_pro_view_html_class' ] );
 		add_filter( 'tribe_events_views_v2_map_view_html_classes', [ $this, 'filter_add_events_pro_view_html_class' ] );
@@ -128,22 +117,27 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		add_filter( 'tribe_events_views_v2_photo_view_html_classes', [ $this, 'filter_add_events_pro_view_html_class' ] );
 		add_filter( 'tribe_events_views_v2_venue_view_html_classes', [ $this, 'filter_add_events_pro_view_html_class' ] );
 		add_filter( 'tribe_events_views_v2_week_view_html_classes', [ $this, 'filter_add_events_pro_view_html_class' ] );
+		add_filter( 'tribe_events_views_v2_widget-week_view_html_classes', [ $this, 'filter_add_events_pro_view_html_class' ] );
 
 		// This is the controlled version of the filtering method removed in the `remove_filters` method.
 		add_filter( 'tribe_events_event_schedule_details', [ $this, 'append_recurring_info_tooltip' ], 9, 2 );
-		add_filter( 'tribe_events_views_v2_view_html_classes', [ $this, 'filter_view_html_classes' ], 10, 3 );
-		add_filter( 'tribe_events_views_v2_view_data', [ $this, 'filter_view_data' ], 10, 3 );
 
 		// Let's filter AFTER Week View.
 		add_filter( 'tribe_rewrite_handled_rewrite_rules', [ $this, 'filter_handled_rewrite_rules' ], 20, 2 );
 		add_filter( 'tribe_events_rewrite_matchers_to_query_vars_map', [ $this, 'filter_rewrite_query_vars_map' ] );
 		add_filter( 'tribe_events_rewrite_rules_custom', [ $this, 'filter_events_rewrite_rules_custom' ], 20 );
 
-		add_filter( 'tribe_events_filter_bar_views_v2_should_display_filters', [ $this, 'filter_hide_filter_bar_organizer_venue' ], 10, 2 );
-		add_filter( 'tribe_events_filter_bar_views_v2_1_should_display_filters', [ $this, 'filter_hide_filter_bar_organizer_venue' ], 10, 2 );
+		add_filter( 'tribe_events_filter_bar_views_v2_should_display_filters', [ $this, 'filter_hide_filter_bar' ], 10, 2 );
+		add_filter( 'tribe_events_filter_bar_views_v2_1_should_display_filters', [ $this, 'filter_hide_filter_bar' ], 10, 2 );
 
 		add_filter( 'tribe_events_views_v2_manager_view_label_domain', [ $this, 'filter_view_label_domain'], 10, 3 );
-		add_filter( 'tribe_customizer_inline_stylesheets', [ $this, 'customizer_inline_stylesheets' ], 12, 2 );
+		add_filter( 'tribe_customizer_inline_stylesheets', [ $this, 'customizer_inline_stylesheets' ], 12 );
+
+		// Customizer.
+		add_filter( 'tribe_customizer_pre_sections', [ $this, 'filter_customizer_sections' ], 30, 2 );
+		add_filter( 'tribe_customizer_global_elements_css_template', [ $this, 'filter_global_elements_css_template' ], 10, 3 );
+		add_filter( 'tribe_customizer_single_event_css_template', [ $this, 'filter_single_event_css_template' ], 10, 3 );
+		add_filter( 'tribe_events_views_v2_view_map_template_vars', [ $this, 'filter_map_view_pin' ], 10, 2 );
 	}
 
 	/**
@@ -175,18 +169,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 			return;
 		}
 
-		$pro_assets->disable_v1();
-	}
-
-	/**
-	 * Fires to deregister v1 assets correctly for shortcodes.
-	 *
-	 * @since 4.7.9
-	 *
-	 * @return  void
-	 */
-	public function action_disable_shortcode_assets_v1() {
-		$pro_assets = $this->container->make( Pro_Assets::class );
 		$pro_assets->disable_v1();
 	}
 
@@ -327,18 +309,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	}
 
 	/**
-	 * Fires to disable V1 of shortcodes, normally they would be registered on `init@P10`
-	 * so we will trigger this on `init@P15`.
-	 *
-	 * It's important to leave gaps on priority for better injection.
-	 *
-	 * @since 4.7.5
-	 */
-	public function action_disable_shortcode_v1() {
-		$this->container->make( Shortcodes\Manager::class )->disable_v1();
-	}
-
-	/**
 	 * Adds the new shortcodes, this normally will trigger on `init@P20` due to how we the
 	 * v1 is added on `init@P10` and we remove them on `init@P15`.
 	 *
@@ -380,6 +350,23 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		$view_filters = $this->container->make( View_Filters::class );
 
 		return $view_filters->filter_repository_args( $repository_args, $context );
+	}
+
+	/**
+	 * Filters the ignored params to add the `hide_subsequent_recurrences` item.
+	 *
+	 * @since 5.3.0
+	 *
+	 * @param array<string>      $arguments Which arguments we are ignoring.
+	 * @param View|null  $view      Current view that we are filtering.
+	 *
+	 * @return array Array of params with the hide_subsequent_recurrences added.
+	 */
+	public function filter_page_reset_ignored_params( array $arguments = [], View $view = null ) {
+		/** @var View_Filters $view_filters */
+		$view_filters = $this->container->make( View_Filters::class );
+
+		return $view_filters->add_recurrence_hide_to_page_reset_ignored_params( $arguments, $view );
 	}
 
 	/**
@@ -491,19 +478,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	}
 
 	/**
-	 * Filters the context locations to add the ones used by The Events Calendar PRO for Shortcodes.
-	 *
-	 * @since 4.7.9
-	 *
-	 * @param array $locations The array of context locations.
-	 *
-	 * @return array The modified context locations.
-	 */
-	public function filter_context_locations( array $locations = [] ) {
-		return $this->container->make( Shortcodes\Manager::class )->filter_context_locations( $locations );
-	}
-
-	/**
 	 * Add rewrite routes for PRO version of Views V2.
 	 *
 	 * @since 4.7.9
@@ -540,7 +514,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 *
 	 * @param mixed $redirect_url URL which we will redirect to.
 	 *
-	 * @return string             Orginial URL redirect or False to prevent canonical redirect.
+	 * @return string             Original URL redirect or False to prevent canonical redirect.
 	 */
 	public function filter_prevent_canonical_redirect( $redirect_url = null ) {
 		return $this->container->make( Rewrite::class )->filter_prevent_canonical_redirect( $redirect_url );
@@ -568,20 +542,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		}
 
 		return $this->container->make( Rewrite::class )->add_map_pagination_rules( $rules, $bases, $rewrite_slugs );
-	}
-
-	/**
-	 * Filters the View repository args to add the ones required by shortcodes to work.
-	 *
-	 * @since 4.7.9
-	 *
-	 * @param array<string,mixed> $repository_args An array of repository arguments that will be set for all Views.
-	 * @param \Tribe__Context     $context         The current render context object.
-	 *
-	 * @return array<string,mixed> The filtered repository arguments.
-	 */
-	public function filter_view_repository_args( $repository_args, $context ) {
-		return $this->container->make( Shortcodes\Tribe_Events::class )->filter_view_repository_args( $repository_args, $context );
 	}
 
 	/**
@@ -630,65 +590,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 */
 	public function filter_view_venue_breadcrumbs( $breadcrumbs, $view ) {
 		return $this->container->make( Venue_View::class )->setup_breadcrumbs( $breadcrumbs, $view );
-	}
-
-	/**
-	 * Filters the View URL to add the shortcode query arg, if required.
-	 *
-	 * @since 4.7.9
-	 *
-	 * @param string         $url       The View current URL.
-	 * @param bool           $canonical Whether the URL is a canonical one or not.
-	 * @param View_Interface $view      This view instance.
-	 *
-	 * @return string  Filtered version for the URL for shortcodes.
-	 */
-	public function filter_shortcode_view_url( $url, $canonical, $view ) {
-		return $this->container->make( Shortcodes\Manager::class )->filter_view_url( $url, $view );
-	}
-
-	/**
-	 * Filters the default view in the views manager for shortcodes navigation.
-	 *
-	 * @since 4.7.9
-	 *
-	 * @param string $view_class Fully qualified class name for default view.
-	 *
-	 * @return string            Fully qualified class name for default view of the shortcode in question.
-	 */
-	public function filter_shortcode_default_view( $view_class ) {
-		return $this->container->make( Shortcodes\Tribe_Events::class )->filter_default_url( $view_class );
-	}
-
-	/**
-	 * Alters the context of the view based on the shortcode params stored in the database based on the ID.
-	 *
-	 * @since  5.0.0
-	 *
-	 * @param  Context $view_context Context for this request.
-	 * @param  string  $view_slug    Slug of the view we are building.
-	 * @param  View    $instance     Which view instance we are dealing with.
-	 *
-	 * @return Context               Altered version of the context ready for shortcodes.
-	 */
-	public function filter_shortcode_view_context( $view_context, $view_slug, $instance ) {
-		return $this->container->make( Shortcodes\Tribe_Events::class )
-		                       ->filter_view_context( $view_context, $view_slug, $instance );
-	}
-
-	/**
-	 * Filters the View URL to add the shortcode query arg, if required.
-	 *
-	 * @since 4.7.9
-	 *
-	 * @param array                        $query_args  Arguments used to build the URL.
-	 * @param string                       $view_slug   The current view slug.
-	 * @param \Tribe\Events\Views\V2\View  $instance    The current View object.
-	 *
-	 * @return  array  Filtered the query arguments for shortcodes.
-	 */
-	public function filter_shortcode_view_url_query_args( $query, $view_slug, $view ) {
-		return $this->container->make( Shortcodes\Manager::class )->filter_view_url_query_args( $query, $view_slug, $view );
 	}
 
 	/**
@@ -791,42 +692,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	}
 
 	/**
-	 * Filters the View HTML classes to add some related to PRO features.
-	 *
-	 * @since 5.0.0
-	 *
-	 * @param array<string>  $html_classes The current View HTML classes.
-	 * @param string         $slug         The View registered slug.
-	 * @param View_Interface $view         The View currently rendering.
-	 *
-	 * @return array<string> The filtered HTML classes.
-	 */
-	public function filter_view_html_classes( $html_classes, $slug, $view ) {
-		$html_classes = $this->container->make( Shortcodes\Tribe_Events::class )
-		                                ->filter_view_html_classes( $html_classes, $slug, $view );
-
-		return $html_classes;
-	}
-
-	/**
-	 * Filters the View data attributes to add some related to PRO features.
-	 *
-	 * @since 5.0.0
-	 *
-	 * @param array<string,string> $data The current View data attributes.
-	 * @param string               $slug The View registered slug.
-	 * @param View_Interface       $view The View currently rendering.
-	 *
-	 * @return array<string,string> The filtered View data attributes.
-	 */
-	public function filter_view_data( $data, $slug, $view ) {
-		$data = $this->container->make( Shortcodes\Tribe_Events::class )
-		                        ->filter_view_data( $data, $slug, $view );
-
-		return $data;
-	}
-
-	/**
 	 * Filters the handled rewrite rules, the one used to parse plain links into permalinks, to add the ones
 	 * managed by PRO.
 	 *
@@ -867,24 +732,32 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		return $this->container->make( Rewrite::class )->filter_rewrite_query_vars_map( $query_vars_map );
 	}
 
+
 	/**
-	 * Filters the should display filters for organizer and venue views.
+	 * Filters the "should display filters" for ECP views.
 	 *
-	 * @since 5.0.1
+	 * @since 5.1.1
 	 *
 	 * @param bool           $should_display_filters Boolean on whether to display filters or not.
 	 * @param View_Interface $view                   The View currently rendering.
 	 *
 	 * @return bool
 	 */
-	public function filter_hide_filter_bar_organizer_venue( $should_display_filters, $view ) {
-		$slug = $view->get_slug();
+	public function filter_hide_filter_bar( $should_display_filters, $view ) {
+		$slug     = $view->get_slug();
+		$wp_query = tribe_get_global_query_object();
 
-		if ( ! in_array( $slug, [ 'organizer', 'venue' ] ) ) {
-			return $should_display_filters;
+		// Don't show for organizers or venues.
+		if ( in_array( $slug, [ 'organizer', 'venue' ] ) ) {
+			return false;
 		}
 
-		return false;
+		// Don't show for a recurring event "all" page.
+		if ( 'all' === $slug || 'all' === $wp_query->get( 'eventDisplay' ) || $wp_query->tribe_is_recurrence_list ) {
+			return false;
+		}
+
+		return $should_display_filters;
 	}
 
 	/**
@@ -925,15 +798,11 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * Remove unused legacy stylesheets.
 	 *
 	 * @param array<string> $sheets Array of sheets to search for.
-	 * @param string        $css_template String containing the inline css to add.
 	 *
 	 * @return array Modified array of sheets to search for.
 	 */
-	public function customizer_inline_stylesheets( $sheets, $css_template ) {
-		$v2_sheets = [
-			'tribe-events-pro-views-v2-skeleton',
-			'tribe-events-pro-views-v2-full'
-		];
+	public function customizer_inline_stylesheets( $sheets ) {
+		$v2_sheets = [ 'tribe-events-pro-views-v2-full' ];
 
 		// Unenqueue legacy sheets.
 		$keys = array_keys( $sheets, 'tribe-events-calendar-pro-style' );
@@ -945,4 +814,193 @@ class Hooks extends \tad_DI52_ServiceProvider {
 
 		return array_merge( $sheets, $v2_sheets );
 	}
+
+	/**
+	 * Filters the currently registered Customizer sections to add or modify them.
+	 *
+	 * @since 5.1.1
+	 *
+	 * @param array<string,array<string,array<string,int|float|string>>> $sections   The registered Customizer sections.
+	 * @param \Tribe___Customizer                                        $customizer The Customizer object.
+	 *
+	 * @return array<string,array<string,array<string,int|float|string>>> The filtered sections.
+	 */
+	public function filter_customizer_sections( $sections, $customizer ) {
+		if ( ! ( is_array( $sections ) && $customizer instanceof \Tribe__Customizer ) ) {
+			return $sections;
+		}
+
+		return $this->container->make( Customizer::class )->filter_sections( $sections, $customizer );
+	}
+
+	/**
+	 * Filters the Global Elements section CSS template to add Views v2 related style templates to it.
+	 *
+	 * @since 5.1.1
+	 *
+	 * @param string                      $css_template The CSS template, as produced by the Global Elements.
+	 * @param \Tribe__Customizer__Section $section      The Global Elements section.
+	 * @param \Tribe__Customizer          $customizer   The current Customizer instance.
+	 *
+	 * @return string The filtered CSS template.
+	 */
+	public function filter_global_elements_css_template( $css_template, $section, $customizer ) {
+		if ( ! ( is_string( $css_template ) && $section instanceof Customizer_Section && $customizer instanceof \Tribe__Customizer ) ) {
+			return $css_template;
+		}
+
+		return $this->container->make( Customizer::class )->filter_global_elements_css_template( $css_template, $section, $customizer );
+	}
+
+	/**
+	 * Filters the Single Event section CSS template to add Views v2 related style templates to it.
+	 *
+	 * @since 5.1.1
+	 *
+	 * @param string                      $css_template The CSS template, as produced by the Global Elements.
+	 * @param \Tribe__Customizer__Section $section      The Single Event section.
+	 * @param \Tribe__Customizer          $customizer   The current Customizer instance.
+	 *
+	 * @return string The filtered CSS template.
+	 */
+	public function filter_single_event_css_template( $css_template, $section, $customizer ) {
+		if ( ! ( is_string( $css_template ) && $section instanceof Customizer_Section && $customizer instanceof \Tribe__Customizer ) ) {
+			return $css_template;
+		}
+
+		return $this->container->make( Customizer::class )->filter_single_event_css_template( $css_template, $section, $customizer );
+	}
+
+	/**
+	 * Filters the location pin on the map view.
+	 *
+	 * @since 5.3.0
+	 *
+	 * @param array          $template_vars The View template variables.
+	 * @param View_Interface $view          The current View instance.
+	 */
+	public function filter_map_view_pin( array $template_vars, View_Interface $view ) {
+		return $this->container->make( Map_View::class )->filter_map_view_pin( $template_vars, $view );
+	}
+
+	/************************
+	 *                      *
+	 *  Deprecated Methods  *
+	 *                      *
+	 ************************/
+
+	// @codingStandardsIgnoreStart
+
+	/**
+	 * Filters the should display filters for organizer and venue views.
+	 * Superseded by filter_hide_filter_bar() above.
+	 *
+	 * @since 5.0.1
+	 * @deprecated 5.1.1
+	 *
+	 * @param bool           $should_display_filters Boolean on whether to display filters or not.
+	 * @param View_Interface $view                   The View currently rendering.
+	 *
+	 * @return bool
+	 */
+	public function filter_hide_filter_bar_organizer_venue( $should_display_filters, $view ) {
+		_deprecated_function( __FUNCTION__, '5.1.1', 'filter_hide_filter_bar' );
+
+		return $this->filter_hide_filter_bar( $should_display_filters, $view );
+	}
+
+	/**
+	 * Filters the default view in the views manager for shortcodes navigation.
+	 *
+	 * @since 4.7.9
+	 * @deprecated 5.5.0 Move the filtering into Tribe_Events shortcode class.
+	 *
+	 * @param string $view_class Fully qualified class name for default view.
+	 *
+	 * @return string            Fully qualified class name for default view of the shortcode in question.
+	 */
+	public function filter_shortcode_default_view( $view_class ) {
+		return $this->container->make( Shortcodes\Tribe_Events::class )->filter_default_url( $view_class );
+	}
+
+	/**
+	 * Alters the context of the view based on the shortcode params stored in the database based on the ID.
+	 *
+	 * @since  5.0.0
+	 * @deprecated 5.5.0 Move the filtering into Tribe_Events shortcode class.
+	 *
+	 * @param  Context $view_context Context for this request.
+	 * @param  string  $view_slug    Slug of the view we are building.
+	 * @param  View    $instance     Which view instance we are dealing with.
+	 *
+	 * @return Context               Altered version of the context ready for shortcodes.
+	 */
+	public function filter_shortcode_view_context( $view_context, $view_slug, $instance ) {
+		return $this->container->make( Shortcodes\Tribe_Events::class )
+		                       ->filter_view_context( $view_context, $view_slug, $instance );
+	}
+
+	/**
+	 * Filters the View URL to add the shortcode query arg, if required.
+	 *
+	 * @since 4.7.9
+	 * @deprecated 5.5.0 Move the filtering into Tribe_Events shortcode class.
+	 *
+	 * @param array                        $query_args  Arguments used to build the URL.
+	 * @param string                       $view_slug   The current view slug.
+	 * @param \Tribe\Events\Views\V2\View  $instance    The current View object.
+	 *
+	 * @return  array  Filtered the query arguments for shortcodes.
+	 */
+	public function filter_shortcode_view_url_query_args( $query, $view_slug, $view ) {
+		return $this->container->make( Shortcodes\Manager::class )->filter_view_url_query_args( $query, $view_slug, $view );
+	}
+
+	/**
+	 * Filters the View URL to add the shortcode query arg, if required.
+	 *
+	 * @since 4.7.9
+	 * @deprecated 5.5.0 Move the filtering into Tribe_Events shortcode class.
+	 *
+	 * @param string         $url       The View current URL.
+	 * @param bool           $canonical Whether the URL is a canonical one or not.
+	 * @param View_Interface $view      This view instance.
+	 *
+	 * @return string  Filtered version for the URL for shortcodes.
+	 */
+	public function filter_shortcode_view_url( $url, $canonical, $view ) {
+		return $this->container->make( Shortcodes\Manager::class )->filter_view_url( $url, $view );
+	}
+
+	/**
+	 * Filters the View repository args to add the ones required by shortcodes to work.
+	 *
+	 * @since 4.7.9
+	 * @deprecated 5.5.0 Move the filtering into Tribe_Events shortcode class.
+	 *
+	 * @param array<string,mixed> $repository_args An array of repository arguments that will be set for all Views.
+	 * @param \Tribe__Context     $context         The current render context object.
+	 * @param View_Interface  $view            The View that will use the repository arguments.
+	 *
+	 * @return array<string,mixed> The filtered repository arguments.
+	 */
+	public function filter_view_repository_args( $repository_args, $context, $view ) {
+		return $this->container->make( Shortcodes\Tribe_Events::class )->filter_view_repository_args( $repository_args, $context, $view );
+	}
+
+
+	/**
+	 * Fires to disable V1 of shortcodes, normally they would be registered on `init@P10`
+	 * so we will trigger this on `init@P15`.
+	 *
+	 * It's important to leave gaps on priority for better injection.
+	 *
+	 * @since 4.7.5
+	 * @deprecated 5.5.0 Move the filtering into Tribe_Events shortcode class.
+	 */
+	public function action_disable_shortcode_v1() {
+		$this->container->make( Shortcodes\Manager::class )->disable_v1();
+	}
+
+	// @codingStandardsIgnoreEnd
 }

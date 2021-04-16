@@ -95,6 +95,7 @@ class Assets extends \tad_DI52_ServiceProvider {
 				'conditionals' => [ $this, 'should_enqueue_frontend' ],
 				'groups'       => [ static::$group_key ],
 				'in_footer'    => false,
+				'print'        => true,
 				'localize'     => [
 					'name' => 'tribe_events_filter_bar_js_config',
 					'data' => $this->container->make( Configuration::class )->localize(),
@@ -123,7 +124,7 @@ class Assets extends \tad_DI52_ServiceProvider {
 		if ( ! class_exists( 'Tribe__Events__Pro__Main' ) ) {
 			tribe_asset(
 				$plugin,
-				'swiper',
+				'tribe-swiper',
 				'vendor/swiper/dist/js/swiper.js',
 				[],
 				null,
@@ -137,7 +138,7 @@ class Assets extends \tad_DI52_ServiceProvider {
 			'views/filter-bar-slider.js',
 			[
 				'jquery',
-				'swiper',
+				'tribe-swiper',
 				'tribe-common',
 				'tribe-events-views-v2-viewport',
 			],
@@ -176,7 +177,13 @@ class Assets extends \tad_DI52_ServiceProvider {
 				'jquery',
 				'tribe-common',
 			],
-			null
+			null,
+			[
+				'localize' => [
+					'name' => 'tribeFilterBarFilterMap',
+					'data' => [ tribe( Filters::class ), 'get_filters_read_map' ],
+				]
+			]
 		);
 
 		tribe_asset(
@@ -337,7 +344,7 @@ class Assets extends \tad_DI52_ServiceProvider {
 	 * @return void
 	 */
 	public function disable_v1() {
-		// Dont disable V1 on Single Event page
+		// Don't disable V1 on Single Event page
 		if ( tribe( Template_Bootstrap::class )->is_single_event() ) {
 			return;
 		}

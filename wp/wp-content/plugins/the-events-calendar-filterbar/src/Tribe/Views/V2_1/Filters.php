@@ -4,6 +4,7 @@ namespace Tribe\Events\Filterbar\Views\V2_1;
 use Tribe__Context as Context;
 use Tribe__Events__Filterbar__Filter as Filter;
 use Tribe__Events__Filterbar__Settings as Filter_Bar_Settings;
+use Tribe__Utils__Array as Arr;
 
 /**
  * Class managing Filters loading for the Views V2_1.
@@ -25,10 +26,6 @@ class Filters {
 	public function filter_template_vars( array $template_vars, Context $context = null ) {
 		$context = null !== $context ? $context : tribe_context();
 
-		if ( $context->get( 'shortcode' ) ) {
-			return $template_vars;
-		}
-
 		$template_vars['layout']                       = $this->get_layout_setting();
 		$template_vars['filterbar_state']              = $this->get_open_closed_state( $context );
 		$template_vars['filters']                      = $this->get_filters( $context, $template_vars['breakpoint_pointer'] );
@@ -36,6 +33,30 @@ class Filters {
 		$template_vars['mobile_initial_state_control'] = $this->get_mobile_initial_state_control( $template_vars['layout'], $context );
 
 		return $template_vars;
+	}
+
+	/**
+	 * Determines the read map for filters context keys on the URL.
+	 *
+	 * @since 5.1.0
+	 *
+	 * @return array<string, string>
+	 */
+	public function get_filters_read_map() {
+		$filters = $this->get_filters( tribe_context(), '' );
+		$locations = tribe( \Tribe\Events\Filterbar\Service_Providers\Context::class )->filter_context_locations();
+		$read_map = [];
+		foreach ( $filters as $filter ) {
+			$filter_object = Arr::get( $filter, 'filter_object' );
+			if ( empty( $filter_object ) ) {
+				continue;
+			}
+
+			$location  = Arr::get( $locations, [ $filter_object->slug, 'read', Context::REQUEST_VAR ], [] );
+			$read_map[ reset( $location ) ] = $filter_object->slug;
+		}
+
+		return $read_map;
 	}
 
 	/**

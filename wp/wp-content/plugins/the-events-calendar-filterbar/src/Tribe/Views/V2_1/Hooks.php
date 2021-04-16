@@ -26,6 +26,7 @@ use Tribe\Events\Views\V2\View_Interface;
 use Tribe__Context as Context;
 use Tribe__Events__Filterbar__View as Main;
 use Tribe__Utils__Array as Arr;
+use Tribe__Customizer__Section as Customizer_Section;
 
 /**
  * Class Hooks.
@@ -65,6 +66,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		add_action( 'tribe_template_before_include:events/v2/components/events-bar/views', [ $this, 'action_include_filter_button' ], 10, 3 );
 		add_action( 'tribe_template_after_include:events/v2/components/filter-bar', [ $this, 'action_include_filter_bar' ], 10, 3 );
 		add_action( 'tribe_template_after_include:events/v2/components/events-bar', [ $this, 'action_include_horizontal_filter_bar' ], 10, 3 );
+		add_action( 'tribe_events_pro_shortcode_tribe_events_before_assets', [ $this, 'action_include_assets' ] );
 	}
 
 	/**
@@ -90,10 +92,14 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		add_filter( 'tribe_events_filter_bar_views_v2_1_template_vars_selected_filters', [ $this, 'get_selected_filters' ], 20, 3 );
 		add_filter( 'tribe-event-filters-settings-fields', [ $this, 'filter_settings_fields' ], 20 );
 
-		add_filter( 'tribe_customizer_css_template', [ $this, 'add_to_customizer_template' ], 20 );
 		add_filter( 'tribe_events_filter_bar_views_v2_1_is_checked_filterbar_cost', [ $this, 'filterbar_cost_is_checked' ], 10, 4 );
 		add_filter( 'tribe_events_filter_bar_views_v2_1_range_label_filterbar_cost', [ $this, 'filterbar_cost_range_label' ], 10, 3 );
 		add_filter( 'tribe_context_locations', [ $this, 'filter_context_locations' ] );
+
+		// Customizer.
+		add_filter( 'tribe_customizer_pre_sections', [ $this, 'filter_customizer_sections' ], 20, 2 );
+		add_filter( 'tribe_customizer_global_elements_css_template', [ $this, 'filter_global_elements_css_template' ], 10, 3 );
+		add_filter( 'tribe_customizer_single_event_css_template', [ $this, 'filter_single_event_css_template' ], 10, 3 );
 	}
 
 	/**
@@ -173,12 +179,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * @param \Tribe\Events\Views\V2\Template $template Current instance of the template.
 	 */
 	public function action_include_filter_bar( $file, $name, $template ) {
-		// Prevent including the Filter Bar if on a shortcode.
-		$context = $template->get_context();
-		if ( $context->get( 'shortcode' ) ) {
-			return;
-		}
-
 		if ( ! $this->container->make( Filters::class )->should_display_filters( $template->get_view() ) ) {
 			return;
 		}
@@ -208,25 +208,30 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * @param \Tribe\Events\Views\V2\Template $template Current instance of the template.
 	 */
 	public function action_include_horizontal_filter_bar( $file, $name, $template ) {
-		// Prevent including the Filter Bar if on a shortcode.
-		$context = $template->get_context();
-		if ( $context->get( 'shortcode' ) ) {
-			return;
-		}
-
 		if ( ! $this->container->make( Filters::class )->should_display_filters( $template->get_view() ) ) {
 			return;
 		}
 
+		$values = $template->get_values();
+
 		// Only display horizontal Filter Bar when search is enabled.
 		if (
 			'horizontal' !== tribe( Filters::class )->get_layout_setting()
-			||  Arr::get( $template->get_values(), 'disable_event_search', false )
+			||  Arr::get( $values, 'disable_event_search', false )
 		) {
 			return;
 		}
 
-		return $this->container->make( Template::class )->template( 'filter-bar', $template->get_values() );
+		return $this->container->make( Template::class )->template( 'filter-bar', $values );
+	}
+
+	/**
+	 * Includes assets for the shortcode.
+	 *
+	 * @since 5.1.0
+	 */
+	public function action_include_assets() {
+		return $this->container->make( Assets::class )->load_on_shortcode();
 	}
 
 	/**
@@ -255,7 +260,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 *
 	 * @return array<string,array> The filtered list of folders that will be searched for the templates.
 	 */
-	public function filter_template_path_list( array $folders = [], \Tribe__Template $template ) {
+	public function filter_template_path_list( array $folders = [], \Tribe__Template $template = null ) {
 		$main = Main::instance();
 
 		$path = (array) rtrim( $main->pluginPath, '/' );
@@ -285,12 +290,53 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * Filters the HTML classes applied to a View top-level container.
 	 *
 	 * @since 5.0.0
+	 * @since 5.0.2 Add filter to turn off adding classes to some containers.
 	 *
 	 * @param array<string> $html_classes Array of classes used for this view.
 	 * @param string        $view_slug    The current view slug.
 	 * @param View          $instance     The current View object.
 	 */
 	public function filter_view_html_classes( array $html_classes, $view_slug, View $instance ) {
+		/**
+		 * Allows views to toggle off FBAR classes on the container.
+		 *
+		 * @since 5.0.2
+		 *
+		 * @param boolean $add_html_classes Whether to add classes or not. Defaults to true.
+		 * @param string  $view_slug        The current view slug.
+		 * @param View    $instance         The current View object.
+		 *
+		 * @return boolean $add_html_classes Whether to add classes or not.
+		 */
+		$add_html_classes = apply_filters(
+			'tribe_events_views_v2_filter_bar_view_html_classes',
+			true,
+			$view_slug,
+			$instance
+		);
+
+		/**
+		 * Allows views to tell FBAR to not add its classes to their container.
+		 *
+		 * @since 5.0.2
+		 *
+		 * @param boolean $add_html_classes Whether to add classes or not.
+		 * @param string  $view_slug        The current view slug.
+		 * @param View    $instance         The current View object.
+		 *
+		 * @return boolean $add_html_classes Whether to add classes or not.
+		 */
+		$add_html_classes = apply_filters(
+			"tribe_events_views_v2_filter_bar_{$view_slug}_view_html_classes",
+			$add_html_classes,
+			$view_slug,
+			$instance
+		);
+
+		if ( ! tribe_is_truthy( $add_html_classes ) ) {
+			return $html_classes;
+		}
+
 		return $this->container->make( Filters\Factory::class )->for_html_classes( $html_classes, $view_slug, $instance );
 	}
 
@@ -299,8 +345,8 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 *
 	 * @since 5.0.0
 	 *
-	 * @param array<string,mixed>          $template_vars The View template variables.
-	 * @param View_Interface $view          The current View instance.
+	 * @param array<string,mixed>  $template_vars The View template variables.
+	 * @param View_Interface $view                The current View instance.
 	 */
 	public function filter_events_views_v2_1_view_template_vars( array $template_vars, View_Interface $view ) {
 		/** @var Filters $view_filters */
@@ -321,10 +367,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * @return array An array of active filters to display in the Filter bar.
 	 */
 	public function get_filters( $filters, $context, $breakpoint_pointer ) {
-		if ( false !== $context->get( 'shortcode', false ) ) {
-			return $filters;
-		}
-
 		$active_filters = $this->container->make( Factory::class )->get_active_filters_for_template_vars( $context, $breakpoint_pointer );
 
 		return array_merge( $filters, $active_filters );
@@ -342,10 +384,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * @return array An array of the selected filters to display on the initial load.
 	 */
 	public function get_selected_filters( $selected_filters, $filters, $context ) {
-		if ( false !== $context->get( 'shortcode', false ) ) {
-			return $selected_filters;
-		}
-
 		$active_filters = [];
 
 		foreach ( $filters as $filter ) {
@@ -375,19 +413,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		unset( $fields[ 'liveFiltersUpdate' ] );
 
 		return $fields;
-	}
-
-	/**
-	 * Runs Customizer->add_styles on our custom styles template.
-	 *
-	 * @since 5.0.0
-	 *
-	 * @param string $template The Customizer template.
-	 *
-	 * @return string $template The modified template.
-	 */
-	public function add_to_customizer_template( $template ) {
-		return $this->container->make( Customizer::class )->add_styles( $template );
 	}
 
 	/**
@@ -468,5 +493,61 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		}
 
 		return $locations;
+	}
+
+	/**
+	 * Filters the currently registered Customizer sections to add or modify them.
+	 *
+	 * @since 5.0.3
+	 *
+	 * @param array<string,array<string,array<string,int|float|string>>> $sections The registered Customizer sections.
+	 * @param \Tribe___Customizer $customizer The Customizer object.
+	 *
+	 * @return array<string,array<string,array<string,int|float|string>>> The filtered sections.
+	 */
+	public function filter_customizer_sections( $sections, $customizer ) {
+		if ( ! ( is_array( $sections ) && $customizer instanceof \Tribe__Customizer ) ) {
+			return $sections;
+		}
+
+		return $this->container->make( Customizer::class )->filter_sections( $sections, $customizer );
+	}
+
+	/**
+	 * Filters the Global Elements section CSS template to add Views v2 related style templates to it.
+	 *
+	 * @since 5.0.3
+	 *
+	 * @param string                      $css_template The CSS template, as produced by the Global Elements.
+	 * @param \Tribe__Customizer__Section $section      The Global Elements section.
+	 * @param \Tribe__Customizer          $customizer   The current Customizer instance.
+	 *
+	 * @return string The filtered CSS template.
+	 */
+	public function filter_global_elements_css_template( $css_template, $section, $customizer ) {
+		if ( ! ( is_string( $css_template ) && $section instanceof Customizer_Section && $customizer instanceof \Tribe__Customizer ) ) {
+			return $css_template;
+		}
+
+		return $this->container->make( Customizer::class )->filter_global_elements_css_template( $css_template, $section, $customizer );
+	}
+
+	/**
+	 * Filters the Single Event section CSS template to add Views v2 related style templates to it.
+	 *
+	 * @since 5.0.3
+	 *
+	 * @param string                      $css_template The CSS template, as produced by the Global Elements.
+	 * @param \Tribe__Customizer__Section $section      The Single Event section.
+	 * @param \Tribe__Customizer          $customizer   The current Customizer instance.
+	 *
+	 * @return string The filtered CSS template.
+	 */
+	public function filter_single_event_css_template( $css_template, $section, $customizer ) {
+		if ( ! ( is_string( $css_template ) && $section instanceof Customizer_Section && $customizer instanceof \Tribe__Customizer ) ) {
+			return $css_template;
+		}
+
+		return $this->container->make( Customizer::class )->filter_single_event_css_template( $css_template, $section, $customizer );
 	}
 }

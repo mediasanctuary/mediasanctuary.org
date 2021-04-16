@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit976c4c37c9d89bba5156f6cca43bf135
+class ComposerStaticInit67e1d323e3b749654e3c959a322a8390
 {
     public static $prefixLengthsPsr4 = array (
         'T' => 
@@ -21,13 +21,28 @@ class ComposerStaticInit976c4c37c9d89bba5156f6cca43bf135
     );
 
     public static $classMap = array (
+        'Tribe\\Events\\Pro\\Integrations\\Elementor\\Controls\\Groups\\Event_Query' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Elementor/Controls/Groups/Event_Query.php',
+        'Tribe\\Events\\Pro\\Integrations\\Elementor\\Controls\\Traits\\TEC_Control' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Elementor/Controls/Traits/TEC_Control.php',
+        'Tribe\\Events\\Pro\\Integrations\\Elementor\\Controls_Manager' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Elementor/Controls_Manager.php',
+        'Tribe\\Events\\Pro\\Integrations\\Elementor\\Manager_Abstract' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Elementor/Manager_Abstract.php',
         'Tribe\\Events\\Pro\\Integrations\\Elementor\\Service_Provider' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Elementor/Service_Provider.php',
         'Tribe\\Events\\Pro\\Integrations\\Elementor\\Shortcodes' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Elementor/Shortcodes.php',
+        'Tribe\\Events\\Pro\\Integrations\\Elementor\\Traits\\Categories' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Elementor/Traits/Categories.php',
+        'Tribe\\Events\\Pro\\Integrations\\Elementor\\Traits\\Tags' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Elementor/Traits/Tags.php',
+        'Tribe\\Events\\Pro\\Integrations\\Elementor\\Widgets\\Traits\\Event_Query' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Elementor/Widgets/Traits/Event_Query.php',
+        'Tribe\\Events\\Pro\\Integrations\\Elementor\\Widgets\\Widget_Abstract' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Elementor/Widgets/Widget_Abstract.php',
+        'Tribe\\Events\\Pro\\Integrations\\Elementor\\Widgets\\Widget_Countdown' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Elementor/Widgets/Widget_Countdown.php',
+        'Tribe\\Events\\Pro\\Integrations\\Elementor\\Widgets\\Widget_Event_List' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Elementor/Widgets/Widget_Event_List.php',
+        'Tribe\\Events\\Pro\\Integrations\\Elementor\\Widgets\\Widget_Event_Single_Legacy' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Elementor/Widgets/Widget_Event_Single_Legacy.php',
+        'Tribe\\Events\\Pro\\Integrations\\Elementor\\Widgets\\Widget_Events_View' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Elementor/Widgets/Widget_Events_View.php',
+        'Tribe\\Events\\Pro\\Integrations\\Elementor\\Widgets_Manager' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Elementor/Widgets_Manager.php',
+        'Tribe\\Events\\Pro\\Integrations\\Fusion\\Service_Provider' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Fusion/Service_Provider.php',
         'Tribe\\Events\\Pro\\Models\\Service_Provider' => __DIR__ . '/../..' . '/src/Tribe/Models/Service_Provider.php',
         'Tribe\\Events\\Pro\\Rewrite\\Provider' => __DIR__ . '/../..' . '/src/Tribe/Rewrite/Provider.php',
         'Tribe\\Events\\Pro\\Rewrite\\Rewrite' => __DIR__ . '/../..' . '/src/Tribe/Rewrite/Rewrite.php',
         'Tribe\\Events\\Pro\\Service_Providers\\Customizer' => __DIR__ . '/../..' . '/src/Tribe/Service_Providers/Customizer.php',
         'Tribe\\Events\\Pro\\Views\\V2\\Assets' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Assets.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Customizer' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Customizer.php',
         'Tribe\\Events\\Pro\\Views\\V2\\Geo_Loc\\Base_Handler' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Geo_Loc/Base_Handler.php',
         'Tribe\\Events\\Pro\\Views\\V2\\Geo_Loc\\Geocoding_Handler' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Geo_Loc/Geocoding_Handler.php',
         'Tribe\\Events\\Pro\\Views\\V2\\Geo_Loc\\Handler_Interface' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Geo_Loc/Handler_Interface.php',
@@ -41,9 +56,11 @@ class ComposerStaticInit976c4c37c9d89bba5156f6cca43bf135
         'Tribe\\Events\\Pro\\Views\\V2\\Messages' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Messages.php',
         'Tribe\\Events\\Pro\\Views\\V2\\Rewrite' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Rewrite.php',
         'Tribe\\Events\\Pro\\Views\\V2\\Service_Provider' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Service_Provider.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Shortcodes\\Hooks' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Shortcodes/Hooks.php',
         'Tribe\\Events\\Pro\\Views\\V2\\Shortcodes\\Manager' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Shortcodes/Manager.php',
-        'Tribe\\Events\\Pro\\Views\\V2\\Shortcodes\\Shortcode_Abstract' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Shortcodes/Shortcode_Abstract.php',
-        'Tribe\\Events\\Pro\\Views\\V2\\Shortcodes\\Shortcode_Interface' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Shortcodes/Shortcode_Interface.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Shortcodes\\Service_Provider' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Shortcodes/Service_Provider.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Shortcodes\\Shortcode_Tribe_Events_List' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Shortcodes/Shortcode_Tribe_Events_List.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Shortcodes\\Shortcode_Tribe_Mini_Calendar' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Shortcodes/Shortcode_Tribe_Mini_Calendar.php',
         'Tribe\\Events\\Pro\\Views\\V2\\Shortcodes\\Tribe_Events' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Shortcodes/Tribe_Events.php',
         'Tribe\\Events\\Pro\\Views\\V2\\Template\\Featured_Title' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Template/Featured_Title.php',
         'Tribe\\Events\\Pro\\Views\\V2\\Template\\Title' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Template/Title.php',
@@ -60,14 +77,29 @@ class ComposerStaticInit976c4c37c9d89bba5156f6cca43bf135
         'Tribe\\Events\\Pro\\Views\\V2\\Views\\Photo_View' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Views/Photo_View.php',
         'Tribe\\Events\\Pro\\Views\\V2\\Views\\Venue_View' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Views/Venue_View.php',
         'Tribe\\Events\\Pro\\Views\\V2\\Views\\Week_View' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Views/Week_View.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Views\\Widgets\\Countdown_View' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Views/Widgets/Countdown_View.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Views\\Widgets\\Venue_View' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Views/Widgets/Venue_View.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Views\\Widgets\\Week_View' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Views/Widgets/Week_View.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Widgets\\Admin_Template' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Widgets/Admin_Template.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Widgets\\Ajax' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Widgets/Ajax.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Widgets\\Assets' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Widgets/Assets.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Widgets\\Hooks' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Widgets/Hooks.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Widgets\\Service_Provider' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Widgets/Service_Provider.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Widgets\\Taxonomy_Filter' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Widgets/Taxonomy_Filter.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Widgets\\Traits\\Widget_Shortcode' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Widgets/Traits/Widget_Shortcode.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Widgets\\Widget_Advanced_List' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Widgets/Widget_Advanced_List.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Widgets\\Widget_Countdown' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Widgets/Widget_Countdown.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Widgets\\Widget_Featured_Venue' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Widgets/Widget_Featured_Venue.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Widgets\\Widget_Month' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Widgets/Widget_Month.php',
+        'Tribe\\Events\\Pro\\Views\\V2\\Widgets\\Widget_Week' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Widgets/Widget_Week.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit976c4c37c9d89bba5156f6cca43bf135::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit976c4c37c9d89bba5156f6cca43bf135::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit976c4c37c9d89bba5156f6cca43bf135::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit67e1d323e3b749654e3c959a322a8390::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit67e1d323e3b749654e3c959a322a8390::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit67e1d323e3b749654e3c959a322a8390::$classMap;
 
         }, null, ClassLoader::class);
     }

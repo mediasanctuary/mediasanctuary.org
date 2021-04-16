@@ -62,7 +62,33 @@
 		}
 	}
 
+	.tribe-events-c-events-bar__filter-button-icon path {
+		fill: var(--color-icon-active);
+	}
+
 	.tribe-events-c-events-bar__filter-button-text {
 		text-transform: capitalize;
+	}
+
+	/* -------------------------------------------------------------------------
+	 *
+	 * Filter Button: Theme Overrides
+	 *
+	 * ------------------------------------------------------------------------- */
+
+	/* -------------------------------------------------------------------------
+	 * Theme Overrides - Twenty Seventeen
+	 * ------------------------------------------------------------------------- */
+
+	.tribe-theme-twentyseventeen.colors-dark & {
+
+		.tribe-events-c-events-bar__filter-button {
+
+			&,
+			&:hover,
+			&:focus {
+				background-color: transparent;
+			}
+		}
 	}
 }

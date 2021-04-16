@@ -71,7 +71,8 @@ tribe.filterBar.filterRemove = {};
 			return;
 		}
 
-		var location = tribe.filterBar.filters.removeKeyValueFromQuery( window.location, name, true );
+		var urlObject = tribe.filterBar.filters.getCurrentUrlAsObject( event.data.container );
+		var location = tribe.filterBar.filters.removeKeyValueFromQuery( urlObject, name, true );
 
 		tribe.filterBar.filters.submitRequest( $container, location.href );
 	};
@@ -150,5 +151,5 @@ tribe.filterBar.filterRemove = {};
 	};
 
 	// Configure on document ready.
-	$document.ready( obj.ready );
+	$( obj.ready );
 } )( jQuery, tribe.filterBar.filterRemove );

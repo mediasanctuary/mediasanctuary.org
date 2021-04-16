@@ -564,7 +564,7 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__Filter' ) ) {
 							<div id="<?php echo esc_attr( 'tribe_events_filter_' . $this->slug . '_slider' ); ?>"></div>
 							</div>
 							<script>
-								jQuery(document).ready(function($) {
+								jQuery(function($) {
 									$( "#<?php echo 'tribe_events_filter_' . $this->slug . '_slider'; ?>" ).slider({
 										range: true,
 										min: <?php echo $min_value; ?>,
@@ -1007,7 +1007,15 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__Filter' ) ) {
 		 * @return string The formatted id from the provided name.
 		 */
 		public function get_formatted_id_from_name( $name ) {
-			return str_replace( ' ', '-', stripslashes( strtolower( $name ) ) );
+			// Generate a UUID to make it unique.
+			$uuid           = explode( '-', wp_generate_uuid4() );
+			$uuid           = sanitize_html_class( reset( $uuid ) );
+
+			// Setup a sanitized name for the ID.
+			$sanitized_name = stripslashes( strtolower( $name ) );
+			$sanitized_name = str_replace( ' ', '-', $sanitized_name );
+
+			return "tribe-events-filterbar-{$uuid}-{$sanitized_name}";
 		}
 
 		/**

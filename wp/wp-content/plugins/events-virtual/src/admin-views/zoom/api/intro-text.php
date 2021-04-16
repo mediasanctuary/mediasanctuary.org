@@ -11,7 +11,7 @@
  *
  * @version 1.0.0
  *
- * @link    http://m.tri.be/1aiy
+ * @link    http://evnt.is/1aiy
  *
  * @var array $allowed_html Which HTML elements are used for wp_kses.
  */

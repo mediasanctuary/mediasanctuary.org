@@ -11,7 +11,7 @@
  *
  * @version 1.0.0
  *
- * @link    http://m.tri.be/1aiy
+ * @link    http://evnt.is/1aiy
  */
 
 $connect_label   = _x( 'Connect to Zoom', 'Label to connect to Zoom API (disabled button).', 'events-virtual' );

@@ -26,12 +26,12 @@ if ( empty( $filters ) ) {
 }
 ?>
 <div
-	class="tribe-filter-bar__filters-slider-container swiper-container"
+	class="tribe-filter-bar__filters-slider-container tribe-swiper-container"
 	data-js="tribe-filter-bar-filters-slider-container"
 >
-	<div class="tribe-filter-bar__filters-slider-wrapper swiper-wrapper">
+	<div class="tribe-filter-bar__filters-slider-wrapper tribe-swiper-wrapper">
 		<?php foreach ( $filters as $filter ) : ?>
-			<div class="tribe-filter-bar__filters-slide swiper-slide">
+			<div class="tribe-filter-bar__filters-slide tribe-swiper-slide">
 				<?php
 				$pill_toggle_id = $filter['pill_toggle_id'];
 				$container_id   = $filter['container_id'];

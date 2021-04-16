@@ -11,7 +11,7 @@
  *
  * @version 1.1.1
  *
- * @link    http://m.tri.be/1aiy
+ * @link    http://evnt.is/1aiy
  *
  * @var \WP_Post             $event                   The event post object, as decorated by the `tribe_get_event`
  *      function.

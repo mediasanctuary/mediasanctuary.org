@@ -1,14 +1,14 @@
-# Copyright (C) 2020 Modern Tribe
+# Copyright (C) 2021 Modern Tribe
 # This file is distributed under the same license as the The Events Calendar: Filter Bar package.
 msgid ""
 msgstr ""
-"Project-Id-Version: The Events Calendar: Filter Bar 5.0.0.1\n"
+"Project-Id-Version: The Events Calendar: Filter Bar 5.0.4\n"
 "Report-Msgid-Bugs-To: http://m.tri.be/191x\n"
-"POT-Creation-Date: 2020-10-20 15:46:10+00:00\n"
+"POT-Creation-Date: 2021-01-27 07:03:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-10-20 15:46\n"
+"PO-Revision-Date: 2021-01-27 07:03\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 
@@ -208,7 +208,7 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: src/Tribe/View.php:586 src/Tribe/Views/V2/Filters/Context_Filter.php:230
+#: src/Tribe/View.php:586 src/Tribe/Views/V2/Filters/Context_Filter.php:234
 msgid "%s Category"
 msgstr ""
 
@@ -216,31 +216,31 @@ msgstr ""
 msgid "Cost (%s)"
 msgstr ""
 
-#: src/Tribe/View.php:599 src/Tribe/Views/V2/Filters/Context_Filter.php:242
+#: src/Tribe/View.php:599 src/Tribe/Views/V2/Filters/Context_Filter.php:246
 msgid "Tags"
 msgstr ""
 
-#: src/Tribe/View.php:613 src/Tribe/Views/V2/Filters/Context_Filter.php:235
+#: src/Tribe/View.php:613 src/Tribe/Views/V2/Filters/Context_Filter.php:239
 msgid "Day"
 msgstr ""
 
-#: src/Tribe/View.php:617 src/Tribe/Views/V2/Filters/Context_Filter.php:243
+#: src/Tribe/View.php:617 src/Tribe/Views/V2/Filters/Context_Filter.php:247
 msgid "Time"
 msgstr ""
 
-#: src/Tribe/View.php:622 src/Tribe/Views/V2/Filters/Context_Filter.php:234
+#: src/Tribe/View.php:622 src/Tribe/Views/V2/Filters/Context_Filter.php:238
 msgid "Country"
 msgstr ""
 
-#: src/Tribe/View.php:627 src/Tribe/Views/V2/Filters/Context_Filter.php:232
+#: src/Tribe/View.php:627 src/Tribe/Views/V2/Filters/Context_Filter.php:236
 msgid "City"
 msgstr ""
 
-#: src/Tribe/View.php:632 src/Tribe/Views/V2/Filters/Context_Filter.php:240
+#: src/Tribe/View.php:632 src/Tribe/Views/V2/Filters/Context_Filter.php:244
 msgid "State/Province"
 msgstr ""
 
-#: src/Tribe/View.php:638 src/Tribe/Views/V2/Filters/Context_Filter.php:237
+#: src/Tribe/View.php:638 src/Tribe/Views/V2/Filters/Context_Filter.php:241
 msgid "Featured %s"
 msgstr ""
 
@@ -252,11 +252,11 @@ msgstr ""
 msgid "Notice: Utilizing the form controls will dynamically update the content"
 msgstr ""
 
-#: src/Tribe/Views/V2/Filters/Context_Filter.php:233
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:237
 msgid "Cost ($)"
 msgstr ""
 
-#: src/Tribe/Views/V2/Filters/Context_Filter.php:236
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:240
 msgid "Distance"
 msgstr ""
 
@@ -363,16 +363,16 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: src/views/v2_1/components/filter.php:81
+#: src/views/v2_1/components/filter.php:80
 msgid "Open filter"
 msgstr ""
 
-#: src/views/v2_1/components/filter.php:88
-#: src/views/v2_1/components/filter.php:122
+#: src/views/v2_1/components/filter.php:87
+#: src/views/v2_1/components/filter.php:121
 msgid "Close filter"
 msgstr ""
 
-#: src/views/v2_1/components/filter.php:97
+#: src/views/v2_1/components/filter.php:96
 #: src/views/v2_1/components/pill-button.php:52
 #: src/views/v2_1/components/pill.php:40
 msgid "Remove filters"
@@ -421,5 +421,5 @@ msgid "Modern Tribe, Inc."
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "http://m.tri.be/25"
+msgid "http://evnt.is/25"
 msgstr ""

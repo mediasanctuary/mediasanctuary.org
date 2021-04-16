@@ -119,7 +119,7 @@ class OAuth {
 			$this->fetch_access_token( $legacy_code );
 			$handled = true;
 		} elseif ( $service_response_body ) {
-			// @todo refactor this to call some Api method to set the access and refresh token directly.
+			// @todo [BTRIA-616]: refactor this to call some Api method to set the access and refresh token directly.
 			$this->api->save_access_token( [ 'body' => base64_decode( $service_response_body ) ] );
 
 			// Check if there were legacy settings, if so, clear the old config.

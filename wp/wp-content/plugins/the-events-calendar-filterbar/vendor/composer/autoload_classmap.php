@@ -32,6 +32,7 @@ return array(
     'Tribe\\Events\\Filterbar\\Views\\V2\\Hooks' => $baseDir . '/src/Tribe/Views/V2/Hooks.php',
     'Tribe\\Events\\Filterbar\\Views\\V2\\Service_Provider' => $baseDir . '/src/Tribe/Views/V2/Service_Provider.php',
     'Tribe\\Events\\Filterbar\\Views\\V2\\Template' => $baseDir . '/src/Tribe/Views/V2/Template.php',
+    'Tribe\\Events\\Filterbar\\Views\\V2\\With_Shortcode_Support' => $baseDir . '/src/Tribe/Views/V2/With_Shortcode_Support.php',
     'Tribe\\Events\\Filterbar\\Views\\V2_1\\Assets' => $baseDir . '/src/Tribe/Views/V2_1/Assets.php',
     'Tribe\\Events\\Filterbar\\Views\\V2_1\\Configuration' => $baseDir . '/src/Tribe/Views/V2_1/Configuration.php',
     'Tribe\\Events\\Filterbar\\Views\\V2_1\\Customizer' => $baseDir . '/src/Tribe/Views/V2_1/Customizer.php',

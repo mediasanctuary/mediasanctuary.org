@@ -20,9 +20,9 @@
 	.tribe-filter-bar__filters-slider-nav--overflow-start {
 
 		&:before {
-			content: '';
 			background: linear-gradient(-90deg, rgba(var(--color-background), 0) 15%, var(--color-background) 70%);
-			left: 0;
+			content: '';
+			left: -1px;
 		}
 	}
 
@@ -33,5 +33,32 @@
 			content: '';
 			right: 0;
 		}
+	}
+
+	.tribe-filter-bar__filters-slider-nav-button {
+
+		&:hover,
+		&:focus {
+
+			.tribe-filter-bar__filters-slider-nav-button-icon path {
+				fill: var(--color-accent-secondary-hover);
+			}
+		}
+
+		&:active {
+
+			.tribe-filter-bar__filters-slider-nav-button-icon path {
+				fill: var(--color-accent-secondary-active);
+			}
+		}
+	}
+
+	.tribe-filter-bar__filters-slider-nav-button-icon path {
+		fill: var(--color-border-tertiary);
+	}
+
+	/* Compatibility with Elementor */
+	.tribe-swiper-slide {
+		width: auto;
 	}
 }

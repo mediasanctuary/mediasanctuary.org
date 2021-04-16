@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit16a5e0f848373fea58e85779be0b5c6a
+class ComposerStaticInitc05ea11360b167b9ca69c9362b88d558
 {
     public static $prefixLengthsPsr4 = array (
         'T' => 
@@ -73,14 +73,15 @@ class ComposerStaticInit16a5e0f848373fea58e85779be0b5c6a
         'Tribe\\Events\\Virtual\\Views\\V2\\Repository' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Repository.php',
         'Tribe\\Events\\Virtual\\Views\\V2\\Title' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Title.php',
         'Tribe\\Events\\Virtual\\Views\\V2\\Views_Provider' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Views_Provider.php',
+        'Tribe\\Events\\Virtual\\Views\\V2\\Widgets\\Widget' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Widgets/Widget.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit16a5e0f848373fea58e85779be0b5c6a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit16a5e0f848373fea58e85779be0b5c6a::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit16a5e0f848373fea58e85779be0b5c6a::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitc05ea11360b167b9ca69c9362b88d558::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitc05ea11360b167b9ca69c9362b88d558::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitc05ea11360b167b9ca69c9362b88d558::$classMap;
 
         }, null, ClassLoader::class);
     }
