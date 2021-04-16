@@ -52,7 +52,7 @@ function soundcloud_podcast_import($num = null, $url = null) {
 	$json = wp_remote_retrieve_body($rsp);
 	$tracks = json_decode($json, 'as hash');
 
-	if (empty($tracks['collection'])) {
+	if (! isset($tracks['collection'])) {
 		fwrite($stderr, "Error: invalid JSON\n");
 		return;
 	}
