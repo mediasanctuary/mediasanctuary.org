@@ -11,29 +11,9 @@ function soundcloud_podcast_import($num = null, $url = null) {
 		$import_all = true;
 		if (empty($url)) {
 			fwrite($stderr, "*** Importing all SoundCloud tracks ***\n");
-			fputcsv($stdout, [
-				'post id',
-				'action',
-				'track id',
-				'title',
-				'content',
-				'link',
-				'image',
-				'date'
-			]);
 		}
 	} else if (empty($num)) {
 		$num = 30;
-		fputcsv($stdout, [
-			'post id',
-			'action',
-			'track id',
-			'title',
-			'content',
-			'link',
-			'image',
-			'date'
-		]);
 	} else if (! is_numeric($num)) {
 		fwrite($stderr, "Error: invalid argument $num\n");
 		return;
@@ -96,21 +76,23 @@ function soundcloud_podcast_import($num = null, $url = null) {
 		if (empty($post)) {
 			fwrite($stderr, "Creating new post for {$track['title']}\n");
 			$id = wp_insert_post([
-				'post_type' => 'podcast',
 				'post_status' => 'publish',
 				'post_title' => $track['title'],
 				'post_content' => soundcloud_podcast_track_content($track),
 				'post_date' => soundcloud_podcast_track_date($track)
 			]);
+			wp_set_post_terms($id, 'post-format-audio', 'post_format');
+			wp_set_post_tags($id, soundcloud_podcast_track_tags($track));
+
 			fputcsv($stdout, [
 				$id,
 				'create',
 				$track['id'],
 				$track['title'],
-				soundcloud_podcast_track_content($track),
+				join(', ', soundcloud_podcast_track_tags($track)),
+				soundcloud_podcast_track_date($track),
 				$track['permalink_url'],
-				$track['artwork_url'],
-				soundcloud_podcast_track_date($track)
+				$track['artwork_url']
 			]);
 		} else {
 			fwrite($stderr, "Updating existing post for {$track['title']}\n");
@@ -120,15 +102,17 @@ function soundcloud_podcast_import($num = null, $url = null) {
 				'post_title' => $track['title'],
 				'post_content' => soundcloud_podcast_track_content($track)
 			]);
+			wp_set_post_tags($id, soundcloud_podcast_track_tags($track));
+
 			fputcsv($stdout, [
 				$id,
 				'update',
 				$track['id'],
 				$track['title'],
-				soundcloud_podcast_track_content($track),
+				join(', ', soundcloud_podcast_track_tags($track)),
+				soundcloud_podcast_track_date($track),
 				$track['permalink_url'],
-				$track['artwork_url'],
-				soundcloud_podcast_track_date($track)
+				$track['artwork_url']
 			]);
 		}
 		update_post_meta($id, 'soundcloud_podcast_id', $track['id']);
@@ -202,7 +186,6 @@ function soundcloud_podcast_get_post($track) {
 	$username = $track['user']['permalink'];
 	$url = "https://soundcloud.com/$username/{$track['permalink']}";
 	$posts = get_posts([
-		'post_type' => 'podcast',
 		'post_status' => ['publish', 'pending', 'draft', 'future'],
 		'meta_query' => [
 			'relation' => 'OR',
@@ -227,6 +210,7 @@ function soundcloud_podcast_hash($track) {
 	$plaintext = $track['id'];
 	$plaintext .= "|{$track['title']}";
 	$plaintext .= "|$content";
+	$plaintext .= "|{$track['tag_list']}";
 	$plaintext .= "|{$track['permalink_url']}";
 	$plaintext .= "|{$track['artwork_url']}";
 	return md5($plaintext);
@@ -276,4 +260,26 @@ function soundcloud_podcast_track_content($track) {
 function soundcloud_podcast_track_date($track) {
 	$date = new \DateTime($track['created_at'], wp_timezone());
 	return $date->format('Y-m-d H:i:s');
+}
+
+function soundcloud_podcast_track_tags($track) {
+	$tag_list = strtolower($track['tag_list']);
+	$in_quotes = false;
+	$tags = [];
+	$curr_tag = '';
+	for ($i = 0; $i < mb_strlen($tag_list); $i++) {
+		$char = mb_substr($tag_list, $i, 1);
+		if ($char == '"') {
+			$in_quotes = ! $in_quotes;
+			continue;
+		}
+		if ($char == ' ' && ! $in_quotes) {
+			$tags[] = $curr_tag;
+			$curr_tag = '';
+		} else {
+			$curr_tag .= $char;
+		}
+	}
+	$tags[] = $curr_tag;
+	return $tags;
 }
