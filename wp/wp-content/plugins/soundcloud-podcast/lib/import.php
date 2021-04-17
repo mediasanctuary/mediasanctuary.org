@@ -1,6 +1,6 @@
 <?php
 
-function soundcloud_podcast_import($num = null, $url = null) {
+function soundcloud_podcast_import($num = null, $url = null, $slack_msg = '') {
 
 	$stdout = fopen('php://stdout', 'w');
 	$stderr = fopen('php://stderr', 'w');
@@ -81,10 +81,10 @@ function soundcloud_podcast_import($num = null, $url = null) {
 		if (empty($post)) {
 			fwrite($stderr, "Creating new post for {$track['title']}\n");
 			$id = wp_insert_post([
-				'post_status' => 'publish',
+				'post_status' => 'future',
 				'post_title' => $track['title'],
 				'post_content' => soundcloud_podcast_track_content($track),
-				'post_date' => soundcloud_podcast_track_date($track)
+				'post_date' => soundcloud_podcast_track_date()
 			]);
 			set_post_format($id, 'audio');
 			wp_set_post_tags($id, soundcloud_podcast_track_tags($track));
@@ -95,10 +95,16 @@ function soundcloud_podcast_import($num = null, $url = null) {
 				$track['id'],
 				$track['title'],
 				join(', ', soundcloud_podcast_track_tags($track)),
-				soundcloud_podcast_track_date($track),
+				soundcloud_podcast_track_date(),
 				$track['permalink_url'],
 				$track['artwork_url']
 			]);
+
+			if (! empty($slack_msg)) {
+				$slack_msg .= "\n";
+			}
+			$edit_url = home_url("/wp-admin/post.php?post=$id&action=edit");
+			$slack_msg .= "* <$edit_url|{$track['title']}> (scheduled)";
 		} else {
 			fwrite($stderr, "Updating existing post for {$track['title']}\n");
 			$id = $post->ID;
@@ -119,6 +125,12 @@ function soundcloud_podcast_import($num = null, $url = null) {
 				$track['permalink_url'],
 				$track['artwork_url']
 			]);
+
+			if (! empty($slack_msg)) {
+				$slack_msg .= "\n";
+			}
+			$edit_url = home_url("/wp-admin/post.php?post=$id&action=edit");
+			$slack_msg .= "* <$edit_url|{$track['title']}> (updated)";
 		}
 		update_post_meta($id, 'soundcloud_podcast_id', $track['id']);
 		update_post_meta($id, 'soundcloud_podcast_hash', $sc_hash);
@@ -183,7 +195,9 @@ function soundcloud_podcast_import($num = null, $url = null) {
 	}
 
 	if (! empty($tracks['next_href']) && $import_all) {
-		soundcloud_podcast_import($import_all, $tracks['next_href']);
+		soundcloud_podcast_import($import_all, $tracks['next_href'], $slack_msg);
+	} else if (! empty($slack_msg)) {
+		soundcloud_podcast_update_slack($slack_msg);
 	}
 }
 
@@ -262,9 +276,21 @@ function soundcloud_podcast_track_content($track) {
 	return $content;
 }
 
-function soundcloud_podcast_track_date($track) {
-	$date = new \DateTime($track['created_at'], wp_timezone());
-	return $date->format('Y-m-d H:i:s');
+function soundcloud_podcast_track_date($track = null) {
+	if (empty($track)) {
+		$schedule_at = 'Today 6pm';
+		// If it's after Friday at 6pm, schedule for Monday at 6pm.
+		if (current_time('w') == 4 && current_time('H') > 18 ||
+		    current_time('w') > 4 ||
+		    current_time('w') == 0) {
+			$schedule_at = 'Monday 6pm';
+		}
+		$date = new \DateTime($schedule_at, wp_timezone());
+		return $date->format('Y-m-d H:i:s');
+	} else {
+		$date = new \DateTime($track['created_at'], wp_timezone());
+		return $date->format('Y-m-d H:i:s');
+	}
 }
 
 function soundcloud_podcast_track_tags($track) {
@@ -287,4 +313,21 @@ function soundcloud_podcast_track_tags($track) {
 	}
 	$tags[] = $curr_tag;
 	return $tags;
+}
+
+function soundcloud_podcast_update_slack($message) {
+	if (! defined('SOUNDCLOUD_PODCAST_SLACK_URL')) {
+		echo "Error: please define SOUNDCLOUD_PODCAST_SLACK_URL\n";
+		return false;
+	}
+	$payload = [
+		'type' => 'mrkdwn',
+		'text' => $message
+	];
+	$rsp = wp_remote_post(SOUNDCLOUD_PODCAST_SLACK_URL, [
+		'body' => [
+			'payload' => json_encode($payload)
+		]
+	]);
+	return $rsp['response']['code'] == 200;
 }
