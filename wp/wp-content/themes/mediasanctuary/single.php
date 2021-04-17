@@ -13,17 +13,20 @@
       $thumb_url = false;
     }
 
+    $parent = null;
+
+    if (has_category('Stories')) {
+      $parent = get_term_by('name', 'Stories', 'category');
+    } else if (has_category('Sanctuary News')) {
+      $parent = get_term_by('name', 'Sanctuary News', 'category');
+    }
+
     $cat = '';
-    $categories = get_the_category();
-    if (! empty($categories)) {
-      foreach ($categories as $category) {
-        if ($category->slug == 'stories') {
-          continue;
-        }
-        if (! empty($cat)) {
-          $cat .= ", ";
-        }
-        $cat .= '<a href="' . esc_url( get_category_link( $category->term_id ) ) . '" class="category" >' . esc_html( $category->name ) . '</a>';
+    if (! empty($parent)) {
+      $categories = get_the_category();
+      if (! empty($categories)) {
+        $cat = get_category_links($categories, $parent->term_id);
+        $cat = implode(', ', $cat);
       }
     }
 
@@ -82,21 +85,23 @@
       </div>
     </main>
 
-    <aside>
-        <?php // FPO - Sidebar Functionality to List Categories & Recent Posts ?>
-        <h4>Podcast Categories</h4>
-        <ul>
-          <li><a href="https://www.mediasanctuary.org/podcast-categories/art-culture-entertainment/">Art, Culture &amp; Entertainment</a></li>
-          <li><a href="https://www.mediasanctuary.org/podcast-categories/social-justice-activism/" >Social Justice &amp; Activism</a></li>
-          <li><a href="https://www.mediasanctuary.org/podcast-categories/civic-education-government/">Civic Education &amp; Government</a></li>
-          <li><a href="https://www.mediasanctuary.org/podcast-categories/environment-sustainability/">Environment &amp; Sustainability</a></li>
-          <li><a href="https://www.mediasanctuary.org/podcast-categories/science-technology/">Science &amp; Technology</a></li>
-          <li><a href="https://www.mediasanctuary.org/podcast-categories/entrepreneurism/">Entrepreneurism</a></li>
-          <li><a href="https://www.mediasanctuary.org/podcast-categories/food-farming/">Food &amp; Farming</a></li>
-          <li><a href="https://www.mediasanctuary.org/podcast-categories/climate/">Climate</a></li>
-        </ul>
+    <?php
 
+    if (function_exists('get_field') && ! empty($parent)) {
+
+      $categories = get_field('featured_categories', 'options');
+      $category_links = get_category_links($categories, $parent->term_id);
+
+      ?>
+      <aside>
+        <h4><?php echo $parent->name; ?></h4>
+        <ul>
+          <?php foreach ($category_links as $link) { ?>
+            <li><?php echo $link; ?></li>
+          <?php } ?>
+        </ul>
       </aside>
+    <?php } ?>
     </article>
 
   </div>

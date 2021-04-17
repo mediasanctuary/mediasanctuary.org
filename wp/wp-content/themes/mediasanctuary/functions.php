@@ -25,6 +25,7 @@ add_filter('category_link', function($url) {
 });
 
 add_action('after_setup_theme', function() {
+	add_theme_support('post-thumbnails');
 	add_theme_support('title-tag');
 	add_theme_support('post-formats', [
 		'audio',
@@ -104,4 +105,20 @@ function get_asset_url($file, $return_version = false) {
 	}
 }
 
-add_theme_support( 'post-thumbnails' );
+function get_category_links($categories, $parent = null) {
+	$list = [];
+	foreach ($categories as $category) {
+		// Skip parent category
+		if ($category->term_id == $parent) {
+			continue;
+		}
+		// Skip categories that aren't children of the parent
+		if (! empty($parent) && $category->parent != $parent) {
+			continue;
+		}
+		$url = esc_url(get_category_link($category->term_id));
+		$label = esc_html($category->name);
+		$list[] = '<a href="' . $url . '" class="category" >' . $label . '</a>';
+	}
+	return $list;
+}
