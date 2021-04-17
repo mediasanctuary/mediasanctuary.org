@@ -1,7 +1,14 @@
 <section id="news" class="posts p60">
 	<div class="container">
 		<h2>Sanctuary News</h2>
-		<p>The latest happenings at The Sanctuary for Independent Media. You can also view the <a href="">archive</a> or listen to WOOC 105.3 FM Troy for more updates.</p>
+		<?php
+
+		if (function_exists('get_field')) {
+			$news_cat = get_term_by('name', 'Sanctuary News', 'category');
+			the_field('category_description', 'category_' . $news_cat->term_id);
+		}
+
+		?>
 		<ul class="posts__list three-col">
 
   		<?php
