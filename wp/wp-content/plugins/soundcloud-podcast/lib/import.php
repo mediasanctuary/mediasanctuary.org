@@ -81,10 +81,10 @@ function soundcloud_podcast_import($num = null, $url = null) {
 		if (empty($post)) {
 			fwrite($stderr, "Creating new post for {$track['title']}\n");
 			$id = wp_insert_post([
-				'post_status' => 'publish',
+				'post_status' => 'future',
 				'post_title' => $track['title'],
 				'post_content' => soundcloud_podcast_track_content($track),
-				'post_date' => soundcloud_podcast_track_date($track)
+				'post_date' => soundcloud_podcast_track_date()
 			]);
 			set_post_format($id, 'audio');
 			wp_set_post_tags($id, soundcloud_podcast_track_tags($track));
@@ -95,7 +95,7 @@ function soundcloud_podcast_import($num = null, $url = null) {
 				$track['id'],
 				$track['title'],
 				join(', ', soundcloud_podcast_track_tags($track)),
-				soundcloud_podcast_track_date($track),
+				soundcloud_podcast_track_date(),
 				$track['permalink_url'],
 				$track['artwork_url']
 			]);
@@ -262,9 +262,21 @@ function soundcloud_podcast_track_content($track) {
 	return $content;
 }
 
-function soundcloud_podcast_track_date($track) {
-	$date = new \DateTime($track['created_at'], wp_timezone());
-	return $date->format('Y-m-d H:i:s');
+function soundcloud_podcast_track_date($track = null) {
+	if (empty($track)) {
+		$schedule_at = 'Today 6pm';
+		// If it's after Friday at 6pm, schedule for Monday at 6pm.
+		if (current_time('w') == 4 && current_time('H') > 18 ||
+		    current_time('w') > 4 ||
+		    current_time('w') == 0) {
+			$schedule_at = 'Monday 6pm';
+		}
+		$date = new \DateTime($schedule_at, wp_timezone());
+		return $date->format('Y-m-d H:i:s');
+	} else {
+		$date = new \DateTime($track['created_at'], wp_timezone());
+		return $date->format('Y-m-d H:i:s');
+	}
 }
 
 function soundcloud_podcast_track_tags($track) {
