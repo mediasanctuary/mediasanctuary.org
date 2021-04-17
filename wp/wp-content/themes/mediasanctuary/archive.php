@@ -7,6 +7,16 @@ get_header();
 	<div class="container">
 		<h2><?php the_archive_title(); ?></h2>
 		<?php
+
+		if (function_exists('get_field')) {
+			if (is_category()) {
+				$term = get_queried_object();
+				the_field('category_description', "category_$term->term_id" );
+			}
+		}
+
+		?>
+		<?php
         if (have_posts()) {
 					echo '<ul class="four-col">';
             while (have_posts()) {
