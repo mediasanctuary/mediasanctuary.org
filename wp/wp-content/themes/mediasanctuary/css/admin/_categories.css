@@ -1,0 +1,7 @@
+.term-description-wrap {
+  display: none;
+}
+
+body.taxonomy-category #acf-form-data + h2 {
+  display: none;
+}
