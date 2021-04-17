@@ -104,7 +104,7 @@ function soundcloud_podcast_import($num = null, $url = null, $slack_msg = '') {
 				$slack_msg .= "\n";
 			}
 			$edit_url = home_url("/wp-admin/post.php?post=$id&action=edit");
-			$slack_msg .= "* <$edit_url|{$track['title']}> (scheduled)";
+			$slack_msg .= "- <$edit_url|{$track['title']}> (scheduled)";
 		} else {
 			fwrite($stderr, "Updating existing post for {$track['title']}\n");
 			$id = $post->ID;
@@ -130,7 +130,7 @@ function soundcloud_podcast_import($num = null, $url = null, $slack_msg = '') {
 				$slack_msg .= "\n";
 			}
 			$edit_url = home_url("/wp-admin/post.php?post=$id&action=edit");
-			$slack_msg .= "* <$edit_url|{$track['title']}> (updated)";
+			$slack_msg .= "- <$edit_url|{$track['title']}> (updated)";
 		}
 		update_post_meta($id, 'soundcloud_podcast_id', $track['id']);
 		update_post_meta($id, 'soundcloud_podcast_hash', $sc_hash);
