@@ -31,18 +31,31 @@
     display: flex;
     color:#FFF;
     padding:60px 0 0;
-    
+
+
     .about {
-      text-align: left;
-      padding: 20px 70px 20px 0;
+      text-align: center;
+      padding: 20px 0;
       max-width: none;
       box-sizing: border-box;
-      width: 70%;
+      width: 100%;
+      max-width: 870px;
       font-style: italic;
       font-size: 36px;
       
       .btn {
         font-style: normal;
+      }
+    }
+    
+    
+    &.showCallout {
+      .about {
+        text-align: left;
+        padding: 20px 70px 20px 0;
+        max-width: none;
+        box-sizing: border-box;
+        width: 70%;
       }
     }
         

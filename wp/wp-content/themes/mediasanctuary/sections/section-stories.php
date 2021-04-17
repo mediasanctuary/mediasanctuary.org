@@ -2,11 +2,9 @@
 	<div class="container">
 		<h2>Recent Stories</h2>
 		<?php
-
-		if (function_exists('get_field')) {
-			the_field('category_description', 'category_1');
-		}
-
+  		if (function_exists('get_field')) {
+  			echo '<p class="intro">'.get_field('category_description', 'category_1').'</p>';
+  		}
 		?>
 		<ul class="four-col">
 
@@ -26,6 +24,6 @@
   		?>
 
 		</ul>
-		<a href="<?php echo home_url('/stories/'); ?>">View all stories</a>
+		<p class="text-center"><a href="<?php echo home_url('/stories/'); ?>" class="btn">View all stories</a></p>
 	</div>
 </section>

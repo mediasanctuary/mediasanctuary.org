@@ -63,22 +63,35 @@
 				</form>
 				
 				
-				<?php if(is_front_page()) {?>
-				<div class="banner">
+				<?php 
+  				if(is_front_page()) { 
+  				  if (have_posts()) : while(have_posts()) : the_post(); 
+            $enabled = get_field('enable_callout') == 'enabled' ? ' showCallout' : false;
+            $callout = get_field('callout');
+  		  ?>
+				<div class="banner<?php echo $enabled; ?>">
   				<div class="about">
             <p>We use art, science and participatory action to promote social and environmental justice and freedom of creative expression.</p>
-      		<a href="" class="btn ironweed">Learn more About Us</a>            
+            <a href="/about/" class="btn ironweed">Learn more About Us</a>            
   				</div>
+  				
+  				<?php if( $enabled ) { ?> 
   				<div class="callout">
-    				<h2>CCG April Work Parties!</h2>
-    				<span></span> 
+    				<h2><?php echo $callout['text']['heading']?></h2>
+    				<?php if($callout['callout_image']){ ?>
+    				  <a href="<?php echo esc_url($callout['button']['callout_url']);?>">
+    				    <span style="background-image: url(<?php echo esc_attr($callout['callout_image']); ?>);"></span>
+    				  </a>
+    				<?php } ?>
     				<div> 				
-      				<p>Join us (socially distanced, of course) to celebrate the spring together and clean up the CCG garden!</p>
-      				<a href="" class="btn ironweed">Learn more</a>
+      				<p><?php echo $callout['text']['description'];?></p>
+      				<a href="<?php echo esc_url($callout['button']['callout_url']);?>" class="btn ironweed"><?php echo $callout['button']['callout_button_text'] ? $callout['button']['callout_button_text'] : 'Learn More';?></a>
     				</div>
   				</div>
+  				<?php } ?>  				
+  				
 				</div>
-        <?php } ?>				
+        <?php endwhile; endif; } ?>				
 				
 			</div>
 		</div>
