@@ -1,5 +1,7 @@
 		</div>
 		
+    <?php include get_template_directory() . '/sections/section-newsletter.php';?>		
+		
     <section id="about">
       <div class="container">
         <div class="two-col">
@@ -9,13 +11,11 @@
               <img src="<?php asset_url('img/Sanctuary-White-Black-Shadow.svg'); ?>" alt="" />
               <ul>
                 <li><a href="/initiatives/collardcitygrowers/">Collard City Growers</a></li>
-                <li><a href="https://www.mediasanctuary.org/initiatives/freedom-square/">Freedom Square</a></li>
-                <li><a href="https://www.mediasanctuary.org/initiatives/kitchensanctuary/">KitchenSanctuary</a></li>
-                <li><a href="https://www.mediasanctuary.org/initiatives/nature-lab/">NATURE Lab Environmental Education Center</a></li>
-                <li><a href="https://www.mediasanctuary.org/sanctuary-tv/">Sanctuary TV</a></li>
-                <li><a href="https://www.mediasanctuary.org/initiatives/wooc/">WOOC 105.3 FM</a></li>
-                <li><a href="https://www.mediasanctuary.org/initiatives/uptownsummer/">Uptown Summer</a></li>
-                <li><a href="https://www.mediasanctuary.org/initiatives/youth-media-sanctuary/">Youth Media Sanctuary</a></li>
+                <li><a href="/initiatives/nature-lab/">NATURE Lab</a></li>
+                <li><a href="/initiatives/peoples-health-sanctuary/">People's Health Sanctuary</a></li>
+                <li><a href="/initiatives/sanctuary-tv/">Sanctuary TV</a></li>
+                <li><a href="/initiatives/wooc/">Sanctuary Radio</a></li>
+                <li><a href="/initiatives/youth-media-sanctuary/">Youth Media Sanctuary</a></li>
               </ul> 
             </div>           
           </div>
@@ -23,7 +23,7 @@
           <div class="col w55">
             <h2>About The Sanctuary</h2>
             <p>We use art and participatory action to promote social and environmental justice and freedom of creative expression.</p>
-            <a href="" class="btn">Learn More</a>
+            <a href="/about/" class="btn">Learn More</a>
           </div>
 
         </div>
@@ -42,7 +42,6 @@
     					<li><a href="https://www.linkedin.com/company/mediasanctuary" target="_blank" class="in">LinkedIn</a></li>
     					<li><a href="https://soundcloud.com/mediasanctuary" target="_blank" class="sc">Sound Cloud</a></li>
     					<li><a href="https://open.spotify.com/user/woocfm" target="_blank" class="spotify">Spotify</a></li>
-
         		</ul>			
           </div>
           <div class="col w55">									      		
