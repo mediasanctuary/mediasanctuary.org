@@ -42,7 +42,7 @@
 		</nav>
 		
 		
-		<div class="header<?php echo is_front_page() ? ' home' : ''; echo (is_page('initiatives') || is_page_template( 'page-templates/initiatives.php')) ? ' initiative' : '';?>">
+		<div class="header<?php echo is_front_page() ? ' home' : ''; echo (is_page()) ? ' page' : ''; echo (is_page('initiatives') || is_page_template( 'page-templates/initiatives.php')) ? ' initiative' : '';?>">
 			<div class="container">
 				
 				
@@ -98,8 +98,9 @@
   				if(is_page() && !is_front_page()) {
     				if(is_page_template( 'page-templates/initiatives.php')) {
               $logo = get_field('initiative_logo');
+              $logoWidth = get_field('initiative_logo_width') ? get_field('initiative_logo_width') : '350';
               if($logo){
-                echo '<img src="'.$logo.'" class="initiative-logo"/>';
+                echo '<img src="'.$logo.'" class="initiative-logo" style="max-width:'.$logoWidth.'px" />';
               } else {
                 echo '<h1>'.get_the_title().'</h1>';	                
               }
@@ -109,8 +110,6 @@
     			  }
     		  }
     		?> 
-        
-        			
 				
 			</div>
 		</div>
