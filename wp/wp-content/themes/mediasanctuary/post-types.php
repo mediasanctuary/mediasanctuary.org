@@ -32,7 +32,7 @@ function project_post_type() {
 			'menu_icon'     => 'dashicons-format-aside',
 			'has_archive'   => true,
 			'show_in_rest'  => true,
-			'supports'      => ['title', 'editor', 'thumbnail', 'revisions'],
+			'supports'      => ['title', 'editor', 'thumbnail', 'revisions', 'page-attributes'],
 			'taxonomies'    => [],
 		)
 	);
