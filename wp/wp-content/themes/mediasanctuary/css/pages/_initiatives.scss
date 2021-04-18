@@ -1,0 +1,36 @@
+/* Initiatives
+---------------------------------------------------------- */
+.pageHeading {
+  background:#000;
+  padding: 60px 0;
+  color:#FFF;
+  text-align: center;
+	background: url('../img/initiatives-bg.jpg');
+}
+
+
+#content {
+  h1 {
+    font-size: 2em;
+    padding-bottom: 15px;
+  }
+  article {
+      
+    ul {
+      list-style: disc;
+      padding: 0 0 20px 30px;
+      li {
+        padding: 0 0 15px;
+      }
+    }
+    
+    ol {
+      list-style: decimal;
+    }
+  }
+}
+
+#projects {
+  background:rgba(0,0,0,.05);
+
+}
