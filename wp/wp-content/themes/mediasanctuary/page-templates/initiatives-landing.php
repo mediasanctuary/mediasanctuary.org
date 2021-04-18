@@ -8,10 +8,16 @@
  * @since Media Sanctuary 2.0
  */
 
-get_header();
+get_header();?>
 
-the_content();
 
-include get_template_directory() . '/sections/section-initiatives.php';
+<section id="initiatives" class="initiatives p60">
+	<div class="container">
+    <?php include get_template_directory() . '/sections/section-initiatives.php';?>
+	</div>
+</section>
 
+<?php
+echo '<p class="text-center" style="padding:60px 0;"><a href="/project/" class="btn lg">View Our Projects</a></p>';
 get_footer();
+?>

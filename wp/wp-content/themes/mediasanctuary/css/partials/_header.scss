@@ -95,4 +95,41 @@
 		cursor: pointer;
 		text-indent: -99999em;
 	}
+	
+	// New Headings
+	position:relative;
+	padding-bottom: 40px;
+	
+	&.initiative {
+  	background:url("../img/initiatives-bg.jpg");
+  	&:before {
+    	display: none;
+  	}
+	}
+	
+	h1 {
+  	font-size: 2.0em;
+  	padding-top:50px;
+  	text-align: center;
+  	color:#FFF;
+	}
+	
+	&:before {
+  	display: block;
+    content:'';
+    background:rgba(0,0,0,.35);
+    position: absolute;
+    top:0;
+    left: 0;
+    right: 0;
+    bottom:0;
+	}
+	
+	.initiative-logo {
+  	display: block;
+  	margin: 20px auto 0;
+    width: 250px;
+	}
+	
+	
 }

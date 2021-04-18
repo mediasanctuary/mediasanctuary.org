@@ -40,8 +40,13 @@
 				</div>
 			</div>
 		</nav>
-		<div class="header<?php echo is_front_page() ? ' home' : '';?>">
+		
+		
+		<div class="header<?php echo is_front_page() ? ' home' : ''; echo (is_page('initiatives') || is_page_template( 'page-templates/initiatives.php')) ? ' initiative' : '';?>">
 			<div class="container">
+				
+				
+				<!-- Static -->
 				<div class="header__items">
 					<a href="http://stream.woocfm.org:8000/wooc" class="header__item header__item--wooc">
 						<h3>WOOC 105.3 FM</h3>
@@ -62,7 +67,6 @@
 				
 				<?php 
   				if(is_front_page()) { 
-  				  if (have_posts()) : while(have_posts()) : the_post(); 
             $enabled = get_field('enable_callout') == 'enabled' ? ' showCallout' : false;
             $callout = get_field('callout');
   		  ?>
@@ -88,8 +92,29 @@
   				<?php } ?>  				
   				
 				</div>
-        <?php endwhile; endif; } ?>				
+        <?php } ?>	
+        
+        <?php 
+  				if(is_page() && !is_front_page()) {
+    				if(is_page_template( 'page-templates/initiatives.php')) {
+              $logo = get_field('initiative_logo');
+              if($logo){
+                echo '<img src="'.$logo.'" class="initiative-logo"/>';
+              } else {
+                echo '<h1>'.get_the_title().'</h1>';	                
+              }
+
+    				} else {
+    			    echo '<h1>'.get_the_title().'</h1>';	
+    			  }
+    		  }
+    		?> 
+        
+        			
 				
 			</div>
 		</div>
+		
+		
+		
 		<div id="content" class="main">

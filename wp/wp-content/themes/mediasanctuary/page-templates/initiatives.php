@@ -13,13 +13,7 @@ if (have_posts()) : while(have_posts()) : the_post(); ?>
 
 
 <article>
-  <section class="pageHeading">
-    <div class="container">
-      <h1><?php the_title();?></h1>
-    </div>
-  </section>
-  
-  
+    
   <section class="p40">
     <div class="container">
       <?php the_content(); ?>
