@@ -47,6 +47,14 @@ add_action('acf/init', function() {
 			'menu_slug'  => 'options',
 			'capability' => 'edit_others_posts'
 		]);
+		acf_add_options_page([
+			'page_title' => 'Redirects',
+			'menu_title' => 'Redirects',
+			'menu_slug'  => 'redirects',
+			'position'   => '20',
+			'icon_url'   => 'dashicons-redo',
+			'capability' => 'activate_plugins'
+		]);
 	}
 });
 
