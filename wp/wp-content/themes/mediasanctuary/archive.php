@@ -11,7 +11,9 @@ get_header();
 		if (function_exists('get_field')) {
 			if (is_category()) {
 				$term = get_queried_object();
+				echo '<div class="intro">';
 				the_field('category_description', "category_$term->term_id" );
+				echo '</div>';				
 			}
 		}
 
@@ -25,11 +27,7 @@ get_header();
             }
 
 						echo '</ul>';
-						$prev = get_previous_posts_link('Previous page');
-						$next = get_next_posts_link('Next page');
-						$separator = (! empty($prev) && ! empty($next)) ? ' | ' : '';
-						echo '<div class="pagination">';
-						echo $prev . $separator . $next;
+            the_posts_pagination();
 						echo '</div>';
         } else {
 					echo "Sorry, no stories were found.";
