@@ -30,7 +30,7 @@ if (have_posts()) : while(have_posts()) : the_post(); ?>
 <?php if( have_rows('projects') ): ?>
 <section id="projects" class="p40">
   <div class="container">
-    <h2><?php the_title();?> Projects</h2>
+    <h2><?php the_title();?> - Featured Projects</h2>
     <ul class="three-col">  
       <?php 
         while ( have_rows('projects') ) : the_row();    

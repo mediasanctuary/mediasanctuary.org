@@ -1,0 +1,128 @@
+.search {
+  h1 {
+    text-align: center;
+  }
+  
+  h4 {
+    padding: 0 0 40px;
+  }
+}
+
+.screen-reader-text {
+  display: none;
+}
+
+.pagination {
+	text-align: center;
+	padding-bottom:20px;
+	overflow: hidden;
+	margin-top:60px;
+	display: flex;
+	justify-content: center;
+
+	&.sing {
+		.page-numbers {
+			&.next, &.prev {
+				margin: 0 2px;
+			}
+		}
+	}
+	
+	.page-numbers {
+		display: block;
+		text-align: center;
+		margin: 0 2px;
+		height: 40px;
+		min-width: 40px;
+		padding: 0 8px;
+		display: inline-block;
+		color:#FFF;
+		font-weight: 600;
+		font-size:16px;
+		line-height: 40px;
+		text-decoration: none;
+		background:rgba(0,0,0,.1);
+		color:#666;
+		
+		&.next, &.prev {
+			background-position: center center;
+			background-repeat: no-repeat;
+			background-size: auto 20px;
+			text-indent: -99999em;
+			margin: 0 5px;
+      background-color:$c-lilac;
+		}
+		
+		&.next {
+			background-image:url('../img/arrow-right.svg');
+		}
+		&.prev {
+			background-image:url('../img/arrow-left.svg');
+		}
+		
+		&:hover {
+			background-color:#8f68a6;
+			color:#FFF;
+		}
+		
+		&.dots {
+			border-color: transparent;
+			background: transparent;
+			color:#999;
+
+			&:hover {
+				background-color: transparent;
+			}				
+		}		
+		
+		
+		&.current {
+      border-color: $c-ironweed;								
+      background: $c-ironweed;
+			color:#FFF;
+			font-weight: bold;
+		}			
+
+	}
+}
+
+#stories {
+  .pagination {
+    
+  	.page-numbers {
+      border: 2px solid #FFF;
+      box-shadow: 0 0 2px rgba(0,0,0,.2);
+      line-height: 35px;
+    	
+  		&.next, &.prev {
+        background-color:$c-faded-brick;
+      }
+      
+  		&:hover {
+        background-color:$c-faded-brick;
+  			color:#FFF;
+  		}
+  		
+		&.dots {
+			border-color: transparent;
+			background: transparent;
+			box-shadow: none;
+			&:hover {
+				background-color: transparent;
+			}				
+		}		
+  		
+      
+      
+  		&.current {
+        border-color: $c-ladybug;								
+        background: $c-ladybug;
+  			color:#FFF;
+  			font-weight: bold;
+  		}	      
+    
+    }
+    
+
+  }
+}
