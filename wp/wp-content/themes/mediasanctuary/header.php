@@ -48,11 +48,11 @@
 				
 				<!-- Static -->
 				<div class="header__items">
-					<a href="http://stream.woocfm.org:8000/wooc" class="header__item header__item--wooc">
+					<a href="/initiatives/sanctuary-radio/" class="header__item header__item--wooc">
 						<h3>WOOC 105.3 FM</h3>
 						Listen Online
 					</a>
-					<a href="/sanctuary-tv/" class="header__item header__item--sanctuary-tv">
+					<a href="/initiatives/sanctuary-tv/" class="header__item header__item--sanctuary-tv">
 						<h3>Sanctuary TV</h3>
 						Watch Online
 					</a>
