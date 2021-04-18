@@ -116,9 +116,11 @@
     padding: 0;
     display: flex;
     align-items: center;
+    list-style: none !important;
+    padding: 0 !important;
 
 		li {
-			padding:0 4px 0 0;
+			padding:0 4px 0 0 !important;
 
 			strong {
 				display: block;
