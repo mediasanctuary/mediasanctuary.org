@@ -3,7 +3,7 @@
 		<h2>Recent Stories</h2>
 		<?php
   		if (function_exists('get_field')) {
-  			echo '<p class="intro">'.get_field('category_description', 'category_1').'</p>';
+  			echo '<div class="intro">'.get_field('category_description', 'category_1').'</div>';
   		}
 		?>
 		<ul class="four-col">

@@ -1,3 +1,4 @@
+<?php $events = (tribe_is_month() || tribe_is_event() || tribe_is_event_category() || tribe_is_in_main_loop() || tribe_is_view() || 'tribe_events' == get_post_type() || is_singular( 'tribe_events' )) ? true : false; ?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -15,16 +16,12 @@
 				<div class="logo"><a href="/"><img src="<?php asset_url('img/logo-720.png'); ?>" alt="The Sanctuary For Independent Media"></a></div>
 				<div class="nav-link-container">
 					<a href="#" class="nav-link nav-link--menu">Menu</a>
-					<div class="nav-links">
-						<a href="javascript:void(0);" class="nav-link">Events</a>
-						<a href="javascript:void(0);" class="nav-link">Initiatives</a>
-
-            <?php /* <a href="/events/" class="nav-link">Events</a>
-						<a href="/initiatives/" class="nav-link">Initiatives</a> */?>
-
-						<a href="/get-involved/" class="nav-link">Get Involved</a>
-						<a href="/about/" class="nav-link">About</a>
-					</div>
+					<ul class="nav-links">
+						<li<?php echo ($events) ? ' class="active"' : '';?>><a href="/events/list/" class="nav-link">Events</a></li>
+						<li<?php echo (is_page('initiatives') || is_page_template( 'page-templates/initiatives.php' )) ? ' class="active"' : '';?>><a href="/initiatives/" class="nav-link">Initiatives</a></li>
+						<li<?php echo (is_page('get-involved')) ? ' class="active"' : '';?>><a href="/get-involved/" class="nav-link">Get Involved</a></li>
+						<li<?php echo (is_page('about')) ? ' class="active"' : '';?>><a href="/about/" class="nav-link">About</a></li>
+					</ul>
 					<a href="/get-involved/donate/" class="nav-link nav-link--donate">Donate</a>
 				</div>
 			</div>
