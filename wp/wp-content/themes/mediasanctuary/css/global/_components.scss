@@ -47,6 +47,10 @@ a {
 		clear: both;
 		height: 0;
 	}
+	
+	&.sm {
+	  max-width: 960px;
+	}
 }
 
 /* Columns 
