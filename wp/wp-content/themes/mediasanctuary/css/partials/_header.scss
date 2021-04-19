@@ -16,10 +16,6 @@
 		justify-content: flex-start;
 		transform: rotate(-2.5deg);
 
-		@include breakpoint(md) {
-			width: 50%;
-		}
-
 		.header__item {
 			text-decoration: none;
 			font-size: 0.8em;
@@ -27,8 +23,8 @@
 			color: $c-raisin;
 			background: $c-river-fog;
 			padding: 0.8em;
-			margin-top: 15px;
-			margin-right: 15px;
+			margin-top: 3px;
+			margin-right: 10px;
 			padding-left: 3.5em;
 
 			&--wooc {
@@ -112,16 +108,14 @@
 
 	
 	// New Headings
-	&.page {
+	&.initiative {
+  	background-image: url("../img/initiatives-bg.jpg");
   	position:relative;
   	padding-bottom: 40px;
   	background-repeat: no-repeat;
   	background-size: cover;
   	background-color: #333;
-	}
-	
-	&.initiative {
-  	background-image: url("../img/initiatives-bg.jpg");
+  	
   	&:before {
     	display: none;
   	}

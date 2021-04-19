@@ -51,21 +51,23 @@
   <article class="post post--single">
     <main>
       <span class="date" ><?php the_time('F d, Y'); ?></span>
+      <?php /*
       <div class="categories">
         <?php echo $cat; ?>
       </div>
+      */ ?>
       <h1><?php the_title();?></h1>
-      <div><?php
-
-      if (function_exists('soundcloud_podcast') && get_post_format($post->ID) == 'audio') {
-        soundcloud_podcast();
-      }
-      if (! empty($thumb)) {
-        echo $thumb;
-      }
-      the_content();
-      echo '<br class="clear">';
-      ?>
+      <div class="content">
+        <?php
+          if (function_exists('soundcloud_podcast') && get_post_format($post->ID) == 'audio') {
+            soundcloud_podcast();
+          }
+          if (! empty($thumb)) {
+            echo $thumb;
+          }
+          the_content();
+        ?>
+      </div>
 
       <?php if (! empty($tags)) { ?>
         <div class="tags">
@@ -73,7 +75,6 @@
         </div>
       <?php } ?>
 
-      </div>
       <div class="meta">
         <ul class="social">
           <li><strong>Share</strong></li>

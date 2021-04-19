@@ -5,7 +5,8 @@
 <?php
   $args = array(
     'post_type' => 'page',
-    'post_parent'=> 29640
+    'post_parent'=> 29640,
+    'order' => 'ASC'
   );
   $queryInitiatives = new WP_Query($args);
   if ($queryInitiatives->have_posts()) :

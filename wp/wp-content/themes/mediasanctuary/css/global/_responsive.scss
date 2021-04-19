@@ -2,15 +2,52 @@
 Quick and Dirty for homepage. Will separate out after launch -- MJS
 ---------------------------------------------------------- */
 
-@media only screen and (max-width: 960px) {
-  
-}
-
 
 /* Homepage Mobile
 ---------------------------------------------------------- */
+@media only screen and (max-width: 860px) {
+  .header {
+    .header__items, .search {
+      display: none;
+    }
+    .home.banner {
+      padding-top:40px;
+    }
+    
+    form.search {
+      position: fixed;
+      top: 0;
+      left: 100vw;
+      width: 100vw;
+      height: 100vh;
+      background: $c-raisin;
+      transition: 0.3s left ease-out;
+      margin: 0;
+      z-index: 100;
+      padding: 80px 30px;
+      box-sizing: border-box;
+      display: block;
+      
+      .search-input {
+        width: 100%;
+        padding: 14px 50px 14px 15px;        
+      } 
+      .search-button {
+        position: absolute;
+        right: 30px;        
+      }     
+    }
+    
+  }
 
-@media only screen and (max-width: 700px) {
+  .four-col .col {
+    width: 33.3333333%;
+  }
+
+}
+
+
+@media only screen and (max-width: 675px) {
   
   body {
     font-size:16px;
@@ -55,15 +92,13 @@ Quick and Dirty for homepage. Will separate out after launch -- MJS
   
   .header{
     
-    &.page {
+    &.initiative {
       margin-top:-20px;
     }
-    
-    .header__items, .search {
-      display: none;
-    }
-    
+        
     &.home {
+      margin-top:0;
+
       .banner {
         flex-wrap: wrap;
         padding: 30px 0 0;
@@ -114,4 +149,18 @@ Quick and Dirty for homepage. Will separate out after launch -- MJS
       }
     }
   }
+}
+
+
+
+
+.show-mobile-search {
+  overflow: hidden;
+	.header form.search {
+		left:0;
+	}
+
+	.close-menu {
+		display: block;
+	}
 }
