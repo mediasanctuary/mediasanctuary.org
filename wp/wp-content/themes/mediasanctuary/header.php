@@ -26,7 +26,6 @@
 					</ul>
 					<a href="/initiatives/sanctuary-radio/" class="mobile icon wooc">WOOC 105.3 FM</a>
 					<a href="/initiatives/sanctuary-tv/" class="mobile icon tv">Sanctuary TV</a>
-					<a href="#" class="mobile icon search">Search</a>
 					<a href="/get-involved/donate/" class="nav-link desktop nav-link--donate<?php echo (is_page('about')) ? ' active' : '';?>">Donate</a>
 					<a href="#" class="nav-link nav-link--menu">Menu</a>					
 				</div>

@@ -182,11 +182,7 @@
       margin-left:240px;
       
       .icon {
-        width: 30px;
-        background-size: auto 20px;
-        &.tv, &.wooc {
-          display: none;
-        }
+        display: none;
       }
       .nav-link--donate.desktop {
         display: none;
