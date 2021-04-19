@@ -13,6 +13,31 @@ Quick and Dirty for homepage. Will separate out after launch -- MJS
     .home.banner {
       padding-top:40px;
     }
+    
+    form.search {
+      position: fixed;
+      top: 0;
+      left: 100vw;
+      width: 100vw;
+      height: 100vh;
+      background: $c-raisin;
+      transition: 0.3s left ease-out;
+      margin: 0;
+      z-index: 100;
+      padding: 80px 30px;
+      box-sizing: border-box;
+      display: block;
+      
+      .search-input {
+        width: 100%;
+        padding: 14px 50px 14px 15px;        
+      } 
+      .search-button {
+        position: absolute;
+        right: 30px;        
+      }     
+    }
+    
   }
 
   .four-col .col {
@@ -124,4 +149,18 @@ Quick and Dirty for homepage. Will separate out after launch -- MJS
       }
     }
   }
+}
+
+
+
+
+.show-mobile-search {
+  overflow: hidden;
+	.header form.search {
+		left:0;
+	}
+
+	.close-menu {
+		display: block;
+	}
 }

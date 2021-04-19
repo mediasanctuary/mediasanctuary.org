@@ -210,9 +210,10 @@
 }
 
 
-/* Show and Hide Mobile Navigation 
+/* Show and Hide Mobile Navigation and Mobile Search
 ---------------------------------------------------- */
 .show-mobile-menu {
+  overflow: hidden;  
 	.nav-links {
 		left: 0;
 	}
