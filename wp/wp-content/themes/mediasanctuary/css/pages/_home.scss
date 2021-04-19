@@ -81,7 +81,9 @@
         text-align: center;
       }
       span {
-        background: url('../img/bg-banner.jpg') no-repeat center center;
+        background-image: url('../img/bg-banner.jpg');
+        background-repeat:no-repeat;
+        background-position:center center;
         border: 5px solid #FFF;
         background-size:cover;
         height: 150px;
@@ -92,4 +94,17 @@
     }
   }  
   
+
+  /* Tablet and Mobile
+  ---------------------------------------------------------- */
+  
+  @media only screen and (max-width: 960px) {
+    .banner {
+      .about {
+          font-size: 28px;
+        }
+      }
+    
+  }
+
 }
