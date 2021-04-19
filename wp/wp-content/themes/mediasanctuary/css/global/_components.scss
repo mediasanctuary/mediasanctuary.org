@@ -24,6 +24,10 @@ strong {
 
 a {
   transition: ease 0.3s all;
+  color:$c-teal-duck;
+  &:hover {
+    color:$c-robin-egg;    
+  }
 }
 
 .text-center {
@@ -140,10 +144,16 @@ section.p60 {
 
 	&:hover {
 		background: $c-ladybug;
+		color:#FFF;
 	}
 	
 	&.ladybug {
   	background-color: $c-ladybug;
+  	&:hover {
+    	background-color: $c-faded-brick;
+    	color: #FFF;
+  	}
+  	
 	}
 	
 	&.ironweed {
@@ -176,3 +186,46 @@ section.p60 {
 
 }
 
+
+
+/* CTA Block
+----------------------------------------------------- */    
+.ctaBlock {
+  text-align: center;
+  padding: 50px 30px;
+  font-size: 1.1em;
+  border: 1px solid #e1e1e1;
+  background-color:#FFF;
+  background-repeat: no-repeat;
+  background-position: center center;
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    top:0;
+    left: 0;
+    right: 0;
+    bottom:0;
+    background:rgba(255,255,255,.85);
+  }
+    
+  &.dark {
+    color:#FFF;
+    background-color:#333;
+    border: 1px solid #212121; 
+    
+    &:before {
+      background:rgba(0,0,0,.5);      
+    }
+       
+  }
+  
+  h3 {
+    padding-top:0;
+  }
+  
+  .content {
+    position: relative;
+    z-index: 1;
+  }
+}
