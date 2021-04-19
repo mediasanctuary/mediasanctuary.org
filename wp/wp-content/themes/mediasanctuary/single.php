@@ -51,9 +51,11 @@
   <article class="post post--single">
     <main>
       <span class="date" ><?php the_time('F d, Y'); ?></span>
+      <?php /*
       <div class="categories">
         <?php echo $cat; ?>
       </div>
+      */ ?>
       <h1><?php the_title();?></h1>
       <div><?php
 

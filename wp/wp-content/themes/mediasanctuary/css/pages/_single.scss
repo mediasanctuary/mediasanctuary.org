@@ -44,12 +44,31 @@
   overflow-x: hidden;
 }
 
+.single {
+  ul {
+    list-style: disc;
+    padding: 0 0 20px 30px;
+    li {
+      padding: 0 0 15px;
+    }
+  }
+  
+  ol {
+    list-style: decimal;
+  }  
+}
+
+.story {
+  background:#FFF;
+}
+
 .post--single {
   display: flex;
   main {
     width: calc(70% - 20px);
     margin-right:20px;
     box-sizing: border-box;
+    font-size:18px;
     h1 {
       font-size: 2em;
       padding-bottom: 15px;
@@ -69,7 +88,7 @@
   aside {
     width: calc(30% - 20px);
     margin-left:20px;
-    background:#e1e1e1;
+    background:$c-river-fog;
     position: relative;
     padding-left:30px;
     font-size: 16px;
@@ -81,7 +100,7 @@
       width: 100vw;
       position: absolute;
       left: 0;
-      background:#e1e1e1;
+      background:$c-river-fog;
       border-left: 1px solid rgba(0,0,0,.05);
       z-index: -1;
     }
@@ -96,6 +115,9 @@
     ul {
       list-style: none;
       padding: 0;
+      li {
+        padding: 0;
+      }
     }
 
     a {
@@ -162,7 +184,7 @@
   font-size:16px;
   line-height: normal;
   display: inline-block;
-  margin-bottom:5px;
+  margin-bottom:10px;
   font-weight: normal;
   position: relative;
   color:$c-slate;
