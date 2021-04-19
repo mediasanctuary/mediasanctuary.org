@@ -6,6 +6,7 @@
   $args = array(
     'post_type' => 'page',
     'post_parent'=> 29640,
+    'orderby' => 'title',
     'order' => 'ASC'
   );
   $queryInitiatives = new WP_Query($args);
