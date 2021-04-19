@@ -10,7 +10,7 @@
 		<link rel="shortcut icon" href="<?php asset_url('img/favicon.ico'); ?>">
 		<?php wp_head(); ?>
 	</head>
-	<body <?php echo is_single() ? 'class="story"' : ''?>>
+	<body class="<?php echo is_single() ? 'story' : '';  echo (is_page_template( 'page-templates/initiatives.php')) ? ' initiative' : '';?>">
 		<nav class="top-nav">
 			<div class="container">
 				<div class="logo"><a href="/"><img src="<?php asset_url('img/logo-720.png'); ?>" alt="The Sanctuary For Independent Media"></a></div>
@@ -35,7 +35,6 @@
 		
 		<div class="header<?php echo is_front_page() ? ' home' : ''; echo (is_page_template( 'page-templates/initiatives.php')) ? ' initiative' : '';?>">
 			<div class="container">
-				
 				
 				<!-- Static -->
 				<div class="header__items">
