@@ -1,0 +1,112 @@
+/* Tablet and Mobile -- 
+Quick and Dirty for homepage. Will separate out after launch -- MJS
+---------------------------------------------------------- */
+
+@media only screen and (max-width: 960px) {
+  
+}
+
+
+/* Homepage Mobile
+---------------------------------------------------------- */
+
+@media only screen and (max-width: 700px) {
+  
+  body {
+    font-size:16px;
+  }
+  
+  .container {
+    padding: 0 20px;
+  }
+  
+  
+  .btn, .wp-block-button .wp-block-button__link {
+    font-size: 15px;
+    border-width: 2px;
+  }
+  
+  section.p60 {
+    padding: 30px 0;
+  }
+  
+  
+  .two-col, .three-col, .four-col {
+    margin: 0;
+    .col {
+       width: 100% !important; 
+       padding: 0;
+       &:last-child {
+         padding: 20px 0 0;
+       }
+    }
+  }
+  
+  h2 {
+    font-size: 32px;
+  }
+  .intro {
+    font-size: 16px;
+  }
+  
+  h5 {
+    font-size: 18px;
+  }  
+  
+  .header{
+    .header__items, .search {
+      display: none;
+    }
+    
+    &.home {
+      .banner {
+        flex-wrap: wrap;
+        padding: 30px 0 0;
+        &.showCallout {
+          .about {
+            width: 100%;
+            padding: 0 0 20px; 
+            text-align: center; 
+            font-size:22px;        
+          }
+          .callout {
+            width: 100%;
+            padding: 15px;
+            font-size: 14px;
+            max-width: 400px;
+            margin: 0 auto;
+            h2 {
+              font-size: 18px;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  #newsletter {
+    font-size: inherit;
+  }
+  
+  #about {
+    .initiatives {
+      margin: 0 -20px; 
+      padding: 30px 20px;
+    }
+    .w55 {
+      padding: 0 0 20px;
+    }
+  }
+  
+  footer {
+    .social {
+      justify-content: center;
+      li {
+        width: 22%;
+        a {
+          width: auto;
+        }
+      }
+    }
+  }
+}
