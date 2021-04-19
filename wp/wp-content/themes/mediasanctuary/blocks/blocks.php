@@ -4,7 +4,7 @@
 
 $block_defaults = [
 	'category'        => 'common',
-	'post_types'      => ['post', 'page'],
+	'post_types'      => ['post', 'page', 'project'],
 	'mode'            => 'auto',
 	'supports'        => [
 		'align'       => false,

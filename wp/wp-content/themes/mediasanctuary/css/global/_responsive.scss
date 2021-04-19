@@ -54,6 +54,11 @@ Quick and Dirty for homepage. Will separate out after launch -- MJS
   }  
   
   .header{
+    
+    &.page {
+      margin-top:-20px;
+    }
+    
     .header__items, .search {
       display: none;
     }
