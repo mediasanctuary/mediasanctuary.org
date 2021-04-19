@@ -21,7 +21,13 @@ $blocks = [
 		'title'       => 'Features',
 		'description' => 'Hero images with buttons.',
 		'icon'        => 'format-image'
-	]
+	],
+	'cta' => [
+		'title'       => 'CTA Box',
+		'description' => 'Hero images with buttons.',
+    'category'    => 'formatting',
+    'icon'        => 'admin-comments',
+	]	
 ];
 
 $dir = __DIR__;
