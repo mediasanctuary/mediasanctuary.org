@@ -68,10 +68,9 @@
 		font-family: $f-system;
 		font-size: $s-xxs;
 		border: none;
-
-		@include breakpoint(md) {
-			font-size: $s-xs;
-		}
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0;		
 
 		&:focus {
 			border: none;

@@ -31,11 +31,13 @@ Quick and Dirty for homepage. Will separate out after launch -- MJS
       
       .search-input {
         width: 100%;
-        padding: 14px 50px 14px 15px;        
+        padding: 14px 50px 14px 15px; 
+        height: 45px;       
       } 
       .search-button {
         position: absolute;
-        right: 15px;        
+        right: 15px;
+        top:20px      
       }     
     }
     
