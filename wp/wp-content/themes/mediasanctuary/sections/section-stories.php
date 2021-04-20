@@ -15,9 +15,13 @@
         );
         $queryLatest = new WP_Query($args);
         if ($queryLatest->have_posts()) :
-            $i = 0;
+            $i = 0;            
             while ($queryLatest->have_posts()) : $queryLatest->the_post();
-              get_template_part( 'partials/post', 'none' );
+              $data = array(
+                'number' => $i
+              );
+              get_template_part( 'partials/post', 'none', $data);
+              $i++;
             endwhile;
         endif;
         wp_reset_query();
