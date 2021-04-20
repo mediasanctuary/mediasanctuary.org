@@ -79,6 +79,9 @@ Quick and Dirty for homepage. Will separate out after launch -- MJS
        &:last-child {
          padding: 20px 0 0;
        }
+       &.desktop {
+         display: none;
+       }
     }
     &.initiatives__list {
       margin: 0 -5px;
