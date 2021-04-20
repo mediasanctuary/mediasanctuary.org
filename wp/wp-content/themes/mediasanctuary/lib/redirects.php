@@ -13,7 +13,9 @@ function setup_redirects() {
 	foreach ($redirects as $redirect) {
 		if (strpos($redirect['from_path'], '*') !== false) {
 			$redirect_to = check_wildcard_redirect($redirect, $path);
-			break;
+			if (! empty($redirect_to)) {
+				break;
+			}
 		} else {
 			$from_path = normalize_path($redirect['from_path']);
 			if ($path == $from_path) {
