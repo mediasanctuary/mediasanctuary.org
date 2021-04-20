@@ -1,21 +1,25 @@
 <?php
-  global $data;
-  $mobileClass = ($data['number'] > 2) ? 'desktop' : '';
-  
-	$thumb_url = get_asset_url('img/default.jpg');
-	if ( has_post_thumbnail() ) {
-		$thumb_id = get_post_thumbnail_id();
-		$thumb_url_array = wp_get_attachment_image_src($thumb_id, 'full', true);
-		$thumb_url = $thumb_url_array[0];
-	}
 
-	$more = 'Read More';
-	if('audio' == get_post_format()){
-		$more = 'Listen Now';
-	}
-	if('video' == get_post_format()){
-		$more = 'Watch Now';
-	}
+global $data;
+$mobileClass = '';
+if (isset($data) && $data['number'] > 2) {
+	$mobileClass = 'desktop';
+}
+
+$thumb_url = get_asset_url('img/default.jpg');
+if ( has_post_thumbnail() ) {
+	$thumb_id = get_post_thumbnail_id();
+	$thumb_url_array = wp_get_attachment_image_src($thumb_id, 'full', true);
+	$thumb_url = $thumb_url_array[0];
+}
+
+$more = 'Read More';
+if('audio' == get_post_format()){
+	$more = 'Listen Now';
+}
+if('video' == get_post_format()){
+	$more = 'Watch Now';
+}
 
 ?>
 
