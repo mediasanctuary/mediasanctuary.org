@@ -7,7 +7,7 @@
             "label": "",
             "name": "redirects",
             "type": "repeater",
-            "instructions": "",
+            "instructions": "You can use <code>*<\/code> wildcard in both \"From path\" and \"Redirect to.\"",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -79,5 +79,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1618751950
+    "modified": 1618878131
 }
