@@ -1,0 +1,43 @@
+name: Deploy to www
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: |
+        cd wp/wp-content/themes/mediasanctuary
+        npm install
+
+    - name: Build
+      run: |
+        cd wp/wp-content/themes/mediasanctuary
+        npm run build
+
+    - name: Sync
+      env:
+        dest: 'mswww@claudette.mayfirst.org:/home/members/nyma/sites/new.mediasanctuary.org/web/wp-content/'
+      run: |
+        echo "${{secrets.PROD_DEPLOY_KEY}}" > deploy_key
+        chmod 600 ./deploy_key
+        rsync \
+          --rsh='ssh -i ./deploy_key -o StrictHostKeyChecking=no' \
+          --delete \
+          --checksum \
+          --recursive \
+          --verbose \
+          --human-readable \
+          --filter='P uploads' \
+          --exclude wp/wp-content/uploads \
+          ./wp/wp-content/ ${{env.dest}}
