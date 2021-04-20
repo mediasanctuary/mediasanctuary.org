@@ -55,7 +55,12 @@
   
   ol {
     list-style: decimal;
-  }  
+  } 
+  
+  .wp-block-image figcaption {
+    font-size: 13px;
+    color: #999;    
+  } 
 }
 
 .story {

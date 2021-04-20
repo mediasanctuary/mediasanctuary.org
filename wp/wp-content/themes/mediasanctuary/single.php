@@ -60,10 +60,10 @@
       <div class="content">
         <?php
           if (function_exists('soundcloud_podcast') && get_post_format($post->ID) == 'audio') {
-            soundcloud_podcast();
-          }
-          if (! empty($thumb)) {
-            echo $thumb;
+            soundcloud_podcast();          
+            if (! empty($thumb)) {
+              echo $thumb;
+            }
           }
           the_content();
         ?>
