@@ -9,13 +9,26 @@
           <div class="col w45">
             <div class="initiatives">
               <img src="<?php asset_url('img/Sanctuary-White-Black-Shadow.svg'); ?>" alt="" />
-              <ul>
-                <li><a href="/initiatives/collardcitygrowers/">Collard City Growers</a></li>
-                <li><a href="/initiatives/nature-lab/">NATURE Lab</a></li>
-                <li><a href="/initiatives/peoples-health-sanctuary/">People's Health Sanctuary</a></li>
-                <li><a href="/initiatives/sanctuary-tv/">Sanctuary TV</a></li>
-                <li><a href="/initiatives/wooc/">Sanctuary Radio</a></li>
-                <li><a href="/initiatives/youth-media-sanctuary/">Youth Media Sanctuary</a></li>
+              <ul>                
+                <?php
+                  $args = array(
+                    'post_type' => 'page',
+                    'post_parent'=> 29640,
+                    'orderby' => 'title',
+                    'order' => 'ASC'
+                  );
+                  $queryInitiatives = new WP_Query($args);
+                  if ($queryInitiatives->have_posts()) :
+                      while ($queryInitiatives->have_posts()) : $queryInitiatives->the_post();?>
+                        <li>
+                          <a href="<?php echo get_permalink();?>">
+                            <?php the_title();?>
+                          </a>
+                        </li>
+                      <?php endwhile;
+                  endif;
+                  wp_reset_query();
+                ?>
               </ul> 
             </div>           
           </div>

@@ -31,6 +31,13 @@
       max-width: 350px;
       margin: 0 auto;
       display: block;
+      
+      @media only screen and (max-width: 675px) {
+        max-width: 175px;    
+      }
+      
     }
   }
+
+  
 }

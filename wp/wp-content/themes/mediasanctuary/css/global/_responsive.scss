@@ -16,25 +16,28 @@ Quick and Dirty for homepage. Will separate out after launch -- MJS
     
     form.search {
       position: fixed;
-      top: 0;
+      bottom: 0;
       left: 100vw;
       width: 100vw;
-      height: 100vh;
+      top: auto;
+      height: auto;
       background: $c-raisin;
       transition: 0.3s left ease-out;
       margin: 0;
       z-index: 100;
-      padding: 80px 30px;
+      padding: 20px 15px;
       box-sizing: border-box;
       display: block;
       
       .search-input {
         width: 100%;
-        padding: 14px 50px 14px 15px;        
+        padding: 14px 50px 14px 15px; 
+        height: 45px;       
       } 
       .search-button {
         position: absolute;
-        right: 30px;        
+        right: 15px;
+        top:20px      
       }     
     }
     
@@ -71,13 +74,32 @@ Quick and Dirty for homepage. Will separate out after launch -- MJS
   .two-col, .three-col, .four-col {
     margin: 0;
     .col {
-       width: 100% !important; 
+       width: 100%; 
        padding: 0;
        &:last-child {
          padding: 20px 0 0;
        }
+       &.desktop {
+         display: none;
+       }
+    }
+    &.initiatives__list {
+      margin: 0 -5px;
+      .col {
+        width: 50%;
+        padding: 5px;
+      }
     }
   }
+  
+  .two-col {
+    .col {
+      width: 100% !important;
+    }
+  }
+  
+  
+  
   
   h2 {
     font-size: 32px;
@@ -154,13 +176,11 @@ Quick and Dirty for homepage. Will separate out after launch -- MJS
 
 
 
-.show-mobile-search {
-  overflow: hidden;
+/* Show and Hide Mobile Navigation and Mobile Search
+---------------------------------------------------- */
+.show-mobile-menu {
+  overflow: hidden;  
 	.header form.search {
 		left:0;
-	}
-
-	.close-menu {
-		display: block;
 	}
 }

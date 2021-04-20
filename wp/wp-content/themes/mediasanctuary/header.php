@@ -10,7 +10,7 @@
 		<link rel="shortcut icon" href="<?php asset_url('img/favicon.ico'); ?>">
 		<?php wp_head(); ?>
 	</head>
-	<body <?php echo is_single() ? 'class="story"' : ''?>>
+	<body class="<?php echo is_single() ? 'story' : '';  echo (is_page_template( 'page-templates/initiatives.php')) ? ' initiative' : '';?>">
 		<nav class="top-nav">
 			<div class="container">
 				<div class="logo"><a href="/"><img src="<?php asset_url('img/logo-720.png'); ?>" alt="The Sanctuary For Independent Media"></a></div>
@@ -22,11 +22,10 @@
 						<li<?php echo (is_page('initiatives') || is_page_template( 'page-templates/initiatives.php' )) ? ' class="active"' : '';?>><a href="/initiatives/" class="nav-link">Initiatives</a></li>
 						<li<?php echo (is_page('get-involved')) ? ' class="active"' : '';?>><a href="/get-involved/" class="nav-link">Get Involved</a></li>
 						<li<?php echo (is_page('about')) ? ' class="active"' : '';?>><a href="/about/" class="nav-link">About</a></li>
-						<li class="mobile<?php echo (is_page('about')) ? ' active' : '';?>"><a href="/get-involved/give/donate/" class="nav-link nav-link--donate">Donate</a></li>						
+						<li class="mobile<?php echo (is_page('about')) ? ' active' : '';?>"><a href="/get-involved/donate/" class="nav-link nav-link--donate">Donate</a></li>						
 					</ul>
 					<a href="/initiatives/sanctuary-radio/" class="mobile icon wooc">WOOC 105.3 FM</a>
 					<a href="/initiatives/sanctuary-tv/" class="mobile icon tv">Sanctuary TV</a>
-					<a href="#" class="mobile icon search">Search</a>
 					<a href="/get-involved/donate/" class="nav-link desktop nav-link--donate<?php echo (is_page('about')) ? ' active' : '';?>">Donate</a>
 					<a href="#" class="nav-link nav-link--menu">Menu</a>					
 				</div>
@@ -36,7 +35,6 @@
 		
 		<div class="header<?php echo is_front_page() ? ' home' : ''; echo (is_page_template( 'page-templates/initiatives.php')) ? ' initiative' : '';?>">
 			<div class="container">
-				
 				
 				<!-- Static -->
 				<div class="header__items">

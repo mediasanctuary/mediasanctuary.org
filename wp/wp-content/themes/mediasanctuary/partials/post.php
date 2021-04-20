@@ -1,4 +1,7 @@
 <?php
+  global $data;
+  $mobileClass = ($data['number'] > 2) ? 'desktop' : '';
+  
 	$thumb_url = get_asset_url('img/default.jpg');
 	if ( has_post_thumbnail() ) {
 		$thumb_id = get_post_thumbnail_id();
@@ -16,7 +19,7 @@
 
 ?>
 
-<li class="col">
+<li class="col <?php echo $mobileClass; ?>">
 	<a href="<?php the_permalink();?>" class="posts__item">
 		<span class="post__thumbnail" style="background-image:url(<?php echo $thumb_url; ?>)">
 			<strong><?php echo $more; ?></strong>

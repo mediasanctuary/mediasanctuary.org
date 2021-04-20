@@ -18,3 +18,21 @@
 #projects {
   background:rgba(0,0,0,.05);
 }
+
+
+.initiative {
+  
+  article {
+    ul {
+      list-style: disc;
+      padding: 0 0 20px 30px;
+      li {
+        padding: 0 0 15px;
+      }
+    }
+    
+    ol {
+      list-style: decimal;
+    }  
+  }
+}
