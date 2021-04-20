@@ -204,3 +204,51 @@ function get_category_links($categories, $parent = null) {
 	}
 	return $list;
 }
+
+
+
+// Social Meta Tags
+function social_meta_tags() {
+    global $post;
+    $title = get_the_title();
+    $description;
+    $type = 'article';
+
+    // Featured Image
+    $thumb_url = get_asset_url('img/share.jpg');
+    if ( has_post_thumbnail() ) {
+    	$thumb_id = get_post_thumbnail_id();
+    	$thumb_url_array = wp_get_attachment_image_src($thumb_id, 'full', true);
+    	$thumb_url = $thumb_url_array[0];
+    }    
+    
+    // Conditionals   
+    if ( is_singular() ) {
+      $d01 = strip_tags( $post->post_content );
+      $d02 = strip_shortcodes( $d01 );
+      $d03 = str_replace( array("\n", "\r", "\t"), '', $d02 );
+      $description = mb_substr( $d03, 0, 300, 'utf8' );
+    }
+    if ( is_front_page() ) {
+      $title = get_bloginfo( "name" );
+      $description = get_bloginfo( "description" );
+      $type = 'website';
+    }
+    if ( is_category() ) {
+      $description = strip_tags(category_description());
+    }
+    
+    echo "\n";
+    echo '<meta property="og:title" content="'.$title.'">' . "\n";
+    echo '<meta property="og:description" content="'.$description.'">' . "\n";
+    echo '<meta property="og:image" content="'.$thumb_url.'">' . "\n";
+    echo '<meta property="og:url" content="'.get_the_permalink().'">' . "\n";
+    echo '<meta property="og:type" content="'.$type.'">' . "\n";
+    
+    echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+    echo '<meta name="twitter:title" content="'.$title.'">' . "\n";
+    echo '<meta name="twitter:description" content="'.$description.'">' . "\n";
+    echo '<meta name="twitter:image" content="'.$thumb_url.'">';
+    
+}
+add_action( 'wp_head', 'social_meta_tags');
