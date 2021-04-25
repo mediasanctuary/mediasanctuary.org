@@ -29,21 +29,21 @@ Rebuild the container if necessary:
 
 ```
 cd wp
-docker-compose build
+docker compose build
 ```
 
 Tail the logs:
 
 ```
 cd wp
-docker-compose logs -f web
+docker compose logs -f web
 ```
 
 Login to a shell on the web server container:
 
 ```
 cd wp
-docker-compose exec web bash
+docker compose exec web bash
 ```
 
 ## About the image
@@ -62,7 +62,7 @@ How to upgrade the plugins:
 
 ```
 cd wp
-docker-compose exec web wp plugin upgrade --all
+docker compose exec web wp plugin upgrade --all
 ```
 
 ## Updating WordPress core
@@ -71,7 +71,7 @@ To update your local WordPress dev instance:
 
 ```
 cd wp
-docker-compose exec web wp core upgrade
+docker compose exec web wp core upgrade
 ```
 
 Updating WordPress on the dev or prod servers requires that you SSH in and run `wp core upgrade` on the server.
