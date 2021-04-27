@@ -10,7 +10,7 @@ stop_containers() {
   echo "Shutting off containers..."
   echo
   cd "$dir/wp"
-  docker-compose stop
+  docker compose stop
   echo
   echo "All done!"
 }
@@ -20,7 +20,7 @@ trap stop_containers SIGINT
 echo "Starting containers..."
 echo
 cd "$dir/wp"
-docker-compose up -d
+docker compose up -d
 echo
 
 echo "Starting asset watcher ..."

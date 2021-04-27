@@ -4,8 +4,6 @@ require_once 'lib/post-types.php';
 require_once 'lib/redirects.php';
 require_once 'db/migrate.php';
 
-add_filter('show_admin_bar', '__return_false');
-
 add_filter('pre_get_posts', function($query) {
 	if (is_archive()) {
 		$query->set('posts_per_page', 20);
@@ -148,9 +146,9 @@ function social_meta_tags() {
     	$thumb_id = get_post_thumbnail_id();
     	$thumb_url_array = wp_get_attachment_image_src($thumb_id, 'full', true);
     	$thumb_url = $thumb_url_array[0];
-    }    
-    
-    // Conditionals   
+    }
+
+    // Conditionals
     if ( is_singular() ) {
       $d01 = strip_tags( $post->post_content );
       $d02 = strip_shortcodes( $d01 );
@@ -165,18 +163,18 @@ function social_meta_tags() {
     if ( is_category() ) {
       $description = strip_tags(category_description());
     }
-    
+
     echo "\n";
     echo '<meta property="og:title" content="'.$title.'">' . "\n";
     echo '<meta property="og:description" content="'.$description.'">' . "\n";
     echo '<meta property="og:image" content="'.$thumb_url.'">' . "\n";
     echo '<meta property="og:url" content="'.get_the_permalink().'">' . "\n";
     echo '<meta property="og:type" content="'.$type.'">' . "\n";
-    
+
     echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
     echo '<meta name="twitter:title" content="'.$title.'">' . "\n";
     echo '<meta name="twitter:description" content="'.$description.'">' . "\n";
     echo '<meta name="twitter:image" content="'.$thumb_url.'">';
-    
+
 }
 add_action( 'wp_head', 'social_meta_tags');
