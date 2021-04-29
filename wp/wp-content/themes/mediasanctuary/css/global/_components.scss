@@ -18,7 +18,11 @@ p {
   margin: 0;
 }
 
-strong {
+em, i {
+  font-style: italic;
+}
+
+strong, b {
   font-weight: bold;
 }
 
@@ -26,8 +30,16 @@ a {
   transition: ease 0.3s all;
   color:$c-teal-duck;
   &:hover {
-    color:$c-robin-egg;    
+    color:$c-robin-egg;
   }
+}
+
+.tribe_events ul > li {
+  list-style: disc;
+}
+
+.tribe_events ol > li {
+  list-style: decimal;
 }
 
 .text-center {
@@ -35,15 +47,15 @@ a {
 }
 
 
-/* Layout 
------------------------------------------------------ */  
+/* Layout
+----------------------------------------------------- */
 .container {
 	position: relative;
 	max-width: 1200px;
 	margin: 0 auto;
 	padding: 0 30px;
 	box-sizing: border-box;
-	
+
 	&:after {
 		visibility: hidden;
 		display: block;
@@ -51,28 +63,28 @@ a {
 		clear: both;
 		height: 0;
 	}
-	
+
 	&.sm {
 	  max-width: 960px;
 	}
 }
 
-/* Columns 
------------------------------------------------------ */  
+/* Columns
+----------------------------------------------------- */
 .two-col, .three-col, .four-col {
   display: flex;
-  flex-wrap: wrap;  
+  flex-wrap: wrap;
 }
 
-.two-col {  
+.two-col {
   .col {
     width: 50%;
     padding: 0 20px 0 0;
-    
+
     &:last-child {
       padding: 0 0 0 20px;
     }
-    
+
     &.w45 {
       width: 45%;
     }
@@ -89,7 +101,7 @@ a {
   .col {
     width: 33.33333333%;
     padding: 0 10px;
-  }  
+  }
 }
 
 .four-col {
@@ -124,8 +136,8 @@ section.p60 {
   height: auto
 }
 
-/* Buttons 
------------------------------------------------------ */  
+/* Buttons
+----------------------------------------------------- */
 .btn, .wp-block-button .wp-block-button__link {
 	color: #FFF;
 	background: $c-asphalt;
@@ -146,16 +158,16 @@ section.p60 {
 		background: $c-ladybug;
 		color:#FFF;
 	}
-	
+
 	&.ladybug {
   	background-color: $c-ladybug;
   	&:hover {
     	background-color: $c-faded-brick;
     	color: #FFF;
   	}
-  	
+
 	}
-	
+
 	&.ironweed {
   	background-color: $c-ironweed;
   	&:hover {
@@ -163,7 +175,7 @@ section.p60 {
     	color:#000;
   	}
 	}
-	
+
 	&.news {
   	line-height: 35px;
   	&:before {
@@ -175,12 +187,12 @@ section.p60 {
       display: block;
       height: 35px;
       width: 35px;
-      float: left;	
+      float: left;
       margin-right:15px;
-      font-size:26px;      
+      font-size:26px;
   	}
   	&:hover {
-    	background:$c-asphalt;  
+    	background:$c-asphalt;
   	}
 	}
 
@@ -189,7 +201,7 @@ section.p60 {
 
 
 /* CTA Block
------------------------------------------------------ */    
+----------------------------------------------------- */
 .ctaBlock {
   text-align: center;
   padding: 50px 30px;
@@ -208,22 +220,22 @@ section.p60 {
     bottom:0;
     background:rgba(255,255,255,.3);
   }
-    
+
   &.dark {
     color:#FFF;
     background-color:#333;
-    border: 1px solid #212121; 
-    
+    border: 1px solid #212121;
+
     &:before {
-      background:rgba(0,0,0,.3);      
+      background:rgba(0,0,0,.3);
     }
-       
+
   }
-  
+
   h3 {
     padding-top:0;
   }
-  
+
   .content {
     position: relative;
     z-index: 1;
