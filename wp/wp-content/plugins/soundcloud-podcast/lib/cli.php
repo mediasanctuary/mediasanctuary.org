@@ -21,6 +21,14 @@ add_action('after_setup_theme', function() {
 					$num = $args[1];
 				}
 				soundcloud_podcast_import($num);
+			} else if ($args[0] == 'categories') {
+				$cat = null;
+				if (! empty($args[1])) {
+					$cat = $args[1];
+				}
+				soundcloud_podcast_categories($cat);
+			} else {
+				echo "Unknown subcommand {$args[0]}\n";
 			}
 		});
 	}

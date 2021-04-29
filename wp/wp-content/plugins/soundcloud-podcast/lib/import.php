@@ -46,8 +46,8 @@ function soundcloud_podcast_import($num = null, $url = null, $slack_msg = '') {
 		fwrite($stderr, "Error: HTTP $status\n");
 		if (! empty($msg)) {
 			fwrite($stderr, "$msg\n");
-			return;
 		}
+		return;
 	}
 	$json = wp_remote_retrieve_body($rsp);
 	$tracks = json_decode($json, 'as hash');
