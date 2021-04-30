@@ -34,12 +34,31 @@ a {
   }
 }
 
-.tribe_events ul > li {
-  list-style: disc;
-}
+.tribe_events {
 
-.tribe_events ol > li {
-  list-style: decimal;
+  ul, ol {
+    padding-left: 20px;
+  }
+
+  & > ul, & > ol {
+    padding-bottom: 15px;
+  }
+
+  ul > li {
+    list-style: disc;
+
+    & > ul > li {
+      list-style: circle;
+    }
+  }
+
+  ol > li {
+    list-style: decimal;
+
+    & > ol > li {
+      list-style: lower-alpha;
+    }
+  }
 }
 
 .text-center {
