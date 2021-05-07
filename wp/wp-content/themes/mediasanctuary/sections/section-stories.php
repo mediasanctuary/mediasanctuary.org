@@ -29,5 +29,7 @@
 
 		</ul>
 		<p class="text-center"><a href="<?php echo home_url('/stories/'); ?>" class="btn">View all stories</a></p>
+		
+		<?php include get_template_directory() . '/sections/section-wooc.php';?>
 	</div>
 </section>

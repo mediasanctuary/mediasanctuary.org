@@ -24,8 +24,8 @@
 						<li<?php echo (is_page('about')) ? ' class="active"' : '';?>><a href="/about/" class="nav-link">About</a></li>
 						<li class="mobile<?php echo (is_page('about')) ? ' active' : '';?>"><a href="/get-involved/donate/" class="nav-link nav-link--donate">Donate</a></li>						
 					</ul>
-					<a href="/initiatives/sanctuary-radio/" class="mobile icon wooc">WOOC 105.3 FM</a>
-					<a href="/initiatives/sanctuary-tv/" class="mobile icon tv">Sanctuary TV</a>
+					<a href="http://stream.woocfm.org:8000/wooc" class="mobile icon wooc">WOOC 105.3 FM <span>Live</span></a>
+					<a href="/initiatives/sanctuary-tv/" class="mobile icon tv">Sanctuary TV <span>Live</span></a>
 					<a href="/get-involved/donate/" class="nav-link desktop nav-link--donate<?php echo (is_page('about')) ? ' active' : '';?>">Donate</a>
 					<a href="#" class="nav-link nav-link--menu">Menu</a>					
 				</div>
@@ -38,8 +38,8 @@
 				
 				<!-- Static -->
 				<div class="header__items">
-					<a href="/initiatives/sanctuary-radio/" class="header__item header__item--wooc">
-						<h3>WOOC 105.3 FM</h3>
+					<a href="http://stream.woocfm.org:8000/wooc" target="_blank" rel="nofollow" class="header__item header__item--wooc">
+						<h3>Sanctuary Radio</h3>
 						Listen Online
 					</a>
 					<a href="/initiatives/sanctuary-tv/" class="header__item header__item--sanctuary-tv">
