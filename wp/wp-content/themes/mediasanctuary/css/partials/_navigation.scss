@@ -20,7 +20,7 @@
   
 	@media only screen and (max-width: 450px) {
     left: 0;	
-    width: 220px;
+    width: 190px;
   }
   
 }
@@ -53,7 +53,7 @@
 	.nav-link-container {
 		display: flex;
 		margin-left: 280px;
-		padding: 10px 0;
+		padding: 8px 0;
 		justify-content: space-between;
 	}
 
@@ -127,6 +127,8 @@
       	background-color: transparent;
       	background-size:auto 28px;
       	border-radius: 5px;
+      	position: relative;
+      	
       	&.wooc {
         	background-image: url('../img/wooc-80-white.png');
       	}
@@ -136,8 +138,24 @@
       	&.search {
         	background-image: url('../img/icon-search.png');
       	}
+      	
+      	span {
+          position: absolute;
+          text-indent: 0;
+          left: 0;
+          color: #FFF;
+          font-size: 7px;
+          bottom: -2px;
+          text-align: center;
+        	background:$c-teal-duck;
+          padding: 0 1px 0 3px;
+          border-radius: 2px;
+          line-height: 11px;
+          letter-spacing: 1.5px;        	
+      	}
+      	
       	&:hover {
-        	background-color:#207F95;
+        	background-color:$c-robin-egg;
       	}
     	}
   	}
@@ -179,11 +197,8 @@
   
   @media only screen and (max-width: 550px) {
   	.nav-link-container {  	
-      margin-left:240px;
+      margin-left:200px;
       
-      .icon {
-        display: none;
-      }
       .nav-link--donate.desktop {
         display: none;
       }
