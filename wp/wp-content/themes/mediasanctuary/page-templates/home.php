@@ -13,7 +13,6 @@ get_header();
 the_content();
 
 include get_template_directory() . '/sections/section-stories.php';
-include get_template_directory() . '/sections/section-wooc.php';
 include get_template_directory() . '/sections/section-events.php';?>
 
 <section id="initiatives" class="initiatives p60">

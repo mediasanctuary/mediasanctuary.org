@@ -1,22 +1,60 @@
 #wooc {
+  background:rgba(255,255,255,.6);
+  padding: 20px;
+  border: 3px solid rgba(0,0,0,.2);
+  margin: 40px 0 0;
+  
+  .wooc {
+    overflow: hidden;
+    padding-bottom: 10px;
+    img {
+      width: 60px;
+      display: block;
+      margin: 0 30px 0 0;
+      float: left;
+    }
+    
+    h3, p {
+      margin-left: 90px;
+    }
+    
+  }
+  
+  tbody {
+    display: flex;
+    tr {
+      width: 25%;
+      padding: 0 10px;
+      box-sizing: border-box;
+    }
+  }
+  
   .spin-time {
-    padding-right: 10px;    
+    display: block;
+    font-size: 13px;  
   }
   .artist {
     display: block;
-    font-size: 18px;
+    font-size: 13px;
     color:$c-ladybug;
   }
+  .song, .composer {
+    font-size:14px;
+    padding: 3px 0;
+    display: block;
+    line-height: normal;
+  }
+  
   .song {
-    font-size:20px;
+    font-style: italic;
   }
   
   .info {
-    font-size: 13px;
+    font-size: 12px;
   }
   
   .spin-text {
-    padding:10px;
+    padding:10px 0 0;
     .release {
       color:#666;
       &:before {
@@ -25,19 +63,50 @@
     }
   }
   
-  .two-col {
-    img {
-      width: 100%;
-      max-width: 350px;
-      margin: 0 auto;
-      display: block;
-      
-      @media only screen and (max-width: 675px) {
-        max-width: 175px;    
+  h3 {
+    font-size: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  
+  p {
+    font-size: 16px;
+  }
+  
+	@media only screen and (max-width: 860px) {
+    tbody {
+      flex-wrap: wrap;
+      tr {
+        width: 50%;
+        padding: 0 10px 20px;
       }
-      
+    }
+  
+  }
+  
+	@media only screen and (max-width: 500px) {
+  	.wooc {
+    	img {
+      	display: block;
+        margin: 0 auto 10px;
+        float: none;      	
+    	}
+    	h3, p {
+      	margin: 0;
+      	text-align: center;
+    	}
+  	}
+  	
+    tbody {
+      tr {
+        width: 100%;
+        padding: 10px 0;
+        &:last-child {
+          display: none;
+        }
+      }
     }
   }
-
+    
   
 }
