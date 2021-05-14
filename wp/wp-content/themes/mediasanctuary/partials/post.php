@@ -20,15 +20,24 @@ if('audio' == get_post_format()){
 if('video' == get_post_format()){
 	$more = 'Watch Now';
 }
+if('project' == get_post_type()){
+	$more = 'Learn More';
+}
+
+$date = false;
+if (get_post_type() != 'project'){
+  $date = '<span class="posts__date">'.get_the_time('F d, Y').'</span>';
+}
+
 
 ?>
 
-<li class="col <?php echo $mobileClass; ?>">
+<div class="col <?php echo $mobileClass; ?>">
 	<a href="<?php the_permalink();?>" class="posts__item">
 		<span class="post__thumbnail" style="background-image:url(<?php echo $thumb_url; ?>)">
 			<strong><?php echo $more; ?></strong>
 		</span>
 		<h5><?php the_title();?></h5>
-		<span class="posts__date"><?php the_time('F d, Y');?></span>
+		<?php echo $date; ?>
 	</a>
-</li>
+</div>

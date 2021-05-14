@@ -1,6 +1,7 @@
 .initiatives {
 	color: $c-river-fog;
-	background: url('../img/initiatives-bg.jpg');
+	background: url('../img/initiatives-bg.jpg') repeat top center;
+	background-size: auto 240px;	
 	font-size: 23px;
 	h2 {
 		padding-top:0;

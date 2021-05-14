@@ -20,6 +20,7 @@
   
   .w55 {
     padding-top:30px;
+    padding-bottom:60px;
   }
   
   .initiatives {
@@ -27,6 +28,8 @@
     padding: 30px;
     overflow: hidden;
     position: relative;
+    height: 100%;
+    box-sizing: border-box;
     
     &:before {
       position: absolute;

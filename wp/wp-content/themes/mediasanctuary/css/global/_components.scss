@@ -88,6 +88,10 @@ a {
 	}
 }
 
+.p20 {
+  padding: 20px 0;
+}
+
 /* Columns
 ----------------------------------------------------- */
 .two-col, .three-col, .four-col {
@@ -142,6 +146,10 @@ section.p40 {
 
 section.p60 {
   padding: 60px 0;
+}
+
+section.pb60 {
+  padding: 0 0 60px 0;
 }
 
 

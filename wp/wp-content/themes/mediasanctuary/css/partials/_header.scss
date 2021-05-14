@@ -5,6 +5,10 @@
 	background-position: center;
 	padding-bottom: 30px;
 	
+	.container {
+  	min-height: 85px;
+	}
+	
 	&:before {
 		content:'';
 		position: absolute;
@@ -15,6 +19,8 @@
 		display: flex;
 		justify-content: flex-start;
 		transform: rotate(-2.5deg);
+		position: absolute;
+		top: 23px;
 
 		.header__item {
 			text-decoration: none;
@@ -23,7 +29,6 @@
 			color: $c-raisin;
 			background: $c-river-fog;
 			padding: 0.8em;
-			margin-top: 3px;
 			margin-right: 10px;
 			padding-left: 3.5em;
 
@@ -111,8 +116,6 @@
   	background-image: url("../img/initiatives-bg.jpg");
   	position:relative;
   	padding-bottom: 40px;
-  	background-repeat: no-repeat;
-  	background-size: cover;
   	background-color: #333;
   	
   	&:before {
@@ -122,15 +125,29 @@
 	
 	h1 {
   	font-size: 2.0em;
-  	padding-top:50px;
+  	padding-top:120px;
   	text-align: center;
   	color:#FFF;
+  	
+    @media only screen and (max-width: 860px) {
+      padding-top:50px;  
+    }
+
+    @media only screen and (max-width: 600px) {
+      padding-top:30px;  
+    }  	
 	}
+	
+  @media only screen and (max-width: 600px) {
+    padding-bottom:10px;  
+  }  		
 	
 	.initiative-logo {
   	display: block;
   	margin: 20px auto 0;
 	}
+	
+	
 	
 	
 }
