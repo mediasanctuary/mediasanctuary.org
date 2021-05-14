@@ -131,9 +131,11 @@
       	
       	&.wooc {
         	background-image: url('../img/wooc-80-white.png');
+        	margin-right:8px;
       	}
       	&.tv {
         	background-image: url('../img/sanctuary-tv-80-white.png');
+        	display: none;
       	}
       	&.search {
         	background-image: url('../img/icon-search.png');
