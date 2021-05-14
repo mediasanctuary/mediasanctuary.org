@@ -19,7 +19,7 @@ if(get_field('display_options') == 'featured'){
 
 ?>
 
-<section id="initiatives" class="initiatives p60">
+<section id="initiatives" class="initiatives pb60">
 	<div class="container">
     <?php include get_template_directory() . '/sections/section-initiatives.php';?>
 	</div>
