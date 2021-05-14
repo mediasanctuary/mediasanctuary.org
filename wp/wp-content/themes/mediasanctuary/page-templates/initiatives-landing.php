@@ -17,7 +17,29 @@ get_header();?>
 	</div>
 </section>
 
+<?php if( have_rows('projects') ): ?>
+<section id="projects" class="p40">
+  <div class="container">
+    <h2 class="text-center">Featured Projects</h2>
+    <div class="three-col p20">  
+      <?php 
+        while ( have_rows('projects') ) : the_row();    
+          $post_object = get_sub_field('project'); 
+          if( $post_object ) {
+            $post = $post_object;
+            setup_postdata( $post );
+            get_template_part( 'partials/post', 'none' );
+            wp_reset_postdata(); 
+          }
+        endwhile;
+      ?> 
+    </div>
+    <p class="text-center"><a href="/project/" class="btn lg">View All Projects</a></p>
+  </div>
+</section>
+<?php endif; ?>
+
+
 <?php
-echo '<p class="text-center" style="padding:60px 0;"><a href="/project/" class="btn lg">View Our Projects</a></p>';
 get_footer();
 ?>
