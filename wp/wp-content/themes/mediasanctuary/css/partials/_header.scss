@@ -130,12 +130,26 @@
   	padding-top:120px;
   	text-align: center;
   	color:#FFF;
+  	
+    @media only screen and (max-width: 860px) {
+      padding-top:50px;  
+    }
+
+    @media only screen and (max-width: 600px) {
+      padding-top:30px;  
+    }  	
 	}
+	
+  @media only screen and (max-width: 600px) {
+    padding-bottom:10px;  
+  }  		
 	
 	.initiative-logo {
   	display: block;
   	margin: 20px auto 0;
 	}
+	
+	
 	
 	
 }
