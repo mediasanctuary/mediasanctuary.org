@@ -137,7 +137,7 @@ function get_category_links($categories, $parent = null) {
 function social_meta_tags() {
     global $post;
     $title = get_the_title();
-    $description;
+    $description = '';
     $type = 'article';
 
     // Featured Image
