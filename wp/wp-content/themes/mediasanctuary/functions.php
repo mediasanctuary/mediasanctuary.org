@@ -2,6 +2,7 @@
 
 require_once 'lib/post-types.php';
 require_once 'lib/redirects.php';
+require_once 'lib/roles.php';
 require_once 'db/migrate.php';
 
 add_filter('pre_get_posts', function($query) {
@@ -96,6 +97,7 @@ add_action('admin_enqueue_scripts', function() {
 add_action('init', function() {
 	setup_post_types();
 	setup_redirects();
+	setup_roles();
 });
 
 function asset_url($file) {
