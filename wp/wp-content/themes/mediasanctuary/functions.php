@@ -35,6 +35,7 @@ add_action('after_setup_theme', function() {
 
 add_action('wp_enqueue_scripts', function() {
 	list($src, $version) = get_asset_url('js/main.js', true);
+  wp_enqueue_script( '_sanctuary_slick', get_template_directory_uri() . '/js/slick.min.js', array(), $version, true );	
 	wp_enqueue_script('main', $src, ['jquery'], $version, true);
 });
 

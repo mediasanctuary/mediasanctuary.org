@@ -27,7 +27,12 @@ $blocks = [
 		'description' => 'Hero images with buttons.',
     'category'    => 'formatting',
     'icon'        => 'admin-comments',
-	]	
+	],
+	'gallery' => [
+		'title'       => 'Photo Gallery Block',
+		'description' => 'Photo Gallery slider with thumbnails',
+		'icon'        => 'format-gallery',
+	]		
 ];
 
 $dir = __DIR__;
