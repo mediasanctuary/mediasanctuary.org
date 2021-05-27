@@ -5,6 +5,18 @@ require_once 'lib/redirects.php';
 require_once 'lib/roles.php';
 require_once 'db/migrate.php';
 
+add_filter( 'acf/prepare_field/name=category_soundcloud_playlist', function($field) {
+	if (function_exists('soundcloud_podcast_playlists')) {
+		$playlists = soundcloud_podcast_playlists();
+		foreach ($playlists['list'] as $playlist) {
+			$id = $playlist['id'];
+			$title = $playlist['title'];
+			$field['choices'][$id] = $title;
+		}
+	}
+	return $field;
+});
+
 add_filter('pre_get_posts', function($query) {
 	if (is_archive()) {
 		$query->set('posts_per_page', 20);
@@ -35,7 +47,7 @@ add_action('after_setup_theme', function() {
 
 add_action('wp_enqueue_scripts', function() {
 	list($src, $version) = get_asset_url('js/main.js', true);
-  wp_enqueue_script( '_sanctuary_slick', get_template_directory_uri() . '/js/slick.min.js', array(), $version, true );	
+  wp_enqueue_script( '_sanctuary_slick', get_template_directory_uri() . '/js/slick.min.js', array(), $version, true );
 	wp_enqueue_script('main', $src, ['jquery'], $version, true);
 });
 

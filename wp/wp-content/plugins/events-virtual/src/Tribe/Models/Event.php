@@ -27,12 +27,14 @@ class Event {
 	 * Filters the object returned by the `tribe_get_event` function to add to it properties related to virtual events.
 	 *
 	 * @since 1.0.0
+	 * @since 1.4.0 Add hybrid field.
 	 *
 	 * @param WP_Post $event The event post object.
 	 *
 	 * @return WP_Post The original event object decorated with properties related to virtual events.
 	 */
 	public function add_properties( WP_Post $event ) {
+		$event->virtual_event_type         = $this->get_virtual_event_type( $event );
 		$event->virtual                    = self::is_virtual( $event );
 		$event->virtual_url                = $this->get_virtual_url( $event );
 		$event->virtual_embed_video        = $this->get_virtual_embed_video( $event );
@@ -102,6 +104,29 @@ class Event {
 		 * @param \WP_Post $event      The event post object.
 		 */
 		return tribe_is_truthy( apply_filters( 'tribe_events_virtual_is_virtual_event', $is_virtual, $event ) );
+	}
+
+	/**
+	 * Retrieves an event's type.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param WP_Post $event Event post object.
+	 *
+	 * @return null|string The event's type.
+	 */
+	protected function get_virtual_event_type( WP_Post $event ) {
+		if ( ! self::is_new_virtual( $event ) ) {
+			return Event_Meta::$value_virtual_event_type;
+		}
+
+		$value = get_post_meta( $event->ID, Event_Meta::$key_type, true );
+
+		if ( ! empty( $value ) ) {
+			return $value;
+		}
+
+		return Event_Meta::$value_virtual_event_type;
 	}
 
 	/**

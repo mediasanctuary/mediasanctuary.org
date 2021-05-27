@@ -74,15 +74,24 @@ class JSON_LD {
 			return $data;
 		}
 
-		if ( empty( $data->location ) || ! is_object( $data->location ) ) {
+		// Set as online by default, but if hybrid set to mixed.
+		$data->eventAttendanceMode = static::ONLINE_EVENT_ATTENDANCE_MODE;
+		if ( Event_Meta::$value_hybrid_event_type === $event->virtual_event_type ) {
+			$data->eventAttendanceMode = static::MIXED_EVENT_ATTENDANCE_MODE;
+		}
+
+		if (
+			empty( $data->location ) ||
+			! is_object( $data->location )
+		) {
 			// If the physical location is not present, then mark this event as online only.
-			$data->eventAttendanceMode = static::ONLINE_EVENT_ATTENDANCE_MODE;
 			$data->location            = (object) [
 				'@type' => 'VirtualLocation',
 				'url'   => esc_url( $this->get_virtual_url( $post ) ),
 			];
 		} else {
 			// If a physical location is set for the event, then assign both locations.
+			// Override the event attendance when there is a location.
 			$data->eventAttendanceMode = static::MIXED_EVENT_ATTENDANCE_MODE;
 			$data->location            = [
 				(object) [

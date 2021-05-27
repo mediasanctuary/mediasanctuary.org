@@ -9,6 +9,8 @@
 
 namespace Tribe\Events\Virtual\Meetings;
 
+use Tribe\Events\Virtual\Meetings\Zoom\Migration_Notice;
+use Tribe\Events\Virtual\Meetings\Zoom\Users;
 use Tribe\Events\Virtual\Event_Meta;
 use Tribe\Events\Virtual\Meetings\Zoom\Event_Meta as Zoom_Meta;
 use Tribe\Events\Virtual\Meetings\Zoom\Meetings;
@@ -179,6 +181,15 @@ class Zoom_Provider extends Meeting_Provider {
 		set_transient( $transient_name, true, HOUR_IN_SECONDS );
 
 		return $this->container->make( Password::class )->update_password_from_zoom( $post );
+	}
+
+	/**
+	 * Render the Migration Notice to the New Zoom App.
+	 *
+	 * @since 1.4.0
+	 */
+	public function render_migration_notice() {
+		$this->container->make( Migration_Notice::class )->render();
 	}
 
 	/**
@@ -488,6 +499,32 @@ class Zoom_Provider extends Meeting_Provider {
 	}
 
 	/**
+	 * Get the host list to use to assign to Zoom Meetings and Webinars.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @return array<string,mixed>  An array of Zoom Users to use as the host.
+	 */
+	public function filter_virtual_meetings_zoom_hosts() {
+		return tribe( Users::class )->get_formatted_hosts_list();
+	}
+
+	/**
+	 * Get the host list to use to assign to Zoom Meetings and Webinars.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param array<string,mixed>   An array of Zoom Users to use as the alternative hosts.
+	 * @param string $selected_alt_hosts The list of alternative host emails.
+	 * @param string $current_host       The email of the current host.
+	 *
+	 * @return array<string,mixed>  An array of Zoom Users to use as the host.
+	 */
+	public function filter_virtual_meetings_zoom_alternative_hosts( $alternative_hosts, $selected_alt_hosts, $current_host ) {
+		return tribe( Users::class )->get_alternative_users( $alternative_hosts, $selected_alt_hosts, $current_host );
+	}
+
+	/**
 	 * Provides the routes that should be used to handle Zoom API requests.
 	 *
 	 * The map returned by this method will be used by the `Tribe\Events\Virtual\Traits\With_Nonce_Routes` trait.
@@ -502,8 +539,10 @@ class Zoom_Provider extends Meeting_Provider {
 			Oauth::$authorize_nonce_action   => $this->container->callback( OAuth::class, 'handle_auth_request' ),
 			OAuth::$deauthorize_nonce_action => $this->container->callback( OAuth::class, 'handle_deauth_request' ),
 			Meetings::$create_action         => $this->container->callback( Meetings::class, 'ajax_create' ),
+			Meetings::$update_action         => $this->container->callback( Meetings::class, 'ajax_update' ),
 			Meetings::$remove_action         => $this->container->callback( Meetings::class, 'ajax_remove' ),
 			Webinars::$create_action         => $this->container->callback( Webinars::class, 'ajax_create' ),
+			Webinars::$update_action         => $this->container->callback( Webinars::class, 'ajax_update' ),
 			Webinars::$remove_action         => $this->container->callback( Webinars::class, 'ajax_remove' ),
 		];
 	}
@@ -549,6 +588,18 @@ class Zoom_Provider extends Meeting_Provider {
 			10,
 			2
 		);
+		add_filter(
+			'tribe_events_virtual_meetings_zoom_hosts',
+			[ $this, 'filter_virtual_meetings_zoom_hosts' ],
+			10
+		);
+
+		add_filter(
+			'tribe_events_virtual_meetings_zoom_alternative_hosts',
+			[ $this, 'filter_virtual_meetings_zoom_alternative_hosts' ],
+			10,
+			3
+		);
 	}
 
 	/**
@@ -567,5 +618,6 @@ class Zoom_Provider extends Meeting_Provider {
 			'wp_ajax_events_virtual_meetings_zoom_autosave_client_keys',
 			[ Zoom\OAuth::class, 'ajax_credentials_save' ]
 		);
+		add_action( 'admin_init', [ $this, 'render_migration_notice' ] );
 	}
 }

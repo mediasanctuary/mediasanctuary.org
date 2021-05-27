@@ -67,14 +67,16 @@ class Classic_Editor {
 	 * Renders, echoing to the page, the Zoom API meeting generator controls.
 	 *
 	 * @since 1.0.0
+	 * @since 1.4.0 - Add ability to force the meeting and webinar generator.
 	 *
-	 * @param null|\WP_Post|int $post The post object or ID of the event to generate the controls for, or `null` to use
-	 *                                the global post object.
-	 * @param bool              $echo Whether to echo the template contents to the page (default) or to return it.
+	 * @param null|\WP_Post|int $post            The post object or ID of the event to generate the controls for, or `null` to use
+	 *                                           the global post object.
+	 * @param bool              $echo            Whether to echo the template contents to the page (default) or to return it.
+	 * @param bool              $force_generator Whether to force to display the meeting and webinar generator.
 	 *
 	 * @return string The template contents, if not rendered to the page.
 	 */
-	public function render_meeting_link_generator( $post = null, $echo = true ) {
+	public function render_meeting_link_generator( $post = null, $echo = true, $force_generator = false ) {
 		$post = tribe_get_event( get_post( $post ) );
 
 		if ( ! $post instanceof \WP_Post ) {
@@ -114,7 +116,7 @@ class Classic_Editor {
 		if ( $this->api->is_authorized() ) {
 			$meeting_link = tribe( Password::class )->get_zoom_meeting_link( $post );
 
-			if ( ! empty( $meeting_link ) ) {
+			if ( ! empty( $meeting_link ) && ! $force_generator ) {
 				// Enqueue the accordion script required to show the UI correctly, we might need it if link is removed.
 				tribe_asset_enqueue( 'tribe-events-views-v2-accordion' );
 
@@ -129,14 +131,7 @@ class Classic_Editor {
 			// Enqueue the accordion script required to show the UI correctly.
 			tribe_asset_enqueue( 'tribe-events-views-v2-accordion' );
 
-			if ( count( $available_types ) === 1 ) {
-				// Meetings or Webinars.
-				$type = reset( $available_types );
-
-				return $this->render_single_link_generator( $type, $post, $echo );
-			}
-
-			if ( count( $available_types ) > 1 ) {
+			if ( count( $available_types ) > 0 ) {
 				// Meetings and Webinars.
 				return $this->render_multiple_links_generator( $post, $echo );
 			}
@@ -275,6 +270,7 @@ class Classic_Editor {
 	 * generation links for both type of meetings.
 	 *
 	 * @since 1.1.1
+	 * @since 1.4.0 A support to choose a host before meeting or webinar creation.
 	 *
 	 * @param \WP_Post $post The post object of the Event context of the link generation.
 	 * @param bool     $echo Whether to print the rendered HTML to the page or not.
@@ -282,8 +278,17 @@ class Classic_Editor {
 	 * @return string|false Either the final content HTML or `false` if the template could be found.
 	 */
 	public function render_multiple_links_generator( \WP_Post $post, $echo = true ) {
+		/**
+		 * Filters the host list to use to assign to Zoom Meetings and Webinars.
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param array<string,mixed>  An array of Zoom Users to use as the host.
+		 */
+		$hosts = apply_filters( 'tribe_events_virtual_meetings_zoom_hosts', [] );
+
 		return $this->template->template(
-			'virtual-metabox/zoom/multiple-controls',
+			'virtual-metabox/zoom/setup',
 			[
 				'event'                   => $post,
 				'offer_or_label'          => _x(
@@ -297,6 +302,33 @@ class Classic_Editor {
 					'events-virtual'
 				),
 				'generation_urls'         => $this->get_link_generation_urls( $post, false ),
+				'generate_label'        => _x(
+					'Next ',
+					'The label used to designate the next step in generation of a Zoom Meeting or Webinar.',
+					'events-virtual'
+				),
+				'hosts' => [
+					'label'       => _x(
+						'Meeting Host',
+						'The label of the meeting or webinar host.',
+						'events-virtual'
+					),
+					'id'          => 'tribe-events-virtual-zoom-host',
+					'class'       => 'tribe-events-virtual-meetings-zoom__host-dropdown',
+					'name'        => 'tribe-events-virtual-zoom-host',
+					'selected'    =>  $post->zoom_host_id,
+					'attrs'       => [
+						'placeholder' => _x(
+						    'Select a Host',
+						    'The placeholder for the dropdown to select a host.',
+						    'events-virtual'
+						),
+						'data-selected' => $post->zoom_host_id,
+						'data-prevent-clear' => true,
+						'data-hide-search' => true,
+						'data-options' => json_encode( $hosts ),
+					],
+				],
 			],
 			$echo
 		);
@@ -321,7 +353,7 @@ class Classic_Editor {
 			'events-virtual'
 		);
 		$wo_generate_meeting_label = _x(
-			'Zoom Meeting',
+			'Meeting',
 			'Label for the control to generate a Zoom meeting link in the event classic editor UI, w/o the "Generate" prefix.',
 			'events-virtual'
 		);
@@ -331,7 +363,7 @@ class Classic_Editor {
 			'events-virtual'
 		);
 		$wo_generate_webinar_label = _x(
-			'Zoom Webinar',
+			'Webinar',
 			'Label for the control to generate a Zoom webinar link in the event classic editor UI, w/o the "Generate" prefix.',
 			'events-virtual'
 		);
@@ -340,12 +372,16 @@ class Classic_Editor {
 			Meetings::$meeting_type => [
 				$this->url->to_generate_meeting_link( $post ),
 				$include_generate_text ? $w_generate_meeting_label : $wo_generate_meeting_label,
-			],
-			Webinars::$meeting_type => [
+			]
+		];
+
+		// Add webinar if supported.
+		if ( $this->api->allow_webinars() ) {
+			$data[ Webinars::$meeting_type ] = [
 				$this->url->to_generate_webinar_link( $post ),
 				$include_generate_text ? $w_generate_webinar_label : $wo_generate_webinar_label,
-			],
-		];
+			];
+		}
 
 		/**
 		 * Allows filtering the generation links URL and label before rendering them on the admin UI.
@@ -359,48 +395,6 @@ class Classic_Editor {
 		$data = apply_filters( 'tribe_events_virtual_zoom_meeting_link_generation_urls', $data, $post );
 
 		return $data;
-	}
-
-	/**
-	 * Renders the link generator HTML for one Zoom Meeting types (e.g. Webinars or Meetings).
-	 *
-	 * Currently the available types are, at the most, 2: Meetings and Webinars. This method might need to be
-	 * updated in the future if that assumption changes. If this method runs, then it means that we should render
-	 * generation links for both type of meetings.
-	 *
-	 * @since 1.1.1
-	 *
-	 * @param string   $type The type of Zoom Meeting to render teh link generator HTML for.
-	 * @param \WP_Post $post The post object of the Event context of the link generation.
-	 * @param bool     $echo Whether to print the rendered HTML to the page or not.
-	 *
-	 * @return string|false Either the final content HTML or `false` if the template could be found.
-	 */
-	public function render_single_link_generator( $type, \WP_Post $post, $echo = true ) {
-		$data = Arr::get( $this->get_link_generation_urls( $post, true ), $type, false );
-
-		if ( false === $data ) {
-			// This should not happen as the types are hard-coded, but better safe than sorry.
-			return '';
-		}
-
-		list( $generate_link_url, $generate_link_label ) = $data;
-
-		return $this->template->template(
-			'virtual-metabox/zoom/controls',
-			[
-				'event'               => $post,
-				'is_authorized'       => true,
-				'offer_or_label'      => _x(
-					'or',
-					'The lowercase "or" label used to offer the creation of a Zoom Meetings or Webinars API link.',
-					'events-virtual'
-				),
-				'generate_link_label' => $generate_link_label,
-				'generate_link_url'   => $generate_link_url,
-			],
-			$echo
-		);
 	}
 
 	/**
@@ -426,6 +420,11 @@ class Classic_Editor {
 			? Meetings::$meeting_type
 			: Webinars::$meeting_type;
 
+		// Set the url to update the meeting or webinar using AJAX.
+		$update_link_url = Webinars::$meeting_type === $meeting_type
+			?  $this->url->to_update_webinar_link( $post )
+			:  $this->url->to_update_meeting_link( $post );
+
 		$details_title = Webinars::$meeting_type === $meeting_type
 			? _x(
 				'Zoom Webinar',
@@ -438,21 +437,65 @@ class Classic_Editor {
 				'events-virtual'
 			);
 
+		/**
+		 * Filters the host list to use to assign to Zoom Meetings and Webinars.
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param array<string,mixed>   An array of Zoom Users to use as the alternative hosts.
+		 * @param string $selected_alt_hosts The list of alternative host emails.
+		 * @param string $current_host       The email of the current host.
+		 */
+		$alt_hosts = apply_filters( 'tribe_events_virtual_meetings_zoom_alternative_hosts', [], $post->zoom_alternative_hosts, $post->zoom_host_email );
+
 		return $this->template->template(
 			'virtual-metabox/zoom/details',
 			[
-				'event'             => $post,
-				'details_title'     => $details_title,
-				'remove_link_url'   => $remove_link_url,
-				'remove_link_label' => $remove_link_label,
-				'id_label'          => _x(
+				'event'                 => $post,
+				'details_title'         => $details_title,
+				'update_link_url'       => $update_link_url,
+				'remove_link_url'       => $remove_link_url,
+				'remove_link_label'     => $remove_link_label,
+				'host_label'            => _x(
+					'Host: ',
+					'The label used to designate the host of a Zoom Meeting or Webinar.',
+					'events-virtual'
+				),
+				'attrs'       => [
+					'data-update-url'         => $update_link_url,
+					'data-zoom-id'            => $post->zoom_meeting_id,
+					'data-selected-alt-hosts' => $post->zoom_alternative_hosts,
+				],
+				'zoom_id'               => $post->zoom_meeting_id,
+				'id_label'              => _x(
 					'ID: ',
 					'The label used to prefix a Zoom Meeting or Webinar ID in the backend.',
 					'events-virtual'
 				),
-				'phone_numbers'     => array_filter(
+				'phone_numbers'         => array_filter(
 					(array) get_post_meta( $post->ID, Virtual_Meta::$prefix . 'zoom_global_dial_in_numbers', true )
 				),
+				'selected_alt_hosts'    => $post->zoom_alternative_hosts,
+				'alt_hosts'             => [
+					'label'       => _x(
+						'Alternative Hosts',
+						'The label of the alternative host multiselect',
+						'events-virtual'
+					),
+					'id'          => 'tribe-events-virtual-zoom-alt-host',
+					'name'        => 'tribe-events-virtual-zoom-alt-host[]',
+					'class'       => 'tribe-events-virtual-meetings-zoom__alt-host-multiselect',
+					'selected'    => $post->zoom_alternative_hosts,
+					'attrs'       => [
+						'data-placeholder' => _x(
+							'Add Alternative hosts',
+							'The placeholder for the multiselect to select alternative hosts.',
+							'events-virtual'
+						),
+						'data-selected'    => $post->zoom_host_id,
+						'data-options'     => json_encode( $alt_hosts ),
+					],
+				],
 			],
 			$echo
 		);
@@ -481,6 +524,51 @@ class Classic_Editor {
 				),
 				'generate_link_label' => $this->get_connect_to_zoom_label(),
 				'generate_link_url'   => Settings::admin_url(),
+			],
+			$echo
+		);
+	}
+
+	/**
+	 * Renders the link generator HTML for one Zoom Meeting types (e.g. Webinars or Meetings).
+	 *
+	 * Currently the available types are, at the most, 2: Meetings and Webinars. This method might need to be
+	 * updated in the future if that assumption changes. If this method runs, then it means that we should render
+	 * generation links for both type of meetings.
+	 *
+	 * @since 1.1.1
+	 * @deprecated 1.4.0 Use render_multiple_links_generator()
+	 *
+	 * @param string   $type The type of Zoom Meeting to render teh link generator HTML for.
+	 * @param \WP_Post $post The post object of the Event context of the link generation.
+	 * @param bool     $echo Whether to print the rendered HTML to the page or not.
+	 *
+	 * @return string|false Either the final content HTML or `false` if the template could be found.
+	 */
+	public function render_single_link_generator( $type, \WP_Post $post, $echo = true ) {
+		_deprecated_function( __FUNCTION__, '1.4.0', get_class( $this ) . '::render_multiple_links_generator()' );
+
+		$data = Arr::get( $this->get_link_generation_urls( $post, true ), $type, false );
+
+		if ( false === $data ) {
+			// This should not happen as the types are hard-coded, but better safe than sorry.
+			return '';
+		}
+
+		list( $generate_link_url, $generate_link_label ) = $data;
+
+		return $this->template->template(
+			'virtual-metabox/zoom/controls',
+			[
+				'event'               => $post,
+				'is_authorized'       => true,
+				'offer_or_label'      => _x(
+					'or',
+					'The lowercase "or" label used to offer the creation of a Zoom Meetings or Webinars API link.',
+					'events-virtual'
+				),
+				'generate_link_label' => $generate_link_label,
+				'generate_link_url'   => $generate_link_url,
 			],
 			$echo
 		);

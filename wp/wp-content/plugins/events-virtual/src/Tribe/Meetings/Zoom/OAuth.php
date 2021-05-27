@@ -48,12 +48,13 @@ class OAuth {
 	 * The base URL to request an access token to Zoom API.
 	 *
 	 * @since 1.0.0
+	 * @since 1.4.0 - update to use new Zoom App endpoint.
 	 *
 	 * @var string
 	 *
 	 * @link  https://marketplace.zoom.us/docs/guides/auth/oauth
 	 */
-	public static $token_request_url = 'https://whodat.theeventscalendar.com/oauth/zoom/token';
+	public static $token_request_url = 'https://whodat.theeventscalendar.com/oauth/zoom/v2/token';
 
 	/**
 	 * The base URL to request an access token to Zoom API.
@@ -79,7 +80,7 @@ class OAuth {
 	 * @param Api $api An instance of the Zoom API handler.
 	 */
 	public function __construct( Api $api ) {
-		$this->api = $api;
+		$this->api        = $api;
 	}
 
 	/**
@@ -119,7 +120,6 @@ class OAuth {
 			$this->fetch_access_token( $legacy_code );
 			$handled = true;
 		} elseif ( $service_response_body ) {
-			// @todo [BTRIA-616]: refactor this to call some Api method to set the access and refresh token directly.
 			$this->api->save_access_token( [ 'body' => base64_decode( $service_response_body ) ] );
 
 			// Check if there were legacy settings, if so, clear the old config.
@@ -201,17 +201,20 @@ class OAuth {
 
 		$access_token = get_transient( Settings::$option_prefix . 'access_token' );
 
-		$url = Url::$revoke_url;
+		$revoke_url = Url::$revoke_url;
+		if ( defined( 'TEC_VIRTUAL_EVENTS_ZOOM_API_REVOKE_URL' ) ) {
+			$revoke_url = TEC_VIRTUAL_EVENTS_ZOOM_API_REVOKE_URL;
+		}
 
 		// Check if this is a legacy authorization, if so, deauthorize to the legacy revoke URL.
 		$legacy_auth_code = tribe_get_option( Settings::$option_prefix . 'auth_code' );
 		if ( $legacy_auth_code ) {
-			$url = Url::$legacy_revoke_url;
+			$revoke_url = Url::$legacy_revoke_url;
 		}
 
 		if ( $access_token ) {
 			$this->api->post(
-				$url,
+				$revoke_url,
 				[
 					'headers' => [
 						'Authorization' => $this->api->authorization_header(),

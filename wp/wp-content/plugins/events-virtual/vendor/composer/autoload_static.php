@@ -4,12 +4,16 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitc05ea11360b167b9ca69c9362b88d558
+class ComposerStaticInit6da2556c0b10f902abf0fbd1c2b790e4
 {
     public static $prefixLengthsPsr4 = array (
         'T' => 
         array (
             'Tribe\\Events\\Virtual\\' => 21,
+        ),
+        'D' => 
+        array (
+            'Defuse\\Crypto\\' => 14,
         ),
     );
 
@@ -18,9 +22,27 @@ class ComposerStaticInitc05ea11360b167b9ca69c9362b88d558
         array (
             0 => __DIR__ . '/../..' . '/src/Tribe',
         ),
+        'Defuse\\Crypto\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/defuse/php-encryption/src',
+        ),
     );
 
     public static $classMap = array (
+        'Defuse\\Crypto\\Core' => __DIR__ . '/..' . '/defuse/php-encryption/src/Core.php',
+        'Defuse\\Crypto\\Crypto' => __DIR__ . '/..' . '/defuse/php-encryption/src/Crypto.php',
+        'Defuse\\Crypto\\DerivedKeys' => __DIR__ . '/..' . '/defuse/php-encryption/src/DerivedKeys.php',
+        'Defuse\\Crypto\\Encoding' => __DIR__ . '/..' . '/defuse/php-encryption/src/Encoding.php',
+        'Defuse\\Crypto\\Exception\\BadFormatException' => __DIR__ . '/..' . '/defuse/php-encryption/src/Exception/BadFormatException.php',
+        'Defuse\\Crypto\\Exception\\CryptoException' => __DIR__ . '/..' . '/defuse/php-encryption/src/Exception/CryptoException.php',
+        'Defuse\\Crypto\\Exception\\EnvironmentIsBrokenException' => __DIR__ . '/..' . '/defuse/php-encryption/src/Exception/EnvironmentIsBrokenException.php',
+        'Defuse\\Crypto\\Exception\\IOException' => __DIR__ . '/..' . '/defuse/php-encryption/src/Exception/IOException.php',
+        'Defuse\\Crypto\\Exception\\WrongKeyOrModifiedCiphertextException' => __DIR__ . '/..' . '/defuse/php-encryption/src/Exception/WrongKeyOrModifiedCiphertextException.php',
+        'Defuse\\Crypto\\File' => __DIR__ . '/..' . '/defuse/php-encryption/src/File.php',
+        'Defuse\\Crypto\\Key' => __DIR__ . '/..' . '/defuse/php-encryption/src/Key.php',
+        'Defuse\\Crypto\\KeyOrPassword' => __DIR__ . '/..' . '/defuse/php-encryption/src/KeyOrPassword.php',
+        'Defuse\\Crypto\\KeyProtectedByPassword' => __DIR__ . '/..' . '/defuse/php-encryption/src/KeyProtectedByPassword.php',
+        'Defuse\\Crypto\\RuntimeTests' => __DIR__ . '/..' . '/defuse/php-encryption/src/RuntimeTests.php',
         'Tribe\\Events\\Virtual\\Admin_Template' => __DIR__ . '/../..' . '/src/Tribe/Admin_Template.php',
         'Tribe\\Events\\Virtual\\Assets' => __DIR__ . '/../..' . '/src/Tribe/Assets.php',
         'Tribe\\Events\\Virtual\\Compatibility' => __DIR__ . '/../..' . '/src/Tribe/Compatibility.php',
@@ -35,6 +57,7 @@ class ComposerStaticInitc05ea11360b167b9ca69c9362b88d558
         'Tribe\\Events\\Virtual\\Compatibility\\Online_Event_Extension\\Service_Provider' => __DIR__ . '/../..' . '/src/Tribe/Compatibility/Online_Event_Extension/Service_Provider.php',
         'Tribe\\Events\\Virtual\\Compatibility\\Online_Event_Extension\\Settings' => __DIR__ . '/../..' . '/src/Tribe/Compatibility/Online_Event_Extension/Settings.php',
         'Tribe\\Events\\Virtual\\Context\\Context_Provider' => __DIR__ . '/../..' . '/src/Tribe/Context/Context_Provider.php',
+        'Tribe\\Events\\Virtual\\Encryption' => __DIR__ . '/../..' . '/src/Tribe/Encryption.php',
         'Tribe\\Events\\Virtual\\Event_Meta' => __DIR__ . '/../..' . '/src/Tribe/Event_Meta.php',
         'Tribe\\Events\\Virtual\\Export\\Event_Export' => __DIR__ . '/../..' . '/src/Tribe/Export/Event_Export.php',
         'Tribe\\Events\\Virtual\\Export\\Export_Provider' => __DIR__ . '/../..' . '/src/Tribe/Export/Export_Provider.php',
@@ -47,11 +70,13 @@ class ComposerStaticInitc05ea11360b167b9ca69c9362b88d558
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Classic_Editor' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Classic_Editor.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Event_Meta' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Event_Meta.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Meetings' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Meetings.php',
+        'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Migration_Notice' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Migration_Notice.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\OAuth' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/OAuth.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Password' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Password.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Settings' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Settings.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Template_Modifications' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Template_Modifications.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Url' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Url.php',
+        'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Users' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Users.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Webinars' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Webinars.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom_Provider' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom_Provider.php',
         'Tribe\\Events\\Virtual\\Metabox' => __DIR__ . '/../..' . '/src/Tribe/Metabox.php',
@@ -79,9 +104,9 @@ class ComposerStaticInitc05ea11360b167b9ca69c9362b88d558
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitc05ea11360b167b9ca69c9362b88d558::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitc05ea11360b167b9ca69c9362b88d558::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitc05ea11360b167b9ca69c9362b88d558::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit6da2556c0b10f902abf0fbd1c2b790e4::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit6da2556c0b10f902abf0fbd1c2b790e4::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit6da2556c0b10f902abf0fbd1c2b790e4::$classMap;
 
         }, null, ClassLoader::class);
     }

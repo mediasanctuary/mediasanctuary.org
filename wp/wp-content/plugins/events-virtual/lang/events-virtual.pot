@@ -2,13 +2,13 @@
 # This file is distributed under the same license as the The Events Calendar: Virtual Events package.
 msgid ""
 msgstr ""
-"Project-Id-Version: The Events Calendar: Virtual Events 1.2.0\n"
+"Project-Id-Version: The Events Calendar: Virtual Events 1.4.0\n"
 "Report-Msgid-Bugs-To: http://m.tri.be/191x\n"
-"POT-Creation-Date: 2021-03-19 04:40:06+00:00\n"
+"POT-Creation-Date: 2021-05-06 14:38:29+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2021-03-19 04:40\n"
+"PO-Revision-Date: 2021-05-06 14:38\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 
@@ -47,17 +47,17 @@ msgid "Reason (optional)"
 msgstr ""
 
 #. Translators: %1$s is the lowercase plural event term.
-#: src/Tribe/Compatibility/Filter_Bar/Events_Virtual_Filter.php:121
+#: src/Tribe/Compatibility/Filter_Bar/Events_Virtual_Filter.php:126
 msgid "Show all %1$s"
 msgstr ""
 
 #. Translators: %1$s is the lowercase plural virtual event term.
-#: src/Tribe/Compatibility/Filter_Bar/Events_Virtual_Filter.php:129
+#: src/Tribe/Compatibility/Filter_Bar/Events_Virtual_Filter.php:134
 msgid "Show only %1$s"
 msgstr ""
 
 #. Translators: %1$s is the lowercase plural virtual event term.
-#: src/Tribe/Compatibility/Filter_Bar/Events_Virtual_Filter.php:137
+#: src/Tribe/Compatibility/Filter_Bar/Events_Virtual_Filter.php:142
 msgid "Hide %1$s"
 msgstr ""
 
@@ -75,28 +75,28 @@ msgid ""
 "is handled by the Virtual Events plugin.%2$s"
 msgstr ""
 
-#: src/Tribe/Event_Meta.php:186
+#: src/Tribe/Event_Meta.php:215
 msgctxt "Default label of the virtual event URL call-to-action link."
 msgid "Watch"
 msgstr ""
 
-#: src/Tribe/Event_Meta.php:205
+#: src/Tribe/Event_Meta.php:234
 msgctxt "Default placeholder text for the virtual event URL input."
 msgid "Enter URL for YouTube, Facebook, etc."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Abstract_Meetings.php:299
+#: src/Tribe/Meetings/Zoom/Abstract_Meetings.php:423
 msgctxt "Ajax error message."
 msgid "The provided nonce is not valid."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Abstract_Meetings.php:327
+#: src/Tribe/Meetings/Zoom/Abstract_Meetings.php:451
 msgctxt "An error raised in the context of the Zoom API integration."
 msgid "The post ID is missing from the request."
 msgstr ""
 
 #. translators: the placeholder is for the error as returned from Zoom API.
-#: src/Tribe/Meetings/Zoom/Api.php:263
+#: src/Tribe/Meetings/Zoom/Api.php:272
 msgctxt ""
 "The prefix of a message reporting a Zoom API communication error, the "
 "placeholder is for the error."
@@ -107,7 +107,7 @@ msgstr ""
 
 #. translators: the placeholders are, respectively, for the expected and actual
 #. response codes.
-#: src/Tribe/Meetings/Zoom/Api.php:294
+#: src/Tribe/Meetings/Zoom/Api.php:303
 msgctxt ""
 "The message reporting a Zoom API unexpected response code, placeholders are "
 "the codes."
@@ -116,102 +116,143 @@ msgid ""
 "Please, try again in a minute."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:203
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:418
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:198
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:412
 msgctxt ""
 "The label for the admin UI control that allows removing the Zoom Meeting or "
 "Webinar link from the event."
 msgid "Remove Zoom link"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:213
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:208
 msgctxt ""
 "The label of the button to try and generate a Zoom Meeting or Webinar link "
 "again."
 msgid "Try again"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:247
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:242
 msgctxt ""
 "Label for the link to set up the Zoom integration in the event classic "
 "editor UI."
 msgid "Set up Zoom integration"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:263
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:258
 msgctxt ""
 "A message to indicate an unknown error happened while interacting with the "
 "Zoom API integration."
 msgid "Unknown error"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:289
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:394
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:294
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:565
 msgctxt ""
 "The lowercase \"or\" label used to offer the creation of a Zoom Meetings or "
 "Webinars API link."
 msgid "or"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:294
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:299
 msgctxt ""
 "The label of the toggle to show the links to generate Zoom Meetings or "
 "Webinars."
 msgid "Generate Zoom Link"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:318
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:305
+msgctxt ""
+"The label used to designate the next step in generation of a Zoom Meeting or "
+"Webinar."
+msgid "Next "
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:311
+msgctxt "The label of the meeting or webinar host."
+msgid "Meeting Host"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:321
+#: src/admin-views/virtual-metabox/zoom/setup.php:88
+msgctxt "The placeholder for the dropdown to select a host."
+msgid "Select a Host"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:350
 msgctxt ""
 "Label for the control to generate a Zoom meeting link in the event classic "
 "editor UI."
 msgid "Generate Zoom Meeting"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:323
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:355
 msgctxt ""
 "Label for the control to generate a Zoom meeting link in the event classic "
 "editor UI, w/o the \"Generate\" prefix."
-msgid "Zoom Meeting"
+msgid "Meeting"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:328
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:360
 msgctxt ""
 "Label for the control to generate a Zoom webinar link in the event classic "
 "editor UI."
 msgid "Generate Zoom Webinar"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:333
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:365
 msgctxt ""
 "Label for the control to generate a Zoom webinar link in the event classic "
 "editor UI, w/o the \"Generate\" prefix."
-msgid "Zoom Webinar"
+msgid "Webinar"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:430
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:429
 msgctxt ""
 "Title of the details box shown for a generated Zoom Webinar link in the "
 "backend."
 msgid "Zoom Webinar"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:435
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:434
 msgctxt ""
 "Title of the details box shown for a generated Zoom Meeting link in the "
 "backend."
 msgid "Zoom Meeting"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:448
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:459
+msgctxt "The label used to designate the host of a Zoom Meeting or Webinar."
+msgid "Host: "
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:470
 msgctxt "The label used to prefix a Zoom Meeting or Webinar ID in the backend."
 msgid "ID: "
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:477
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:480
+msgctxt "The label of the alternative host multiselect"
+msgid "Alternative Hosts"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:490
+msgctxt "The placeholder for the multiselect to select alternative hosts."
+msgid "Add Alternative hosts"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:520
 msgctxt ""
 "The lowercase \"or\" label used to offer the creation of a Zoom Meetings API "
 "link."
 msgid "or"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Migration_Notice.php:61
+msgctxt "The migration notice to authorize the new Zoom App."
+msgid ""
+"Thank you for updating to the latest version of Virtual Events. You will "
+"need to <a href=\"%1$s\">reconnect your Zoom account</a> for the plugin to "
+"work as intended."
 msgstr ""
 
 #: src/Tribe/Meetings/Zoom/OAuth.php:98
@@ -221,11 +262,11 @@ msgctxt ""
 msgid "You are not authorized to do this"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/OAuth.php:237
+#: src/Tribe/Meetings/Zoom/OAuth.php:239
 msgid "Disconnected from Zoom API."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:432
+#: src/Tribe/Meetings/Zoom_Provider.php:443
 msgid "Zoom link generated"
 msgstr ""
 
@@ -326,6 +367,10 @@ msgstr ""
 #: src/admin-views/virtual-metabox/container/display.php:91
 msgctxt "Label for virtual events watch button, defaults to watch"
 msgid "Label"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/container/event-type.php:26
+msgid "Type of Event:"
 msgstr ""
 
 #. Translators: single event term.
@@ -434,6 +479,22 @@ msgctxt ""
 msgid "Zoom error:"
 msgstr ""
 
+#: src/admin-views/virtual-metabox/zoom/setup.php:43
+msgctxt "The button to open the Zoom Generate Settings"
+msgid "Generate Zoom Meeting"
+msgstr ""
+
+#. Translators: single event term.
+#: src/admin-views/virtual-metabox/zoom/setup.php:56
+msgctxt "Setup settings for Zoom link checkbox label"
+msgid "Open the Zoom Generate Settings %1$s"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/zoom/setup.php:72
+msgctxt "Title for Zoom Meeting or Webinar creation."
+msgid "Zoom Meeting"
+msgstr ""
+
 #: src/admin-views/zoom/api/authorize-fields/connect-link.php:23
 msgctxt "Label to connect to Zoom API."
 msgid "Connect to Zoom"
@@ -538,6 +599,16 @@ msgstr ""
 
 #: src/functions/template-tags/general.php:185
 msgctxt "Lowercase \"virtual\" term, lowercase plural event term."
+msgid "%1$s %2$s"
+msgstr ""
+
+#: src/functions/template-tags/general.php:220
+msgctxt "Capitalized version of the \"hybrid\" term."
+msgid "Hybrid"
+msgstr ""
+
+#: src/functions/template-tags/general.php:247
+msgctxt "Capitalized \"hybrid\" term, capitalized singular event term."
 msgid "%1$s %2$s"
 msgstr ""
 

@@ -23,19 +23,21 @@ class Url {
 	 * The base URL that should be used to authorize the Zoom App.
 	 *
 	 * @since 1.0.0
+	 * @since 1.4.0 - update to use new Zoom App endpoint.
 	 *
 	 * @var string
 	 */
-	public static $authorize_url = 'https://whodat.theeventscalendar.com/oauth/zoom/authorize';
+	public static $authorize_url = 'https://whodat.theeventscalendar.com/oauth/zoom/v2/authorize';
 
 	/**
 	 * The base URL that should be used to deauthorize the Zoom App.
 	 *
 	 * @since 1.0.0
+	 * @since 1.4.0 - update to use new Zoom App endpoint.
 	 *
 	 * @var string
 	 */
-	public static $revoke_url = 'https://whodat.theeventscalendar.com/oauth/zoom/revoke';
+	public static $revoke_url = 'https://whodat.theeventscalendar.com/oauth/zoom/v2/revoke';
 
 	/**
 	 * The base URL that should was previously used to deauthorize the Zoom App.
@@ -101,6 +103,7 @@ class Url {
 	 * Returns the URL to authorize the use of the Zoom API.
 	 *
 	 * @since 1.0.0
+	 * @since 1.4.0 Add a constant to be able to change the authorize url.
 	 *
 	 * @return string The request URL.
 	 *
@@ -109,12 +112,20 @@ class Url {
 	public function to_authorize() {
 		$license = get_option( 'pue_install_key_events_virtual' );
 
-		return add_query_arg( [
+		$authorize_url = self::$authorize_url;
+		if ( defined( 'TEC_VIRTUAL_EVENTS_ZOOM_API_AUTHORIZE_URL' ) ) {
+			$authorize_url = TEC_VIRTUAL_EVENTS_ZOOM_API_AUTHORIZE_URL;
+		}
+
+		$real_url = add_query_arg( [
 			'key'          => $license ? $license : 'no-license',
 			'redirect_uri' => esc_url( $this->oauth->authorize_url() ),
 		],
-			self::$authorize_url
+			$authorize_url
 		);
+
+
+		return $real_url;
 	}
 
 	/**
@@ -131,6 +142,26 @@ class Url {
 
 		return add_query_arg( [
 			'action'              => 'ev_zoom_meetings_create',
+			Plugin::$request_slug => $nonce,
+			'post_id'             => $post->ID,
+			'_ajax_nonce'         => $nonce,
+		], admin_url( 'admin-ajax.php' ) );
+	}
+
+	/**
+	 * Returns the URL that should be used to update a Zoom API meeting link.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param \WP_Post|null $post A post object to update the meeting for.
+	 *
+	 * @return string The URL to update the Zoom Meeting.
+	 */
+	public function to_update_meeting_link( \WP_Post $post ) {
+		$nonce = wp_create_nonce( Meetings::$update_action );
+
+		return add_query_arg( [
+			'action'              => 'ev_zoom_meetings_update',
 			Plugin::$request_slug => $nonce,
 			'post_id'             => $post->ID,
 			'_ajax_nonce'         => $nonce,
@@ -175,6 +206,29 @@ class Url {
 		return add_query_arg(
 			[
 				'action'              => 'ev_zoom_webinars_create',
+				Plugin::$request_slug => $nonce,
+				'post_id'             => $post->ID,
+				'_ajax_nonce'         => $nonce,
+			],
+			admin_url( 'admin-ajax.php' )
+		);
+	}
+
+	/**
+	 * Returns the URL that should be used to update a Zoom API webinar link.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param \WP_Post|null $post A post object to update the webinar for.
+	 *
+	 * @return string The URL to update the Zoom Webinar.
+	 */
+	public function to_update_webinar_link( \WP_Post $post ) {
+		$nonce = wp_create_nonce( Webinars::$update_action );
+
+		return add_query_arg(
+			[
+				'action'              => 'ev_zoom_webinars_update',
 				Plugin::$request_slug => $nonce,
 				'post_id'             => $post->ID,
 				'_ajax_nonce'         => $nonce,

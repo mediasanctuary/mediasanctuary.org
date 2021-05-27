@@ -3,9 +3,9 @@
 Contributors: theeventscalendar, aguseo, borkweb, bordoni, brianjessee, Camwyn, dcronian, hazelquimpo, juanfra, leahkoerper, lirianojoel, lucatume, neillmcshea, paulskim, rafsuntaskin, remaworksattribe, sc0ttkclark, zbtirrell
 Tags: virtual events, events, calendar, event, venue, organizer, dates, date, schema, conference, online events, concert, meeting, seminar, summit, class, the events calendar, tec, zoom, livestream
 Donate link: https://evnt.is/29
-Requires at least: 4.9.14
-Tested up to: 5.7.0
-Stable tag: 1.2.0.1
+Requires at least: 4.9.16
+Tested up to: 5.7.1
+Stable tag: 1.4.0
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -120,6 +120,25 @@ Our premium products:
 * <a href="https://evnt.is/1ako" target="_blank">Image Widget Plus</a>
 
 == Changelog ==
+
+= [1.4.0] 2021-05-10 =
+
+* Feature - Upgrade to a new Zoom App to be able to choose hosts and alternative hosts. [VE-257]
+* Feature - Add option to select the meeting or webinar host before creating them. [VE-253]
+* Feature - Add multiselect to add alternative hosts to a meeting or webinar after they are generated. [VE-254]
+* Tweak - Added filters: `tribe_events_virtual_assets_should_enqueue_widget_styles`, `tribe_events_virtual_assets_should_enqueue_widget_groups`, `tribe_events_virtual_encryption_key`, `tribe_events_virtual_meetings_zoom_hosts`, `tribe_events_virtual_meetings_zoom_alternative_hosts`, `tribe_events_virtual_meetings_zoom_user_cache`, `tribe_hybrid_label`, `tribe_hybrid_event_label_singular`
+* Tweak - Changed views: `components/hybrid-event`, `components/icons/hybrid`, `components/virtual-event`, `single/hybrid-marker-mobile`, `single/hybrid-marker`, `single/virtual-marker-mobile`, `single/virtual-marker`
+* Language - 10 new strings added, 18 updated, 2 fuzzied, and 0 obsoleted
+
+= [1.3.0] 2021-04-20 =
+
+* Feature - Add option to mark an event as hybrid and show a hybrid icon on all the views. [VE-296]
+* Feature - Include hybrid events JSON-LD support to increase compatibility with Search Engines. [VE-296]
+* Tweak - Move icon styles to their own sheet(s) so we don't have to load all the styles for a widget.
+* Fix - Alter style hooks to load new sheets for widgets instead of all Events Virtual styles.
+* Tweak - Added filters: `tribe_events_virtual_assets_should_enqueue_widget_styles`, `tribe_events_virtual_assets_should_enqueue_widget_groups`, `tribe-events-virtual-widgets-v2-should-enqueue-assets`, `tribe-events-virtual-widgets-v2-{$view->get_slug()}-should-enqueue-assets`, `tribe_hybrid_label`, `tribe_hybrid_event_label_singular`
+* Tweak - Changed views: `components/hybrid-event`, `components/icons/hybrid`, `components/virtual-event`, `single/hybrid-marker-mobile`, `single/hybrid-marker`, `single/virtual-marker-mobile`, `single/virtual-marker`
+* Language - 3 new strings added, 5 updated, 0 fuzzied, and 0 obsoleted
 
 = [1.2.0.1] 2021-03-29 =
 

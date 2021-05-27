@@ -38,6 +38,7 @@ class Assets extends \tad_DI52_ServiceProvider {
 	 * @since 5.0.0
 	 */
 	public function register() {
+
 		$plugin = Plugin::instance();
 
 		$required_styles = [
@@ -98,7 +99,7 @@ class Assets extends \tad_DI52_ServiceProvider {
 				'print'        => true,
 				'localize'     => [
 					'name' => 'tribe_events_filter_bar_js_config',
-					'data' => $this->container->make( Configuration::class )->localize(),
+					'data' => [ $this->container->make( Configuration::class ), 'localize' ],
 				],
 			]
 		);

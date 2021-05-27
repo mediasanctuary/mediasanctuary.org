@@ -35,7 +35,7 @@ $remove_link_label = _x(
 >
 
 	<a
-		class="tribe-events-virtual-meetings-zoom__remove-link"
+		class="tribe-events-virtual-meetings-zoom-details__remove-link"
 		href="<?php echo esc_url( $remove_link_url ); ?>"
 		aria-label="<?php echo esc_attr( $remove_link_label ); ?>"
 		title="<?php echo esc_attr( $remove_link_label ); ?>"

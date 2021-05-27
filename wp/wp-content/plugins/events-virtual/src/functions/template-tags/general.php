@@ -204,3 +204,65 @@ function tribe_get_virtual_event_label_plural_lowercase() {
 	 */
 	return apply_filters( 'tribe_virtual_event_label_plural_lowercase', $label );
 }
+
+/**
+ * Get hybrid label.
+ * Returns the capitalized version of the "Hybrid" Term.
+ *
+ * Note: the output of this function is not escaped.
+ * You should escape it wherever you use it!
+ *
+ * @since 1.4.0
+ *
+ * @return string
+ */
+function tribe_get_hybrid_label() {
+	$label = _x( 'Hybrid', 'Capitalized version of the "hybrid" term.', 'events-virtual' );
+
+	/**
+	 * Allows customization of the capitalized version of the "hybrid" term.
+	 *
+	 * Note: the output of this filter is not escaped!
+	 *
+	 * @param string $label The capitalized version of the "hybrid" term, defaults to "Hybrid".
+	 *
+	 * @see tribe_get_event_label_plural
+	 */
+	return apply_filters( 'tribe_hybrid_label', $label );
+}
+
+/**
+ * Get hybrid event label singular.
+ * Returns the singular version of the Event Label.
+ *
+ * Note: the output of this function is not escaped.
+ * You should escape it wherever you use it!
+ *
+ * @since 1.4.0
+ *
+ * @return string The singular version of the Event Label.
+ */
+function tribe_get_hybrid_event_label_singular() {
+	$label = sprintf(
+		_x(
+			'%1$s %2$s',
+			'Capitalized "hybrid" term, capitalized singular event term.',
+			'events-virtual'
+		),
+		tribe_get_hybrid_label(),
+		tribe_get_event_label_singular()
+	);
+
+	/**
+	 * Allows customization of the singular version of the Hybrid Event Label.
+	 *
+	 * Note: the output of this filter is not escaped!
+	 *
+	 * @param string $label The singular version of the Hybrid Event label,
+	 *                      defaults to "Hybrid Event"
+	 *                      (or the filtered term for "Hybrid" + the filtered term for "Event").
+	 *
+	 * @see tribe_get_event_label_plural
+	 */
+	return apply_filters( 'tribe_hybrid_event_label_singular', $label );
+}

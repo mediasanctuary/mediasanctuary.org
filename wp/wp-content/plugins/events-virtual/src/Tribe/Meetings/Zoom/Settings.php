@@ -9,6 +9,7 @@
 
 namespace Tribe\Events\Virtual\Meetings\Zoom;
 
+use Tribe\Events\Virtual\Encryption;
 use Tribe\Events\Virtual\Meetings\Zoom\Template_Modifications;
 
 /**
@@ -55,8 +56,8 @@ class Settings {
 	 * @param Url $url An instance of the URL handler.
 	 */
 	public function __construct( Api $api, Url $url ) {
-		$this->url = $url;
-		$this->api = $api;
+		$this->url        = $url;
+		$this->api        = $api;
 	}
 
 	/**
@@ -80,7 +81,7 @@ class Settings {
 	 * @return string|boolean The API access token, or false if the token cannot be fetched (error).
 	 */
 	public static function get_refresh_token() {
-		return tribe_get_option( static::$option_prefix . 'refresh_token', false );
+		return tribe( Encryption::class )->decrypt( tribe_get_option( static::$option_prefix . 'refresh_token', false ) );
 	}
 
 	/**

@@ -71,6 +71,13 @@ class Hooks extends \tad_DI52_ServiceProvider {
 			3
 		);
 
+		add_action(
+			'tribe_template_after_include:events/v2/latest-past/event/venue',
+			[ $this, 'action_add_hybrid_event_marker' ],
+			15,
+			3
+		);
+
 		// List View.
 		add_action(
 			'tribe_template_after_include:events/v2/list/event/venue',
@@ -79,10 +86,24 @@ class Hooks extends \tad_DI52_ServiceProvider {
 			3
 		);
 
+		add_action(
+			'tribe_template_after_include:events/v2/list/event/venue',
+			[ $this, 'action_add_hybrid_event_marker' ],
+			15,
+			3
+		);
+
 		// Day View.
 		add_action(
 			'tribe_template_after_include:events/v2/day/event/venue',
 			[ $this, 'action_add_virtual_event_marker' ],
+			15,
+			3
+		);
+
+		add_action(
+			'tribe_template_after_include:events/v2/day/event/venue',
+			[ $this, 'action_add_hybrid_event_marker' ],
 			15,
 			3
 		);
@@ -116,10 +137,45 @@ class Hooks extends \tad_DI52_ServiceProvider {
 			3
 		);
 
+		add_action(
+			'tribe_template_after_include:events/v2/month/calendar-body/day/calendar-events/calendar-event/date/featured',
+			[ $this, 'action_add_hybrid_event_marker' ],
+			15,
+			3
+		);
+
+		add_action(
+			'tribe_template_after_include:events/v2/month/calendar-body/day/calendar-events/calendar-event/tooltip/date/featured',
+			[ $this, 'action_add_hybrid_event_marker' ],
+			15,
+			3
+		);
+
+		add_action(
+			'tribe_template_after_include:events/v2/month/calendar-body/day/multiday-events/multiday-event/bar/featured',
+			[ $this, 'action_add_hybrid_event_marker' ],
+			15,
+			3
+		);
+
+		add_action(
+			'tribe_template_after_include:events/v2/month/mobile-events/mobile-day/mobile-event/title',
+			[ $this, 'action_add_hybrid_event_marker' ],
+			15,
+			3
+		);
+
 		// Photo View.
 		add_action(
 			'tribe_template_before_include:events-pro/v2/photo/event/date-time',
 			[ $this, 'action_add_virtual_event_marker' ],
+			20,
+			3
+		);
+
+		add_action(
+			'tribe_template_before_include:events-pro/v2/photo/event/date-time',
+			[ $this, 'action_add_hybrid_event_marker' ],
 			20,
 			3
 		);
@@ -135,6 +191,20 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		add_action(
 			'tribe_template_after_include:events-pro/v2/map/event-cards/event-card/tooltip/venue',
 			[ $this, 'action_add_virtual_event_marker' ],
+			15,
+			3
+		);
+
+		add_action(
+			'tribe_template_after_include:events-pro/v2/map/event-cards/event-card/event/venue',
+			[ $this, 'action_add_hybrid_event_marker' ],
+			15,
+			3
+		);
+
+		add_action(
+			'tribe_template_after_include:events-pro/v2/map/event-cards/event-card/tooltip/venue',
+			[ $this, 'action_add_hybrid_event_marker' ],
 			15,
 			3
 		);
@@ -164,6 +234,34 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		add_action(
 			'tribe_template_after_include:events-pro/v2/week/grid-body/multiday-events-day/multiday-event/bar/featured',
 			[ $this, 'action_add_virtual_event_marker' ],
+			15,
+			3
+		);
+
+		add_action(
+			'tribe_template_after_include:events-pro/v2/week/mobile-events/day/event/venue',
+			[ $this, 'action_add_hybrid_event_marker' ],
+			15,
+			3
+		);
+
+		add_action(
+			'tribe_template_after_include:events-pro/v2/week/grid-body/events-day/event/date/featured',
+			[ $this, 'action_add_hybrid_event_marker' ],
+			15,
+			3
+		);
+
+		add_action(
+			'tribe_template_after_include:events-pro/v2/week/grid-body/events-day/event/tooltip/date/featured',
+			[ $this, 'action_add_hybrid_event_marker' ],
+			15,
+			3
+		);
+
+		add_action(
+			'tribe_template_after_include:events-pro/v2/week/grid-body/multiday-events-day/multiday-event/bar/featured',
+			[ $this, 'action_add_hybrid_event_marker' ],
 			15,
 			3
 		);
@@ -202,6 +300,11 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		add_action(
 			'tribe_template_before_include:events/blocks/event-datetime',
 			[ $this, 'action_add_block_virtual_event_marker' ]
+		);
+
+		add_action(
+			'tribe_template_before_include:events/blocks/event-datetime',
+			[ $this, 'action_add_block_hybrid_event_marker' ]
 		);
 
 		add_action(
@@ -244,6 +347,13 @@ class Hooks extends \tad_DI52_ServiceProvider {
 			3
 		);
 
+		add_action(
+			'tribe_template_after_include:events/v2/widgets/widget-events-list/event/date/featured',
+			[ $this, 'action_add_hybrid_event_marker' ],
+			10,
+			3
+		);
+
 		// Widget Featured Venue.
 
 		add_action(
@@ -251,6 +361,32 @@ class Hooks extends \tad_DI52_ServiceProvider {
 			[ $this, 'action_add_virtual_event_marker' ],
 			10,
 			3
+		);
+
+		add_action(
+			'tribe_template_after_include:events-pro/v2/widgets/widget-featured-venue/events-list/event/date/featured',
+			[ $this, 'action_add_hybrid_event_marker' ],
+			10,
+			3
+		);
+
+		/* Events by Week Widget */
+		add_action(
+			'tribe_template_after_include:events-pro/v2/widget-week/mobile-events/day/event/date/featured',
+			[ $this, 'action_add_virtual_event_marker' ],
+			15,
+			3
+		);
+
+		/* Event Calendar Widget */
+		add_action(
+			'tribe_events_pro_shortcode_month_widget_add_hooks',
+			[ $this, 'action_pro_shortcode_month_widget_add_hooks' ]
+		);
+
+		add_action(
+			'tribe_events_pro_shortcode_month_widget_remove_hooks',
+			[ $this, 'action_pro_shortcode_month_widget_remove_hooks' ]
 		);
 	}
 
@@ -263,7 +399,9 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		add_filter( 'tribe_template_origin_namespace_map', [ $this, 'filter_add_template_origin_namespace' ], 15 );
 		add_filter( 'tribe_template_path_list', [ $this, 'filter_template_path_list' ], 15, 2 );
 		add_filter( 'tribe_the_notices', [ $this, 'filter_include_single_control_mobile_markers' ], 15 );
+		add_filter( 'tribe_the_notices', [ $this, 'filter_include_single_hybrid_control_mobile_markers' ], 15 );
 		add_filter( 'tribe_events_event_schedule_details', [ $this, 'include_single_control_desktop_markers' ], 10, 2 );
+		add_filter( 'tribe_events_event_schedule_details', [ $this, 'include_single_hybrid_control_desktop_markers' ], 10, 2 );
 		add_filter( 'tribe_json_ld_event_object', [ $this, 'filter_json_ld_modifiers' ], 15, 3 );
 		add_filter( 'tribe_rest_event_data', [ $this, 'filter_rest_event_data' ], 10, 2 );
 		add_filter( 'post_class', [ $this, 'filter_add_post_class' ], 15, 3 );
@@ -470,6 +608,22 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	}
 
 	/**
+	 * Include the Hybrid Events event marker for the archive pages.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param string   $file     Complete path to include the PHP File.
+	 * @param array    $name     Template name.
+	 * @param Template $template Current instance of the Template.
+	 *
+	 * @return void  Template render has no return.
+	 */
+	public function action_add_hybrid_event_marker( $file, $name, $template ) {
+		$this->container->make( Template_Modifications::class )
+						->add_hybrid_event_marker( $file, $name, $template );
+	}
+
+	/**
 	 * Include the Virtual Events URL anchor for the single event block.
 	 *
 	 * @since 1.0.1
@@ -479,6 +633,18 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	public function action_add_block_virtual_event_marker() {
 		$this->container->make( Template_Modifications::class )
 						->add_single_block_virtual_event_marker();
+	}
+
+	/**
+	 * Include the Hybrid Events URL anchor for the single event block.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @return void  Template render has no return.
+	 */
+	public function action_add_block_hybrid_event_marker() {
+		$this->container->make( Template_Modifications::class )
+						->add_single_block_hybrid_event_marker();
 	}
 
 	/**
@@ -563,6 +729,31 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	}
 
 	/**
+	 * Include the hybrid control markers for the single pages.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param string $notices_html Previously set HTML.
+	 *
+	 * @return string  Before event html with the new markers.
+	 */
+	public function filter_include_single_hybrid_control_mobile_markers( $notices_html ) {
+		$event = tribe_get_event( get_the_ID() );
+
+		if ( ! $event instanceof \WP_Post ) {
+			return;
+		}
+
+		if ( ! $event->virtual ) {
+			return;
+		}
+
+		$template_modifications = $this->container->make( Template_Modifications::class );
+
+		return $template_modifications->add_single_hybrid_control_mobile_markers( $notices_html );
+	}
+
+	/**
 	 * Include the control markers for the single pages.
 	 *
 	 * @since 1.0.0
@@ -581,6 +772,30 @@ class Hooks extends \tad_DI52_ServiceProvider {
 				$template_modifications = $this->container->make( Template_Modifications::class );
 
 				return $template_modifications->add_single_control_markers( $schedule, $event_id );
+			},
+			2
+		);
+	}
+
+	/**
+	 * Include the hybrid control markers for the single pages.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param string $schedule  The output HTML.
+	 * @param int    $event_id  The post ID of the event we are interested in.
+	 *
+	 * @return string The output HTML.
+	 */
+	public function include_single_hybrid_control_desktop_markers( $schedule, $event_id ) {
+		// Avoid infinite loops with serialization.
+		return tribe_suspending_filter(
+			current_filter(),
+			[ $this, __FUNCTION__ ],
+			function () use ( $schedule, $event_id ) {
+				$template_modifications = $this->container->make( Template_Modifications::class );
+
+				return $template_modifications->add_single_hybrid_control_markers( $schedule, $event_id );
 			},
 			2
 		);
@@ -677,5 +892,50 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 */
 	public function action_widget_after_enqueue_assets( $should_enqueue, $context, $view ) {
 		$this->container->make( Widget::class )->action_enqueue_assets( $should_enqueue, $context, $view );
+	}
+
+	/**
+	 * Triggers on the ECP month widget add_hooks() to add/remove icons strategically
+	 *
+	 * @since 1.4.0
+	 *
+	 * @return void
+	 */
+	public function action_pro_shortcode_month_widget_add_hooks() {
+
+		remove_action(
+			'tribe_template_after_include:events/v2/month/mobile-events/mobile-day/mobile-event/title',
+			[ $this, 'action_add_virtual_event_marker' ],
+			15
+		);
+
+		add_action(
+			'tribe_template_after_include:events/v2/month/mobile-events/mobile-day/mobile-event/date/featured',
+			[ $this, 'action_add_virtual_event_marker' ],
+			15,
+			3
+		);
+	}
+
+	/**
+	 * Triggers on the ECP month widget remove_hooks() to add/remove icons strategically
+	 *
+	 * @since 1.4.0
+	 *
+	 * @return void
+	 */
+	public function action_pro_shortcode_month_widget_remove_hooks() {
+		add_action(
+			'tribe_template_after_include:events/v2/month/mobile-events/mobile-day/mobile-event/title',
+			[ $this, 'action_add_virtual_event_marker' ],
+			15,
+			3
+		);
+
+		remove_action(
+			'tribe_template_after_include:events/v2/month/mobile-events/mobile-day/mobile-event/date/featured',
+			[ $this, 'action_add_virtual_event_marker' ],
+			15
+		);
 	}
 }

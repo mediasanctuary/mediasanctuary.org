@@ -46,6 +46,11 @@ class Events_Virtual_Filter extends \Tribe__Events__Filterbar__Filter {
 	protected $alias = 'virtual_events_filterbar_alias';
 
 	/**
+	 * @var string The table alias that will be used for the postmeta table.
+	 */
+	protected $hybridalias = 'hybrid_events_filterbar_alias';
+
+	/**
 	 * The control type.
 	 *
 	 * @since 1.0.4
@@ -162,10 +167,14 @@ class Events_Virtual_Filter extends \Tribe__Events__Filterbar__Filter {
 		// phpcs:ignore
 		if ( tribe_is_truthy( $this->currentValue ) ) {
 			$clause = "INNER JOIN {$wpdb->postmeta} AS {$this->alias}
-			ON ( {$wpdb->posts}.ID = {$this->alias}.post_id
-			AND {$this->alias}.meta_key = %s )";
+				ON ( {$wpdb->posts}.ID = {$this->alias}.post_id
+				AND {$this->alias}.meta_key = %s )
+				LEFT JOIN {$wpdb->postmeta} AS {$this->hybridalias}
+				ON ( {$wpdb->posts}.ID = {$this->hybridalias}.post_id
+				AND {$this->hybridalias}.meta_key = %s )";
+
 			// phpcs:ignore
-			$this->joinClause = $wpdb->prepare( $clause, Event_Meta::$key_virtual );
+			$this->joinClause = $wpdb->prepare( $clause, Event_Meta::$key_virtual, Event_Meta::$key_type );
 		} else {
 			// No virtual events - no need to alter the query.
 			if ( empty( Utils::get_virtual_events_count() ) ) {
@@ -173,10 +182,14 @@ class Events_Virtual_Filter extends \Tribe__Events__Filterbar__Filter {
 			}
 
 			$clause = "LEFT JOIN {$wpdb->postmeta} AS {$this->alias}
-			 ON ( {$wpdb->posts}.ID = {$this->alias}.post_id
-			    AND {$this->alias}.meta_key = %s )";
+				ON ( {$wpdb->posts}.ID = {$this->alias}.post_id
+				AND {$this->alias}.meta_key = %s )
+				LEFT JOIN {$wpdb->postmeta} AS {$this->hybridalias}
+				ON ( {$wpdb->posts}.ID = {$this->hybridalias}.post_id
+				AND {$this->hybridalias}.meta_key = %s )";
+
 			// phpcs:ignore
-			$this->joinClause = $wpdb->prepare( $clause, Event_Meta::$key_virtual );
+			$this->joinClause = $wpdb->prepare( $clause, Event_Meta::$key_virtual, Event_Meta::$key_type );
 		}
 	}
 
@@ -197,10 +210,14 @@ class Events_Virtual_Filter extends \Tribe__Events__Filterbar__Filter {
 		// phpcs:ignore
 		if ( tribe_is_truthy( $this->currentValue ) ) {
 			// phpcs:ignore
-			$this->whereClause = " AND ( {$this->alias}.meta_value = 'yes' OR {$this->alias}.meta_value = '1' OR {$this->alias}.meta_value = 'true' OR {$this->alias}.meta_value IS NOT NULL ) ";
+			$this->whereClause = " AND ( {$this->alias}.meta_value = 'yes'
+				OR {$this->alias}.meta_value = '1'
+				OR {$this->alias}.meta_value = 'true'
+				OR {$this->alias}.meta_value IS NOT NULL ) ";
 		} else {
 			// phpcs:ignore
 			$this->whereClause = " AND ( {$this->alias}.meta_value = 'no'
+				OR {$this->hybridalias}.meta_value = 'hybrid'
 				OR {$this->alias}.meta_value = '0'
 				OR {$this->alias}.meta_value = 'false'
 				OR {$this->alias}.meta_value = ''
