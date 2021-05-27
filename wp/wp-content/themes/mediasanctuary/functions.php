@@ -2,6 +2,7 @@
 
 require_once 'lib/post-types.php';
 require_once 'lib/redirects.php';
+require_once 'lib/roles.php';
 require_once 'db/migrate.php';
 
 add_filter('pre_get_posts', function($query) {
@@ -34,6 +35,7 @@ add_action('after_setup_theme', function() {
 
 add_action('wp_enqueue_scripts', function() {
 	list($src, $version) = get_asset_url('js/main.js', true);
+  wp_enqueue_script( '_sanctuary_slick', get_template_directory_uri() . '/js/slick.min.js', array(), $version, true );	
 	wp_enqueue_script('main', $src, ['jquery'], $version, true);
 });
 
@@ -96,6 +98,7 @@ add_action('admin_enqueue_scripts', function() {
 add_action('init', function() {
 	setup_post_types();
 	setup_redirects();
+	setup_roles();
 });
 
 function asset_url($file) {

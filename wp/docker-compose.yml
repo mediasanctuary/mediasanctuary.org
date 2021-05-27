@@ -16,7 +16,7 @@ services:
       - ./wp-content/uploads:/var/www/html/wp-content/uploads
 
   db:
-    image: mysql:5.7
+    image: mariadb:10.5.8
     ports:
       - 3307:3306
     restart: always
