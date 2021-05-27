@@ -27,6 +27,15 @@ class Webinars extends Abstract_Meetings {
 	public static $create_action = 'events-virtual-meetings-zoom-webinar-create';
 
 	/**
+	 * The name of the action used to update a webinar.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @var string
+	 */
+	public static $update_action = 'events-virtual-meetings-zoom-wedbinar-update';
+
+	/**
 	 * The name of the action used to remove a webinar link.
 	 *
 	 * @since 1.1.1

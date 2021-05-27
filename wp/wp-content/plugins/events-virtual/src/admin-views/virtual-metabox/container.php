@@ -31,6 +31,14 @@ $metabox_id = Metabox::$id;
 	>
 		<?php
 		$this->template(
+			'virtual-metabox/container/event-type',
+			[
+				'metabox_id' => $metabox_id,
+				'post'       => $post,
+			]
+		);
+
+		$this->template(
 			'virtual-metabox/container/video-source',
 			[
 				'metabox_id' => $metabox_id,

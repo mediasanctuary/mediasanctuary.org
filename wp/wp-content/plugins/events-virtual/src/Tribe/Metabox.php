@@ -261,6 +261,7 @@ class Metabox {
 	 * @param array $data    An array of meta field values.
 	 */
 	public function update_fields( $post_id, $data ) {
+		update_post_meta( $post_id, Event_Meta::$key_type, Arr::get( $data, 'event-type', false ) );
 		update_post_meta( $post_id, Event_Meta::$key_virtual, Arr::get( $data, 'virtual', false ) );
 		update_post_meta( $post_id, Event_Meta::$key_virtual_url, Arr::get( $data, 'virtual-url', false ) );
 		update_post_meta( $post_id, Event_Meta::$key_linked_button_text, Arr::get( $data, 'virtual-button-text', false ) );

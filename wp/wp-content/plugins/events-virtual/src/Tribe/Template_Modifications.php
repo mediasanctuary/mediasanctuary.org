@@ -96,6 +96,10 @@ class Template_Modifications {
 			$classes[] = 'tribe-events-virtual-event';
 		}
 
+		if ( Event_Meta::$value_hybrid_event_type === $event->virtual_event_type ) {
+			$classes[] = 'tribe-events-hybrid-event';
+		}
+
 		return $classes;
 	}
 
@@ -124,6 +128,10 @@ class Template_Modifications {
 			$classes[] = 'tribe-events-virtual-event';
 		}
 
+		if ( Event_Meta::$value_hybrid_event_type === $event->virtual_event_type ) {
+			$classes[] = 'tribe-events-hybrid-event';
+		}
+
 		return $classes;
 	}
 
@@ -146,6 +154,27 @@ class Template_Modifications {
 		];
 
 		return $this->template->template( 'single/virtual-marker-mobile', $args, false ) . $notices_html;
+	}
+
+	/**
+	 * Include the hybrid control markers to the single page.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param string $notices_html Previously set HTML.
+	 *
+	 * @return string New notices with the control markers appended.
+	 */
+	public function add_single_hybrid_control_mobile_markers( $notices_html ) {
+		if ( ! is_singular( Events_Plugin::POSTTYPE ) ) {
+			return $notices_html;
+		}
+
+		$args = [
+			'event' => tribe_get_event( get_the_ID() ),
+		];
+
+		return $this->template->template( 'single/hybrid-marker-mobile', $args, false ) . $notices_html;
 	}
 
 	/**
@@ -183,6 +212,42 @@ class Template_Modifications {
 		return $schedule . $this->template->template( 'single/virtual-marker', $args, false );
 	}
 
+
+	/**
+	 * Include the control markers to the single page.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param string $schedule  The output HTML.
+	 * @param int    $event_id  The post ID of the event we are interested in.
+	 *
+	 * @return string  New details with the control markers appended.
+	 */
+	public function add_single_hybrid_control_markers( $schedule, $event_id ) {
+		if ( ! is_singular( Events_Plugin::POSTTYPE ) ) {
+			return $schedule;
+		}
+
+		// Bail if this action was already introduced.
+		if ( did_action( 'tribe_tickets_ticket_email_top' ) ) {
+			return $schedule;
+		}
+
+		$event = tribe_get_event( $event_id );
+
+		if ( ! $event instanceof \WP_Post ) {
+			return $schedule;
+		}
+
+		if ( ! $event->virtual ) {
+			return $schedule;
+		}
+
+		$args = [ 'event' => $event ];
+
+		return $schedule . $this->template->template( 'single/hybrid-marker', $args, false );
+	}
+
 	/**
 	 * Adds Template for Virtual Event marker.
 	 *
@@ -197,6 +262,22 @@ class Template_Modifications {
 	public function add_virtual_event_marker( $file, $name, $template ) {
 		$context = $template->get_values();
 		$template->template( 'components/virtual-event', $context );
+	}
+
+	/**
+	 * Adds Template for Hybrid Event marker.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param string   $file      Complete path to include the PHP File.
+	 * @param array    $name      Template name.
+	 * @param Template $template  Current instance of the Template.
+	 *
+	 * @return void  Template render has no return.
+	 */
+	public function add_hybrid_event_marker( $file, $name, $template ) {
+		$context = $template->get_values();
+		$template->template( 'components/hybrid-event', $context );
 	}
 
 	/**
@@ -220,6 +301,29 @@ class Template_Modifications {
 		$args = [ 'event' => $event ];
 
 		$this->template->template( 'single/virtual-marker', $args );
+	}
+
+	/**
+	 * Adds Block Template for Hybrid Event Marker.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @return void  Template render has no return.
+	 */
+	public function add_single_block_hybrid_event_marker() {
+		$event = tribe_get_event( get_the_ID() );
+
+		if ( ! $event instanceof \WP_Post ) {
+			return;
+		}
+
+		if ( ! $event->virtual ) {
+			return;
+		}
+
+		$args = [ 'event' => $event ];
+
+		$this->template->template( 'single/hybrid-marker', $args );
 	}
 
 	/**

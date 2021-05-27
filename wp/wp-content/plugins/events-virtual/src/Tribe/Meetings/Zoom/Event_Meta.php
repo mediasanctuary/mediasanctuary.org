@@ -9,6 +9,7 @@
 
 namespace Tribe\Events\Virtual\Meetings\Zoom;
 
+use Tribe\Events\Virtual\Encryption;
 use Tribe\Events\Virtual\Event_Meta as Virtual_Event_Meta;
 use Tribe\Events\Virtual\Meetings\Zoom_Provider;
 use Tribe__Utils__Array as Arr;
@@ -21,6 +22,19 @@ use Tribe__Utils__Array as Arr;
  * @package Tribe\Events\Virtual\Meetings\Zoom
  */
 class Event_Meta {
+
+	/**
+	 * An array of fields to encrypt, using names from Zoom API.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @var array<string|boolean> An array of field names and whether the field is an array.
+	 */
+	public static $encrypted_fields = [
+		'meeting_data'      => true,
+		'host_email'        => false,
+		'alternative_hosts' => false,
+	];
 
 	/**
 	 * Removes the Zoom Meeting meta from a post.
@@ -49,6 +63,7 @@ class Event_Meta {
 	 * Returns an event post meta related to Zoom Meetings.
 	 *
 	 * @since 1.0.0
+	 * @since 1.4.0 - Add decryption for encrytped fields.
 	 *
 	 * @param int|\WP_Post $post The event post ID or object.
 	 *
@@ -65,7 +80,7 @@ class Event_Meta {
 
 		$prefix = Virtual_Event_Meta::$prefix . 'zoom_';
 
-		return Arr::flatten(
+		$flattened_array = Arr::flatten(
 			array_filter(
 				$all_meta,
 				static function ( $meta_key ) use ( $prefix ) {
@@ -74,6 +89,21 @@ class Event_Meta {
 				ARRAY_FILTER_USE_KEY
 			)
 		);
+
+		// Decrypt the encrypted meta fields.
+		$encrypted_fields = self::$encrypted_fields;
+		$encryption       = tribe( Encryption::class );
+		foreach ( $flattened_array as $meta_key => $meta_value ) {
+			$encrypted_field_key = str_replace( $prefix, '', $meta_key );
+
+			if ( ! isset( $encrypted_fields[ $encrypted_field_key ] ) ) {
+				continue;
+			}
+
+			$flattened_array[ $meta_key ] = $encryption->decrypt( $meta_value, $encrypted_fields[ $encrypted_field_key ] );
+		}
+
+		return $flattened_array;
 	}
 
 	/**
@@ -115,6 +145,53 @@ class Event_Meta {
 	}
 
 	/**
+	 * Get the host email from the meta or saved zoom data.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param \WP_Post $event The event post object, as decorated by the `tribe_get_event` function.
+	 *
+	 * @return string|null The found host email or null for the meeting.
+	 */
+	public static function get_host_email( \WP_Post $event ) {
+		$encryption = tribe( Encryption::class );
+		$prefix     = Virtual_Event_Meta::$prefix;
+		$host_email = $encryption->decrypt( get_post_meta( $event->ID, $prefix . 'zoom_host_email', true ) );
+
+		if ( $host_email ) {
+			return $host_email;
+		}
+
+		$all_zoom_details = $encryption->decrypt( get_post_meta( $event->ID, $prefix . 'zoom_meeting_data', true ) );
+
+		return Arr::get( $all_zoom_details, 'host_email', null );
+	}
+
+	/**
+	 * Get the alternative host emails from the meta or saved zoom data.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param \WP_Post $event The event post object, as decorated by the `tribe_get_event` function.
+	 *
+	 * @return string|null The found host email or null for the meeting.
+	 */
+	public static function get_alt_host_emails( \WP_Post $event ) {
+		$encryption        = tribe( Encryption::class );
+		$prefix            = Virtual_Event_Meta::$prefix;
+		$alternative_hosts = $encryption->decrypt( get_post_meta( $event->ID, $prefix . 'zoom_alternative_hosts', true ) );
+
+		if ( $alternative_hosts ) {
+			return $alternative_hosts;
+		}
+
+		$all_zoom_details = $encryption->decrypt( get_post_meta( $event->ID, $prefix . 'zoom_meeting_data', true ) );
+		$settings = Arr::get( $all_zoom_details, 'settings', [] );
+
+		return Arr::get( $settings, 'alternative_hosts', '' );
+	}
+
+	/**
 	 * Adds Zoom Meeting related properties to an event post object.
 	 *
 	 * @since 1.0.0
@@ -133,6 +210,8 @@ class Event_Meta {
 		$event->zoom_join_url          = $is_new_event ? '' : tribe( Password::class )->get_zoom_meeting_link( $event );
 		$event->zoom_join_instructions = $is_new_event ? '' : get_post_meta( $event->ID, $prefix . 'zoom_join_instructions', true );
 		$event->zoom_display_details   = $is_new_event ? '' : get_post_meta( $event->ID, $prefix . 'zoom_display_details', true );
+		$event->zoom_host_email        = $is_new_event ? '' : self::get_host_email( $event );
+		$event->zoom_alternative_hosts = $is_new_event ? '' : self::get_alt_host_emails( $event );
 
 		$dial_in_numbers = $is_new_event ? [] : array_filter(
 			(array) get_post_meta( $event->ID, $prefix . 'zoom_global_dial_in_numbers', true )

@@ -9,6 +9,7 @@
 
 namespace Tribe\Events\Virtual\Meetings\Zoom;
 
+use Tribe\Events\Virtual\Encryption;
 use Tribe\Events\Virtual\Meetings\Api_Response;
 use Tribe__Utils__Array as Arr;
 
@@ -104,10 +105,15 @@ class Api {
 	 * Api constructor.
 	 *
 	 * @since 1.0.0
+	 * @since 1.4.0  - Add encryption handler.
+	 *
+	 * @param Encryption $encryption An instance of the Encryption handler.
 	 */
-	public function __construct() {
+	public function __construct( Encryption $encryption ) {
+		$this->encryption    = ( ! empty( $encryption ) ? $encryption : tribe( Encryption::class ) );
 		$this->refresh_token = Settings::get_refresh_token();
-		$this->token         = (string) get_transient( Settings::$option_prefix . 'access_token' );
+
+		$this->token = (string) $this->encryption->decrypt( get_transient( Settings::$option_prefix . 'access_token' ) );
 
 		// These parameters are deprecated since version 1.1.1: the OAuth flow is not managed by the plugin.
 		$this->client_id     = tribe_get_option( Settings::$option_prefix . 'client_id' );
@@ -179,19 +185,22 @@ class Api {
 	 * @return string The API access token, or an empty string if the token cannot be fetched.
 	 */
 	protected function get_access_token() {
-		$token = get_transient( Settings::$option_prefix . 'access_token' );
+		$token = $this->encryption->decrypt( get_transient( Settings::$option_prefix . 'access_token' ) );
 
 		if ( empty( $token ) ) {
-			$url = OAuth::$token_request_url;
+			$token_url = OAuth::$token_request_url;
+			if ( defined( 'TEC_VIRTUAL_EVENTS_ZOOM_API_TOKEN_URL' ) ) {
+				$token_url = TEC_VIRTUAL_EVENTS_ZOOM_API_TOKEN_URL;
+			}
 
 			// Check if this is a legacy authorization, if so, we need to refresh against Zoom directly.
 			$legacy_auth_code = tribe_get_option( Settings::$option_prefix . 'auth_code' );
 			if ( ! empty( $legacy_auth_code ) ) {
-				$url = OAuth::$legacy_token_request_url;
+				$token_url = OAuth::$legacy_token_request_url;
 			}
 
 			$this->post(
-				$url,
+				$token_url,
 				[
 					'headers' => [
 						'Authorization' => $this->authorization_header(),
@@ -205,7 +214,7 @@ class Api {
 			)->then( [ $this, 'save_access_token' ] );
 
 			// Fetch it again, it should now be there.
-			$token = get_transient( Settings::$option_prefix . 'access_token' );
+			$token = $this->encryption->decrypt( get_transient( Settings::$option_prefix . 'access_token' ) );
 		}
 
 		return (string) $token;
@@ -443,10 +452,12 @@ class Api {
 		$expiration = ( (int) $d['expires_in'] ) - 60;
 
 		// Save the refresh token.
-		tribe_update_option( Settings::$option_prefix . 'refresh_token', $refresh_token );
+		$encrypted_refresh_token = $this->encryption->encrypt( $refresh_token );
+		tribe_update_option( Settings::$option_prefix . 'refresh_token', $encrypted_refresh_token );
 
 		// Since the access token is, by its own nature, transient, let's store it as that.
-		set_transient( Settings::$option_prefix . 'access_token', $access_token, $expiration );
+		$encrypted_access_token = $this->encryption->encrypt( $access_token );
+		set_transient( Settings::$option_prefix . 'access_token', $encrypted_access_token, $expiration );
 
 		return $access_token;
 	}
@@ -513,6 +524,64 @@ class Api {
 	}
 
 	/**
+	 * Get the List of Users
+	 *
+	 * @since 1.4.0
+	 *
+	 * @return array An array of data from the Zoom API.
+	 */
+	public function fetch_users() {
+		$data = [
+			'page_size'   => 300,
+			'page_number' => 1,
+		];
+
+		$this->get(
+			self::$api_base . 'users',
+			[
+				'headers' => [
+					'Authorization' => $this->token_authorization_header(),
+					'Content-Type'  => 'application/json; charset=utf-8',
+				],
+				'body'    => ! empty( $data ) ? $data : null,
+			],
+			200
+		)->then(
+			static function ( array $response ) use ( &$data ) {
+
+				$body = json_decode( $response['body'] );
+
+				if (
+					! (
+						isset( $response['body'] )
+						&& false !== ( $body = json_decode( $response['body'], true ) )
+						&& isset( $body['users'] )
+					)
+				) {
+					do_action( 'tribe_log', 'error', __CLASS__, [
+						'action'   => __METHOD__,
+						'message'  => 'Zoom API users response is malformed.',
+						'response' => $body,
+					] );
+
+					return [];
+				}
+				$data = $body;
+			}
+		)->or_catch(
+			static function ( \WP_Error $error ) {
+				do_action( 'tribe_log', 'error', __CLASS__, [
+					'action'  => __METHOD__,
+					'code'    => $error->get_error_code(),
+					'message' => $error->get_error_message(),
+				] );
+			}
+		);
+
+		return $data;
+	}
+
+	/**
 	 * Returns whether the generation and management of Zoom Webinars is allowed at the API level or not.
 	 *
 	 * The option value is initially set by checking whether the current Zoom API connection allows for the generation
@@ -538,44 +607,23 @@ class Api {
 	/**
 	 * Checks if the user is authorized to operate on Webinars.
 	 *
-	 * The check done in this method is based on the assumption that users will grant the `read` and `write` scopes to
-	 * the connected application. In the method only the `read` one is checked so the check is not 100% accurate, but
-	 * still a reasonable proxy for users that followed the set up guide. If the `write` scope is not granted, then
-	 * the user will get a Zoom API error message while trying to create Webinars and the troubleshoot documentation
-	 * will check the application scopes first.
-	 * Making a more thorough check would involve asking the `user:read` or `admin:user:read` scopes and that, we want
-	 * to avoid.
+	 * The check done based on if an account has any users that can be alternative hosts.
+	 * Any account with those type of users supports webinars.
 	 *
 	 * @since 1.1.1
+	 * @since 1.4.0 - Modify to check for alternative hosts as users that support alt hosts can generate webinars.
 	 *
 	 * @see Api::allow_webinars() to get the value set by this method.
 	 */
 	public function check_webinar_cap() {
-		// Try to list the user webinars.
-		$this->get(
-			self::$api_base . 'users/me/webinars',
-			[
-				'headers' => [
-					'authorization' => $this->token_authorization_header(),
-					'content-type'  => 'application/json; charset=utf-8',
-				],
-				'body'    => [
-					'page_size' => 1,
-				],
-			],
-			// Do not expect any HTTP code in particular, just process what we get back and come to our conclusions.
-			null
-		)->then(
-			static function ( $response ) use ( &$webinars_allowed ) {
-				// 401 means "unauthorized": a safe default to avoid offering a Webinar option we cannot support.
-				$response_code    = $response instanceof \WP_Error ?
-					false
-					: (int) Arr::get( $response, [ 'response', 'code' ], 401 );
-				$webinars_allowed = 200 === $response_code;
-				$option_value     = $webinars_allowed ? 'yes' : 'no';
-				tribe_update_option( Settings::$option_prefix . 'allow_webinars', $option_value );
-			}
-		);
+		$alternative_hosts = tribe( Users::class )->get_alternative_users();
+		$option_value  = 'no';
+
+		if ( ! empty( $alternative_hosts ) ) {
+			$option_value  = 'yes';
+		}
+
+		tribe_update_option( Settings::$option_prefix . 'allow_webinars', $option_value );
 	}
 
 	/**

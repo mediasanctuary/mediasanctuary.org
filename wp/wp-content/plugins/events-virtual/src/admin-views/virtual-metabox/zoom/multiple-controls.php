@@ -8,8 +8,9 @@
  * See more documentation about our views templating system.
  *
  * @since   1.1.1
+ * @deprecated 1.4.0 Use setup.php
  *
- * @version 1.1.1
+ * @version 1.4.0
  *
  * @link    http://evnt.is/1aiy
  *

@@ -9,6 +9,7 @@
 
 namespace Tribe\Events\Virtual\Meetings\Zoom;
 
+use Tribe\Events\Virtual\Encryption;
 use Tribe\Events\Virtual\Event_Meta as Virtual_Events_Meta;
 use Tribe\Events\Virtual\Meetings\Zoom\Event_Meta as Zoom_Meta;
 use Tribe__Date_Utils as Dates;
@@ -42,6 +43,16 @@ class Abstract_Meetings {
 	 * @var string
 	 */
 	public static $create_action = 'events-virtual-meetings-zoom-meeting-create';
+
+	/**
+	 * The name of the action used to update a meeting.
+	 * The property also provides a reasonable default for the abstract class.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @var string
+	 */
+	public static $update_action = 'events-virtual-meetings-zoom-meeting-update';
 
 	/**
 	 * The name of the action used to remove a meeting creation link.
@@ -108,17 +119,20 @@ class Abstract_Meetings {
 	 * Meetings constructor.
 	 *
 	 * @since 1.0.0
-	 * @since 1.0.2 - Add the Password Class
+	 * @since 1.0.2 - Add the Password Class.
 	 * @since 1.1.1 Moved to the Tribe\Events\Virtual\Meetings\Zoom\Abstract_Meetings class.
+	 * @since 1.4.0 - Add Encryption Class.
 	 *
 	 * @param Api            $api            An instance of the Zoom API handler.
 	 * @param Classic_Editor $classic_editor An instance of the Classic Editor rendering handler.
 	 * @param Password       $password       An instance of the Password handler.
+	 * @param Encryption     $encryption     An instance of the Encryption handler.
 	 */
-	public function __construct( Api $api, Classic_Editor $classic_editor, Password $password ) {
+	public function __construct( Api $api, Classic_Editor $classic_editor, Password $password, Encryption $encryption = NULL ) {
 		$this->api            = $api;
 		$this->classic_editor = $classic_editor;
 		$this->password       = $password;
+		$this->encryption     = ( ! empty( $encryption ) ? $encryption : tribe( Encryption::class ) );
 	}
 
 	/**
@@ -142,8 +156,17 @@ class Abstract_Meetings {
 			return false;
 		}
 
+		$zoom_host_id = tribe_get_request_var( 'zoom_host_id' );
+		// If no host id found, fail the request as account level apps do not support 'me'
+		if ( empty( $zoom_host_id ) ) {
+
+			wp_die();
+
+			return false;
+		}
+
 		$post_id = $event->ID;
-		$cached  = get_post_meta( $post_id, Virtual_Events_Meta::$prefix . 'zoom_meeting_data', true );
+		$cached  = $this->encryption->decrypt( get_post_meta( $post_id, Virtual_Events_Meta::$prefix . 'zoom_meeting_data', true ), true );
 
 		/**
 		 * Filters whether to force the recreation of the Zoom meetings link on each request or not.
@@ -225,7 +248,7 @@ class Abstract_Meetings {
 		$success = false;
 
 		$this->api->post(
-			Api::$api_base . "users/me/{$this::$api_endpoint}",
+			Api::$api_base . "users/{$zoom_host_id}/{$this::$api_endpoint}",
 			[
 				'headers' => [
 					'authorization' => $this->api->token_authorization_header(),
@@ -268,6 +291,107 @@ class Abstract_Meetings {
 				$this->classic_editor->render_meeting_generation_error_details( $event, $error_message, true );
 
 				wp_die();
+			}
+		);
+
+		return $success;
+	}
+
+	/**
+	 * Handles the request to update a Zoom meeting or webinar.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param string|null $nonce The nonce that should accompany the request.
+	 *
+	 * @return bool Whether the request was handled or not.
+	 */
+	public function ajax_update( $nonce = null ) {
+		if ( ! $this->check_ajax_nonce( static::$update_action, $nonce ) ) {
+			return false;
+		}
+
+		$event = $this->check_ajax_post();
+
+		if ( ! $event ) {
+			return false;
+		}
+
+		$post_id = $event->ID;
+
+		$zoom_id = tribe_get_request_var( 'zoom_id' );
+		if ( empty( $zoom_id ) ) {
+			return false;
+		}
+
+		$alternative_hosts = tribe_get_request_var( 'zoom_alternative_hosts' );
+
+		$body = [
+			'settings' => [
+				'alternative_hosts' => esc_attr( implode( ";", $alternative_hosts ) ),
+			]
+		];
+
+		/**
+		 * Filters the contents of the request that will be made to the Zoom API to update a meeting or webinar.
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param array<string,mixed> The current content of the request body.
+		 * @param \WP_Post $event The event post object, as decorated by the `tribe_get_event` function.
+		 * @param Meetings $this  The current API handler object instance.
+		 */
+		$body = apply_filters(
+			"tribe_events_virtual_ajax_update_meetings_zoom_{$this::$meeting_type}_request_body",
+			$body,
+			$event,
+			$this
+		);
+
+		$success = false;
+
+		// Update.
+		$this->api->patch(
+			Api::$api_base . "{$this::$api_endpoint}/{$zoom_id}",
+			[
+				'headers' => [
+					'Authorization' => $this->api->token_authorization_header(),
+					'Content-Type'  => 'application/json; charset=utf-8',
+				],
+				'body'    => wp_json_encode( $body ),
+			],
+			Api::PATCH_RESPONSE_CODE
+		)->then(
+			function ( array $response ) use ( $post_id, $event, &$success ) {
+				$this->process_meeting_update_response( $response, $event, $post_id );
+
+				$success = true;
+
+				wp_die();
+			}
+
+		)->or_catch(
+			static function ( \WP_Error $error ) use ( $event ) {
+				do_action(
+					'tribe_log',
+					'error',
+					__CLASS__,
+					[
+						'action'  => __METHOD__,
+						'code'    => $error->get_error_code(),
+						'message' => $error->get_error_message(),
+					]
+				);
+
+				$error_data    = wp_json_encode( $error->get_error_data() );
+				$decoded       = json_decode( $error_data, true );
+				$error_message = null;
+				if ( false !== $decoded && is_array( $decoded ) && isset( $decoded['message'] ) ) {
+					$error_message = $decoded['message'];
+				}
+
+				// Do something to indicate failure with $error_message?
+				$this->classic_editor->render_meeting_generation_error_details( $event, $error_message, true );
 			}
 		);
 
@@ -416,6 +540,8 @@ class Abstract_Meetings {
 			'join_instructions' => static::$join_instructions_url,
 			'password_hash'     => $hash_pwd,
 			'password'          => $body['password'],
+			'host_email'        => $body['host_email'],
+			'alternative_hosts' => $body['settings']['alternative_hosts'],
 		];
 
 		// Dial-in numbers are NOT a given and should not be assumed.
@@ -455,7 +581,7 @@ class Abstract_Meetings {
 		$prefix = Virtual_Events_Meta::$prefix;
 
 		// Cache the raw meeting data for future use.
-		update_post_meta( $post_id, $prefix . 'zoom_meeting_data', $response_body );
+		update_post_meta( $post_id, $prefix . 'zoom_meeting_data', $this->encryption->encrypt( $response_body, true ) );
 
 		$map = [
 			$prefix . 'zoom_meeting_id'             => 'id',
@@ -464,10 +590,19 @@ class Abstract_Meetings {
 			$prefix . 'zoom_global_dial_in_numbers' => 'global_dial_in_numbers',
 			$prefix . 'zoom_password_hash'          => 'password_hash',
 			$prefix . 'zoom_password'               => 'password',
+			$prefix . 'zoom_host_email'             => 'host_email',
+			$prefix . 'zoom_alternative_hosts'      => 'alternative_hosts',
 		];
+
+		$encrypted_fields = Zoom_Meta::$encrypted_fields;
 
 		foreach ( $map as $meta_key => $data_key ) {
 			if ( isset( $meeting_data[ $data_key ] ) ) {
+				// Encrypt data that matches the encrypted fields.
+				if ( isset( $encrypted_fields[$data_key] ) ) {
+					update_post_meta( $post_id, $meta_key, $this->encryption->encrypt( $meeting_data[ $data_key ], $encrypted_fields[$data_key] ) );
+					continue;
+				}
 				update_post_meta( $post_id, $meta_key, $meeting_data[ $data_key ] );
 			} else {
 				delete_post_meta( $post_id, $meta_key );
@@ -501,7 +636,7 @@ class Abstract_Meetings {
 		Zoom_Meta::delete_meeting_meta( $event->ID );
 
 		// Send the HTML for the meeting creation.
-		$this->classic_editor->render_meeting_link_generator( $event );
+		$this->classic_editor->render_meeting_link_generator( $event, true, true );
 
 		wp_die();
 
@@ -540,22 +675,25 @@ class Abstract_Meetings {
 			$time_zone = $event->timezone;
 		}
 
-		$zoom_date = $this->format_date_for_zoom( $start_date, $start_time, $time_zone );
+		$zoom_date         = $this->format_date_for_zoom( $start_date, $start_time, $time_zone );
+		$alternative_hosts = (array) tribe_get_request_var( 'tribe-events-virtual-zoom-alt-host' );
 
 		// Note the time format - because Zoom stores all dates as UTC with the trailing 'Z'.
 		$event_body = [
-			'topic'      => $event->post_title,
-			'start_time' => $zoom_date,
-			'timezone'   => $time_zone,
-			'duration'   => (int) ceil( (int) $event->duration / 60 ),
+			'topic'             => $event->post_title,
+			'start_time'        => $zoom_date,
+			'timezone'          => $time_zone,
+			'duration'          => (int) ceil( (int) $event->duration / 60 ),
+			'alternative_hosts' => esc_attr( implode( ";", $alternative_hosts ) ),
 		];
 
-		$meeting_data = get_post_meta( $event->ID, Virtual_Events_Meta::$prefix . 'zoom_meeting_data', true );
+		$meeting_data = $this->encryption->decrypt( get_post_meta( $event->ID, Virtual_Events_Meta::$prefix . 'zoom_meeting_data', true ), true );
 		$meeting_body = [
-			'topic'      => $meeting_data['topic'],
-			'start_time' => $meeting_data['start_time'],
-			'timezone'   => $meeting_data['timezone'],
-			'duration'   => $meeting_data['duration'],
+			'topic'             => $meeting_data['topic'],
+			'start_time'        => $meeting_data['start_time'],
+			'timezone'          => $meeting_data['timezone'],
+			'duration'          => $meeting_data['duration'],
+			'alternative_hosts' => $meeting_data['settings']['alternative_hosts'],
 		];
 
 		$diff = array_diff_assoc( $event_body, $meeting_body );
@@ -566,6 +704,10 @@ class Abstract_Meetings {
 		}
 
 		$post_id = $event->ID;
+
+		// Unset the alternative hosts and set in expected location for the API.
+		unset( $event_body['alternative_hosts'] );
+		$event_body['settings']['alternative_hosts'] = esc_attr( implode( ";", $alternative_hosts ) );
 
 		/**
 		 * Filters the contents of the request that will be made to the Zoom API to update a meeting link.

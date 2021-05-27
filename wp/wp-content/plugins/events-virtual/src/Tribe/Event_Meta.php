@@ -19,6 +19,15 @@ namespace Tribe\Events\Virtual;
 class Event_Meta {
 
 	/**
+	 * Meta key for event type field.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @var string
+	 */
+	public static $key_type = '_tribe_virtual_events_type';
+
+	/**
 	 * Meta key for virtual field.
 	 *
 	 * @since 1.0.0
@@ -82,6 +91,24 @@ class Event_Meta {
 	public static $key_show_embed_to = '_tribe_events_virtual_show_embed_to';
 
 	/**
+	 * Meta value to set as virtual.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @var string
+	 */
+	public static $value_virtual_event_type = 'virtual';
+
+	/**
+	 * Meta value to set as hybrid.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @var string
+	 */
+	public static $value_hybrid_event_type = 'hybrid';
+
+	/**
 	 * Meta value to show the embed immediately.
 	 *
 	 * @since 1.0.0
@@ -139,10 +166,12 @@ class Event_Meta {
 	 *
 	 * @since 1.0.0
 	 * @since 1.0.4 moved ticket links to Compatibility.
+	 * @since 1.4.0 Add hybrid key.
 	 *
 	 * @var array<string>
 	 */
 	public static $virtual_event_keys = [
+		'_tribe_events_is_hybrid',
 		'_tribe_events_is_virtual',
 		'_tribe_events_virtual_embed_video',
 		'_tribe_events_virtual_linked_button_text',

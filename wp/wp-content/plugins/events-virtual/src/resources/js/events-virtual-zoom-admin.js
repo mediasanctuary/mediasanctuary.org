@@ -1,4 +1,5 @@
 /* eslint-disable no-var */
+/* globals tribe_dropdowns */
 /**
  * Makes sure we have all the required levels on the Tribe Object
  *
@@ -39,7 +40,7 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
  *
  * @return {void}
  */
-( function( $, obj, virtualAdmin ) {
+( function( $, obj, virtualAdmin, tribe_dropdowns ) { // eslint-disable-line camelcase
 	'use-strict';
 	var $document = $( document ); // eslint-disable-line no-var
 	var $window = $( window );
@@ -52,18 +53,21 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 	 * @type {PlainObject}
 	 */
 	obj.selectors = {
+		configureZoom: '.tribe-events-virtual-meetings-zoom-details__generate-zoom-button',
 		displayLinkOption: '#tribe-events-virtual-meetings-zoom-display-details',
 		embedVideoOption: '#tribe-events-virtual-embed-video',
 		hidden: '.tribe-events-virtual-hidden',
 		linkedButtonOption: '#tribe-events-virtual-linked-button',
-		meetingCreate: '.tribe-events-virtual-meetings-zoom__create-link',
+		meetingCreate: '.tribe-events-virtual-meetings-zoom-details__create-link',
 		meetingDetails: '.tribe-events-virtual-meetings-zoom-details',
 		meetingDetailsFloat: '.tribe-events-virtual-meetings-zoom-details--float',
-		meetingRemove: '.tribe-events-virtual-meetings-zoom__remove-link',
+		meetingRemove: '.tribe-events-virtual-meetings-zoom-details__remove-link',
 		remove: '.tribe-remove-virtual-event',
+		setupZoomCheckbox: '#tribe-events-virtual-zoom-link-generate',
 		urlField: '.tribe-events-virtual-video-source__virtual-url-input',
 		virtualContainer: '#tribe-virtual-events',
 		zoomMeetingsContainer: '#tribe-events-virtual-meetings-zoom',
+		zoomType: 'input[name="tribe-events-virtual[zoom-meeting-type]"]:checked',
 	};
 
 	/**
@@ -93,13 +97,39 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 	};
 
 	/**
-	 * Handles the click on a link to generate or remove a meeting.
+	 * Handles the click on a link to generate a meeting.
 	 *
 	 * @since 1.0.0
+	 * @since 1.4.0 - Include host id with the ajax request.
 	 *
 	 * @param {Event} ev The click event.
 	 */
 	obj.handleMeetingRequest = function( ev ) {
+		ev.preventDefault();
+		var url = $( obj.selectors.zoomType ).val();
+		var hostId = $( '#tribe-events-virtual-zoom-host option:selected' ).val();
+
+		$.ajax(
+			url,
+			{
+				contentType: 'application/json',
+				context: $( obj.selectors.zoomMeetingsContainer ),
+				data: {
+					zoom_host_id: hostId,
+				},
+				success: obj.onMeetingHandlingSuccess,
+			}
+		);
+	};
+
+	/**
+	 * Handles the click on a link to remove a meeting.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param {Event} ev The click event.
+	 */
+	obj.handleRemoveRequest = function( ev ) {
 		ev.preventDefault();
 		var url = $( ev.target ).attr( 'href' );
 
@@ -126,6 +156,8 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 		obj.checkButtons();
 		obj.handleMeetingDetailsClasses();
 		obj.initMultipleControlsAccordion();
+		obj.initTribeDropdowns();
+		$( obj.selectors.setupZoomCheckbox ).trigger( 'setup.dependency' );
 
 		if (
 			virtualAdmin.handleShowOptionInteractivity &&
@@ -133,6 +165,22 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 		) {
 			virtualAdmin.handleShowOptionInteractivity();
 		}
+	};
+
+	/**
+	 * Wait for Virtual Events to become visible to correctly setup fields.
+	 *
+	 * @since 1.4.0
+	 */
+	obj.waitForVirtualEventsToLoad = function() {
+		var counter = 10;
+		var checkExist = setInterval( function() {
+			counter--;
+			if ( $( obj.selectors.meetingDetails ).length || counter === 0 ) {
+				obj.handleMeetingDetailsClasses();
+				clearInterval( checkExist );
+			}
+		}, 200 );
 	};
 
 	/**
@@ -177,9 +225,11 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 	 */
 	obj.bindEvents = function() {
 		$( obj.selectors.virtualContainer )
+			.on( 'verify.dependency', obj.waitForVirtualEventsToLoad )
+			.on( 'click', obj.selectors.configureZoom, obj.setZoomCheckboxCheckedAttr( true ) )
 			.on( 'click', obj.selectors.meetingCreate, obj.handleMeetingRequest )
 			.on( 'click', obj.selectors.remove, obj.handleLinkedMetaRemove )
-			.on( 'click', obj.selectors.meetingRemove, obj.handleMeetingRequest );
+			.on( 'click', obj.selectors.meetingRemove, obj.handleRemoveRequest );
 		$( window ).on( 'resize', obj.handleMeetingDetailsClasses );
 	};
 
@@ -246,6 +296,21 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 		}
 	};
 
+	/**
+	 * Initialize Tribe Dropdowns in the Meeting Container.
+	 *
+	 * @since 1.4.0
+	 */
+	obj.initTribeDropdowns = function() {
+		var $zoomMeetingContainer = $( document ).find( obj.selectors.zoomMeetingsContainer );
+		var $dropdowns = $zoomMeetingContainer
+			.find( tribe_dropdowns.selector.dropdown )
+			.not( tribe_dropdowns.selector.created );
+
+		// Initialize dropdowns
+		$dropdowns.tribe_dropdowns();
+	};
+
 	obj.initMultipleControlsAccordion = function() {
 		if ( ! tribe.events.views.accordion ) {
 			return;
@@ -255,6 +320,23 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 			'.tribe-events-virtual-meetings-zoom-controls--multi';
 		var $container = $( controlsSelector );
 		accordion.bindAccordionEvents( $container );
+	};
+
+	/**
+	 * Sets checkbox checked attribute
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param {boolean} checked whether the checkbox is checked or not
+	 *
+	 * @return {function} Handler to check the checkbox or not
+	 */
+	obj.setZoomCheckboxCheckedAttr = function( checked ) {
+		return function() {
+			$( obj.selectors.setupZoomCheckbox )
+				.prop( 'checked', checked )
+				.trigger( 'verify.dependency' );
+		};
 	};
 
 	/**
@@ -272,8 +354,4 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 
 	// Configure on document ready
 	$( obj.ready );
-
-	// obj.handleMeetingDetailsClass should be called on Window Load again
-	// since the page needs to be fully loaded for the necessary DOM calculations
-	$window.on( 'load', obj.handleMeetingDetailsClasses );
-} )( jQuery, tribe.events.virtualAdminZoom, tribe.events.virtualAdmin );
+} )( jQuery, tribe.events.virtualAdminZoom, tribe.events.virtualAdmin, tribe_dropdowns );

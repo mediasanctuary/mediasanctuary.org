@@ -9,17 +9,25 @@
  *
  * @link http://evnt.is/1aiy
  *
- * @since 1.0.4 -
+ * @since 1.0.4
+ * @since 1.4.0 - Add check for hybrid event.
  *
- * @version 1.0.4
+ * @version 1.4.0
  *
  * @var \WP_Post $event The event post object with properties added by the `tribe_get_event` function.
  *
  * @see tribe_get_event() For the format of the event object.
  */
 
+use Tribe\Events\Virtual\Event_Meta;
+
 // Don't print anything when this event is not virtual.
 if ( ! $event->virtual || ! $event->virtual_show_on_views ) {
+	return;
+}
+
+// Don't print anything when this event is hybrid.
+if ( Event_Meta::$value_hybrid_event_type === $event->virtual_event_type ) {
 	return;
 }
 

@@ -15,11 +15,10 @@
 
 namespace Tribe\Events\Virtual;
 
+
 use Tribe\Events\Views\V2\Assets as Event_Assets;
 use Tribe\Events\Views\V2\Template_Bootstrap;
 use Tribe__Events__Templates;
-
-use Tribe\Events\Views\V2\Widgets\Widget_List;
 
 /**
  * Register Assets.
@@ -37,6 +36,14 @@ class Assets extends \tad_DI52_ServiceProvider {
 	 * @var string
 	 */
 	public static $group_key = 'events-virtual';
+	/**
+	 * Key for the group of assets required by shortcodes.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @var string
+	 */
+	public static $shortcode_group_key = 'events-virtual-shortcode';
 
 	/**
 	 * Caches the result of the `should_enqueue_frontend` check.
@@ -92,7 +99,7 @@ class Assets extends \tad_DI52_ServiceProvider {
 			[
 				'priority'     => 10,
 				'conditionals' => [ $this, 'should_enqueue_frontend' ],
-				'groups'       => [ static::$group_key ],
+				'groups'       => [ static::$group_key, static::$shortcode_group_key ],
 			]
 		);
 
@@ -109,7 +116,7 @@ class Assets extends \tad_DI52_ServiceProvider {
 					[ $this, 'should_enqueue_frontend' ],
 					[ tribe( Event_Assets::class ), 'should_enqueue_full_styles' ],
 				],
-				'groups'       => [ static::$group_key ],
+				'groups'       => [ static::$group_key, static::$shortcode_group_key ],
 			]
 		);
 
@@ -123,11 +130,9 @@ class Assets extends \tad_DI52_ServiceProvider {
 				'print'        => true,
 				'priority'     => 5,
 				'conditionals' => [
-					[ Widget_List::class, 'is_widget_in_use' ],
+					[ $this, 'should_load_widget_styles' ],
 				],
-				'groups' => [
-					Widget_List::get_css_group(),
-				],
+				'groups' => $this->get_widget_groups(),
 			]
 		);
 
@@ -144,12 +149,10 @@ class Assets extends \tad_DI52_ServiceProvider {
 				'priority'     => 5,
 				'conditionals' => [
 					'operator' => 'AND',
-					[ Widget_List::class, 'is_widget_in_use' ],
 					[ tribe( Event_Assets::class ), 'should_enqueue_full_styles' ],
+					[ $this, 'should_load_widget_styles' ],
 				],
-				'groups' => [
-					Widget_List::get_css_group(),
-				],
+				'groups' => $this->get_widget_groups(),
 			]
 		);
 
@@ -196,7 +199,10 @@ class Assets extends \tad_DI52_ServiceProvider {
 				],
 				'wp_enqueue_scripts',
 				[
-					'groups' => [ static::$group_key, Event_Assets::$group_key ],
+					'groups' => [
+						static::$group_key,
+						Event_Assets::$group_key
+					],
 				]
 			);
 		}
@@ -291,17 +297,6 @@ class Assets extends \tad_DI52_ServiceProvider {
 	}
 
 	/**
-	 * Fires to include the virtual event assets on shortcodes.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void Action hook with no return.
-	 */
-	public function load_on_shortcode() {
-		tribe_asset_enqueue_group( static::$group_key );
-	}
-
-	/**
 	 * Verifies if we are on V2 and on Event Single in order to enqueue the override styles for Single Event
 	 *
 	 * @since 1.2.0
@@ -327,4 +322,60 @@ class Assets extends \tad_DI52_ServiceProvider {
 		return true;
 	}
 
+	/**
+	 * Verifies if we should load widget icon styles.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @return boolean If the icon styles should load.
+	 */
+	public function should_load_widget_styles() {
+		$should_enqueue = false;
+
+		/**
+		 * Allow filtering of where the widget assets will be loaded.
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param bool $should_enqueue Whether the widget assets should be enqueued or not.
+		 */
+		$should_enqueue = apply_filters( 'tribe_events_virtual_assets_should_enqueue_widget_styles', $should_enqueue );
+
+		return $should_enqueue;
+	}
+
+	/**
+	 * Allows widgets to add themselves to the css groups for icon styles.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @return array The list of groups.
+	 */
+	public function get_widget_groups() {
+		$groups = [];
+
+		/**
+		 * Allow filtering of the widget asset groups.
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param array $groups List of asset groups.
+		 */
+		return apply_filters( 'tribe_events_virtual_assets_should_enqueue_widget_groups', $groups );
+	}
+
+	/**
+	 * Fires to include the virtual event assets on shortcodes.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void Action hook with no return.
+	 */
+	public function load_on_shortcode() {
+		tribe_asset_enqueue( 'tribe-events-virtual-skeleton' );
+
+		if ( tribe( Event_Assets::class )->should_enqueue_full_styles() ) {
+			tribe_asset_enqueue( 'tribe-events-virtual-full' );
+		}
+	}
 }
