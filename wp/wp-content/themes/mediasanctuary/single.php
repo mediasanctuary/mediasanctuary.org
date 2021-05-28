@@ -42,7 +42,16 @@
     }
 
     if ($thumb_url) {
-      $thumb = '<img src="'.$thumb_url.'" class="mainPhoto" />';
+      $caption = '';
+      $caption_content = wp_get_attachment_caption($thumb_id);
+      if (! empty($caption_content)) {
+        $caption = '<div class="photoCaption">' . $caption_content . '</div>';
+      }
+      $thumb_post = get_post($thumb_id);
+      if (! empty($thumb_post)) {
+        $caption .= '<div class="photoCredit">' . $thumb_post->post_content . '</div>';
+      }
+      $thumb = '<div class="mainPhoto"><img src="'.$thumb_url.'">' . $caption . '</div>';
     }
 ?>
 
@@ -60,7 +69,7 @@
       <div class="content">
         <?php
           if (function_exists('soundcloud_podcast') && get_post_format($post->ID) == 'audio') {
-            soundcloud_podcast();          
+            soundcloud_podcast();
             if (! empty($thumb)) {
               echo $thumb;
             }
