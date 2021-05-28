@@ -107,6 +107,28 @@ add_action('admin_enqueue_scripts', function() {
 	wp_enqueue_style('custom-admin', $css_src, [], $css_version);
 });
 
+// Change 'Description' label to 'Credit' (wp-admin/post.php)
+add_action( 'edit_form_after_title', function( $post ) {
+	if ( $post->post_type == 'attachment' ) {
+		add_filter( 'gettext', function( $translation ) {
+			if ( $translation == 'Description' ) {
+				return 'Credit';
+			}
+			return $translation;
+		} );
+	}
+} );
+
+// Change 'Description' label to 'Credit' (wp-admin/upload.php)
+add_action( 'pre-upload-ui', function() {
+	add_filter( 'gettext', function( $translation ) {
+		if ( $translation == 'Description' ) {
+			return 'Credit';
+		}
+		return $translation;
+	} );
+} );
+
 add_action('init', function() {
 	setup_post_types();
 	setup_redirects();
