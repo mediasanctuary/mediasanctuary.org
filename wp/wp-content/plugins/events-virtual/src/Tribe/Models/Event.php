@@ -46,12 +46,6 @@ class Event {
 		$event->virtual_show_on_views      = $this->get_virtual_show_on_views( $event );
 		$event->virtual_show_lead_up       = $this->get_virtual_show_lead_up( $event );
 
-		// Note: order matters below, as these function depend on the ones that come before!
-		$event->virtual_is_immediate      = $this->get_virtual_is_immediate( $event );
-		$event->virtual_is_linkable       = $this->get_is_linkable( $event );
-		$event->virtual_should_show_embed = $this->get_should_show_embed( $event );
-		$event->virtual_should_show_link  = $this->get_should_show_link( $event );
-
 		/**
 		 * Fires after the event object has been decorated with properties related to Virtual Events.
 		 *
@@ -566,5 +560,28 @@ class Event {
 	 */
 	public static function is_new_virtual( $event ) {
 		return self::is_virtual( $event ) || tribe_context()->is_new_post();
+	}
+
+	/**
+	 * Adds dynamic, time-related, properties to the event object.
+	 *
+	 * This method deals with properties we set, for convenience, on the event object that should not
+	 * be cached as they are time-dependent; i.e. the time the properties are computed  at matters and
+	 * caching their values would be incorrect.
+	 *
+	 * @since 1.4.1
+	 *
+	 * @param WP_Post $event The event post object, as read from the cache, if any.
+	 *
+	 * @return WP_Post The decorated event post object; its dynamic and time-dependent properties correctly set up.
+	 */
+	public function add_dynamic_properties( WP_Post $event ) {
+		// Note: order matters below, as these function depend on the ones added in the `add_properties` method!
+		$event->virtual_is_immediate      = $this->get_virtual_is_immediate( $event );
+		$event->virtual_is_linkable       = $this->get_is_linkable( $event );
+		$event->virtual_should_show_embed = $this->get_should_show_embed( $event );
+		$event->virtual_should_show_link  = $this->get_should_show_link( $event );
+
+		return $event;
 	}
 }

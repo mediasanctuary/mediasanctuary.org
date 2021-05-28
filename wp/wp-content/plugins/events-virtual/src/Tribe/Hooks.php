@@ -165,6 +165,21 @@ class Hooks extends \tad_DI52_ServiceProvider {
 			3
 		);
 
+		// Summary View.
+		add_action(
+			'tribe_template_before_include:events-pro/v2/summary/date-group/event/title/featured',
+			[ $this, 'action_add_virtual_event_marker' ],
+			20,
+			3
+		);
+
+		add_action(
+			'tribe_template_before_include:events-pro/v2/summary/date-group/event/title/featured',
+			[ $this, 'action_add_hybrid_event_marker' ],
+			20,
+			3
+		);
+
 		// Photo View.
 		add_action(
 			'tribe_template_before_include:events-pro/v2/photo/event/date-time',
@@ -408,7 +423,8 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		add_filter( 'body_class', [ $this, 'filter_add_body_class' ], 10 );
 
 		// Filter event object properties to add the ones related to virtual events.
-		add_filter( 'tribe_get_event', [ $this, 'filter_tribe_get_event' ], 10 );
+		add_filter( 'tribe_get_event', [ $this, 'filter_tribe_get_event' ] );
+		add_filter( 'tribe_get_event_after', [ $this, 'add_dynamic_properties' ] );
 
 		// Add the plugin locations to the Context.
 		add_filter( 'tribe_context_locations', [ $this, 'filter_context_locations' ] );
@@ -895,6 +911,29 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	}
 
 	/**
+	 * Adds dynamic, time-related, properties to the event object.
+	 *
+	 * This method deals with properties we set, for convenience, on the event object that should not
+	 * be cached as they are time-dependent; i.e. the time the properties are computed at matters and
+	 * caching their values would be incorrect.
+	 *
+	 * @since 1.4.1
+	 *
+	 * @param mixed|\WP_Post $post The event post object, as read from the cache, if any.
+	 *
+	 * @return WP_Post The decorated event post object; its dynamic and time-dependent properties correctly set up.
+	 */
+	public function add_dynamic_properties( $post ) {
+		if ( ! $post instanceof WP_Post ) {
+			// We should only act on event posts, else bail.
+			return $post;
+		}
+
+
+		return $this->container->make( Models\Event::class )->add_dynamic_properties( $post );
+	}
+
+	/**
 	 * Triggers on the ECP month widget add_hooks() to add/remove icons strategically
 	 *
 	 * @since 1.4.0
@@ -902,7 +941,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * @return void
 	 */
 	public function action_pro_shortcode_month_widget_add_hooks() {
-
 		remove_action(
 			'tribe_template_after_include:events/v2/month/mobile-events/mobile-day/mobile-event/title',
 			[ $this, 'action_add_virtual_event_marker' ],

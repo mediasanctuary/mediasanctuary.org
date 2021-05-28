@@ -178,6 +178,57 @@ class Template_Modifications {
 	}
 
 	/**
+	 * Get the event object of the event on which to show control markers.
+	 *
+	 * @since 1.4.1
+	 *
+	 * @param string $schedule  The output HTML.
+	 * @param int    $event_id  The post ID of the event we are interested in.
+	 *
+	 * @return bool|\WP_Post Event on which to show control markers.
+	 */
+	public function get_control_marker_event( $event_id ) {
+		$should_show = true;
+
+		if ( ! is_singular( Events_Plugin::POSTTYPE ) ) {
+			$should_show = false;
+		}
+
+		/**
+		 * Filter whether we should show control markers.
+		 *
+		 * @since 1.4.1
+		 *
+		 * @param bool $should_show Whether to show the markers or not.
+		 * @param int $event_id The post ID of the event we are interested in.
+		 */
+		$should_show = apply_filters( 'tribe_events_virtual_should_show_control_markers', $should_show, $event_id );
+
+		if ( ! $should_show ) {
+			return false;
+		}
+
+		// The following checks are mandatory for bailing, so we'll constrain the filtering to up above.
+
+		// Bail if this action was already introduced.
+		if ( $should_show && did_action( 'tribe_tickets_ticket_email_top' ) ) {
+			return false;
+		}
+
+		$event = tribe_get_event( $event_id );
+
+		if ( ! $event instanceof \WP_Post) {
+			return false;
+		}
+
+		if ( ! $event->virtual ) {
+			return false;
+		}
+
+		return $event;
+	}
+
+	/**
 	 * Include the control markers to the single page.
 	 *
 	 * @since 1.0.0
@@ -188,22 +239,7 @@ class Template_Modifications {
 	 * @return string  New details with the control markers appended.
 	 */
 	public function add_single_control_markers( $schedule, $event_id ) {
-		if ( ! is_singular( Events_Plugin::POSTTYPE ) ) {
-			return $schedule;
-		}
-
-		// Bail if this action was already introduced.
-		if ( did_action( 'tribe_tickets_ticket_email_top' ) ) {
-			return $schedule;
-		}
-
-		$event = tribe_get_event( $event_id );
-
-		if ( ! $event instanceof \WP_Post) {
-			return $schedule;
-		}
-
-		if ( ! $event->virtual ) {
+		if ( ! $event = $this->get_control_marker_event( $event_id ) ) {
 			return $schedule;
 		}
 
@@ -224,22 +260,7 @@ class Template_Modifications {
 	 * @return string  New details with the control markers appended.
 	 */
 	public function add_single_hybrid_control_markers( $schedule, $event_id ) {
-		if ( ! is_singular( Events_Plugin::POSTTYPE ) ) {
-			return $schedule;
-		}
-
-		// Bail if this action was already introduced.
-		if ( did_action( 'tribe_tickets_ticket_email_top' ) ) {
-			return $schedule;
-		}
-
-		$event = tribe_get_event( $event_id );
-
-		if ( ! $event instanceof \WP_Post ) {
-			return $schedule;
-		}
-
-		if ( ! $event->virtual ) {
+		if ( ! $event = $this->get_control_marker_event( $event_id ) ) {
 			return $schedule;
 		}
 

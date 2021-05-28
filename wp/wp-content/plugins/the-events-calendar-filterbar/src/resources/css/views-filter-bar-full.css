@@ -700,6 +700,19 @@
 		}
 
 /* -----------------------------------------------------------------------------
+	 * Theme Overrides - Twenty Twenty One
+	 * ----------------------------------------------------------------------------- */
+
+.tribe-theme-twentytwentyone .tribe-filter-bar .tribe-filter-bar-c-filter__toggle-wrapper button:focus {
+				outline-offset: 0;
+			}
+
+.tribe-theme-twentytwentyone .tribe-filter-bar button.tribe-filter-bar-c-pill__pill:focus {
+			outline: none;
+			outline-offset: 0;
+		}
+
+/* -----------------------------------------------------------------------------
  *
  * Multiselect
  *
