@@ -4,8 +4,8 @@ Contributors: theeventscalendar, aguseo, borkweb, bordoni, brianjessee, Camwyn, 
 Tags: virtual events, events, calendar, event, venue, organizer, dates, date, schema, conference, online events, concert, meeting, seminar, summit, class, the events calendar, tec, zoom, livestream
 Donate link: https://evnt.is/29
 Requires at least: 4.9.16
-Tested up to: 5.7.1
-Stable tag: 1.4.0
+Tested up to: 5.7.2
+Stable tag: 1.4.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -120,6 +120,16 @@ Our premium products:
 * <a href="https://evnt.is/1ako" target="_blank">Image Widget Plus</a>
 
 == Changelog ==
+
+= [1.4.1] 2021-05-27 =
+
+* Feature - Add virtual and hybrid event support into the new Summary View for The Events Calendar Pro. [ECP-830]
+* Fix - Ensure Events will correctly show when the event starts when using real object caching. [VE-232]
+* Tweak - Added the `tribe_events_virtual_should_show_control_markers` filter to allow other plugins/themes to adjust whether they should display or not. [ECP-834]
+* Tweak - Added filters: `tribe_events_virtual_assets_should_enqueue_widget_styles`, `tribe_events_virtual_assets_should_enqueue_widget_groups`, `tribe_events_virtual_encryption_key`, `tribe_events_virtual_meetings_zoom_hosts`, `tribe_events_virtual_meetings_zoom_alternative_hosts`, `tribe_events_virtual_meetings_zoom_user_cache`, `tribe_events_virtual_should_show_control_markers`, `tribe_hybrid_label`, `tribe_hybrid_event_label_singular`
+* Tweak - Added actions: `tribe_log`, `tribe_log`, `tribe_log`
+* Tweak - Changed views: `components/hybrid-event`, `components/icons/hybrid`, `components/virtual-event`, `single/hybrid-marker-mobile`, `single/hybrid-marker`, `single/virtual-marker-mobile`, `single/virtual-marker`
+* Language - 0 new strings added, 2 updated, 0 fuzzied, and 0 obsoleted
 
 = [1.4.0] 2021-05-10 =
 

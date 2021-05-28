@@ -4,8 +4,8 @@ Contributors: theeventscalendar, borkweb, bordoni, brianjessee, aguseo, camwynsp
 Tags: events, calendar, event, venue, organizer, dates, date, google maps, conference, workshop, concert, meeting, seminar, summit, class, modern tribe, tribe, widget, pro, filters, categories, sort, tags, taxonomy, find, search
 Donate link: http://evnt.is/29
 Requires at least: 4.9.16
-Tested up to: 5.7.1
-Stable tag: 5.1.1
+Tested up to: 5.7.2
+Stable tag: 5.1.2
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -194,6 +194,15 @@ Our Premium Plugins:
 * <a href="http://evnt.is/18h9" target="_blank">The Events Calendar: iCal Importer</a>
 
 == Changelog ==
+
+= [5.1.2] 2021-05-27 =
+
+* Fix - Styles with the default theme `twenty twenty one` in `<buttons>` in the calendar. [FBAR-244]
+* Tweak - Adjust logic to apply breakpoints to make sure the correct breakpoint is applied to the calendar [FBAR-241]
+* Tweak - Added filters: `tribe_events_filter_bar_views_v2_assets_should_enqueue_frontend`
+* Tweak - Removed filters: `tribe_events_pro_views_v2_assets_should_enqueue_frontend`
+* Tweak - Changed views: `v2_1/filter-bar/breakpoints`, `v2_1/filter-bar/filters-slider`
+* Language - 0 new strings added, 1 updated, 0 fuzzied, and 0 obsoleted
 
 = [5.1.1] 2021-04-29 =
 
