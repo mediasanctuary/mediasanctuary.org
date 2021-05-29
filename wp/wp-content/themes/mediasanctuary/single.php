@@ -59,7 +59,13 @@
 <div class="container ">
   <article class="post post--single">
     <main>
-      <span class="date" ><?php the_time('F d, Y'); ?></span>
+      <?php if ($post->post_type == 'peoplepower') { ?>
+        <div class="categories">
+          <a href="/peoplepower">People Power</a>
+        </div>
+      <?php } else { ?>
+        <span class="date" ><?php the_time('F d, Y'); ?></span>
+      <?php } ?>
       <?php /*
       <div class="categories">
         <?php echo $cat; ?>
@@ -73,6 +79,8 @@
             if (! empty($thumb)) {
               echo $thumb;
             }
+          } else if ($post->post_type == 'peoplepower' && ! empty($thumb)) {
+            echo $thumb;
           }
           the_content();
         ?>

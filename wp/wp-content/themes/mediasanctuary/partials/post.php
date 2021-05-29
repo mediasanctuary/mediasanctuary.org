@@ -25,7 +25,8 @@ if('project' == get_post_type()){
 }
 
 $date = false;
-if (get_post_type() != 'project'){
+if (get_post_type() != 'project' &&
+    get_post_type() != 'peoplepower'){
   $date = '<span class="posts__date">'.get_the_time('F d, Y').'</span>';
 }
 
