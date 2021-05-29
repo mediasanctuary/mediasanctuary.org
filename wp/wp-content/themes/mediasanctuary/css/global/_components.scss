@@ -5,6 +5,18 @@ body {
 	background: $c-river-fog;
 }
 
+.alignleft {
+	float: left;
+	margin-right: 20px;
+	margin-bottom: 10px;
+}
+
+.alignright {
+	float: right;
+	margin-left: 20px;
+	margin-bottom: 10px;
+}
+
 .hidden {
 	display: none;
 }

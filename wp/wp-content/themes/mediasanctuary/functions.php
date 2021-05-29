@@ -27,6 +27,8 @@ add_filter('pre_get_posts', function($query) {
 add_filter('get_the_archive_title', function ($title) {
 	if (is_category()) {
 		return single_cat_title( '', false );
+	} else if ($title == 'Archives: <span>People Power</span>') {
+		return 'People Power';
 	}
 	return $title;
 });

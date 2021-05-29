@@ -3,6 +3,7 @@
 function setup_post_types() {
 	initiatives_taxonomy();
 	project_post_type();
+	peoplepower_post_type();
 }
 
 function project_post_type() {
@@ -31,6 +32,40 @@ function project_post_type() {
 			'show_ui'       => true,
 			'menu_position' => 4,
 			'menu_icon'     => 'dashicons-format-aside',
+			'has_archive'   => true,
+			'show_in_rest'  => true,
+			'supports'      => ['title', 'editor', 'thumbnail', 'revisions', 'page-attributes'],
+			'taxonomies'    => [],
+		)
+	);
+}
+
+function peoplepower_post_type() {
+	$labels = [
+		'name'               => 'People Power',
+		'singular_name'      => 'Person',
+		'add_new'            => 'Add New Person',
+		'add_new_item'       => 'Add New Person',
+		'edit_item'          => 'Edit Person',
+		'new_item'           => 'Person',
+		'view_item'          => 'View Person',
+		'search_items'       => 'Search People Power',
+		'not_found'          => 'No People found',
+		'not_found_in_trash' => 'No People found in Trash',
+		'all_items'          => 'All People',
+		'menu_name'          => 'People Power',
+		'name_admin_bar'     => 'People Power'
+	];
+
+	register_post_type(
+		'peoplepower',
+		array(
+			'labels'        => $labels,
+			'public'        => true,
+			'hierarchical'  => true,
+			'show_ui'       => true,
+			'menu_position' => 4,
+			'menu_icon'     => 'dashicons-groups',
 			'has_archive'   => true,
 			'show_in_rest'  => true,
 			'supports'      => ['title', 'editor', 'thumbnail', 'revisions', 'page-attributes'],
