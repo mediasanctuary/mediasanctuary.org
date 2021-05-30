@@ -1,7 +1,7 @@
 FROM wordpress
 
 # `less` is used by WP-CLI
-RUN apt-get update && apt-get install less;
+RUN apt-get update && apt-get install less emacs-nox mariadb-client;
 
 # Install and configure WP-CLI
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar; \
