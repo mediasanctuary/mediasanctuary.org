@@ -25,8 +25,8 @@ function setup_redirects() {
 		}
 	}
 
+	$redirect_to = apply_filters('redirect_to', $redirect_to, $redirect, $path);
 	if (! empty($redirect_to)) {
-		$redirect_to = apply_filters('redirect_to', $redirect_to, $redirect, $path);
 		wp_redirect($redirect_to);
 		exit;
 	}
@@ -60,6 +60,11 @@ function check_wildcard_redirect($redirect, $path) {
 }
 
 add_filter('redirect_to', function($redirect_to, $redirect) {
+
+	if (empty($redirect_to)) {
+		return null;
+	}
+
 	if ($redirect['from_path'] == '/podcasts/*') {
 		// Input: /stories/[slug]
 		// Output: /stories/[year]/[slug]
@@ -73,5 +78,23 @@ add_filter('redirect_to', function($redirect_to, $redirect) {
 			}
 		}
 	}
+
+	if ($redirect['from_path'] == '/*') {
+		// Input: /sanctuary-news/[slug]
+		// Output: /sanctuary-news/[year]/[slug]
+		$regex = '@/sanctuary-news/([^/]+)@';
+		if (preg_match($regex, $redirect_to, $matches)) {
+			$posts = get_posts([
+				'name' => $matches[1],
+				'category_name' => 'sanctuary-news'
+			]);
+			if (empty($posts)) {
+				return null;
+			} else {
+				return get_permalink($posts[0]->ID);
+			}
+		}
+	}
+
 	return $redirect_to;
 }, 10, 2);
