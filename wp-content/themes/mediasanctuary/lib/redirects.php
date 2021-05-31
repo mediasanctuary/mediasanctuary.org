@@ -85,7 +85,8 @@ add_filter('redirect_to', function($redirect_to, $redirect) {
 		$regex = '@/sanctuary-news/([^/]+)@';
 		if (preg_match($regex, $redirect_to, $matches)) {
 			$posts = get_posts([
-				'name' => $matches[1]
+				'name' => $matches[1],
+				'category_name' => 'sanctuary-news'
 			]);
 			if (empty($posts)) {
 				return null;
