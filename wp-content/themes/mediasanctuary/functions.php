@@ -107,29 +107,33 @@ add_action('admin_enqueue_scripts', function() {
 	$css_src = get_template_directory_uri() . '/css/admin/admin.css';
 	$css_version = filemtime("$dir/css/admin/admin.css");
 	wp_enqueue_style('custom-admin', $css_src, [], $css_version);
+
+	$js_src = get_template_directory_uri() . '/js/admin.js';
+	$js_version = filemtime("$dir/js/admin.js");
+	wp_enqueue_script('admin', $js_src, ['jquery'], $js_version);
 });
 
 // Change 'Description' label to 'Credit' (wp-admin/post.php)
-add_action( 'edit_form_after_title', function( $post ) {
-	if ( $post->post_type == 'attachment' ) {
-		add_filter( 'gettext', function( $translation ) {
-			if ( $translation == 'Description' ) {
+add_action('edit_form_after_title', function($post) {
+	if ($post->post_type == 'attachment') {
+		add_filter('gettext', function($translation) {
+			if ($translation == 'Description') {
 				return 'Credit';
 			}
 			return $translation;
-		} );
+		});
 	}
-} );
+});
 
 // Change 'Description' label to 'Credit' (wp-admin/upload.php)
-add_action( 'pre-upload-ui', function() {
-	add_filter( 'gettext', function( $translation ) {
-		if ( $translation == 'Description' ) {
+add_action('pre-upload-ui', function() {
+	add_filter('gettext', function($translation) {
+		if ($translation == 'Description') {
 			return 'Credit';
 		}
 		return $translation;
-	} );
-} );
+	});
+});
 
 add_action('init', function() {
 	setup_post_types();

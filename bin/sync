@@ -10,6 +10,7 @@ server="devmediasan@claudette.mayfirst.org"
 dir="$( cd "$(dirname "$( dirname "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && pwd )"
 file="dev.mediasanctuary.org-$( date +%Y-%m-%d ).sql"
 
+mkdir -p "$dir/wp-content/uploads/"
 ssh $server "cd ~/web && wp db export ~/$file"
 scp "$server:~/$file" "$dir/wp-content/uploads/"
 
