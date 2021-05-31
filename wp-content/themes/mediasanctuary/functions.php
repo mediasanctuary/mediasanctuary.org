@@ -3,9 +3,10 @@
 require_once 'lib/post-types.php';
 require_once 'lib/redirects.php';
 require_once 'lib/roles.php';
+require_once 'lib/dbug.php';
 require_once 'db/migrate.php';
 
-add_filter( 'acf/prepare_field/name=category_soundcloud_playlist', function($field) {
+add_filter('acf/prepare_field/name=category_soundcloud_playlist', function($field) {
 	if (function_exists('soundcloud_podcast_playlists')) {
 		$playlists = soundcloud_podcast_playlists();
 		foreach ($playlists['list'] as $playlist) {
@@ -15,6 +16,20 @@ add_filter( 'acf/prepare_field/name=category_soundcloud_playlist', function($fie
 		}
 	}
 	return $field;
+});
+
+add_filter('soundcloud_podcast_categories', function($categories) {
+	global $wpdb;
+	$results = $wpdb->get_results("
+		SELECT term_id, meta_value AS playlist_id
+		FROM {$wpdb->prefix}termmeta
+		WHERE meta_key = 'category_soundcloud_playlist'
+	");
+	$categories = [];
+	foreach ($results as $result) {
+		$categories[$result->term_id] = $result->playlist_id;
+	}
+	return $categories;
 });
 
 add_filter('pre_get_posts', function($query) {

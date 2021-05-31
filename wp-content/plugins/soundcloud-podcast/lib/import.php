@@ -90,6 +90,7 @@ function soundcloud_podcast_import($num = null, $url = null, $slack_msg = '') {
 			wp_set_post_tags($id, soundcloud_podcast_track_tags($track));
 
 			fputcsv($stdout, [
+				date('Y-m-d H:i:s'),
 				$id,
 				'create',
 				$track['id'],
@@ -116,6 +117,7 @@ function soundcloud_podcast_import($num = null, $url = null, $slack_msg = '') {
 			wp_set_post_tags($id, soundcloud_podcast_track_tags($track));
 
 			fputcsv($stdout, [
+				date('Y-m-d H:i:s'),
 				$id,
 				'update',
 				$track['id'],

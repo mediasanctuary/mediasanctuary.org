@@ -1,33 +1,63 @@
 <?php
 
-function soundcloud_podcast_categories($cat = null) {
-	if (! empty($cat)) {
-		soundcloud_podcast_category_import($cat);
-	} else {
-		$stderr = fopen('php://stderr', 'w');
-		$categories = apply_filters('soundcloud_podcast_categories', []);
-		if (empty($categories)) {
-			fwrite($stderr, "Error: no categories to import\n");
-			return;
-		}
-		foreach ($categories as $cat) {
-			soundcloud_podcast_category_import($cat);
-		}
-		fclose($stderr);
+function soundcloud_podcast_categories() {
+	$stderr = fopen('php://stderr', 'w');
+	$categories = apply_filters('soundcloud_podcast_categories', []);
+	if (empty($categories)) {
+		fwrite($stderr, "Error: no categories to import\n");
+		return;
 	}
+	foreach ($categories as $category => $playlist) {
+		soundcloud_podcast_category_import($category, $playlist);
+	}
+	fclose($stderr);
 }
 
-function soundcloud_podcast_category_import($cat) {
+function soundcloud_podcast_category_import($term_id, $playlist_id) {
 
+	global $wpdb;
+	$stdout = fopen('php://stdout', 'w');
 	$stderr = fopen('php://stderr', 'w');
-	fwrite($stderr, "Importing category $cat\n");
 
-	$id = 1;
-	$cache_key = "soundcloud_podcast_playlist_$id";
-	$cached = get_option($cache_key, null);
-	if (empty($cached)) {
-		$playlists = soundcloud_podcast_playlists();
+	$playlists = soundcloud_podcast_playlists();
+	foreach ($playlists['list'] as $list) {
+		if ($list['id'] == $playlist_id) {
+			if (empty($list['tracks'])) {
+				fwrite($stderr, "Playlist is empty, skipping\n");
+				return;
+			}
 
+			$track_ids = array_filter($list['tracks'], 'is_numeric');
+			$track_ids = "'" . implode("', '", $track_ids) . "'";
+
+			$results = $wpdb->get_results("
+				SELECT pm.post_id
+				FROM wp_postmeta AS pm, wp_posts AS p
+				WHERE pm.post_id = p.ID
+				  AND p.post_type = 'post'
+				  AND pm.meta_key = 'soundcloud_podcast_id'
+				  AND pm.meta_value IN ($track_ids)
+			");
+
+			$cat_id = intval($term_id);
+			foreach ($results as $result) {
+				if (! in_category($cat_id, $result->post_id)) {
+					wp_update_post([
+						'ID' => $result->post_id,
+						'post_category' => [$cat_id]
+					]);
+					fwrite($stderr, "Adding post $result->post_id to category $term_id\n");
+				}
+
+				fputcsv($stdout, [
+					date('Y-m-d H:i:s'),
+					$result->post_id,
+					$term_id,
+					$playlist_id
+				]);
+			}
+
+		}
 	}
 
 	fclose($stderr);
