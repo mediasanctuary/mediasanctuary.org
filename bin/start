@@ -5,7 +5,7 @@ set -o pipefail
 set -o nounset
 
 dir="$( cd "$(dirname "$( dirname "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && pwd )"
-mkdir -p "$dir/wp/wp-content/uploads"
+mkdir -p "$dir/wp-content/uploads"
 
 stop_containers() {
   echo "Shutting off containers..."

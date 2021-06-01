@@ -75,7 +75,7 @@ add_action('acf/init', function() {
 			'page_title' => 'Site Options',
 			'menu_title' => 'Site Options',
 			'menu_slug'  => 'options',
-			'capability' => 'edit_others_posts'
+			'capability' => 'activate_plugins',
 		]);
 		acf_add_options_page([
 			'page_title' => 'Redirects',
@@ -153,6 +153,7 @@ add_action('pre-upload-ui', function() {
 // Disable comments
 add_action('admin_menu', function() {
 	remove_menu_page( 'edit-comments.php' );
+	remove_menu_page( 'tools.php' );
 });
 
 add_action('init', function() {
