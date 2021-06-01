@@ -1,0 +1,35 @@
+{
+  "name": "mediasanctuary",
+  "version": "0.0.1",
+  "description": "WordPress theme for mediasanctuary.org",
+  "main": "index.php",
+  "scripts": {
+    "build-task:compile": "node-sass-chokidar --source-map true css/main.scss -o dist",
+    "build-task:autoprefixer": "postcss dist/*.css --use autoprefixer -d dist",
+    "build-task:admin": "node-sass-chokidar --source-map true css/admin/admin.scss -o css/admin",
+    "sass:build": "npm-run-all -p build-task:*",
+    "sass:watch": "chokidar \"**/*.scss\" -c \"npm run sass:build\"",
+    "sass:admin": "chokidar \"admin/**/*.scss\" -c \"npm run build-task:admin\"",
+    "start": "npm-run-all -p sass:*",
+    "build": "npm-run-all -p sass:build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mediasanctuary/mediasanctuary.org.git"
+  },
+  "author": "Dan Phiffer <dan@phiffer.org>",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/mediasanctuary/mediasanctuary.org/issues"
+  },
+  "homepage": "https://github.com/mediasanctuary/mediasanctuary.org#readme",
+  "dependencies": {
+    "autoprefixer": "^10.2.4",
+    "chokidar-cli": "^2.1.0",
+    "node-sass-chokidar": "^1.5.0",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.3.0",
+    "postcss-cli": "^8.3.1",
+    "sass": "^1.32.8"
+  }
+}

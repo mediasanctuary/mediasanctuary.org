@@ -1,0 +1,282 @@
+body {
+	font-family: 'Noto Sans', sans-serif;
+	font-size: $s-sm;
+	line-height: 1.5;
+	background: $c-river-fog;
+}
+
+.alignleft {
+	float: left;
+	margin-right: 20px;
+	margin-bottom: 10px;
+}
+
+.alignright {
+	float: right;
+	margin-left: 20px;
+	margin-bottom: 10px;
+}
+
+.hidden {
+	display: none;
+}
+
+.clear {
+	clear: both;
+}
+
+p {
+  padding: 0 0 20px;
+  margin: 0;
+}
+
+em, i {
+  font-style: italic;
+}
+
+strong, b {
+  font-weight: bold;
+}
+
+a {
+  transition: ease 0.3s all;
+  color:$c-teal-duck;
+  &:hover {
+    color:$c-robin-egg;
+  }
+}
+
+.tribe_events {
+
+  ul, ol {
+    padding-left: 30px;
+  }
+
+  & > ul, & > ol {
+    padding-bottom: 15px;
+  }
+
+  ul > li {
+    list-style: disc;
+
+    & > ul > li {
+      list-style: circle;
+    }
+  }
+
+  ol > li {
+    list-style: decimal;
+
+    & > ol > li {
+      list-style: lower-alpha;
+    }
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+
+/* Layout
+----------------------------------------------------- */
+.container {
+	position: relative;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 30px;
+	box-sizing: border-box;
+
+	&:after {
+		visibility: hidden;
+		display: block;
+		content: "";
+		clear: both;
+		height: 0;
+	}
+
+	&.sm {
+	  max-width: 960px;
+	}
+}
+
+.p20 {
+  padding: 20px 0;
+}
+
+/* Columns
+----------------------------------------------------- */
+.two-col, .three-col, .four-col {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.two-col {
+  .col {
+    width: 50%;
+    padding: 0 20px 0 0;
+
+    &:last-child {
+      padding: 0 0 0 20px;
+    }
+
+    &.w45 {
+      width: 45%;
+    }
+
+    &.w55 {
+      width: 55%;
+    }
+
+  }
+}
+
+.three-col {
+	margin: 0 -10px;
+  .col {
+    width: 33.33333333%;
+    padding: 0 10px;
+  }
+}
+
+.four-col {
+	margin: 0 -10px;
+	.col {
+		width: 25%;
+		padding: 10px;
+	}
+}
+
+
+section.p30 {
+  padding: 30px 0;
+}
+
+section.p40 {
+  padding: 40px 0;
+}
+
+section.p60 {
+  padding: 60px 0;
+}
+
+section.pb60 {
+  padding: 0 0 60px 0;
+}
+
+
+.desc {
+  font-size:16px;
+}
+
+
+/* Images */
+.wp-block-image img {
+  height: auto
+}
+
+/* Buttons
+----------------------------------------------------- */
+.btn, .wp-block-button .wp-block-button__link {
+	color: #FFF;
+	background: $c-asphalt;
+	padding: 10px 25px;
+	border-radius: 0px;
+	display: inline-block;
+	border: 3px solid #FFF;
+	text-decoration: none;
+  transition: ease 0.3s all;
+  font-family: 'Fira Sans Condensed', sans-serif;
+  font-weight: 400;
+  font-size:22px;
+  line-height: normal;
+  text-transform: uppercase;
+  cursor: pointer;
+
+	&:hover {
+		background: $c-ladybug;
+		color:#FFF;
+	}
+
+	&.ladybug {
+  	background-color: $c-ladybug;
+  	&:hover {
+    	background-color: $c-faded-brick;
+    	color: #FFF;
+  	}
+
+	}
+
+	&.ironweed {
+  	background-color: $c-ironweed;
+  	&:hover {
+    	background-color: $c-lilac;
+    	color:#000;
+  	}
+	}
+
+	&.news {
+  	line-height: 35px;
+  	&:before {
+    	content:'';
+    	background-image: url('../img/icon-newspaper.svg');
+    	background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 100%;
+      display: block;
+      height: 35px;
+      width: 35px;
+      float: left;
+      margin-right:15px;
+      font-size:26px;
+  	}
+  	&:hover {
+    	background:$c-asphalt;
+  	}
+	}
+
+}
+
+
+
+/* CTA Block
+----------------------------------------------------- */
+.ctaBlock {
+  text-align: center;
+  padding: 50px 30px;
+  font-size: 1.1em;
+  border: 1px solid #e1e1e1;
+  background-color:#FFF;
+  background-repeat: no-repeat;
+  background-position: center center;
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    top:0;
+    left: 0;
+    right: 0;
+    bottom:0;
+    background:rgba(255,255,255,.3);
+  }
+
+  &.dark {
+    color:#FFF;
+    background-color:#333;
+    border: 1px solid #212121;
+
+    &:before {
+      background:rgba(0,0,0,.3);
+    }
+
+  }
+
+  h3 {
+    padding-top:0;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+  }
+}

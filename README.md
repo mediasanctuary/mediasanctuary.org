@@ -23,26 +23,42 @@ Once it's running, load the website at [localhost:8080](http://localhost:8080/).
 
 Exiting the `start` script (ctrl-C) stops the containers.
 
+## Syncing content
+
+Before you can sync content from `dev.mediasanctuary.org` to your local dev site, you will need to make sure your public SSH key is setup on the `devmediasan` account. Then you can use the following command:
+
+```
+./bin/sync
+```
+
+That script does the following:
+
+1. Export the database
+2. Replace URLs in the SQL file
+3. Edit the SQL to remove all the WordPress user accounts and revision posts
+4. Edit the SQL to a new WordPress account `dev` with password `dev`
+5. Import that SQL file into your local database
+6. rsync the uploads directory
+
+After you finish, your local environment should look pretty much the same as dev.mediasanctuary.org, but you should login with username/password: `dev`/`dev`.
+
 ## Care and maintenance
 
 Rebuild the container if necessary:
 
 ```
-cd wp
 docker compose build
 ```
 
 Tail the logs:
 
 ```
-cd wp
 docker compose logs -f web
 ```
 
 Login to a shell on the web server container:
 
 ```
-cd wp
 docker compose exec web bash
 ```
 
@@ -61,7 +77,6 @@ We use WP-CLI to keep the plugin files up-to-date, and commit the changes to sou
 How to upgrade the plugins:
 
 ```
-cd wp
 docker compose exec web wp plugin upgrade --all
 ```
 
@@ -70,7 +85,6 @@ docker compose exec web wp plugin upgrade --all
 To update your local WordPress dev instance:
 
 ```
-cd wp
 docker compose exec web wp core upgrade
 ```
 
@@ -78,6 +92,7 @@ Updating WordPress on the dev or prod servers requires that you SSH in and run `
 
 ## Continuous integration
 
-Commits to the `main` branch end up getting deployed to `https://dev.mediasanctuary.org/` using [GitHub Actions](https://github.com/mediasanctuary/mediasanctuary.org/actions).
+We use [GitHub Actions](https://github.com/mediasanctuary/mediasanctuary.org/actions) to deploy updates to the servers.
 
-We do not have a production deployment action setup yet, but we will once we launch.
+* Commits to the `main` branch end up getting deployed to `https://dev.mediasanctuary.org/`
+* Commits to the `production` branch end up getting deployed to `https://www.mediasanctuary.org/`

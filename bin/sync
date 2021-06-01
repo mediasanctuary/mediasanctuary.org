@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+docker compose up -d
+
+server="devmediasan@claudette.mayfirst.org"
+dir="$( cd "$(dirname "$( dirname "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && pwd )"
+file="dev.mediasanctuary.org-$( date +%Y-%m-%d ).sql"
+
+mkdir -p "$dir/wp-content/uploads/"
+ssh $server "cd ~/web && wp db export ~/$file"
+scp "$server:~/$file" "$dir/wp-content/uploads/"
+
+# Note this is using the BSD-style arguments (i.e., works on macOS, not Linux)
+sed -i '' -E \
+	-e 's/https:\/\/dev.mediasanctuary.org/http:\/\/localhost:8080/g' \
+	-e 's/https:\/\/www.mediasanctuary.org/http:\/\/localhost:8080/g' \
+	"$dir/wp-content/uploads/$file"
+
+cat << EOF >> "$dir/wp-content/uploads/$file"
+DELETE FROM wp_users;
+INSERT INTO wp_users (ID, user_login, user_pass, user_nicename, user_email, user_url, user_registered, user_activation_key, user_status, display_name)
+    VALUES (1,'dev',md5('dev'),'dev','web@mediasanctuary.org','',CURRENT_TIMESTAMP,'',0,'dev');
+DELETE FROM wp_usermeta;
+INSERT INTO wp_usermeta (umeta_id, user_id, meta_key, meta_value)
+VALUES
+    (1,1,'wp_capabilities','a:1:{s:10:\"superadmin\";b:1;}'),
+    (2,1,'wp_user_level','10'),
+    (3,1,'rich_editing','true');
+DELETE FROM wp_posts WHERE post_type = 'revision';
+EOF
+
+# We need this to be able to import the SQL file
+docker compose exec web wp core install --url="http://localhost:8080" --title="The Sanctuary for Independent Media" --admin_user="dev" --admin_email="web@mediasanctuary.org" --skip-email
+docker compose exec web wp db import "wp-content/uploads/$file"
+
+#rm "$dir/wp-content/uploads/$file"
+
+rsync -rv --ignore-existing "$server:~/web/wp-content/uploads/" wp-content/uploads/
