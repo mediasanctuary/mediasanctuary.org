@@ -14,7 +14,44 @@ function add_sanctuarian_role() {
 
 	$role = get_role('sanctuarian');
 
-	if (empty($role)) {
+	if (! empty($role)) {
+		$role->add_cap('moderate_comments');
+		$role->add_cap('manage_categories');
+		$role->add_cap('manage_links');
+		$role->add_cap('upload_files');
+		$role->add_cap('unfiltered_html');
+		$role->add_cap('edit_posts');
+		$role->add_cap('edit_others_posts');
+		$role->add_cap('edit_published_posts');
+		$role->add_cap('publish_posts');
+		$role->remove_cap('edit_pages');
+		$role->add_cap('read');
+		$role->add_cap('level_7');
+		$role->add_cap('level_6');
+		$role->add_cap('level_5');
+		$role->add_cap('level_4');
+		$role->add_cap('level_3');
+		$role->add_cap('level_2');
+		$role->add_cap('level_1');
+		$role->add_cap('level_0');
+		$role->remove_cap('manage_options');
+		$role->remove_cap('edit_others_pages');
+		$role->remove_cap('edit_published_pages');
+		$role->remove_cap('publish_pages');
+		$role->remove_cap('delete_pages');
+		$role->remove_cap('delete_others_pages');
+		$role->remove_cap('delete_published_pages');
+		$role->add_cap('delete_posts');
+		$role->add_cap('delete_others_posts');
+		$role->add_cap('delete_published_posts');
+		$role->add_cap('delete_private_posts');
+		$role->add_cap('edit_private_posts');
+		$role->add_cap('read_private_posts');
+		$role->remove_cap('delete_private_pages');
+		$role->remove_cap('edit_private_pages');
+		$role->remove_cap('read_private_pages');
+
+	} else {
 		$role = add_role('sanctuarian', 'Sanctuarian', [
 			//'delete_others_pages',
 			'delete_others_posts',
@@ -41,7 +78,15 @@ function add_sanctuarian_role() {
 			//'read_private_pages',
 			'read_private_posts',
 			'unfiltered_html',
-			'upload_files'
+			'upload_files',
+			'level_0',
+			'level_1',
+			'level_2',
+			'level_3',
+			'level_4',
+			'level_5',
+			'level_6',
+			'level_7'
 		]);
 		update_option('default_role', 'sanctuarian');
 	}
