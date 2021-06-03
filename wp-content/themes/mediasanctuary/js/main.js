@@ -42,8 +42,6 @@ jQuery('.slider').each(function() {
     adaptiveHeight: false
   });
   
-
-  
   jQuery(sliderId).on('beforeChange', function (event, slick, currentSlide, nextSlide) {
    	var mySlideNumber = nextSlide.toString();
    	console.log(mySlideNumber);
@@ -73,3 +71,17 @@ jQuery('.slider').each(function() {
   
 
 });
+
+
+/* ======================================================= 
+	Progress
+======================================================= */		
+jQuery('.progressBar').each(function() {
+  var progress = jQuery(this).data('progress');
+  var goal = jQuery(this).data('goal');
+  var percentage = progress / goal * 100; 
+  var width = percentage > 100 ? '100%' : percentage + '%';
+  jQuery(this).width(width);
+
+});
+
