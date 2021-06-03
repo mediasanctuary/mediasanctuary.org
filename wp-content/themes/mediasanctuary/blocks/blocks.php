@@ -32,7 +32,12 @@ $blocks = [
 		'title'       => 'Photo Gallery Block',
 		'description' => 'Photo Gallery slider with thumbnails',
 		'icon'        => 'format-gallery',
-	]		
+	],
+	'progressbar' => [
+		'title'       => 'Progress Bar',
+		'description' => 'Percentage of total',
+		'icon'        => 'format-image'
+	]
 ];
 
 $dir = __DIR__;
