@@ -319,7 +319,6 @@ function soundcloud_podcast_track_tags($track) {
 
 function soundcloud_podcast_update_slack($message) {
 	if (! defined('SOUNDCLOUD_PODCAST_SLACK_URL')) {
-		echo "Error: please define SOUNDCLOUD_PODCAST_SLACK_URL\n";
 		return false;
 	}
 	$payload = [
