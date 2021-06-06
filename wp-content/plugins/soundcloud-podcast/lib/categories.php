@@ -7,9 +7,11 @@ function soundcloud_podcast_categories() {
 		fwrite($stderr, "Error: no categories to import\n");
 		return;
 	}
+	$count = 0;
 	foreach ($categories as $category => $playlist) {
-		soundcloud_podcast_category_import($category, $playlist);
+		$count += soundcloud_podcast_category_import($category, $playlist);
 	}
+	fwrite($stderr, "Assigned $count categories\n");
 	fclose($stderr);
 }
 
@@ -19,6 +21,9 @@ function soundcloud_podcast_category_import($term_id, $playlist_id) {
 	$stdout = fopen('php://stdout', 'w');
 	$stderr = fopen('php://stderr', 'w');
 
+	$default_category = (int) get_option('default_category', null);
+
+	$count = 0;
 	$playlists = soundcloud_podcast_playlists();
 	foreach ($playlists['list'] as $list) {
 		if ($list['id'] == $playlist_id) {
@@ -31,7 +36,7 @@ function soundcloud_podcast_category_import($term_id, $playlist_id) {
 			$track_ids = "'" . implode("', '", $track_ids) . "'";
 
 			$results = $wpdb->get_results("
-				SELECT pm.post_id
+				SELECT pm.post_id, p.post_title
 				FROM wp_postmeta AS pm, wp_posts AS p
 				WHERE pm.post_id = p.ID
 				  AND p.post_type = 'post'
@@ -41,33 +46,38 @@ function soundcloud_podcast_category_import($term_id, $playlist_id) {
 
 			$cat_id = intval($term_id);
 			foreach ($results as $result) {
-				if (! in_category($cat_id, $result->post_id)) {
+				$cats = wp_get_post_categories($result->post_id);
+				if (! in_array($cat_id, $cats)) {
+					$cats[] = $cat_id;
 					wp_update_post([
 						'ID' => $result->post_id,
-						'post_category' => [$cat_id]
+						'post_category' => $cats
 					]);
-					fwrite($stderr, "Adding post $result->post_id to category $term_id\n");
+					$term = get_term($term_id, 'category');
+					$term_name = html_entity_decode($term->name);
+					fwrite($stderr, "Added '$result->post_title' ($result->post_id) to $term_name\n");
+					fputcsv($stdout, [
+						date('Y-m-d H:i:s'),
+						$result->post_id,
+						$term_id,
+						$playlist_id
+					]);
+					$count++;
 				}
-
-				fputcsv($stdout, [
-					date('Y-m-d H:i:s'),
-					$result->post_id,
-					$term_id,
-					$playlist_id
-				]);
 			}
 
 		}
 	}
 
 	fclose($stderr);
+	return $count;
 }
 
 function soundcloud_podcast_playlists() {
 	$stderr = fopen('php://stderr', 'w');
 	fwrite($stderr, "Retrieving category list\n");
 
-	$cache_ttl = 60 * 60; // One hour
+	$cache_ttl = 60 * 30; // Thirty minutes
 	$cache_key = "soundcloud_podcast_playlists";
 
 	$playlists = null;
@@ -78,7 +88,8 @@ function soundcloud_podcast_playlists() {
 	}
 
 	if (! empty($playlists) && time() - $playlists['updated'] < $cache_ttl) {
-		fwrite($stderr, "Loading from cache\n");
+		$ttl = $cache_ttl - time() + $playlists['updated'];
+		fwrite($stderr, "Loading from cache ($ttl ttl)\n");
 	} else {
 		$client_id = SOUNDCLOUD_PODCAST_CLIENT_ID;
 		$user_id = SOUNDCLOUD_PODCAST_USER_ID;
