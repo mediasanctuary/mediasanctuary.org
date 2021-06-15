@@ -3,7 +3,7 @@
 function setup_roles() {
 	add_sanctuarian_role();
 	add_superadmin_role();
-	assign_roles();
+	//assign_roles();
 	remove_extra_roles();
 }
 
