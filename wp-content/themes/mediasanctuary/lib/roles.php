@@ -3,7 +3,7 @@
 function setup_roles() {
 	add_sanctuarian_role();
 	add_superadmin_role();
-	assign_roles();
+	//assign_roles();
 	remove_extra_roles();
 }
 
@@ -15,6 +15,7 @@ function add_sanctuarian_role() {
 	$role = get_role('sanctuarian');
 
 	if (! empty($role)) {
+		$role->add_cap('edit_tribe_events');
 		$role->add_cap('moderate_comments');
 		$role->add_cap('manage_categories');
 		$role->add_cap('manage_links');
