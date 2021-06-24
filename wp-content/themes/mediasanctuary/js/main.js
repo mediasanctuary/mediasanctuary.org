@@ -14,7 +14,7 @@
 
 
 /* ======================================================= 
-	SLIDER
+	Gallery Slider
 ======================================================= */		
 
 jQuery('.thumbs li').removeClass('active');
@@ -70,6 +70,40 @@ jQuery('.slider').each(function() {
   });  
   
 
+});
+
+
+/* ======================================================= 
+	Testimonials Slider
+======================================================= */		
+
+jQuery('.testimonials-slider').each(function() {
+
+  var sliderIdName = jQuery(this).attr('id');
+  var sliderId = '#' + sliderIdName;   
+    
+  jQuery(sliderId).slick({
+    dots: true,
+    arrows: true,    
+    infinite: true,
+    speed: 300,
+    slidesToShow: 2,
+    adaptiveHeight: false,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          arrows: false,
+          slidesToShow: 1
+        }
+      }
+    ]    
+  });
+  
 });
 
 

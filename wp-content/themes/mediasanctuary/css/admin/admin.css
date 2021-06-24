@@ -9,6 +9,24 @@
   text-align: right;
   color: #808080; }
 
+.testimonials-slider .quote {
+  overflow: hidden;
+  border-bottom: 1px solid #d1d1d1; }
+  .testimonials-slider .quote blockquote {
+    float: left;
+    width: 60%;
+    padding: 0 10px 0 0; }
+  .testimonials-slider .quote .profile {
+    margin-left: 65%;
+    padding: 20px; }
+    .testimonials-slider .quote .profile img {
+      width: 100px;
+      height: 100px; }
+    .testimonials-slider .quote .profile strong, .testimonials-slider .quote .profile span {
+      display: block; }
+    .testimonials-slider .quote .profile span {
+      font-size: 12px; }
+
 .editor-styles-wrapper .block-features__title {
   font-size: 1em;
   margin: 0; }

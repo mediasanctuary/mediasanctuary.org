@@ -37,7 +37,12 @@ $blocks = [
 		'title'       => 'Progress Bar',
 		'description' => 'Percentage of total',
 		'icon'        => 'format-image'
-	]
+	],
+	'testimonials' => [
+		'title'       => 'Testimonials',
+		'description' => 'Testimonial slider with photo, quote, name, and title',
+		'icon'        => 'format-gallery',
+	],	
 ];
 
 $dir = __DIR__;
