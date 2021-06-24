@@ -1,5 +1,7 @@
 .testimonialBlock {
-  background: rgba(32, 127, 149, .3);
+  background: rgba(32, 127, 149, .3) url("../img/initiatives-bg.jpg") no-repeat center center;
+  background-size:cover;
+  
   
   .quote {
     background:#FFF;
@@ -26,17 +28,14 @@
       }
     }
     
-    
-    
   }
   
   .profile {
     display: flex;
     align-items: center;
     .photo {
-      width: 100px;
-      height: 100px;
-      border-radius: 100%;
+      width: 175px;
+      height: 175px;
       overflow: hidden;
       position: relative;
       img {
@@ -47,7 +46,7 @@
       padding-left: 30px;
       font-size:18px;
       line-height: normal;
-      width: calc(100% - 100px);
+      width: calc(100% - 175px);
       box-sizing: border-box;      
       strong {
         display: block;
@@ -64,6 +63,8 @@
       flex-wrap: wrap;
       justify-content: center;
       .photo {
+        width: 125px;
+        height: 125px;        
         margin-bottom:10px;
       }
       

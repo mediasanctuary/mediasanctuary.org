@@ -70,6 +70,21 @@
 .post--single {
   display: flex;
   flex-wrap: wrap;
+  
+  &.people {
+    main {
+      width: 100%;
+      .mainPhoto {
+        float: right;
+        margin: 0 0 10px 20px;
+        width: 30%;
+      }
+      .copy {
+        width: calc(70% - 20px);
+      }
+    }
+  }
+  
   main {
     width: calc(70% - 20px);
     margin-right:20px;

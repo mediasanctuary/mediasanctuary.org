@@ -1,36 +1,12 @@
 {
-    "key": "group_607c1def9ef3c",
-    "title": "Initiatives",
+    "key": "group_60d4a8272e97c",
+    "title": "People Power",
     "fields": [
         {
-            "key": "field_607c91c613ef8",
-            "label": "Initiative Logo",
-            "name": "initiative_logo",
-            "type": "image",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "url",
-            "preview_size": "medium",
-            "library": "all",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": ""
-        },
-        {
-            "key": "field_607c9b0033a66",
-            "label": "Initiative Logo Width",
-            "name": "initiative_logo_width",
-            "type": "number",
+            "key": "field_60d4a83358363",
+            "label": "Title",
+            "name": "person_title",
+            "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -43,14 +19,31 @@
             "placeholder": "",
             "prepend": "",
             "append": "",
-            "min": "",
-            "max": "",
-            "step": ""
+            "maxlength": ""
         },
         {
-            "key": "field_607c1df723e2e",
+            "key": "field_60d4a84658364",
+            "label": "Testimonial",
+            "name": "person_testimonial",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": "",
+            "new_lines": "wpautop"
+        },
+        {
+            "key": "field_60d4a88258365",
             "label": "Projects",
-            "name": "projects",
+            "name": "person_projects",
             "type": "repeater",
             "instructions": "",
             "required": 0,
@@ -64,10 +57,10 @@
             "min": 0,
             "max": 3,
             "layout": "table",
-            "button_label": "Add Project Post",
+            "button_label": "Add Project",
             "sub_fields": [
                 {
-                    "key": "field_607c1e0e23e2f",
+                    "key": "field_60d4a89858366",
                     "label": "Project",
                     "name": "project",
                     "type": "post_object",
@@ -94,9 +87,9 @@
     "location": [
         [
             {
-                "param": "page_template",
+                "param": "post_type",
                 "operator": "==",
-                "value": "page-templates\/initiatives.php"
+                "value": "peoplepower"
             }
         ]
     ],
@@ -108,5 +101,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1624549924
+    "modified": 1624549583
 }

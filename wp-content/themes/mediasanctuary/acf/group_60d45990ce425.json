@@ -23,11 +23,11 @@
             "sub_fields": [
                 {
                     "key": "field_60d459ca4518d",
-                    "label": "Quote",
+                    "label": "Quote Override",
                     "name": "quote",
                     "type": "textarea",
                     "instructions": "",
-                    "required": 1,
+                    "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
@@ -41,10 +41,10 @@
                     "new_lines": "wpautop"
                 },
                 {
-                    "key": "field_60d45addc5e66",
-                    "label": "Profile",
-                    "name": "profile",
-                    "type": "group",
+                    "key": "field_60d4a7e297307",
+                    "label": "People Power Profile",
+                    "name": "people_power_profile",
+                    "type": "post_object",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
@@ -53,71 +53,14 @@
                         "class": "",
                         "id": ""
                     },
-                    "layout": "block",
-                    "sub_fields": [
-                        {
-                            "key": "field_60d45990d5fba",
-                            "label": "Profile Picture",
-                            "name": "profile_picture",
-                            "type": "image",
-                            "instructions": "",
-                            "required": 0,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "return_format": "array",
-                            "preview_size": "thumbnail",
-                            "library": "all",
-                            "min_width": "",
-                            "min_height": "",
-                            "min_size": "",
-                            "max_width": "",
-                            "max_height": "",
-                            "max_size": "",
-                            "mime_types": ""
-                        },
-                        {
-                            "key": "field_60d459f44518e",
-                            "label": "Name",
-                            "name": "profile_name",
-                            "type": "text",
-                            "instructions": "",
-                            "required": 1,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "default_value": "",
-                            "placeholder": "",
-                            "prepend": "",
-                            "append": "",
-                            "maxlength": ""
-                        },
-                        {
-                            "key": "field_60d45a1e4518f",
-                            "label": "Title",
-                            "name": "profile_title",
-                            "type": "text",
-                            "instructions": "",
-                            "required": 1,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "default_value": "",
-                            "placeholder": "",
-                            "prepend": "",
-                            "append": "",
-                            "maxlength": ""
-                        }
-                    ]
+                    "post_type": [
+                        "peoplepower"
+                    ],
+                    "taxonomy": "",
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "return_format": "object",
+                    "ui": 1
                 }
             ]
         }
@@ -139,5 +82,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1624534654
+    "modified": 1624551298
 }
