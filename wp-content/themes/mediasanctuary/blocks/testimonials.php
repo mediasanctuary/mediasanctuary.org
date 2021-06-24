@@ -29,7 +29,21 @@ if ( ! empty($block['anchor'] ) ) {
   <div id="<?php echo esc_attr( $id ); ?>" class="testimonials-slider">
     <?php while( have_rows('testimonial') ): the_row(); 
         $quote = get_sub_field('quote');
-        $profile = get_sub_field('profile');
+        $profile = get_sub_field('people_power_profile');
+        if( $profile ) {
+          $personName = get_the_title( $profile->ID );
+          $personTitle = get_field( 'person_title', $profile->ID );
+          $personTestimonial = get_field( 'person_testimonial', $profile->ID );
+          $personPhoto = get_asset_url('img/default.jpg');
+          if ( has_post_thumbnail($profile->ID) ) {
+          	$thumb_id = get_post_thumbnail_id($profile->ID);
+          	$thumb_url_array = wp_get_attachment_image_src($thumb_id, 'medium', true);
+          	$personPhoto = $thumb_url_array[0];
+          }          
+          if ($quote == null){
+            $quote = $personTestimonial;
+          }
+        }
         ?>
         <div class="quote">
           <blockquote>
@@ -37,11 +51,11 @@ if ( ! empty($block['anchor'] ) ) {
           </blockquote>
           <div class="profile">
             <div class="photo">
-              <img src="<?php echo esc_url( $profile['profile_picture']['sizes']['thumbnail'] ); ?>" alt="<?php echo esc_attr( $profile['profile_picture']['alt'] ); ?>" />
+              <img src="<?php echo esc_url( $personPhoto ); ?>" alt="<?php echo esc_attr( $personName ); ?>" />
             </div>
             <p>
-              <strong><?php echo $profile['profile_name']?></strong>
-              <span><?php echo $profile['profile_title']?></span>
+              <strong><?php echo esc_html( $personName ); ?></strong>
+              <span><?php echo esc_html( $personTitle );?></span>
             </p>
           </div>
         </div>
