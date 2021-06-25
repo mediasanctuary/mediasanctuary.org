@@ -115,3 +115,21 @@
     right: 63px;    
   }
 }
+
+
+
+.days-remaining {
+  background:$c-asphalt;
+  color:#FFF;
+  padding: 20px;
+  text-align: center;
+  strong {
+    font-size:60px;
+    line-height: 70px;
+    display: block;
+  }
+  span {
+    display: block;
+    line-height: normal;
+  }
+}
