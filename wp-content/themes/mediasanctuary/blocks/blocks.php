@@ -37,7 +37,17 @@ $blocks = [
 		'title'       => 'Progress Bar',
 		'description' => 'Percentage of total',
 		'icon'        => 'format-image'
-	]
+	],
+	'testimonials' => [
+		'title'       => 'Testimonials',
+		'description' => 'Testimonial slider with photo, quote, name, and title',
+		'icon'        => 'format-gallery',
+	],	
+	'daysremaining' => [
+		'title'       => 'Days Remaining',
+		'description' => 'Enter End Date of Campaign',
+		'icon'        => 'format-gallery',
+	],		
 ];
 
 $dir = __DIR__;

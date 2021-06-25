@@ -10,5 +10,31 @@
 	color: #808080;
 }
 
+.testimonials-slider {
+  .quote {
+    overflow: hidden;
+    border-bottom: 1px solid #d1d1d1;    
+    blockquote {
+      float: left;
+      width: 60%;
+      padding: 0 10px 0 0;
+    }
+    .profile {
+      margin-left:65%;
+      padding: 20px;
+      img {
+        width:100px;
+        height: 100px;
+      }
+      strong, span {
+        display: block;
+      }
+      span {
+        font-size:12px;
+      }
+    }
+  }
+}
+
 @import 'features';
 @import 'categories';
