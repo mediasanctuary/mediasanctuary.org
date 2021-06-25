@@ -43,6 +43,11 @@ $blocks = [
 		'description' => 'Testimonial slider with photo, quote, name, and title',
 		'icon'        => 'format-gallery',
 	],	
+	'daysremaining' => [
+		'title'       => 'Days Remaining',
+		'description' => 'Enter End Date of Campaign',
+		'icon'        => 'format-gallery',
+	],		
 ];
 
 $dir = __DIR__;
