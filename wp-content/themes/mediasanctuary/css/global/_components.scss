@@ -177,6 +177,26 @@ section.pb60 {
 
 /* Buttons
 ----------------------------------------------------- */
+.wp-block-button {
+  &.ladybug .wp-block-button__link {
+  	background-color: $c-ladybug;
+  	&:hover {
+    	background-color: $c-faded-brick;
+    	color: #FFF;
+  	}
+
+	}
+  
+	&.ironweed .wp-block-button__link {
+  	background-color: $c-ironweed;
+  	&:hover {
+    	background-color: $c-lilac;
+    	color:#000;
+  	}
+  }    
+}
+
+
 .btn, .wp-block-button .wp-block-button__link {
 	color: #FFF;
 	background: $c-asphalt;
