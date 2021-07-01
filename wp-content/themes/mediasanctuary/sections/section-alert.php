@@ -3,6 +3,8 @@
 $alertStatus = get_field('enable_alert_bar');
 $alertText = get_field('alert_bar');
 
+$alertButtonText = false;
+$alertButtonLink = false;
 $alertButton = get_field('button');
 if($alertButton){
   $alertButtonText = $alertButton['alert_bar_button_text'];
@@ -11,7 +13,6 @@ if($alertButton){
 
 $alert_begin = '<div id="alert">';
 $alert_end = '</div>';
-
 
 if ($alertButtonLink) {
   $alert_begin = '<a id="alert" class="link" href="'.$alertButtonLink.'">';
