@@ -1,4 +1,8 @@
-<?php $events = (tribe_is_month() || tribe_is_event() || tribe_is_event_category() || tribe_is_in_main_loop() || tribe_is_view() || 'tribe_events' == get_post_type() || is_singular( 'tribe_events' )) ? true : false; ?>
+<?php 
+  $events = (tribe_is_month() || tribe_is_event() || tribe_is_event_category() || tribe_is_in_main_loop() || tribe_is_view() || 'tribe_events' == get_post_type() || is_singular( 'tribe_events' )) ? true : false; 
+  $headerBG = get_field('header_background');
+  $headerBGImage = $headerBG ? 'style="background-image: url('.esc_url($headerBG['url']).')"' : false;
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -33,7 +37,7 @@
 		</nav>
 		
 		
-		<div class="header<?php echo is_front_page() ? ' home' : ''; echo (is_page_template( 'page-templates/initiatives.php') || is_page_template( 'page-templates/initiatives-landing.php') || is_singular('project')) ? ' initiative' : '';?>">
+		<div class="header<?php echo is_front_page() ? ' home' : ''; echo (is_page_template( 'page-templates/initiatives.php') || is_page_template( 'page-templates/initiatives-landing.php') || is_singular('project')) ? ' initiative' : '';  echo $headerBGImage ? ' full-bg' : ''?>" <?php echo $headerBGImage; ?>;>
 			<div class="container">
 				
 				<!-- Static -->
