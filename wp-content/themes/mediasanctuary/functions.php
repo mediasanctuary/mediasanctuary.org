@@ -206,6 +206,11 @@ function get_category_links($categories, $parent = null) {
 }
 
 
+function register_main_menu() {
+  register_nav_menu('main-navigation',__( 'Main Navigation' ));
+}
+add_action( 'init', 'register_main_menu' );
+
 
 // Social Meta Tags
 function social_meta_tags() {
