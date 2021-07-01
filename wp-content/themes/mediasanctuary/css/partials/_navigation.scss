@@ -254,7 +254,7 @@
       .active, .current-menu-item, .current_page_parent {
         a:after {
           left: 0;
-          right: 0;
+          right: 0 !important;
           bottom: 0;
         }   
         
@@ -278,6 +278,11 @@
           visibility: visible;
           transform: translateY(0);   
           border-bottom: 1px solid $c-lilac; 
+          li {
+            a {
+              border: 0;
+            }
+          }
         }        
       }
       
