@@ -91,7 +91,6 @@
 		background: $c-ironweed url('../img/icon-search.png') no-repeat 8px 8px;
 		background-size: 25px 25px;
 		border: 2px solid $c-river-fog;
-		border-radius: 8px;
 		cursor: pointer;
 		text-indent: -99999em;
 	}
@@ -121,6 +120,16 @@
   	
   	&:before {
     	display: none;
+  	}
+  	
+  	&.full-bg {
+  	  background-repeat: no-repeat;
+  	  background-size: cover;
+  	  background-position: center center;
+    	&:before {
+      	display: block;
+        background:rgba(0,0,0,.5);
+    	}  	  	
   	}
 	}
 	

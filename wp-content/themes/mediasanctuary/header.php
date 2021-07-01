@@ -1,4 +1,8 @@
-<?php $events = (tribe_is_month() || tribe_is_event() || tribe_is_event_category() || tribe_is_in_main_loop() || tribe_is_view() || 'tribe_events' == get_post_type() || is_singular( 'tribe_events' )) ? true : false; ?>
+<?php 
+  $events = (tribe_is_month() || tribe_is_event() || tribe_is_event_category() || tribe_is_in_main_loop() || tribe_is_view() || 'tribe_events' == get_post_type() || is_singular( 'tribe_events' )) ? true : false; 
+  $headerBG = get_field('header_background');
+  $headerBGImage = $headerBG ? 'style="background-image: url('.esc_url($headerBG['url']).')"' : false;
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -15,25 +19,37 @@
 			<div class="container">
 				<div class="logo"><a href="/"><img src="<?php asset_url('img/logo-720.png'); ?>" alt="The Sanctuary For Independent Media"></a></div>
 				<div class="nav-link-container">
-					<span class="close-menu">&times;</span>					
+					<span class="close-menu">&times;</span>
+					
+					
+          <?php wp_nav_menu( array( 'theme_location' => 'main-navigation', 'menu_class' => 'nav-links' ) ); ?>					
+									
+          <?php /*
 					<ul class="nav-links">
 						<li class="mobile"><a href="/" class="nav-link">Home</a></li>
 						<li<?php echo ($events) ? ' class="active"' : '';?>><a href="/events/list/" class="nav-link">Events</a></li>
 						<li<?php echo (is_page('initiatives') || is_page_template( 'page-templates/initiatives.php' )) ? ' class="active"' : '';?>><a href="/initiatives/" class="nav-link">Initiatives</a></li>
 						<li<?php echo (is_page('get-involved')) ? ' class="active"' : '';?>><a href="/get-involved/" class="nav-link">Get Involved</a></li>
-						<li<?php echo (is_page('about')) ? ' class="active"' : '';?>><a href="/about/" class="nav-link">About</a></li>
-						<li class="mobile<?php echo (is_page('about')) ? ' active' : '';?>"><a href="/get-involved/donate/" class="nav-link nav-link--donate">Donate</a></li>						
+						<li
+						  <?php echo (is_page('about')) ? ' class="active"' : '';?>><a href="/about/" class="nav-link">About</a>
+						  <ul class="sub-menu">
+  						  <li<?php echo (is_page('directions')) ? ' class="active"' : '';?>><a href="/about/directions/">Directions</a></li>
+  						  <li><a href="">Test</a></li>
+						  </ul>  						  
+						</li>
+						<li class="mobile<?php echo (is_page('donate')) ? ' active' : '';?>"><a href="/get-involved/donate/" class="nav-link nav-link--donate">Donate</a></li>						
 					</ul>
+					*/?> 
 					<a href="http://stream.woocfm.org:8000/wooc" class="mobile icon wooc">WOOC 105.3 FM <span>Listen</span></a>
 					<a href="/initiatives/sanctuary-tv/" class="mobile icon tv">Sanctuary TV <span>Live</span></a>
-					<a href="/get-involved/donate/" class="nav-link desktop nav-link--donate<?php echo (is_page('about')) ? ' active' : '';?>">Donate</a>
+					<a href="/get-involved/donate/" class="nav-link desktop nav-link--donate<?php echo (is_page('donate')) ? ' active' : '';?>">Donate</a>
 					<a href="#" class="nav-link nav-link--menu">Menu</a>					
 				</div>
 			</div>
 		</nav>
 		
 		
-		<div class="header<?php echo is_front_page() ? ' home' : ''; echo (is_page_template( 'page-templates/initiatives.php') || is_page_template( 'page-templates/initiatives-landing.php') || is_singular('project')) ? ' initiative' : '';?>">
+		<div class="header<?php echo is_front_page() ? ' home' : ''; echo (is_page_template( 'page-templates/initiatives.php') || is_page_template( 'page-templates/initiatives-landing.php') || is_singular('project')) ? ' initiative' : '';  echo $headerBGImage ? ' full-bg' : ''?>" <?php echo $headerBGImage; ?>;>
 			<div class="container">
 				
 				<!-- Static -->

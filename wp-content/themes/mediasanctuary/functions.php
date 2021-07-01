@@ -206,6 +206,11 @@ function get_category_links($categories, $parent = null) {
 }
 
 
+function register_main_menu() {
+  register_nav_menu('main-navigation',__( 'Main Navigation' ));
+}
+add_action( 'init', 'register_main_menu' );
+
 
 // Social Meta Tags
 function social_meta_tags() {
@@ -235,7 +240,11 @@ function social_meta_tags() {
       $type = 'website';
     }
     if ( is_category() ) {
-      $description = strip_tags(category_description());
+      $postType = get_post_type() == 'post' ? 'Stories' : get_post_type();
+      $title = get_the_archive_title().' '.$postType;
+      $term = get_queried_object();
+      $description = strip_tags(get_field('category_description', "category_$term->term_id" ));
+      $thumb_url = get_asset_url('img/share.jpg');        			
     }
 
     echo "\n";
