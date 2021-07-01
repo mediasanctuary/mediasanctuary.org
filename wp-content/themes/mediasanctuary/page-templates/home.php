@@ -10,8 +10,7 @@
 
 get_header();
 
-the_content();
-
+include get_template_directory() . '/sections/section-alert.php';
 include get_template_directory() . '/sections/section-stories.php';
 include get_template_directory() . '/sections/section-events.php';?>
 
