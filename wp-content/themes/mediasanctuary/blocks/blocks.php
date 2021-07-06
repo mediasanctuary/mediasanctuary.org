@@ -47,7 +47,12 @@ $blocks = [
 		'title'       => 'Days Remaining',
 		'description' => 'Enter End Date of Campaign',
 		'icon'        => 'format-gallery',
-	],		
+	],	
+	'tabs' => [
+		'title'       => 'Accordion & Tabs',
+		'description' => 'Display accordion or tabs',
+		'icon'        => 'format-gallery',
+	],			
 ];
 
 $dir = __DIR__;

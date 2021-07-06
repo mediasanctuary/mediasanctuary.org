@@ -8,6 +8,21 @@
 	$('.top-nav .close-menu').click(function(e) {
 		$(document.body).removeClass('show-mobile-menu');
 	});
+	
+	
+	
+	// Tabs and Accordions
+	$('.tab-heading').click(function(e) {
+		e.preventDefault();
+		var tab = $(this).attr('href');
+		if($(tab).hasClass('active')){
+	  	$(tab).removeClass('active');
+	  	$(tab).find('.tab-container').slideUp();    	
+		} else {
+  		$(tab).addClass('active');
+	  	$(tab).find('.tab-container').slideDown();    	  			
+	  }
+	});	
 
 })(jQuery);
 
