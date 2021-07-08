@@ -216,6 +216,7 @@ add_action( 'init', 'register_main_menu' );
 function social_meta_tags() {
     global $post;
     $title = get_the_title();
+    $url = get_the_permalink();
     $description = '';
     $type = 'article';
 
@@ -244,14 +245,15 @@ function social_meta_tags() {
       $title = get_the_archive_title().' '.$postType;
       $term = get_queried_object();
       $description = strip_tags(get_field('category_description', "category_$term->term_id" ));
-      $thumb_url = get_asset_url('img/share.jpg');        			
+      $thumb_url = get_asset_url('img/share.jpg'); 
+      $url = get_category_link( $term->term_id );
     }
 
     echo "\n";
     echo '<meta property="og:title" content="'.$title.'">' . "\n";
     echo '<meta property="og:description" content="'.$description.'">' . "\n";
     echo '<meta property="og:image" content="'.$thumb_url.'">' . "\n";
-    echo '<meta property="og:url" content="'.get_the_permalink().'">' . "\n";
+    echo '<meta property="og:url" content="'.$url.'">' . "\n";
     echo '<meta property="og:type" content="'.$type.'">' . "\n";
 
     echo '<meta name="twitter:card" content="summary_large_image">' . "\n";

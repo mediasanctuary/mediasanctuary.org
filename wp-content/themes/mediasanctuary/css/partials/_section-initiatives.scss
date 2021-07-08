@@ -1,8 +1,19 @@
 .initiatives {
 	color: $c-river-fog;
-	background: url('../img/initiatives-bg.jpg') repeat top center;
+	background: url('../img/bg-mosaic.jpg') repeat top center;
 	background-size: auto 240px;	
 	font-size: 23px;
+	position: relative;
+	
+	&:before {
+  	content:'';
+  	position: absolute;
+  	top:0;
+  	bottom:0;
+  	right:0;
+  	left:0;
+  	background-color: rgba(0, 66, 78, 0.1);
+	}
 	h2 {
 		padding-top:0;
 	}
