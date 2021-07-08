@@ -1,8 +1,8 @@
 .header {
-	background-image: url('../img/tiles.jpg');
+	background-image: url('../img/bg-mosaic.jpg');
 	background-size: auto 240px;
 	background-repeat: repeat;
-	background-position: center;
+	background-position: top center;
 	padding-bottom: 30px;
 	
 	.container {
@@ -101,7 +101,7 @@
 	&:before {
   	display: block;
     content:'';
-    background:rgba(0,0,0,.35);
+  	background-color: rgba(0, 66, 78, 0.1);
     position: absolute;
     top:0;
     left: 0;
@@ -112,15 +112,17 @@
 	
 	// New Headings
 	&.initiative {
-  	background-image: url("../img/initiatives-bg.jpg");
+  	//background-image: url("../img/initiatives-bg.jpg");
   	position:relative;
   	padding-bottom: 0;
   	background-color: #333;
   	background-repeat: repeat;
   	
+/*
   	&:before {
     	display: none;
   	}
+*/
   	
   	&.full-bg {
   	  background-repeat: no-repeat;
@@ -139,13 +141,15 @@
   	text-align: center;
   	color:#FFF;
   	padding-bottom:40px;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, .3);
   	
     @media only screen and (max-width: 860px) {
       padding-top:50px;  
     }
 
     @media only screen and (max-width: 600px) {
-      padding-top:30px;  
+      padding-top:30px;
+      padding-bottom:20px;  
     }  	
 	}
 	
@@ -156,7 +160,10 @@
 	.initiative-logo {
   	display: block;
   	margin: 0px auto;
-  	padding: 20px 0;
+  	padding: 100px 0 20px;
+    @media only screen and (max-width: 860px) {
+      padding: 20px 0;
+    }  	
 	}
 	
 	

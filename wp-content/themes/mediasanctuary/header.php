@@ -21,25 +21,8 @@
 				<div class="nav-link-container">
 					<span class="close-menu">&times;</span>
 					
-					
           <?php wp_nav_menu( array( 'theme_location' => 'main-navigation', 'menu_class' => 'nav-links' ) ); ?>					
-									
-          <?php /*
-					<ul class="nav-links">
-						<li class="mobile"><a href="/" class="nav-link">Home</a></li>
-						<li<?php echo ($events) ? ' class="active"' : '';?>><a href="/events/list/" class="nav-link">Events</a></li>
-						<li<?php echo (is_page('initiatives') || is_page_template( 'page-templates/initiatives.php' )) ? ' class="active"' : '';?>><a href="/initiatives/" class="nav-link">Initiatives</a></li>
-						<li<?php echo (is_page('get-involved')) ? ' class="active"' : '';?>><a href="/get-involved/" class="nav-link">Get Involved</a></li>
-						<li
-						  <?php echo (is_page('about')) ? ' class="active"' : '';?>><a href="/about/" class="nav-link">About</a>
-						  <ul class="sub-menu">
-  						  <li<?php echo (is_page('directions')) ? ' class="active"' : '';?>><a href="/about/directions/">Directions</a></li>
-  						  <li><a href="">Test</a></li>
-						  </ul>  						  
-						</li>
-						<li class="mobile<?php echo (is_page('donate')) ? ' active' : '';?>"><a href="/get-involved/donate/" class="nav-link nav-link--donate">Donate</a></li>						
-					</ul>
-					*/?> 
+					
 					<a href="http://stream.woocfm.org:8000/wooc" class="mobile icon wooc">WOOC 105.3 FM <span>Listen</span></a>
 					<a href="/initiatives/sanctuary-tv/" class="mobile icon tv">Sanctuary TV <span>Live</span></a>
 					<a href="/get-involved/donate/" class="nav-link desktop nav-link--donate<?php echo (is_page('donate')) ? ' active' : '';?>">Donate</a>
@@ -114,6 +97,9 @@
     				} else {
     			    echo '<h1>'.get_the_title().'</h1>';	
     			  }
+    		  }
+    		  if($events){
+      		  echo '<h1>Events</h1>';	
     		  }
     		?> 
 				
