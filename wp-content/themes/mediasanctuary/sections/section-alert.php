@@ -23,7 +23,7 @@ if ($alertButtonLink) {
 }
 
 
-if($alertStatus = 'enabled '&& $alertText) {
+if($alertStatus = 'enabled' && $alertText) {
   echo $alert_begin;
     echo '<span class="container">';
       echo '<p>'.$alertText.'</p>';
