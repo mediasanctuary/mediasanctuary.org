@@ -52,7 +52,12 @@ $blocks = [
 		'title'       => 'Accordion & Tabs',
 		'description' => 'Display accordion or tabs',
 		'icon'        => 'format-gallery',
-	],			
+	],
+	'peoplepower' => [
+		'title'       => 'People Power Block',
+		'description' => 'Display Person',
+		'icon'        => 'admin-users',
+	],				
 ];
 
 $dir = __DIR__;

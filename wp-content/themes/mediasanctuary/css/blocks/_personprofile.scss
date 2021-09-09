@@ -1,0 +1,69 @@
+.personProfile {
+  background: rgba(32, 127, 149, .2);
+  display: flex;
+  padding: 40px;
+  margin:30px 0;
+  
+  .photo {
+    width: 20%;
+    overflow: hidden;
+    position: relative;
+    img {
+      width: 100%;
+      display: block;
+    }
+  }  
+  
+  .bio {
+    padding-left: 30px;
+    width: 80%;
+    box-sizing: border-box;
+    
+    h5 {
+      font-size: 32px;
+      padding: 0 0 10px;
+      em {
+        display: block;
+        font-size: 20px;
+        font-weight: normal;
+      }
+    }
+    
+    p {
+      font-size: 18px;
+    }
+  }
+  
+  @media only screen and (max-width: 675px) {
+    padding:20px;
+    .photo {
+      width: 175px;
+    }
+    .bio {
+      width: calc(100% - 175px);
+      h5 {
+        font-size: 24px;
+        em {
+          font-size:18px;
+        }
+      }
+      p {
+        font-size: 15px;
+      }
+    }
+  }
+  
+  @media only screen and (max-width: 525px) {
+    flex-wrap: wrap;
+    margin: 20px 0;
+    .photo {
+      width: 100%;
+    }
+    .bio {
+      width: 100%;
+      padding: 20px 0 0;
+    }
+  }  
+  
+}
+
