@@ -36,5 +36,49 @@
   }
 }
 
+.story-project {
+  h2 {
+    margin-bottom: 0 !important;
+  }
+  .three-col, .four-col {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px;
+    .col {
+      padding: 10px;
+      .post__thumbnail {
+        display: block;
+        height: 200px;
+        background-size: cover;     
+        margin-bottom: 10px; 
+        strong {
+          display: none;
+        }  
+      }
+      a {
+        display: block;
+        text-decoration: none;
+      }
+      h5 {
+        line-height: normal;
+        margin: 0;
+      }
+    }
+  }
+  
+  .three-col {
+    .col {
+      width: 33.3333%
+    }
+  }
+  
+  .four-col {
+    .col {
+      width: 50%
+    }
+  }
+  
+}
+
 @import 'features';
 @import 'categories';

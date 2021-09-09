@@ -57,7 +57,12 @@ $blocks = [
 		'title'       => 'People Power Block',
 		'description' => 'Display Person',
 		'icon'        => 'admin-users',
-	],				
+	],	
+	'storiesprojects' => [
+		'title'       => 'Stories / Projects',
+		'description' => 'Display Stories or Projects',
+		'icon'        => 'images-alt',
+	],					
 ];
 
 $dir = __DIR__;

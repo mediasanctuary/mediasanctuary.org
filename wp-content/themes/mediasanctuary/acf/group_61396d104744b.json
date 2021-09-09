@@ -68,7 +68,7 @@
             {
                 "param": "block",
                 "operator": "==",
-                "value": "all"
+                "value": "acf\/peoplepower"
             }
         ]
     ],
@@ -80,5 +80,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1631158315
+    "modified": 1631161758
 }
