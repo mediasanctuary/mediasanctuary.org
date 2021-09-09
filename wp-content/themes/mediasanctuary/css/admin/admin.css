@@ -27,6 +27,35 @@
     .testimonials-slider .quote .profile span {
       font-size: 12px; }
 
+.story-project h2 {
+  margin-bottom: 0 !important; }
+
+.story-project .three-col, .story-project .four-col {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -10px; }
+  .story-project .three-col .col, .story-project .four-col .col {
+    padding: 10px; }
+    .story-project .three-col .col .post__thumbnail, .story-project .four-col .col .post__thumbnail {
+      display: block;
+      height: 200px;
+      background-size: cover;
+      margin-bottom: 10px; }
+      .story-project .three-col .col .post__thumbnail strong, .story-project .four-col .col .post__thumbnail strong {
+        display: none; }
+    .story-project .three-col .col a, .story-project .four-col .col a {
+      display: block;
+      text-decoration: none; }
+    .story-project .three-col .col h5, .story-project .four-col .col h5 {
+      line-height: normal;
+      margin: 0; }
+
+.story-project .three-col .col {
+  width: 33.3333%; }
+
+.story-project .four-col .col {
+  width: 50%; }
+
 .editor-styles-wrapper .block-features__title {
   font-size: 1em;
   margin: 0; }
