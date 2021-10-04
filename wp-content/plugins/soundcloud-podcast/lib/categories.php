@@ -97,10 +97,22 @@ function soundcloud_podcast_playlists() {
 			'client_id' => $client_id
 		]);
 		$url = "https://api.soundcloud.com/users/$user_id/playlists?$args";
-		$rsp = wp_remote_get($url);
+		$access_token = soundcloud_podcast_token();
+		$rsp = wp_remote_get($url, [
+			'headers' => [
+				'Accept: application/json; charset=utf-8',
+				"Authorization: OAuth $access_token"
+			]
+		]);
 
 		fwrite($stderr, "Loading from $url\n");
-		$rsp = wp_remote_get($url);
+		$access_token = soundcloud_podcast_token();
+		$rsp = wp_remote_get($url, [
+			'headers' => [
+				'Accept: application/json; charset=utf-8',
+				"Authorization: OAuth $access_token"
+			]
+		]);
 		if (is_wp_error($rsp)) {
 			fwrite($stderr, "Error: " . $rsp->get_error_message() . "\n");
 			return;
