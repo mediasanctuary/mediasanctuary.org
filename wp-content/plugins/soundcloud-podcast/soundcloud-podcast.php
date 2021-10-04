@@ -7,6 +7,7 @@
  * Author URI:  https://phiffer.org/
  */
 
+require_once __DIR__ . '/lib/auth.php';
 require_once __DIR__ . '/lib/rss.php';
 require_once __DIR__ . '/lib/cli.php';
 require_once __DIR__ . '/lib/import.php';
@@ -26,7 +27,7 @@ function soundcloud_podcast() {
 	}
 
 	$client_id = SOUNDCLOUD_PODCAST_CLIENT_ID;
-	$audio_src = "https://api.soundcloud.com/tracks/$track_id/stream?client_id=$client_id";
+	$audio_src = "/wp-json/soundcloud-podcast/v1/stream/$track_id";
 
 	$soundcloud_link = '';
 	$soundcloud_url = get_post_meta($post->ID, 'soundcloud_podcast_url', true);
