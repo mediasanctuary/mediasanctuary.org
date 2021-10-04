@@ -90,9 +90,9 @@ function soundcloud_podcast_template_redirect() {
 			$track_id = $matches[2];
 			$client_id = 'client_id=' . SOUNDCLOUD_PODCAST_CLIENT_ID;
 			$url = "https://api.soundcloud.com/tracks/$track_id/stream?$client_id";
-			$rsp = wp_remote_get( $url, array(
+			$rsp = wp_remote_get($url, array(
 				'redirection' => 0
-			) );
+			));
 
 			if ( is_array( $rsp ) && ! is_wp_error( $rsp ) ) {
 				$url = $rsp['headers']['location'];
