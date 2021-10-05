@@ -100,8 +100,8 @@ function soundcloud_podcast_playlists() {
 		$access_token = soundcloud_podcast_token();
 		$rsp = wp_remote_get($url, [
 			'headers' => [
-				'Accept: application/json; charset=utf-8',
-				"Authorization: OAuth $access_token"
+				'Accept' => 'application/json; charset=utf-8',
+				'Authorization' => "OAuth $access_token"
 			]
 		]);
 
@@ -109,8 +109,8 @@ function soundcloud_podcast_playlists() {
 		$access_token = soundcloud_podcast_token();
 		$rsp = wp_remote_get($url, [
 			'headers' => [
-				'Accept: application/json; charset=utf-8',
-				"Authorization: OAuth $access_token"
+				'Accept' => 'application/json; charset=utf-8',
+				'Authorization' => "OAuth $access_token"
 			]
 		]);
 		if (is_wp_error($rsp)) {
