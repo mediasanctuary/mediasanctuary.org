@@ -1,12 +1,54 @@
 <?php
 
+add_action('wp_ajax_soundcloud_podcast_login', function() {
+	$base_url = get_bloginfo('wpurl');
+	$query = http_build_query([
+		'client_id' => SOUNDCLOUD_PODCAST_CLIENT_ID,
+		'redirect_uri' => "$base_url/wp-admin/admin-ajax.php?action=soundcloud_podcast_auth_code",
+		'response_type' => 'code'
+	]);
+	$url = "https://api.soundcloud.com/connect?$query";
+	header("Location: $url");
+	exit;
+});
+
+add_action('wp_ajax_soundcloud_podcast_auth_code', function() {
+	$base_url = get_bloginfo('wpurl');
+	$rsp = wp_remote_post('https://api.soundcloud.com/oauth2/token', [
+		'headers' => [
+			'Content-Type' => 'application/x-www-form-urlencoded'
+		],
+		'body' => [
+			'client_id' => SOUNDCLOUD_PODCAST_CLIENT_ID,
+			'client_secret' => SOUNDCLOUD_PODCAST_CLIENT_SECRET,
+			'grant_type' => 'authorization_code',
+			'code' => $_GET['code'],
+			'redirect_uri' => "$base_url/wp-admin/admin-ajax.php?action=soundcloud_podcast_auth_code"
+		]
+	]);
+	$body = wp_remote_retrieve_body($rsp);
+	$token = json_decode($body, 'as hash');
+	soundcloud_podcast_save_token($token);
+	echo '<pre>';
+	print_r($token);
+	exit;
+});
+
+function soundcloud_podcast_save_token($token) {
+	$token['expires'] = time() + $token['expires_in'];
+	$token_json = json_encode($token);
+	update_option('soundcloud_podcast_token', $token_json);
+}
+
 function soundcloud_podcast_token() {
 	$now = time();
 	$token = get_option('soundcloud_podcast_token', null);
-	if ($token) {
-		$token = json_decode($token, 'as hash');
+	if (empty($token)) {
+		error_log("No SoundCloud auth token found.");
+		exit;
 	}
-	if (empty($token) || $now >= $token['expires']) {
+	$token = json_decode($token, 'as hash');
+	if ($now >= $token['expires']) {
 		$rsp = wp_remote_post('https://api.soundcloud.com/oauth2/token', [
 			'headers' => [
 				'Content-Type' => 'application/x-www-form-urlencoded'
@@ -14,14 +56,14 @@ function soundcloud_podcast_token() {
 			'body' => [
 				'client_id' => SOUNDCLOUD_PODCAST_CLIENT_ID,
 				'client_secret' => SOUNDCLOUD_PODCAST_CLIENT_SECRET,
-				'grant_type' => 'client_credentials'
+				'grant_type' => 'refresh_token',
+				'refresh_token' => $token['refresh_token'],
+				'redirect_uri' => "$base_url/wp-admin/admin-ajax.php?action=soundcloud_podcast_auth_code"
 			]
 		]);
 		$body = wp_remote_retrieve_body($rsp);
 		$token = json_decode($body, 'as hash');
-		$token['expires'] = time() + $token['expires_in'];
-		$token_json = json_encode($token);
-		update_option('soundcloud_podcast_token', $token_json);
+		soundcloud_podcast_save_token($token);
 	}
 	return $token['access_token'];
 }
