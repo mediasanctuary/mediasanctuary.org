@@ -59,7 +59,7 @@ function soundcloud_podcast_import($num = null, $url = null, $slack_msg = '') {
 
 	foreach ($tracks['collection'] as $track) {
 
-		if (preg_match('/^HMM$/', $track['title'])) {
+		if (preg_match('/^HMM/', $track['title'])) {
 			// For now we skip the full shows
 			fwrite($stderr, "Skipping full show {$track['title']}\n");
 			continue;
