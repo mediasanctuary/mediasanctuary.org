@@ -20,17 +20,11 @@ function soundcloud_podcast_import($num = null, $url = null, $slack_msg = '') {
 	}
 
 	if (empty($url)) {
-		$client_id = SOUNDCLOUD_PODCAST_CLIENT_ID;
-		$user_id = SOUNDCLOUD_PODCAST_USER_ID;
 		$args = http_build_query([
-			'client_id'           => $client_id,
 			'limit'               => $num,
 			'linked_partitioning' => 'true'
 		]);
-		$url = "https://api.soundcloud.com/users/$user_id/tracks?$args";
-	} else {
-		$client_id = SOUNDCLOUD_PODCAST_CLIENT_ID;
-		$url .= "&client_id=$client_id";
+		$url = "https://api.soundcloud.com/me/tracks?$args";
 	}
 
 	fwrite($stderr, "Importing from $url\n");
@@ -65,7 +59,7 @@ function soundcloud_podcast_import($num = null, $url = null, $slack_msg = '') {
 
 	foreach ($tracks['collection'] as $track) {
 
-		if (preg_match('/^HMM \d+ - \d+ - \d+$/', $track['title'])) {
+		if (preg_match('/^HMM$/', $track['title'])) {
 			// For now we skip the full shows
 			fwrite($stderr, "Skipping full show {$track['title']}\n");
 			continue;

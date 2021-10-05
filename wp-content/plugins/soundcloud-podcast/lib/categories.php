@@ -91,12 +91,9 @@ function soundcloud_podcast_playlists() {
 		$ttl = $cache_ttl - time() + $playlists['updated'];
 		fwrite($stderr, "Loading from cache ($ttl ttl)\n");
 	} else {
-		$client_id = SOUNDCLOUD_PODCAST_CLIENT_ID;
-		$user_id = SOUNDCLOUD_PODCAST_USER_ID;
-		$args = http_build_query([
-			'client_id' => $client_id
-		]);
-		$url = "https://api.soundcloud.com/users/$user_id/playlists?$args";
+		$url = 'https://api.soundcloud.com/me/playlists';
+		fwrite($stderr, "Loading from $url\n");
+
 		$access_token = soundcloud_podcast_token();
 		$rsp = wp_remote_get($url, [
 			'headers' => [
@@ -105,18 +102,11 @@ function soundcloud_podcast_playlists() {
 			]
 		]);
 
-		fwrite($stderr, "Loading from $url\n");
-		$access_token = soundcloud_podcast_token();
-		$rsp = wp_remote_get($url, [
-			'headers' => [
-				'Accept' => 'application/json; charset=utf-8',
-				'Authorization' => "OAuth $access_token"
-			]
-		]);
 		if (is_wp_error($rsp)) {
 			fwrite($stderr, "Error: " . $rsp->get_error_message() . "\n");
 			return;
 		}
+
 		$status = wp_remote_retrieve_response_code($rsp);
 		if ($status != 200) {
 			$msg = wp_remote_retrieve_body($rsp);
