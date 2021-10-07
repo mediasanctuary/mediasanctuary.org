@@ -2,9 +2,15 @@
 	<div class="container">
 		<h2>Recent Stories</h2>
 		<?php
+/*
   		if (function_exists('get_field')) {
   			echo '<div class="intro">'.get_field('category_description', 'category_1').'</div>';
+  		} else {
+         echo '<div class="intro">Among our major commitments is to provide a platform for community journalism, with an emphasis on storytelling along the intersections of art, science and media.  Here are our most recent multimedia productions.  You can find complete archives and more information at our Sanctuary Radio and Sanctuary TV initiatives.  </div>';
   		}
+*/
+         echo '<div class="intro"><p>Among our major commitments is to provide a platform for community journalism, with an emphasis on storytelling along the intersections of art, science and media.  Here are our most recent multimedia productions.  You can find complete archives and more information at our Sanctuary Radio and Sanctuary TV initiatives. </p></div>';
+  		
 		?>
 		<ul class="four-col">
 
