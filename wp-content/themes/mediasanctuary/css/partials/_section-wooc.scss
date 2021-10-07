@@ -6,20 +6,16 @@
   
   .wooc {
     overflow: hidden;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
+    display: flex;
     img {
-      width: 100px;
+      width: 190px;
       display: block;
       margin: 0 30px 20px 0;
-      float: left;
     }
     
     h3 {
-      padding-top:22px;
-    }
-    
-    h3, p {
-      margin-left: 90px;
+      padding-top:10px;
     }
     
   }
@@ -72,9 +68,13 @@
   }
   
   h3 {
-    font-size: 20px;
+    font-size: 22px;
     padding-top: 5px;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
+    em {
+      font-weight: normal;
+      font-size:18px;
+    }
   }
   
   p {
@@ -92,21 +92,30 @@
   
   }
   
-	@media only screen and (max-width: 500px) {
+	@media only screen and (max-width: 600px) {
   	padding: 15px;
   	margin-top:20px;
+  	padding-bottom:0;
   	.wooc {
-    	img {
-      	display: block;
-        margin: 0 auto 10px;
-        float: none;      	
+    	flex-wrap: wrap;
+    	figure {
+      	width: 100%;
+      	text-align: center;
+      	img {
+        	display: inline-block;
+      	}
     	}
     	h3 {
       	padding-top:10px;
+      	font-size:18px;
+      	em {
+        	display: block;
+        	font-size:15px;
+        	padding-top:5px;
+      	}
     	}
-    	h3, p {
-      	margin: 0;
-      	text-align: center;
+    	p {
+      	font-size:14px;
     	}
   	}
   	
