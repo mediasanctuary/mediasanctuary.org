@@ -65,6 +65,11 @@ function soundcloud_podcast_import($num = null, $url = null, $slack_msg = '') {
 			continue;
 		}
 
+		if ($track['sharing'] != 'public') {
+			fwrite($stderr, "Skipping private track {$track['title']}\n");
+			continue;
+		}
+
 		$post = soundcloud_podcast_get_post($track);
 		$wp_hash = null;
 		$sc_hash = soundcloud_podcast_hash($track);
