@@ -11,7 +11,6 @@ namespace Tribe\Events\Virtual\Meetings\Zoom;
 
 use Tribe\Events\Virtual\Encryption;
 use Tribe__Utils__Array as Arr;
-use Tribe__Cache_Listener as Cache_Listener;
 
 /**
  * Class Users
@@ -39,13 +38,28 @@ class Users {
 	 * Get list of users from Zoom.
 	 *
 	 * @since 1.4.0
+	 * @since 1.5.0 - Add support for multiple accounts.
+	 *
+	 * @param null|string $account_id The account id to use to get the users with.
 	 *
 	 * @return array<string,mixed> An array of users from Zoom.
 	 */
-	public function get_users() {
+	public function get_users( $account_id = null ) {
+		$api = $this->api;
+		if ( $account_id ) {
+			$api->load_account_by_id( $account_id );
+		} else {
+			$api->load_account();
+		}
+
+		if ( empty( $this->api->is_ready() ) ) {
+			return [];
+		}
+
 		/** @var \Tribe__Cache $cache */
 		$cache    = tribe( 'cache' );
-		$cache_id = 'events_virtual_meetings_zoom_users';
+		$cache_id = 'events_virtual_meetings_zoom_users' . md5( $this->api->id );
+
 		/**
 		 * Filters the time in seconds until the Zoom user cache expires.
 		 *
@@ -60,7 +74,6 @@ class Users {
 			return $this->encryption->decrypt( $users, true );
 		}
 
-		$api             = $this->api;
 		$available_hosts = $api->fetch_users();
 		$cache->set( $cache_id, $this->encryption->encrypt( $available_hosts, true ), $expiration );
 
@@ -71,11 +84,14 @@ class Users {
 	 * Get list of hosts formatted for options dropdown.
 	 *
 	 * @since 1.4.0
+	 * @since 1.5.0 - Add support for multiple accounts.
+	 *
+	 * @param null|string $account_id The account id to use to get the users with.
 	 *
 	 * @return array<string,mixed>  An array of Zoom Users to use as the host
 	 */
-	public function get_formatted_hosts_list() {
-		$available_hosts = $this->get_users();
+	public function get_formatted_hosts_list( $account_id = null ) {
+		$available_hosts = $this->get_users( $account_id );
 		if ( empty( $available_hosts['users'] ) ) {
 			return [];
 		}
@@ -110,11 +126,12 @@ class Users {
 	 * @param array<string,mixed>   An array of Zoom Users to use as the alternative hosts.
 	 * @param string $selected_alt_hosts The list of alternative host emails.
 	 * @param string $current_host       The email of the current host.
+	 * @param null|string $account_id The account id to use to get the users with.
 	 *
 	 * @return array|bool|mixed An array of Zoom Users to use as the alternative hosts.
 	 */
-	public function get_alternative_users( $alternative_hosts = [], $selected_alt_hosts = '', $current_host = '' ) {
-		$all_users = $this->get_formatted_hosts_list( );
+	public function get_alternative_users( $alternative_hosts = [], $selected_alt_hosts = '', $current_host = '', $account_id = null ) {
+		$all_users = $this->get_formatted_hosts_list( $account_id );
 
 		$selected_alt_hosts = explode( ';', $selected_alt_hosts );
 

@@ -204,6 +204,11 @@ class Password {
 			return;
 		}
 
+		$this->api->load_account();
+		if ( empty( $this->api->is_ready() ) ) {
+			return;
+		}
+
 		$meeting = $this->api->fetch_meeting_data( $event->zoom_meeting_id, $event->zoom_meeting_type );
 
 		if ( empty( $meeting['password'] ) || empty( $meeting['join_url'] ) ) {

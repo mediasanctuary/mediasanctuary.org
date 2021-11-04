@@ -3,9 +3,9 @@
 Contributors: theeventscalendar, aguseo, borkweb, bordoni, brianjessee, Camwyn, dcronian, hazelquimpo, juanfra, leahkoerper, lirianojoel, lucatume, neillmcshea, paulskim, rafsuntaskin, remaworksattribe, sc0ttkclark, zbtirrell
 Tags: virtual events, events, calendar, event, venue, organizer, dates, date, schema, conference, online events, concert, meeting, seminar, summit, class, the events calendar, tec, zoom, livestream
 Donate link: https://evnt.is/29
-Requires at least: 4.9.16
-Tested up to: 5.7.2
-Stable tag: 1.4.1
+Requires at least: 4.9.18
+Tested up to: 5.8.1
+Stable tag: 1.7.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -120,6 +120,44 @@ Our premium products:
 * <a href="https://evnt.is/1ako" target="_blank">Image Widget Plus</a>
 
 == Changelog ==
+
+= [1.7.1] 2021-10-19 =
+
+* Feature - Add a virtual events block on the block editor which users can drag around to any position they want it to appear. These changes can be bypassed by adding the following constant to the wp-config file, define( 'TRIBE_EVENTS_SINGLE_VIEW_V2_DISABLED', true ); [VE-404]
+* Tweak - Improve the look and feel of the virtual event section in the single events page when using the block editor. [VE-403]
+* Language - 0 new strings added, 3 updated, 0 fuzzied, and 0 obsoleted
+
+= [1.7.0] 2021-10-12 =
+
+* Feature - Add Facebook Live Video integration with support for multiple pages to display live video directly in a virtual event. [VE-391]
+* Fix - If the event duration changes, update the duration in the connected Zoom meeting or webinar . [VE-367]
+* Tweak - Move the video sources field to always be under the video source dropdown. [VE-380]
+* Language - 58 new strings added, 10 updated, 1 fuzzied, and 2 obsoleted
+
+= [1.6.1] 2021-09-14 =
+
+* Fix - Enable custom providers with Oembed by changing how the Oembed class is created. [VE-381]
+* Fix - Enable support for Show on Calendar views option when using the hybrid event type. [VE-338]
+* Fix - Prevent tribe-dropdown undefined on admin pages. [VE-386]
+* Fix - When V1 is active load the accordion script directly to prevent VE fields from breaking. [VE-400]
+* Tweak - Only add zoom meeting information to the event object if it is a zoom meeting. [VE-384]
+* Tweak - Fix names of filters to enable different roles to create and manage Zoom events. [VE-351]
+* Language - 0 new strings added, 15 updated, 0 fuzzied, and 0 obsoleted
+
+= [1.6.0] 2021-07-26 =
+
+* Feature - Change the video source to a dropdown and migrate existing virtual events to the new field. [VE-356]
+* Feature - Add support for YouTube Channels as a video source with automatic detection when a streaming video is live. [VE-357]
+* Tweak - Remove incorrect aria-label from icons, pass label to icon where needed. [TEC-3396]
+* Tweak - Added filters: `tribe_events_virtual_youtube_regex_status`, `tribe_events_virtual_youtube_regex_embed_allowed`, `tribe_events_virtual_youtube_regex_video_id`, `tribe_events_virtual_youtube_regex_video_url`, `tribe_events_virtual_meetings_youtube_settings_event_fields`, `tribe_events_virtual_meetings_youtube_settings_fields`, `tribe_events_virtual_youtube_link_placeholder_text`, `tribe_events_virtual_zoom_link_placeholder_text`, `tribe_events_virtual_video_sources`
+* Tweak - Changed views: `components/hybrid-event`, `components/icons/hybrid`, `components/virtual-event`, `single/hybrid-marker-mobile`, `single/hybrid-marker`, `single/video-embed`, `single/virtual-marker-mobile`, `single/virtual-marker`, `youtube/single/youtube-embed-offline`, `youtube/single/youtube-embed`
+* Language - 31 new strings added, 23 updated, 0 fuzzied, and 4 obsoleted
+
+= [1.5.0] 2021-06-10 =
+
+* Feature - Add the ability to add multiple Zoom accounts under the Events API settings. [VE-278]
+* Feature - On the single event editor add a new step to choose the account to create the meeting or webinar with. [VE-281]
+* Language - 37 new strings added, 28 updated, 4 fuzzied, and 2 obsoleted
 
 = [1.4.1] 2021-05-27 =
 

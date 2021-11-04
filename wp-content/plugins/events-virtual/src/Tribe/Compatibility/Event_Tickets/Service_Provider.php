@@ -107,7 +107,6 @@ class Service_Provider extends \tad_DI52_ServiceProvider {
 	 * @param string           $unused_file Complete path to include the PHP File.
 	 * @param array            $unused_name Template name.
 	 * @param \Tribe__Template $template    Current instance of the Tribe__Template.
-	 * @return void
 	 */
 	public function share_rsvp_controls( $unused_file, $unused_name, \Tribe__Template $template ) {
 		$this->container->make( Template_Modifications::class )
@@ -122,7 +121,6 @@ class Service_Provider extends \tad_DI52_ServiceProvider {
 	 * @param string           $unused_file Complete path to include the PHP File.
 	 * @param array            $unused_name Template name.
 	 * @param \Tribe__Template $template    Current instance of the Tribe__Template.
-	 * @return void
 	 */
 	public function share_ticket_controls( $unused_file, $unused_name, \Tribe__Template $template ) {
 		$this->container->make( Template_Modifications::class )
@@ -158,7 +156,6 @@ class Service_Provider extends \tad_DI52_ServiceProvider {
 	 * @param string           $unused_file Complete path to include the PHP File.
 	 * @param array            $unused_name Template name.
 	 * @param \Tribe__Template $template    Current instance of the Tribe__Template.
-	 * @return void
 	 */
 	public function show_to_ticket_controls( $unused_file, $unused_name, \Tribe__Template $template ) {
 		$event = $template->get( 'post' );
@@ -216,7 +213,6 @@ class Service_Provider extends \tad_DI52_ServiceProvider {
 	 *
 	 * @param int   $event_id ID of the event post we're saving.
 	 * @param array $data     The meta data we're trying to save.
-	 * @return void
 	 */
 	public function action_update_post_meta( $event_id, $data ) {
 		$this->container->make( Ticket_Meta::class )->update_post_meta( $event_id, $data );

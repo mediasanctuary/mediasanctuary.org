@@ -45,10 +45,11 @@ class Template_Modifications {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param Template $template An instance of the front-end template handler.
+	 * @param Template       $template An instance of the front-end template handler.
+	 * @param Admin_Template $template An instance of the backend template handler.
 	 */
 	public function __construct( Template $template, Admin_Template $admin_template ) {
-		$this->template = $template;
+		$this->template       = $template;
 		$this->admin_template = $admin_template;
 	}
 
@@ -123,9 +124,15 @@ class Template_Modifications {
 	 * @return string HTML for the authorize fields.
 	 */
 	public function get_api_authorize_fields( Api $api, Url $url ) {
+		$message = get_transient( Settings::$option_prefix . 'account_message' );
+		if ( $message ) {
+			delete_transient( Settings::$option_prefix . 'account_message' );
+		}
+
 		$args = [
-			'api' => $api,
-			'url' => $url,
+			'api'     => $api,
+			'url'     => $url,
+			'message' => $message,
 		];
 
 		return $this->admin_template->template( 'zoom/api/authorize-fields', $args, false );
@@ -135,6 +142,7 @@ class Template_Modifications {
 	 * Gets Zoom connect link.
 	 *
 	 * @since 1.0.1
+	 * @since 1.5.0 - Change to an add link for multiple account support.
 	 *
 	 * @param Api $api An instance of the Zoom API handler.
 	 * @param Url $url The URLs handler for the integration.
@@ -147,7 +155,7 @@ class Template_Modifications {
 			'url' => $url,
 		];
 
-		return $this->admin_template->template( 'zoom/api/authorize-fields/connect-link', $args, false );
+		return $this->admin_template->template( 'zoom/api/authorize-fields/add-link', $args, false );
 	}
 
 	/**
@@ -179,5 +187,22 @@ class Template_Modifications {
 		];
 
 		return $this->admin_template->template( 'zoom/api/intro-text', $args, false );
+	}
+
+	/**
+	 * The message template to display on user account changes.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param string $message The message to display.
+	 * @param string $type    The type of message, either updated or error.
+	 *
+	 * @return string The message with html to display
+	 */
+	public function get_settings_message_template( $message, $type = 'updated' ) {
+		return $this->admin_template->template( 'components/message', [
+			'message' => $message,
+			'type'    => $type,
+		] );
 	}
 }

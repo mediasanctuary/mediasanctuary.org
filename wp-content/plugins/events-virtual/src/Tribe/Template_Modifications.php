@@ -248,7 +248,6 @@ class Template_Modifications {
 		return $schedule . $this->template->template( 'single/virtual-marker', $args, false );
 	}
 
-
 	/**
 	 * Include the control markers to the single page.
 	 *
@@ -277,8 +276,6 @@ class Template_Modifications {
 	 * @param string   $file      Complete path to include the PHP File.
 	 * @param array    $name      Template name.
 	 * @param Template $template  Current instance of the Template.
-	 *
-	 * @return void  Template render has no return.
 	 */
 	public function add_virtual_event_marker( $file, $name, $template ) {
 		$context = $template->get_values();
@@ -293,8 +290,6 @@ class Template_Modifications {
 	 * @param string   $file      Complete path to include the PHP File.
 	 * @param array    $name      Template name.
 	 * @param Template $template  Current instance of the Template.
-	 *
-	 * @return void  Template render has no return.
 	 */
 	public function add_hybrid_event_marker( $file, $name, $template ) {
 		$context = $template->get_values();
@@ -305,8 +300,6 @@ class Template_Modifications {
 	 * Adds Block Template for Virtual Event Marker.
 	 *
 	 * @since 1.0.1
-	 *
-	 * @return void  Template render has no return.
 	 */
 	public function add_single_block_virtual_event_marker() {
 		$event = tribe_get_event( get_the_ID() );
@@ -328,8 +321,6 @@ class Template_Modifications {
 	 * Adds Block Template for Hybrid Event Marker.
 	 *
 	 * @since 1.4.0
-	 *
-	 * @return void  Template render has no return.
 	 */
 	public function add_single_block_hybrid_event_marker() {
 		$event = tribe_get_event( get_the_ID() );
@@ -352,6 +343,7 @@ class Template_Modifications {
 	 *
 	 * @since 1.0.0
 	 * @since 1.0.4 Added possible login requirement.
+	 * @since 1.6.0 - Add video source support.
 	 */
 	public function add_event_single_video_embed() {
 		// don't show on password protected posts.
@@ -362,6 +354,11 @@ class Template_Modifications {
 		$event = tribe_get_event( get_the_ID() );
 
 		if ( ! $event instanceof \WP_Post) {
+			return;
+		}
+
+		// Only embed when the source is video.
+		if ( 'video' !== $event->virtual_video_source ) {
 			return;
 		}
 

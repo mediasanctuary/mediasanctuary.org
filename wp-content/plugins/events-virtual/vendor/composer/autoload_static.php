@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit3e0a9324d886a5ec3fc5bef06f8b03f4
+class ComposerStaticInit352d41f51c4043d0e2c9d8b130205820
 {
     public static $prefixLengthsPsr4 = array (
         'T' => 
@@ -57,6 +57,11 @@ class ComposerStaticInit3e0a9324d886a5ec3fc5bef06f8b03f4
         'Tribe\\Events\\Virtual\\Compatibility\\Online_Event_Extension\\Service_Provider' => __DIR__ . '/../..' . '/src/Tribe/Compatibility/Online_Event_Extension/Service_Provider.php',
         'Tribe\\Events\\Virtual\\Compatibility\\Online_Event_Extension\\Settings' => __DIR__ . '/../..' . '/src/Tribe/Compatibility/Online_Event_Extension/Settings.php',
         'Tribe\\Events\\Virtual\\Context\\Context_Provider' => __DIR__ . '/../..' . '/src/Tribe/Context/Context_Provider.php',
+        'Tribe\\Events\\Virtual\\Editor\\Assets' => __DIR__ . '/../..' . '/src/Tribe/Editor/Assets.php',
+        'Tribe\\Events\\Virtual\\Editor\\Blocks\\Virtual_Event' => __DIR__ . '/../..' . '/src/Tribe/Editor/Blocks/Virtual_Event.php',
+        'Tribe\\Events\\Virtual\\Editor\\Provider' => __DIR__ . '/../..' . '/src/Tribe/Editor/Provider.php',
+        'Tribe\\Events\\Virtual\\Editor\\Template\\Admin' => __DIR__ . '/../..' . '/src/Tribe/Editor/Template/Admin.php',
+        'Tribe\\Events\\Virtual\\Editor\\Template\\Frontend' => __DIR__ . '/../..' . '/src/Tribe/Editor/Template/Frontend.php',
         'Tribe\\Events\\Virtual\\Encryption' => __DIR__ . '/../..' . '/src/Tribe/Encryption.php',
         'Tribe\\Events\\Virtual\\Event_Meta' => __DIR__ . '/../..' . '/src/Tribe/Event_Meta.php',
         'Tribe\\Events\\Virtual\\Export\\Event_Export' => __DIR__ . '/../..' . '/src/Tribe/Export/Event_Export.php',
@@ -64,8 +69,25 @@ class ComposerStaticInit3e0a9324d886a5ec3fc5bef06f8b03f4
         'Tribe\\Events\\Virtual\\Hooks' => __DIR__ . '/../..' . '/src/Tribe/Hooks.php',
         'Tribe\\Events\\Virtual\\JSON_LD' => __DIR__ . '/../..' . '/src/Tribe/JSON_LD.php',
         'Tribe\\Events\\Virtual\\Meetings\\Api_Response' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Api_Response.php',
+        'Tribe\\Events\\Virtual\\Meetings\\Facebook\\Classic_Editor' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Facebook/Classic_Editor.php',
+        'Tribe\\Events\\Virtual\\Meetings\\Facebook\\Event_Meta' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Facebook/Event_Meta.php',
+        'Tribe\\Events\\Virtual\\Meetings\\Facebook\\Page_API' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Facebook/Page_API.php',
+        'Tribe\\Events\\Virtual\\Meetings\\Facebook\\Settings' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Facebook/Settings.php',
+        'Tribe\\Events\\Virtual\\Meetings\\Facebook\\Template_Modifications' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Facebook/Template_Modifications.php',
+        'Tribe\\Events\\Virtual\\Meetings\\Facebook\\Url' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Facebook/Url.php',
+        'Tribe\\Events\\Virtual\\Meetings\\Facebook\\Video_API' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Facebook/Video_API.php',
+        'Tribe\\Events\\Virtual\\Meetings\\Facebook_Provider' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Facebook_Provider.php',
         'Tribe\\Events\\Virtual\\Meetings\\Meeting_Provider' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Meeting_Provider.php',
+        'Tribe\\Events\\Virtual\\Meetings\\YouTube\\Classic_Editor' => __DIR__ . '/../..' . '/src/Tribe/Meetings/YouTube/Classic_Editor.php',
+        'Tribe\\Events\\Virtual\\Meetings\\YouTube\\Connection' => __DIR__ . '/../..' . '/src/Tribe/Meetings/YouTube/Connection.php',
+        'Tribe\\Events\\Virtual\\Meetings\\YouTube\\Embeds' => __DIR__ . '/../..' . '/src/Tribe/Meetings/YouTube/Embeds.php',
+        'Tribe\\Events\\Virtual\\Meetings\\YouTube\\Event_Meta' => __DIR__ . '/../..' . '/src/Tribe/Meetings/YouTube/Event_Meta.php',
+        'Tribe\\Events\\Virtual\\Meetings\\YouTube\\Settings' => __DIR__ . '/../..' . '/src/Tribe/Meetings/YouTube/Settings.php',
+        'Tribe\\Events\\Virtual\\Meetings\\YouTube\\Template_Modifications' => __DIR__ . '/../..' . '/src/Tribe/Meetings/YouTube/Template_Modifications.php',
+        'Tribe\\Events\\Virtual\\Meetings\\YouTube\\Url' => __DIR__ . '/../..' . '/src/Tribe/Meetings/YouTube/Url.php',
+        'Tribe\\Events\\Virtual\\Meetings\\YouTube_Provider' => __DIR__ . '/../..' . '/src/Tribe/Meetings/YouTube_Provider.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Abstract_Meetings' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Abstract_Meetings.php',
+        'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Account_API' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Account_API.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Api' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Api.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Classic_Editor' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Classic_Editor.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Event_Meta' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Event_Meta.php',
@@ -91,7 +113,9 @@ class ComposerStaticInit3e0a9324d886a5ec3fc5bef06f8b03f4
         'Tribe\\Events\\Virtual\\Rewrite\\Rewrite_Provider' => __DIR__ . '/../..' . '/src/Tribe/Rewrite/Rewrite_Provider.php',
         'Tribe\\Events\\Virtual\\Template' => __DIR__ . '/../..' . '/src/Tribe/Template.php',
         'Tribe\\Events\\Virtual\\Template_Modifications' => __DIR__ . '/../..' . '/src/Tribe/Template_Modifications.php',
+        'Tribe\\Events\\Virtual\\Traits\\With_AJAX' => __DIR__ . '/../..' . '/src/Tribe/Traits/With_AJAX.php',
         'Tribe\\Events\\Virtual\\Traits\\With_Nonce_Routes' => __DIR__ . '/../..' . '/src/Tribe/Traits/With_Nonce_Routes.php',
+        'Tribe\\Events\\Virtual\\Updater' => __DIR__ . '/../..' . '/src/Tribe/Updater.php',
         'Tribe\\Events\\Virtual\\Utils' => __DIR__ . '/../..' . '/src/Tribe/Utils.php',
         'Tribe\\Events\\Virtual\\Views\\V2\\Breadcrumbs' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Breadcrumbs.php',
         'Tribe\\Events\\Virtual\\Views\\V2\\Query' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Query.php',
@@ -104,9 +128,9 @@ class ComposerStaticInit3e0a9324d886a5ec3fc5bef06f8b03f4
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit3e0a9324d886a5ec3fc5bef06f8b03f4::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit3e0a9324d886a5ec3fc5bef06f8b03f4::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit3e0a9324d886a5ec3fc5bef06f8b03f4::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit352d41f51c4043d0e2c9d8b130205820::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit352d41f51c4043d0e2c9d8b130205820::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit352d41f51c4043d0e2c9d8b130205820::$classMap;
 
         }, null, ClassLoader::class);
     }
