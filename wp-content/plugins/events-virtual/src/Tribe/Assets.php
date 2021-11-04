@@ -19,6 +19,8 @@ namespace Tribe\Events\Virtual;
 use Tribe\Events\Views\V2\Assets as Event_Assets;
 use Tribe\Events\Views\V2\Template_Bootstrap;
 use Tribe__Events__Templates;
+use Tribe__Events__Main as TEC;
+use Tribe__Admin__Helpers as Admin_Helpers;
 
 /**
  * Register Assets.
@@ -73,21 +75,40 @@ class Assets extends \tad_DI52_ServiceProvider {
 		$this->container->singleton( 'events-virtual.assets', $this );
 
 		$plugin = tribe( Plugin::class );
+		$admin_helpers = Admin_Helpers::instance();
 
 		tribe_asset(
 			$plugin,
 			'tribe-events-virtual-admin-css',
 			'events-virtual-admin.css',
-			[],
-			'admin_enqueue_scripts'
+			[ 'tec-variables-full' ],
+			'admin_enqueue_scripts',
+			[
+				'conditionals' => [
+					'operator' => 'OR',
+					[ $admin_helpers, 'is_screen' ],
+				],
+			]
 		);
 
 		tribe_asset(
 			$plugin,
 			'tribe-events-virtual-admin-js',
 			'events-virtual-admin.js',
-			[ 'jquery', 'tribe-tooltip-js' ],
-			'admin_enqueue_scripts'
+			[ 'jquery', 'tribe-tooltip-js', 'tribe-events-views-v2-accordion' ],
+			'admin_enqueue_scripts',
+			[
+				'conditionals' => [
+					'operator' => 'OR',
+					[ $admin_helpers, 'is_screen' ],
+				],
+				'localize' => [
+					'name' => 'tribe_events_virtual_strings',
+					'data' => [
+						'deleteConfirm'  => self::get_confirmation_to_delete_account(),
+					],
+				],
+			]
 		);
 
 		tribe_asset(
@@ -238,6 +259,54 @@ class Assets extends \tad_DI52_ServiceProvider {
 				],
 			]
 		);
+
+		tribe_asset(
+			$plugin,
+			'tribe-events-v2-virtual-single-block',
+			'events-virtual-single-block.css',
+			[
+				'tec-variables-full',
+				'tec-variables-skeleton',
+			],
+			'wp_enqueue_scripts',
+			[
+				'priority' => 15,
+				'conditionals' => [
+					[ tribe( Event_Assets::class ), 'should_enqueue_single_event_block_editor_styles' ],
+				],
+			]
+		);
+
+		$this->maybe_enqueue_accordion_for_v1();
+	}
+
+	/**
+	 * If V1 is active enqueue the accordion script for YouTube feature.
+	 *
+	 * @since 1.6.1
+	 */
+	protected function maybe_enqueue_accordion_for_v1() {
+		if ( tribe_events_views_v2_is_enabled() ) {
+			return;
+		}
+		$admin_helpers = Admin_Helpers::instance();
+
+		tribe_asset(
+			TEC::instance(),
+			'tribe-events-views-v2-accordion',
+			'views/accordion.js',
+			[
+				'jquery',
+				'tribe-common',
+			],
+			'admin_enqueue_scripts',
+			[
+				'conditionals' => [
+					'operator' => 'OR',
+					[ $admin_helpers, 'is_screen' ],
+				],
+			]
+		);
 	}
 
 	/**
@@ -368,8 +437,6 @@ class Assets extends \tad_DI52_ServiceProvider {
 	 * Fires to include the virtual event assets on shortcodes.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @return void Action hook with no return.
 	 */
 	public function load_on_shortcode() {
 		tribe_asset_enqueue( 'tribe-events-virtual-skeleton' );
@@ -377,5 +444,31 @@ class Assets extends \tad_DI52_ServiceProvider {
 		if ( tribe( Event_Assets::class )->should_enqueue_full_styles() ) {
 			tribe_asset_enqueue( 'tribe-events-virtual-full' );
 		}
+	}
+
+	/**
+	 * Get the confirmation text for deleting a virtual settings.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @return string The confirmation text.
+	 */
+	public static function get_confirmation_to_delete_account() {
+		if (
+			tribe( 'editor' )->should_load_blocks()
+			&& tribe( 'events.editor.compatibility' )->is_blocks_editor_toggled_on()
+		) {
+			return _x(
+				"Are you sure you want to delete the virtual settings? \nThis will also delete any virtual event blocks for this event. \n\nThis operation cannot be undone.",
+				'The block editor message to display to confirm a user would like to delete the virtual settings.',
+				'events-virtual'
+			);
+		}
+
+		return _x(
+			"Are you sure you want to delete the virtual settings? \n\nThis operation cannot be undone.",
+			'The classic editor message to display to confirm a user would like to delete the virtual settings.',
+			'events-virtual'
+		);
 	}
 }

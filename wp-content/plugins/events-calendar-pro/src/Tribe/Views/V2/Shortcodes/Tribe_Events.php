@@ -557,6 +557,14 @@ class Tribe_Events extends Shortcode_Abstract {
 			return;
 		}
 
+		/*
+		 * Make sure we aren't triggered before we expect to be.
+		 * If this isn't true, our query info will be suspect and our checks will fail.
+		 */
+		if ( ! did_action( 'wp_print_scripts' ) ) {
+			return;
+		}
+
 		/**
 		 * Triggers an action to allow other plugins or extensions to load assets.
 		 *
@@ -584,16 +592,39 @@ class Tribe_Events extends Shortcode_Abstract {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Determines if we should display the shortcode in a given page.
+	 *
+	 * @since 5.9.0
+	 *
+	 * @return mixed|void
 	 */
-	public function get_html() {
+	public function should_display() {
 		/**
 		 * On blocks editor shortcodes are being rendered in the screen which for some unknown reason makes the admin
 		 * URL soft redirect (browser history only) to the front-end view URL of that shortcode.
 		 *
 		 * @see TEC-3157
 		 */
-		if ( is_admin() && ! tribe( 'context' )->doing_ajax() ) {
+		$should_display = ! ( is_admin() && ! tribe( 'context' )->doing_ajax() );
+
+		/**
+		 * If we should display the shortcode.
+		 *
+		 * @since 5.9.0
+		 *
+		 * @param bool   $should_display Whether we should display or not.
+		 * @param static $shortcode      Instance of the shortcode we are dealing with.
+		 */
+		$should_display = apply_filters( 'tribe_events_shortcode_tribe_events_should_display', $should_display, $this );
+
+		return tribe_is_truthy( $should_display );
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function get_html() {
+		if ( ! $this->should_display() ) {
 			return '';
 		}
 
@@ -654,7 +685,7 @@ class Tribe_Events extends Shortcode_Abstract {
 
 		if ( $compatibility_required ) {
 			$container       = [ 'tribe-compatibility-container' ];
-			$classes         = array_merge( $container, $theme_compatibility->get_body_classes() );
+			$classes         = array_merge( $container, $theme_compatibility::get_compatibility_classes() );
 			$element_classes = new Element_Classes( $classes );
 			$html            .= '<div ' . $element_classes->get_attribute() . '>';
 		}
@@ -839,6 +870,7 @@ class Tribe_Events extends Shortcode_Abstract {
 				$date_indices = array_keys( $date_keys );
 				$date_index   = reset( $date_indices );
 				$date_key     = $date_keys[ $date_index ];
+
 				if ( $date_key === $arguments['date'] ) {
 					// Let's only set it if we are sure.
 					$repository_args[ $date_index ] = $arguments['date'];
@@ -898,7 +930,6 @@ class Tribe_Events extends Shortcode_Abstract {
 
 			$arguments['week_events_per_day'] = $this->get_argument( 'week_events_per_day' );
 		}
-
 
 		return $this->alter_context( $view_context, $arguments );
 	}

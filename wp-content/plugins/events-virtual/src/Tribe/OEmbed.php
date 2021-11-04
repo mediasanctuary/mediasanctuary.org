@@ -9,8 +9,6 @@
 
 namespace Tribe\Events\Virtual;
 
-use WP_oEmbed;
-
 /**
  * Class OEmbed.
  *
@@ -97,6 +95,7 @@ class OEmbed {
 	 * Tests if a link is embeddable.
 	 *
 	 * @since 1.0.0
+	 * @since 1.6.1 - Use _wp_get_oembed_get_object() to get Oembed object with custom providers.
 	 *
 	 * @param string $url The URL to test.
 	 * @return boolean
@@ -106,7 +105,7 @@ class OEmbed {
 			return false;
 		}
 
-		$oembed   = new WP_oEmbed();
+		$oembed   = _wp_oembed_get_object();
 		$provider = $oembed->get_provider( $url, [ 'discover' => false ] );
 
 		return false !== $provider;
@@ -149,8 +148,6 @@ class OEmbed {
 	 * Ajax function to test an oembed link for "embeddability".
 	 *
 	 * @since 1.0.0
-	 *
-	 * @return void
 	 */
 	public function ajax_test_oembed_url() {
 		if (

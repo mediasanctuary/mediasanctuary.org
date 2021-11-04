@@ -11,16 +11,16 @@ namespace Tribe\Events\Virtual\Meetings\Zoom;
 
 use Tribe\Events\Virtual\Encryption;
 use Tribe\Events\Virtual\Meetings\Api_Response;
-use Tribe__Utils__Array as Arr;
 
 /**
  * Class Api
  *
  * @since   1.0.0
+ * @since  1.5.0 - Extends Account_API Class to support multiple accounts.
  *
  * @package Tribe\Events\Virtual\Meetings\Zoom
  */
-class Api {
+class Api extends Account_API {
 
 	/**
 	 * The base URL of the Zoom REST API, v2.
@@ -34,6 +34,9 @@ class Api {
 	/**
 	 * The current Zoom API access token.
 	 *
+	 * @since 1.0.0
+	 * @deprecated
+	 *
 	 * @var string
 	 */
 	protected $token;
@@ -42,6 +45,7 @@ class Api {
 	 * The Client ID, as defined in Settings > APIs.
 	 *
 	 * @since 1.0.0
+	 * @deprecated
 	 *
 	 * @var string
 	 */
@@ -51,6 +55,7 @@ class Api {
 	 * The Client secret, as defined in Settings > APIs.
 	 *
 	 * @since 1.0.0
+	 * @deprecated
 	 *
 	 * @var string
 	 */
@@ -106,47 +111,15 @@ class Api {
 	 *
 	 * @since 1.0.0
 	 * @since 1.4.0  - Add encryption handler.
+	 * @since 1.5.0 - Add Account_API to support multiple accounts.
 	 *
 	 * @param Encryption $encryption An instance of the Encryption handler.
 	 */
 	public function __construct( Encryption $encryption ) {
 		$this->encryption    = ( ! empty( $encryption ) ? $encryption : tribe( Encryption::class ) );
-		$this->refresh_token = Settings::get_refresh_token();
 
-		$this->token = (string) $this->encryption->decrypt( get_transient( Settings::$option_prefix . 'access_token' ) );
-
-		// These parameters are deprecated since version 1.1.1: the OAuth flow is not managed by the plugin.
-		$this->client_id     = tribe_get_option( Settings::$option_prefix . 'client_id' );
-		$this->client_secret = tribe_get_option( Settings::$option_prefix . 'client_secret' );
-	}
-
-	/**
-	 * Checks whether all fields required to interact with the Zoom API are correctly set or not.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return bool Whether all fields required to interact with the Zoom API are correctly set or not.
-	 */
-	public function has_required_fields() {
-		foreach ( $this->required_fields() as $required_field ) {
-			if ( empty( tribe_get_option( Settings::$option_prefix . $required_field ) ) ) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * Returns a list of the fields required by the application to work.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array<string> A list of the fields, tribe_option keys w/o the Zoom\Settings prefix, required by the
-	 *                       integration to work.
-	 */
-	public function required_fields() {
-		return [];
+		// Attempt to load an account.
+		$this->load_account();
 	}
 
 	/**
@@ -161,63 +134,6 @@ class Api {
 	 */
 	public function is_authorized() {
 		return ! empty( $this->refresh_token );
-	}
-
-	/**
-	 * Returns the access token based authorization header to send requests to the Zoom API.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return string The authorization header, to be used in the `headers` section of a request to Zoom API.
-	 */
-	public function token_authorization_header() {
-		return 'Bearer ' . $this->get_access_token();
-	}
-
-	/**
-	 * Returns the current API access token.
-	 *
-	 * If not available, then a new token will be fetched.
-	 *
-	 * @since 1.0.0
-	 * @since 1.1.1 Changed the method to use the new OAuth flow that is not handled by the plugin.
-	 *
-	 * @return string The API access token, or an empty string if the token cannot be fetched.
-	 */
-	protected function get_access_token() {
-		$token = $this->encryption->decrypt( get_transient( Settings::$option_prefix . 'access_token' ) );
-
-		if ( empty( $token ) ) {
-			$token_url = OAuth::$token_request_url;
-			if ( defined( 'TEC_VIRTUAL_EVENTS_ZOOM_API_TOKEN_URL' ) ) {
-				$token_url = TEC_VIRTUAL_EVENTS_ZOOM_API_TOKEN_URL;
-			}
-
-			// Check if this is a legacy authorization, if so, we need to refresh against Zoom directly.
-			$legacy_auth_code = tribe_get_option( Settings::$option_prefix . 'auth_code' );
-			if ( ! empty( $legacy_auth_code ) ) {
-				$token_url = OAuth::$legacy_token_request_url;
-			}
-
-			$this->post(
-				$token_url,
-				[
-					'headers' => [
-						'Authorization' => $this->authorization_header(),
-					],
-					'body'    => [
-						'grant_type'    => 'refresh_token',
-						'refresh_token' => $this->refresh_token,
-					],
-				],
-				200
-			)->then( [ $this, 'save_access_token' ] );
-
-			// Fetch it again, it should now be there.
-			$token = $this->encryption->decrypt( get_transient( Settings::$option_prefix . 'access_token' ) );
-		}
-
-		return (string) $token;
 	}
 
 	/**
@@ -377,89 +293,46 @@ class Api {
 	}
 
 	/**
-	 * Builds the request authorization header as required by the Zoom API.
-	 *
-	 * @since 1.0.0
-	 * @deprecated The OAuth flow is not handled by the plugin anymore.
-	 *
-	 * @return string The authorization header, to be used in the `headers` section of a request to Zoom API.
+	 * {@inheritDoc}
 	 */
-	public function authorization_header() {
-		return 'Basic ' . base64_encode( $this->client_id() . ':' . $this->client_secret() );
-	}
+	public function refresh_access_token( $id, $refresh_token ) {
+		$refreshed = false;
 
-	/**
-	 * Returns the Zoom Application Client ID as provided by the user.
-	 *
-	 * @since 1.0.0
-	 * @deprecated The OAuth flow is not handled by the plugin anymore.
-	 *
-	 * @return string The Zoom Application Client ID provided by the user.
-	 */
-	public function client_id() {
-		return $this->client_id;
-	}
+		$this->post(
+			OAuth::$token_request_url,
+			[
+				'body'    => [
+					'grant_type'    => 'refresh_token',
+					'refresh_token' => $refresh_token,
+				],
+			],
+			200
+		)->then(
+			function ( array $response ) use ( &$id, &$refreshed ) {
 
-	/**
-	 * Returns the current Client Secret used to communicate with the Zoom API.
-	 *
-	 * @since 1.0.0
-	 * @deprecated The OAuth flow is not handled by the plugin anymore.
-	 *
-	 * @return string The current Client Secret used to communicate with the Zoom API.
-	 */
-	public function client_secret() {
-		return $this->client_secret;
-	}
+				if (
+					! (
+						isset( $response['body'] )
+						&& false !== ( $body = json_decode( $response['body'], true ) )
+						&& isset( $body['access_token'], $body['refresh_token'], $body['expires_in'] )
+					)
+				) {
+					do_action( 'tribe_log', 'error', __CLASS__, [
+						'action'   => __METHOD__,
+						'message'  => 'Zoom API access token refresh response is malformed.',
+						'response' => $body,
+					] );
 
-	/**
-	 * Validates and saves the access token to the database if all the required data is provided.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param array<string,array> $response An array representing the access token request response, in the format
-	 *                                      returned by WordPress `wp_remote_` functions.
-	 *
-	 * @return bool Whether the access token data was saved or not.
-	 */
-	public function save_access_token( array $response ) {
-		if ( ! (
-			isset( $response['body'] )
-			&& ( false !== $d = json_decode( $response['body'], true ) )
-			&& isset( $d['access_token'], $d['refresh_token'], $d['expires_in'] )
-		)
-		) {
-			do_action(
-				'tribe_log',
-				'error',
-				__CLASS__,
-				[
-					'action'  => __METHOD__,
-					'code'    => wp_remote_retrieve_response_code( $response ),
-					'message' => 'Response body missing or malformed',
-				]
-			);
+					return false;
+				}
 
-			return false;
-		}
+				$refreshed = $this->save_access_and_expiration( $id, $response );
 
-		$access_token = $d['access_token'];
-		$refresh_token = $d['refresh_token'];
+				return $refreshed;
+			}
+		);
 
-		/**
-		 * Take the expiration in seconds as provided by the server and remove a minute to pad for save delays.
-		 */
-		$expiration = ( (int) $d['expires_in'] ) - 60;
-
-		// Save the refresh token.
-		$encrypted_refresh_token = $this->encryption->encrypt( $refresh_token );
-		tribe_update_option( Settings::$option_prefix . 'refresh_token', $encrypted_refresh_token );
-
-		// Since the access token is, by its own nature, transient, let's store it as that.
-		$encrypted_access_token = $this->encryption->encrypt( $access_token );
-		set_transient( Settings::$option_prefix . 'access_token', $encrypted_access_token, $expiration );
-
-		return $access_token;
+		return $refreshed;
 	}
 
 	/**
@@ -473,6 +346,9 @@ class Api {
 	 * @return array An array of data from the Zoom API.
 	 */
 	public function fetch_meeting_data( $zoom_meeting_id, $meeting_type ) {
+		if ( ! $this->get_token_authorization_header() ) {
+			return [];
+		}
 
 		$data = [];
 
@@ -484,7 +360,7 @@ class Api {
 			self::$api_base . "{$api_endpoint}/{$zoom_meeting_id}",
 			[
 				'headers' => [
-					'Authorization' => $this->token_authorization_header(),
+					'Authorization' => $this->get_token_authorization_header(),
 					'Content-Type'  => 'application/json; charset=utf-8',
 				],
 				'body'    => null,
@@ -524,6 +400,63 @@ class Api {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	public function fetch_user( $user_id = 'me', $settings = false, $access_token = '' ) {
+		if ( ! $this->get_token_authorization_header( $access_token ) ) {
+			return [];
+		}
+
+		// If both user id and settings, add settings to detect webinar support.
+		if ( $user_id && $settings ) {
+			$user_id = $user_id . '/settings';
+		}
+
+		$this->get(
+			self::$api_base . 'users/' . $user_id,
+			[
+				'headers' => [
+					'Authorization' => $this->get_token_authorization_header( $access_token ),
+					'Content-Type'  => 'application/json; charset=utf-8',
+				],
+				'body'    => null,
+			],
+			200
+		)->then(
+			static function ( array $response ) use ( &$data ) {
+
+				$body = json_decode( $response['body'] );
+
+				if (
+					! (
+						isset( $response['body'] )
+						&& false !== ( $body = json_decode( $response['body'], true ) )
+					)
+				) {
+					do_action( 'tribe_log', 'error', __CLASS__, [
+						'action'   => __METHOD__,
+						'message'  => 'Zoom API user response is malformed.',
+						'response' => $body,
+					] );
+
+					return [];
+				}
+				$data = $body;
+			}
+		)->or_catch(
+			static function ( \WP_Error $error ) {
+				do_action( 'tribe_log', 'error', __CLASS__, [
+					'action'  => __METHOD__,
+					'code'    => $error->get_error_code(),
+					'message' => $error->get_error_message(),
+				] );
+			}
+		);
+
+		return $data;
+	}
+
+	/**
 	 * Get the List of Users
 	 *
 	 * @since 1.4.0
@@ -531,6 +464,10 @@ class Api {
 	 * @return array An array of data from the Zoom API.
 	 */
 	public function fetch_users() {
+		if ( ! $this->get_token_authorization_header() ) {
+			return [];
+		}
+
 		$data = [
 			'page_size'   => 300,
 			'page_number' => 1,
@@ -540,7 +477,7 @@ class Api {
 			self::$api_base . 'users',
 			[
 				'headers' => [
-					'Authorization' => $this->token_authorization_header(),
+					'Authorization' => $this->get_token_authorization_header(),
 					'Content-Type'  => 'application/json; charset=utf-8',
 				],
 				'body'    => ! empty( $data ) ? $data : null,
@@ -581,6 +518,237 @@ class Api {
 		return $data;
 	}
 
+
+	/**
+	 * Returns the current API access token.
+	 *
+	 * If not available, then a new token will be fetched.
+	 *
+	 * @since 1.0.0
+	 * @since 1.1.1 Changed the method to use the new OAuth flow that is not handled by the plugin.
+	 * @deprecated 1.5.0 - OAuth supports multiple accounts, see refresh_access_token().
+	 *
+	 * @return string The API access token, or an empty string if the token cannot be fetched.
+	 */
+	public function refresh_token( $refresh_token ) {
+		_deprecated_function( __FUNCTION__, '1.5.0', 'Deprecated for multiple account support, see refresh_access_token()' );
+		$token = $this->encryption->decrypt( get_transient( Settings::$option_prefix . 'access_token' ) );
+
+		if ( empty( $token ) ) {
+			$token_url = OAuth::$token_request_url;
+			if ( defined( 'TEC_VIRTUAL_EVENTS_ZOOM_API_TOKEN_URL' ) ) {
+				$token_url = TEC_VIRTUAL_EVENTS_ZOOM_API_TOKEN_URL;
+			}
+
+			// Check if this is a legacy authorization, if so, we need to refresh against Zoom directly.
+			$legacy_auth_code = tribe_get_option( Settings::$option_prefix . 'auth_code' );
+			if ( ! empty( $legacy_auth_code ) ) {
+				$token_url = OAuth::$legacy_token_request_url;
+			}
+
+			$this->post(
+				$token_url,
+				[
+					'headers' => [
+						'Authorization' => $this->authorization_header(),
+					],
+					'body'    => [
+						'grant_type'    => 'refresh_token',
+						'refresh_token' => $this->refresh_token,
+					],
+				],
+				200
+			)->then( [ $this, 'save_access_token' ] );
+
+			// Fetch it again, it should now be there.
+			$token = $this->encryption->decrypt( get_transient( Settings::$option_prefix . 'access_token' ) );
+		}
+
+		return (string) $token;
+	}
+
+	/**
+	 * Returns the current API access token.
+	 *
+	 * If not available, then a new token will be fetched.
+	 *
+	 * @since 1.0.0
+	 * @since 1.1.1 Changed the method to use the new OAuth flow that is not handled by the plugin.
+	 * @deprecated 1.5.0 - OAuth supports multiple accounts, see refresh_access_token().
+	 *
+	 * @return string The API access token, or an empty string if the token cannot be fetched.
+	 */
+	protected function get_access_token() {
+		_deprecated_function( __FUNCTION__, '1.5.0', 'Deprecated for multiple account support, see refresh_access_token()' );
+		$token = get_transient( Settings::$option_prefix . 'access_token' );
+
+		if ( empty( $token ) ) {
+			$url = OAuth::$token_request_url;
+
+			// Check if this is a legacy authorization, if so, we need to refresh against Zoom directly.
+			$legacy_auth_code = tribe_get_option( Settings::$option_prefix . 'auth_code' );
+			if ( ! empty( $legacy_auth_code ) ) {
+				$url = OAuth::$legacy_token_request_url;
+			}
+
+			$this->post(
+				$url,
+				[
+					'headers' => [
+						'Authorization' => $this->authorization_header(),
+					],
+					'body'    => [
+						'grant_type'    => 'refresh_token',
+						'refresh_token' => $this->refresh_token,
+					],
+				],
+				200
+			)->then( [ $this, 'save_access_token' ] );
+
+			// Fetch it again, it should now be there.
+			$token = get_transient( Settings::$option_prefix . 'access_token' );
+		}
+
+		return (string) $token;
+	}
+
+	/**
+	 * Returns the access token based authorization header to send requests to the Zoom API.
+	 *
+	 * @since 1.0.0
+	 * @deprecated 1.5.0 OAuth supports multiple accounts, see Account_API class.
+	 *
+	 * @return string The authorization header, to be used in the `headers` section of a request to Zoom API.
+	 */
+	public function token_authorization_header() {
+		_deprecated_function( __FUNCTION__, '1.5.0', 'Deprecated for multiple account support with no replacement.' );
+		return 'Bearer ' . $this->get_access_token();
+	}
+
+	/**
+	 * Returns the Zoom Application Client ID as provided by the user.
+	 *
+	 * @since 1.0.0
+	 * @deprecated 1.1.1 The OAuth flow is not handled by the plugin anymore.
+	 *
+	 * @return string The Zoom Application Client ID provided by the user.
+	 */
+	public function client_id() {
+		_deprecated_function( __FUNCTION__, '1.5.0', 'Deprecated with no replacement.' );
+		return $this->client_id;
+	}
+
+	/**
+	 * Returns the current Client Secret used to communicate with the Zoom API.
+	 *
+	 * @since 1.0.0
+	 * @deprecated 1.1.1 The OAuth flow is not handled by the plugin anymore.
+	 *
+	 * @return string The current Client Secret used to communicate with the Zoom API.
+	 */
+	public function client_secret() {
+		_deprecated_function( __FUNCTION__, '1.5.0', 'Deprecated with no replacement.' );
+		return $this->client_secret;
+	}
+
+	/**
+	 * Builds the request authorization header as required by the Zoom API.
+	 *
+	 * @since 1.0.0
+	 * @deprecated 1.1.1 The OAuth flow is not handled by the plugin anymore.
+	 *
+	 * @return string The authorization header, to be used in the `headers` section of a request to Zoom API.
+	 */
+	public function authorization_header() {
+		_deprecated_function( __FUNCTION__, '1.5.0', 'Deprecated with no replacement.' );
+		return 'Basic ' . base64_encode( $this->client_id() . ':' . $this->client_secret() );
+	}
+
+	/**
+	 * Checks whether all fields required to interact with the Zoom API are correctly set or not.
+	 *
+	 * @since 1.0.0
+	 * @deprecated 1.1.1 The OAuth flow is not handled by the plugin anymore.
+	 *
+	 * @return bool Whether all fields required to interact with the Zoom API are correctly set or not.
+	 */
+	public function has_required_fields() {
+		_deprecated_function( __FUNCTION__, '1.5.0', 'Deprecated for multiple account support with no replacement.' );
+		foreach ( $this->required_fields() as $required_field ) {
+			if ( empty( tribe_get_option( Settings::$option_prefix . $required_field ) ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Returns a list of the fields required by the application to work.
+	 *
+	 * @since 1.0.0
+	 * @deprecated 1.1.1 The OAuth flow is not handled by the plugin anymore.
+	 *
+	 * @return array<string> A list of the fields, tribe_option keys w/o the Zoom\Settings prefix, required by the
+	 *                       integration to work.
+	 */
+	public function required_fields() {
+		_deprecated_function( __FUNCTION__, '1.5.0', 'Deprecated for multiple account support with no replacement.' );
+		return [];
+	}
+
+	/**
+	 * Validates and saves the access token to the database if all the required data is provided.
+	 *
+	 * @since 1.0.0
+	 * @deprecated 1.5.0 OAuth supports multiple accounts, see Account_API class.
+	 *
+	 * @param array<string,array> $response An array representing the access token request response, in the format
+	 *                                      returned by WordPress `wp_remote_` functions.
+	 *
+	 * @return bool Whether the access token data was saved or not.
+	 */
+	public function save_access_token( array $response ) {
+		_deprecated_function( __FUNCTION__, '1.5.0', 'Deprecated for multiple account support with no replacement.' );
+		if ( ! (
+			isset( $response['body'] )
+			&& ( false !== $d = json_decode( $response['body'], true ) )
+			&& isset( $d['access_token'], $d['refresh_token'], $d['expires_in'] )
+		)
+		) {
+			do_action(
+				'tribe_log',
+				'error',
+				__CLASS__,
+				[
+					'action'  => __METHOD__,
+					'code'    => wp_remote_retrieve_response_code( $response ),
+					'message' => 'Response body missing or malformed',
+				]
+			);
+
+			return false;
+		}
+
+		$access_token = $d['access_token'];
+		$refresh_token = $d['refresh_token'];
+
+		/**
+		 * Take the expiration in seconds as provided by the server and remove a minute to pad for save delays.
+		 */
+		$expiration = ( (int) $d['expires_in'] ) - 60;
+
+		// Save the refresh token.
+		$encrypted_refresh_token = $this->encryption->encrypt( $refresh_token );
+		tribe_update_option( Settings::$option_prefix . 'refresh_token', $encrypted_refresh_token );
+
+		// Since the access token is, by its own nature, transient, let's store it as that.
+		$encrypted_access_token = $this->encryption->encrypt( $access_token );
+		set_transient( Settings::$option_prefix . 'access_token', $encrypted_access_token, $expiration );
+
+		return $access_token;
+	}
+
 	/**
 	 * Returns whether the generation and management of Zoom Webinars is allowed at the API level or not.
 	 *
@@ -588,10 +756,12 @@ class Api {
 	 * of Webinars or not; the check is done at connection time.
 	 *
 	 * @since 1.1.1
+	 * @deprecated 1.5.0 - Webinar check is done per account with no global option.
 	 *
 	 * @return bool Whether the generation and management of the Zoom Webinars is allowed at the API level or not.
 	 */
 	public function allow_webinars() {
+		_deprecated_function( __FUNCTION__, '1.5.0', 'Deprecated for multiple account support with no replacement.' );
 		$allowed = tribe_is_truthy( tribe_get_option( Settings::$option_prefix . 'allow_webinars' ) );
 
 		/**
@@ -612,10 +782,12 @@ class Api {
 	 *
 	 * @since 1.1.1
 	 * @since 1.4.0 - Modify to check for alternative hosts as users that support alt hosts can generate webinars.
+	 * @deprecated 1.5.0 - Accounts_API queries the user settings directly to determine webinar support.
 	 *
 	 * @see Api::allow_webinars() to get the value set by this method.
 	 */
 	public function check_webinar_cap() {
+		_deprecated_function( __FUNCTION__, '1.5.0', 'Deprecated for multiple account support with no replacement.' );
 		$alternative_hosts = tribe( Users::class )->get_alternative_users();
 		$option_value  = 'no';
 
@@ -630,10 +802,12 @@ class Api {
 	 * Resets the Webinar API capability by setting the related option to a null/empty value.
 	 *
 	 * @since 1.1.1
+	 * @deprecated 1.5.0 - Webinar check is done per account with no global option.
 	 *
-	 * @return bool Whether teh Webinar capability was correctly reset or not.
+	 * @return bool Whether the Webinar capability was correctly reset or not.
 	 */
 	public function reset_webinar_cap() {
+		_deprecated_function( __FUNCTION__, '1.5.0', 'Deprecated for multiple account support with no replacement.' );
 		return tribe_update_option( Settings::$option_prefix . 'allow_webinars', '' );
 	}
 }

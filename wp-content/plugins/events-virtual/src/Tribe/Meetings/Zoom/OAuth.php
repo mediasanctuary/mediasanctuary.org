@@ -80,7 +80,7 @@ class OAuth {
 	 * @param Api $api An instance of the Zoom API handler.
 	 */
 	public function __construct( Api $api ) {
-		$this->api        = $api;
+		$this->api = $api;
 	}
 
 	/**
@@ -92,7 +92,7 @@ class OAuth {
 	 *
 	 * @param string|null $nonce The nonce string to authorize the authorization request.
 	 *
-	 * @return bool Whether the authorization request is valid and was handled or not.
+	 * @return bool|string Whether the authorization request is valid and was handled or not. Or an error message through wp_die().
 	 */
 	public function handle_auth_request( $nonce = null ) {
 		if ( ! wp_verify_nonce( $nonce, self::$authorize_nonce_action ) ) {
@@ -102,8 +102,6 @@ class OAuth {
 					'events-virtual'
 				)
 			);
-
-			return false;
 		}
 
 		// This is the legacy response from Zoom directly.
@@ -120,7 +118,7 @@ class OAuth {
 			$this->fetch_access_token( $legacy_code );
 			$handled = true;
 		} elseif ( $service_response_body ) {
-			$this->api->save_access_token( [ 'body' => base64_decode( $service_response_body ) ] );
+			$this->api->save_account( [ 'body' => base64_decode( $service_response_body ) ] );
 
 			// Check if there were legacy settings, if so, clear the old config.
 			$legacy_auth_code = tribe_get_option( Settings::$option_prefix . 'auth_code' );
@@ -130,40 +128,9 @@ class OAuth {
 			$handled = true;
 		}
 
-		// Check the Webinar capability of the API connection now as it will not change until a refresh happens.
-		$this->api->reset_webinar_cap();
-		$this->api->check_webinar_cap();
-
 		wp_safe_redirect( Settings::admin_url() );
 
 		return $handled;
-	}
-
-	/**
-	 * Fetches the access token from Zoom API.
-	 *
-	 * This method should be used when first connecting to the Zoom API or when a refresh token is not available.
-	 *
-	 * @since 1.0.0
-	 * @deprecated
-	 *
-	 * @param string $code The token access code as returned from Zoom API callback.
-	 */
-	public function fetch_access_token( $code ) {
-		$this->api->post(
-			static::$legacy_token_request_url,
-			[
-				'headers' => [
-					'Authorization' => $this->api->authorization_header(),
-				],
-				'body'    => [
-					'grant_type'   => 'authorization_code',
-					'code'         => $code,
-					'redirect_uri' => $this->authorize_url(),
-				],
-			],
-			Api::OAUTH_POST_RESPONSE_CODE
-		)->then( [ $this->api, 'save_access_token' ] );
 	}
 
 	/**
@@ -262,6 +229,7 @@ class OAuth {
 	 * Handler for the ajax button-swap on the Events->Settings->Api tab.
 	 *
 	 * @since 1.0.1
+	 * @deprecated
 	 *
 	 * @return boolean Whether the credentials were correctly saved or not.
 	 */
@@ -292,5 +260,33 @@ class OAuth {
 
 		wp_die();
 		return true;
+	}
+
+	/**
+	 * Fetches the access token from Zoom API.
+	 *
+	 * This method should be used when first connecting to the Zoom API or when a refresh token is not available.
+	 *
+	 * @since 1.0.0
+	 * @deprecated 1.5.0 - Replaced with Multiple Account Support, see Account_API class.
+	 *
+	 * @param string $code The token access code as returned from Zoom API callback.
+	 */
+	public function fetch_access_token( $code ) {
+		_deprecated_function( __FUNCTION__, '1.5.0', '' );
+		$this->api->post(
+			static::$legacy_token_request_url,
+			[
+				'headers' => [
+					'Authorization' => $this->api->authorization_header(),
+				],
+				'body'    => [
+					'grant_type'   => 'authorization_code',
+					'code'         => $code,
+					'redirect_uri' => $this->authorize_url(),
+				],
+			],
+			Api::OAUTH_POST_RESPONSE_CODE
+		)->then( [ $this->api, 'save_access_token' ] );
 	}
 }

@@ -1,4 +1,3 @@
-/* eslint-disable no-var */
 /**
  * Makes sure we have all the required levels on the Tribe Object
  *
@@ -19,7 +18,6 @@ tribe.events.zoomSettingsAdmin = tribe.events.zoomSettingsAdmin || {};
 
 ( function( $, obj ) {
 	'use-strict';
-	const $document = $( document );
 
 	/**
 	 * Selectors used for configuration and setup
@@ -32,6 +30,11 @@ tribe.events.zoomSettingsAdmin = tribe.events.zoomSettingsAdmin || {};
 		authorizedClass: 'tribe-zoom-authorized',
 		clientIdInput: '#zoom-application__client-id',
 		clientSecretInput: '#zoom-application__client-secret',
+		refreshAccount: '.tribe-settings-zoom-account-details__account-refresh',
+		accountStatus: '.tribe-events-virtual-meetings-zoom-settings-switch__input.account-status',
+		deleteAccount: '.tribe-settings-zoom-account-details__delete-account',
+		accountDetailsContainer: '.tribe-settings-zoom-account-details',
+		accountMessageContainer: '.tec-zoom-accounts-messages',
 		virtualContainer: '#tribe-settings-zoom-application',
 		zoomToken: '#tribe-field-zoom_token',
 	};
@@ -72,8 +75,122 @@ tribe.events.zoomSettingsAdmin = tribe.events.zoomSettingsAdmin || {};
 		}
 
 		$( obj.selectors.virtualContainer )
+			.on( 'click', obj.selectors.refreshAccount, obj.handleRefreshAccount )
+			.on( 'click', obj.selectors.accountStatus, obj.handleAccountStatus )
+			.on( 'click', obj.selectors.deleteAccount, obj.handleDeleteAccount )
 			.on( 'blur', obj.selectors.clientIdInput, obj.handleConnectButton )
 			.on( 'blur', obj.selectors.clientSecretInput, obj.handleConnectButton );
+	};
+
+	/**
+	 * Handles the click to refresh an account
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param {Event} ev The click event.
+	 */
+	obj.handleRefreshAccount = function( ev ) {
+		ev.preventDefault();
+
+		var confirmed = confirm( tribe_events_virtual_settings_strings.refreshConfirm );
+		if ( ! confirmed ) {
+			return;
+		}
+
+		var url = $( this ).data( 'zoomRefresh' );
+		window.location = url;
+	};
+
+	/**
+	 * Handles the click to change the account status.
+	 *
+	 * @since 1.5.0
+	 */
+	obj.handleAccountStatus = function() {
+		var $this = $( this );
+		var url = $this.data( 'ajaxStatusUrl' );
+
+		// Disable the status switch.
+		$this.prop( 'disabled', true );
+
+		$.ajax(
+			url,
+			{
+				contentType: 'application/json',
+				context: $this,
+				success: obj.onAccountStatusSuccess,
+			}
+		);
+	};
+
+	/**
+	 * Handles the successful response from the backend to account status request.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param {string} html The HTML that adds a message on the settings page.
+	 */
+	obj.onAccountStatusSuccess = function( html ) {
+		$( obj.selectors.accountMessageContainer ).html( html );
+
+		// Enable the status switch.
+		$( this ).prop( 'disabled', false );
+
+		// Change the disable state of the refresh and delete buttons.
+		var $accountSettings = $( this ).closest( obj.selectors.accountDetailsContainer );
+		$accountSettings.find( obj.selectors.refreshAccount ).prop( 'disabled', function( i, v ) {
+			return ! v;
+		} );
+		$accountSettings.find( obj.selectors.deleteAccount ).prop( 'disabled', function( i, v ) {
+			return ! v;
+		} );
+	};
+
+	/**
+	 * Handles the click to delete an account.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param {Event} ev The click event.
+	 */
+	obj.handleDeleteAccount = function( ev ) {
+		ev.preventDefault();
+
+		var confirmed = confirm( tribe_events_virtual_settings_strings.deleteConfirm );
+		if ( ! confirmed ) {
+			return;
+		}
+
+		var url = $( this ).data( 'ajaxDeleteUrl' );
+
+		$.ajax(
+			url,
+			{
+				contentType: 'application/json',
+				context: $( this ).closest( obj.selectors.accountDetailsContainer ),
+				success: obj.onAccountDeleteSuccess,
+			}
+		);
+	};
+
+	/**
+	 * Handles the successful response from the backend to delete account request.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param {string} html The HTML that adds a message on the settings page.
+	 */
+	obj.onAccountDeleteSuccess = function( html ) {
+		$( obj.selectors.accountMessageContainer ).html( html );
+
+		// Check if this is an error message.
+		var $error = $( '.error', $( obj.selectors.accountMessageContainer ) );
+		if ( $error.length > 0 ) {
+			return;
+		}
+
+		// Remove the account from the list.
+		$( this ).remove();
 	};
 
 	/**

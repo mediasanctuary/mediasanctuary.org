@@ -21,6 +21,8 @@
 
 namespace Tribe\Events\Virtual;
 
+use Tribe\Events\Virtual\Meetings\Facebook_Provider;
+use Tribe\Events\Virtual\Meetings\YouTube_Provider;
 use Tribe\Events\Virtual\Meetings\Zoom_Provider;
 use Tribe\Events\Virtual\Views\V2\Widgets\Widget;
 use Tribe__Context as Context;
@@ -58,6 +60,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 */
 	protected function add_actions() {
 		add_action( 'init', [ $this, 'on_init' ] );
+		add_action( 'admin_init', [ $this, 'run_updates' ], 10, 0 );
 		add_action( 'tribe_after_location_details', [ $this, 'render_metabox' ], 5 );
 		add_action( 'add_meta_boxes', [ $this, 'on_add_meta_boxes' ], 15 );
 		add_action( 'save_post_' . Events_Plugin::POSTTYPE, [ $this, 'on_save_post' ], 15, 3 );
@@ -281,7 +284,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 			3
 		);
 
-		// Event Single.
+		// "Classic" Event Single.
 		add_action(
 			'tribe_events_single_event_after_the_content',
 			[ $this, 'action_add_event_single_video_embed' ],
@@ -312,6 +315,9 @@ class Hooks extends \tad_DI52_ServiceProvider {
 
 		// Event Single Blocks.
 
+		// We need to be sure that some hooks fire after global $post is available for checks.
+		add_action( 'wp', [ $this, 'hook_block_template' ] );
+
 		add_action(
 			'tribe_template_before_include:events/blocks/event-datetime',
 			[ $this, 'action_add_block_virtual_event_marker' ]
@@ -320,24 +326,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		add_action(
 			'tribe_template_before_include:events/blocks/event-datetime',
 			[ $this, 'action_add_block_hybrid_event_marker' ]
-		);
-
-		add_action(
-			'tribe_template_after_include:events/blocks/event-datetime',
-			[
-				$this,
-				'action_add_event_single_video_embed',
-			],
-			10
-		);
-
-		add_action(
-			'tribe_template_after_include:events/blocks/event-datetime',
-			[
-				$this,
-				'action_add_event_single_link_button',
-			],
-			15
 		);
 
 		add_action(
@@ -403,6 +391,28 @@ class Hooks extends \tad_DI52_ServiceProvider {
 			'tribe_events_pro_shortcode_month_widget_remove_hooks',
 			[ $this, 'action_pro_shortcode_month_widget_remove_hooks' ]
 		);
+
+		// Metabox.
+		add_action(
+			'tribe_template_entry_point:events-virtual/admin-views/virtual-metabox/container/video-source:video_sources',
+			[ $this, 'render_classic_meeting_video_source_ui' ],
+			10,
+			3
+		);
+	}
+
+	/**
+	 * Renders the video input fields.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @param string           $file        The path to the template file, unused.
+	 * @param string           $entry_point The name of the template entry point, unused.
+	 * @param \Tribe__Template $template    The current template instance.
+	 */
+	public function render_classic_meeting_video_source_ui( $file, $entry_point, \Tribe__Template $template ) {
+		$this->container->make( Metabox::class )
+		                ->classic_meeting_video_source_ui( $template->get( 'post' ) );
 	}
 
 	/**
@@ -428,6 +438,9 @@ class Hooks extends \tad_DI52_ServiceProvider {
 
 		// Add the plugin locations to the Context.
 		add_filter( 'tribe_context_locations', [ $this, 'filter_context_locations' ] );
+
+		// Add Video Source.
+		add_filter( 'tribe_events_virtual_video_sources', [ $this, 'add_video_source' ], 10, 2 );
 	}
 
 	/**
@@ -440,6 +453,8 @@ class Hooks extends \tad_DI52_ServiceProvider {
 			return;
 		}
 
+		$this->container->register( Facebook_Provider::class );
+		$this->container->register( YouTube_Provider::class );
 		$this->container->register( Zoom_Provider::class );
 	}
 
@@ -563,8 +578,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * @since 1.0.0
 	 *
 	 * @param int $post_id  The post ID of the event we are interested in.
-	 *
-	 * @return void Action hook with no return.
 	 */
 	public function render_metabox( $post_id ) {
 		echo $this->container->make( Metabox::class )->render_template( $post_id ); /* phpcs:ignore */
@@ -574,8 +587,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * Register the metabox fields in the correct action.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @return void Action hook with no return.
 	 */
 	public function on_init() {
 		$this->container->make( Metabox::class )->register_fields();
@@ -585,8 +596,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * Registers the plugin meta box for Blocks Editor support.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @return void Action hook with no return.
 	 */
 	public function on_add_meta_boxes() {
 		$this->container->make( Metabox::class )->register_blocks_editor_legacy();
@@ -600,8 +609,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * @param int     $post_id Which post ID we are dealing with when saving.
 	 * @param WP_Post $post    WP Post instance we are saving.
 	 * @param boolean $update  If we are updating the post or not.
-	 *
-	 * @return void Action hook with no return.
 	 */
 	public function on_save_post( $post_id, $post, $update ) {
 		$this->container->make( Metabox::class )->save( $post_id, $post, $update );
@@ -615,8 +622,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * @param string   $file     Complete path to include the PHP File.
 	 * @param array    $name     Template name.
 	 * @param Template $template Current instance of the Template.
-	 *
-	 * @return void  Template render has no return.
 	 */
 	public function action_add_virtual_event_marker( $file, $name, $template ) {
 		$this->container->make( Template_Modifications::class )
@@ -631,8 +636,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * @param string   $file     Complete path to include the PHP File.
 	 * @param array    $name     Template name.
 	 * @param Template $template Current instance of the Template.
-	 *
-	 * @return void  Template render has no return.
 	 */
 	public function action_add_hybrid_event_marker( $file, $name, $template ) {
 		$this->container->make( Template_Modifications::class )
@@ -643,8 +646,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * Include the Virtual Events URL anchor for the single event block.
 	 *
 	 * @since 1.0.1
-	 *
-	 * @return void  Template render has no return.
 	 */
 	public function action_add_block_virtual_event_marker() {
 		$this->container->make( Template_Modifications::class )
@@ -655,8 +656,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * Include the Hybrid Events URL anchor for the single event block.
 	 *
 	 * @since 1.4.0
-	 *
-	 * @return void  Template render has no return.
 	 */
 	public function action_add_block_hybrid_event_marker() {
 		$this->container->make( Template_Modifications::class )
@@ -723,6 +722,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * Include the control markers for the single pages.
 	 *
 	 * @since 1.0.0
+	 * @since 1.6.0 - Always return notice html back to the filter.
 	 *
 	 * @param string $notices_html Previously set HTML.
 	 *
@@ -732,11 +732,11 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		$event = tribe_get_event( get_the_ID() );
 
 		if ( ! $event instanceof \WP_Post) {
-			return;
+			return $notices_html;
 		}
 
 		if ( ! $event->virtual ) {
-			return;
+			return $notices_html;
 		}
 
 		$template_modifications = $this->container->make( Template_Modifications::class );
@@ -748,6 +748,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * Include the hybrid control markers for the single pages.
 	 *
 	 * @since 1.4.0
+	 * @since 1.6.0 - Always return notice html back to the filter.
 	 *
 	 * @param string $notices_html Previously set HTML.
 	 *
@@ -757,11 +758,11 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		$event = tribe_get_event( get_the_ID() );
 
 		if ( ! $event instanceof \WP_Post ) {
-			return;
+			return $notices_html;
 		}
 
 		if ( ! $event->virtual ) {
-			return;
+			return $notices_html;
 		}
 
 		$template_modifications = $this->container->make( Template_Modifications::class );
@@ -879,8 +880,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * Ajax function to test an oembed link for "embeddability".
 	 *
 	 * @since 1.0.0
-	 *
-	 * @return void
 	 */
 	public function ajax_test_embed_url() {
 		$this->container->make( OEmbed::class )->ajax_test_oembed_url();
@@ -890,8 +889,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * Enqueue assets when we call a PRO shortcode.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @return void
 	 */
 	public function action_include_assets() {
 		return $this->container->make( Assets::class )->load_on_shortcode();
@@ -937,8 +934,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * Triggers on the ECP month widget add_hooks() to add/remove icons strategically
 	 *
 	 * @since 1.4.0
-	 *
-	 * @return void
 	 */
 	public function action_pro_shortcode_month_widget_add_hooks() {
 		remove_action(
@@ -959,8 +954,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * Triggers on the ECP month widget remove_hooks() to add/remove icons strategically
 	 *
 	 * @since 1.4.0
-	 *
-	 * @return void
 	 */
 	public function action_pro_shortcode_month_widget_remove_hooks() {
 		add_action(
@@ -975,5 +968,121 @@ class Hooks extends \tad_DI52_ServiceProvider {
 			[ $this, 'action_add_virtual_event_marker' ],
 			15
 		);
+	}
+
+	/**
+	 * Run Updates on Plugin Upgrades.
+	 *
+	 * @since 1.5.0
+	 */
+	public function run_updates() {
+		if ( ! class_exists( 'Tribe__Events__Updater' ) ) {
+			return; // core needs to be updated for compatibility
+		}
+
+		$updater = new Updater( Plugin::VERSION );
+		if ( $updater->update_required() ) {
+			$updater->do_updates();
+		}
+	}
+
+	/**
+	 * Add the Video Source.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @param array<string|string> An array of video sources.
+	 * @param \WP_Post $post       The current event post object, as decorated by the `tribe_get_event` function.
+	 *
+	 * @return array<string|string> An array of video sources.
+	 */
+	public function add_video_source( $video_sources, $post ) {
+
+		$video_sources[] = [
+			'text'     => _x( 'Video URL', 'The name of the video source.', 'events-virtual' ),
+			'id'       => 'video',
+			'value'    => 'video',
+			'selected' => 'video' === $post->virtual_video_source ? true : false,
+		];
+
+		return $video_sources;
+	}
+
+	/**
+	 * Hook block templates - legacy or new VE block.
+	 * Has to be postponed to `wp` action or later so global $post is available for should_inject_new_block().
+	 *
+	 * @since 1.7.1
+	 *
+	 * @todo: Should we move this to an abstract base provider?
+	 */
+	public function hook_block_template() {
+		/* The action/location which the template is injected depends on whether or not V2 is enabled
+		 * and whether the virtual event block is present in the post content.
+		 */
+		$embed_inject_action = $this->get_virtual_embed_action();
+
+		add_action(
+			$embed_inject_action,
+			[
+				$this,
+				'action_add_event_single_video_embed',
+			],
+			10
+		);
+
+		add_action(
+			$embed_inject_action,
+			[
+				$this,
+				'action_add_event_single_link_button',
+			],
+			15
+		);
+	}
+
+	/**
+	 * Get the action we embed the virtual event content on.
+	 *
+	 * @since 1.7.1
+	 *
+	 * @return string The name of the action we embed on.
+	 */
+	public function get_virtual_embed_action() {
+		return $this->should_inject_new_block()
+			? 'tribe_events_virtual_block_content'
+			: 'tribe_template_after_include:events/blocks/event-datetime';
+	}
+
+	/**
+	 * Determine whether we show the legacy virtual info HTML or the new block.
+	 *
+	 * @since 1.7.1
+	 *
+	 * @return boolean Show the new block if true, the legacy info if false.
+	 */
+	public function should_inject_new_block() {
+		global $post;
+
+		// If we can't get the post - we probably shouldn't be here. Bail.
+		if ( empty( $post ) ) {
+			return false;
+		}
+
+		$no_blocks = ! function_exists( 'has_block' ) || has_block( 'tribe/virtual-event', $post );
+
+		// If the block is missing, show the legacy info HTML.
+		$new_block = $no_blocks ? false : tribe_events_single_view_v2_is_enabled();
+
+		/**
+		 * Allows filtering whether to load the legacy virtual info HTML over the new block.
+		 * Note if the new block is not present, returning true here can have unforeseen consequences!
+		 *
+		 * @since 1.7.1
+		 *
+		 * @param boolean $new_block Whether to load the new block or not
+		 * @param WP_Post $post      The current global post object.
+		 */
+		return apply_filters( 'tec_events_virtual_should_inject_new_block', $new_block, $post );
 	}
 }

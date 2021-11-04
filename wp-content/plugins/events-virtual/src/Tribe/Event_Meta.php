@@ -37,6 +37,15 @@ class Event_Meta {
 	public static $key_virtual = '_tribe_events_is_virtual';
 
 	/**
+	 * Meta key for video source field.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @var string
+	 */
+	public static $key_video_source = '_tribe_events_virtual_video_source';
+
+	/**
 	 * Meta key for virtual url field.
 	 *
 	 * @since 1.0.0
@@ -167,12 +176,14 @@ class Event_Meta {
 	 * @since 1.0.0
 	 * @since 1.0.4 moved ticket links to Compatibility.
 	 * @since 1.4.0 Add hybrid key.
+	 * @since 1.6.0 Add video source.
 	 *
 	 * @var array<string>
 	 */
 	public static $virtual_event_keys = [
 		'_tribe_events_is_hybrid',
 		'_tribe_events_is_virtual',
+		'_tribe_events_virtual_video_source',
 		'_tribe_events_virtual_embed_video',
 		'_tribe_events_virtual_linked_button_text',
 		'_tribe_events_virtual_linked_button',
@@ -232,7 +243,7 @@ class Event_Meta {
 		$event = tribe_get_event( $event );
 
 		$text = _x(
-			'Enter URL for YouTube, Facebook, etc.',
+			'Enter URL for YouTube, Vimeo, etc.',
 			'Default placeholder text for the virtual event URL input.',
 			'events-virtual'
 		);

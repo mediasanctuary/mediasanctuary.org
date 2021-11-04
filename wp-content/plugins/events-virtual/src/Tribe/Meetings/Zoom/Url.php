@@ -124,7 +124,6 @@ class Url {
 			$authorize_url
 		);
 
-
 		return $real_url;
 	}
 
@@ -258,5 +257,65 @@ class Url {
 			],
 			admin_url( 'admin-ajax.php' )
 		);
+	}
+
+	/**
+	 * Returns the URL that should be used to select an account to setup for the Zoom API.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param \WP_Post|null $post A post object to generate the meeting for.
+	 *
+	 * @return string The URL to select the Zoom account.
+	 */
+	public function to_select_account_link( \WP_Post $post ) {
+		$nonce = wp_create_nonce( API::$select_action );
+
+		return add_query_arg( [
+			'action'              => 'ev_zoom_account_select',
+			Plugin::$request_slug => $nonce,
+			'post_id'             => $post->ID,
+			'_ajax_nonce'         => $nonce,
+		], admin_url( 'admin-ajax.php' ) );
+	}
+
+	/**
+	 * Returns the URL that should be used to change an account status.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param string $account_id The Zoom Account ID to change the status.
+	 *
+	 * @return string The URL to change an account status.
+	 */
+	public function to_change_account_status_link( $account_id ) {
+		$nonce = wp_create_nonce( Settings::$status_action );
+
+		return add_query_arg( [
+			'action'              => 'ev_zoom_settings_account_status',
+			Plugin::$request_slug => $nonce,
+			'zoom_account_id'     => $account_id,
+			'_ajax_nonce'         => $nonce,
+		], admin_url( 'admin-ajax.php' ) );
+	}
+
+	/**
+	 * Returns the URL that should be used to delete an account.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param string $account_id The Zoom Account ID to change the status.
+	 *
+	 * @return string The URL to delete an account.
+	 */
+	public function to_delete_account_link( $account_id ) {
+		$nonce = wp_create_nonce( Settings::$delete_action );
+
+		return add_query_arg( [
+			'action'              => 'ev_zoom_settings_delete_account',
+			Plugin::$request_slug => $nonce,
+			'zoom_account_id'     => $account_id,
+			'_ajax_nonce'         => $nonce,
+		], admin_url( 'admin-ajax.php' ) );
 	}
 }

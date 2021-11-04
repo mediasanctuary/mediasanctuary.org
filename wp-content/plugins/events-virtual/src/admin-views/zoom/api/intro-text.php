@@ -22,15 +22,20 @@
 </h3>
 <p>
 	<?php
-	echo esc_html(
-		sprintf(
-		/* Translators: %1$s is the lowercase plural virtual event term. */
-			_x(
-				'You need to connect your site to your Zoom account to be able to generate Zoom links for your %1$s.',
-				'Settings Description',
-				'events-virtual'
-			),
-			tribe_get_virtual_event_label_plural_lowercase()
+	$url = 'https://evnt.is/1ap5';
+	echo sprintf(
+		'%1$s %2$s. <a href="%3$s" target="_blank">%4$s</a>',
+		esc_html_x(
+			'You need to connect your site to a Zoom account to be able to generate Zoom links for your',
+		'Settings help text for multiple Zoom accounts.',
+		'events-virtual'
+		),
+		tribe_get_virtual_event_label_plural_lowercase(),
+		esc_url( $url ),
+		esc_html_x(
+			'Read more about adding and managing Zoom Accounts.',
+			'Settings link text for multiple Zoom accounts.',
+			'events-virtual'
 		)
 	);
 	?>

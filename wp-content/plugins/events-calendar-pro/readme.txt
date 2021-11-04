@@ -1,11 +1,11 @@
 === The Events Calendar PRO ===
 
-Contributors: theeventscalendar, borkweb, bordoni, brianjessee, aguseo, camwynsp, GeoffBel, geoffgraham, jentheo, leahkoerper, lucatume, neillmcshea, patriciahillebrandt, paulskim, vicskf, zbtirrell, juanfra
-Tags: events, calendar, event, venue, organizer, dates, date, google maps, conference, workshop, concert, meeting, seminar, summit, class, modern tribe, tribe, widget, pro
+Contributors: theeventscalendar, borkweb, bordoni, brianjessee, aguseo, camwynsp, GeoffBel, geoffgraham, jentheo, leahkoerper, lucatume, neillmcshea, paulskim, vicskf, zbtirrell, juanfra
+Tags: events, calendar, event, venue, organizer, dates, date, google maps, conference, workshop, concert, meeting, seminar, summit, class, the events calendar, widget, pro
 Donate link: https://evnt.is/29
-Requires at least: 4.9.16
-Stable tag: 5.7.0
-Tested up to: 5.7.2
+Requires at least: 4.9.18
+Stable tag: 5.9.2.1
+Tested up to: 5.8.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -207,6 +207,65 @@ Our Premium Plugins:
 * <a href="https://evnt.is/fa" target="_blank">The Events Calendar: Filter Bar</a>
 
 == Changelog ==
+
+= [5.9.2.1] 2021-10-14 =
+
+* Fix - Fixed bug where our Events->Settings->General->"Calendar Manager" option could cause some child admin pages to not route properly. [ECP-962]
+
+= [5.9.2] 2021-10-12 =
+
+* Fix - Correct the handling of dates in the Week View when the Event setting is set to "site-wide" [ECP-881]
+* Fix - Add ability for translations of `summary` slug. [ECP-911]
+* Fix - Align the event cost and ticket section properly in the summary view. [ECP-919]
+* Fix - Remove incorrect aria-selected attribute from some elements. [ECP-394]
+* Fix - Prevent a PHP 8 deprecation notice for the get_edit_link() function. [ECP-958]
+* Language - 1 new strings added, 10 updated, 0 fuzzied, and 0 obsoleted
+
+= [5.9.1] 2021-09-14 =
+
+* Fix - Now displaying multi-day all day events with date ranges for better UX on photo list view page [ECP-525]
+* Fix - Ensure we don't run any of the legacy Customizer and its deprecated functions. [ECP-941]
+* Fix - Use the correct text label for custom URL fields. [ECP-921]
+* Language - 0 new strings added, 14 updated, 0 fuzzied, and 0 obsoleted
+
+= [5.9.0] 2021-08-24 =
+
+* Version - Events Calendar PRO 5.9.0 is only compatible with The Events Calendar 5.9.0 and higher.
+* Feature - View events in a calendar format within the dashboard using the new Events Manager!
+* Feature - Stop compiling CSS custom props and leave them exposed and accessible to the Customizer and third parties. [TEC-3011]
+* Feature - Update hooked Customizer styles to account for surfaced CSS custom properties and for new TEC Customizer font controls. [TEC-3897]
+* Language - 2 new strings added, 5 updated, 0 fuzzied, and 0 obsoleted
+
+= [5.8.2] 2021-08-17 =
+
+* Fix - Fix issue of month names not being translatable. This was caused by a missing moment js localization dependency. [ECP-739]
+* Fix - Add a new function to add "Additional Fields" category to the editor for WP >= 5.8. [ECP-922]
+* Language - 0 new strings added, 4 updated, 0 fuzzied, and 2 obsoleted
+
+= [5.8.1] 2021-07-20 =
+
+* Fix - Prevent pagination from influencing the fetching of events for the Events List and Featured Venue widgets. [TEC-3954]
+* Fix - Show the correct cost on the Summary View for events that do not have event tickets or RSVPs yet have a cost value set. [ECP-904]
+* Fix - Ensure "Summary" gets translated correctly in view selector. [ECP-889]
+* Fix - Don't enqueue scripts (and localized scripts) if they're already enqueued. [ECP-880]
+* Fix - Don't try to enqueue scripts too early preventing them from being enqueued later. [ECP-888]
+* Tweak - Change the text of the Featured Venue Widget "view more" link. [ECP-878]
+* Tweak - Add empty alt tag to featured images in the map view if user doesn't explicitly define one. [ECP-395]
+* Language - 1 new strings added, 22 updated, 1 fuzzied, and 0 obsoleted
+
+= [5.8.0] 2021-07-01 =
+
+* Version - Events Calendar PRO 5.8.0 is only compatible with The Events Calendar 5.8.0 and higher.
+* Feature - Add new Events bar section to the Customizer for control of the Events Bar styles. [TEC-3672]
+* Tweak - Added filters: `tribe_customizer_should_print_shortcode_customizer_styles`
+* Language - 3 new strings added, 1 updated, 0 fuzzied, and 0 obsoleted
+
+= [5.7.1] 2021-06-23 =
+
+* Fix - Ensure Month Widget translates date in navigation. [ECP-851]
+* Fix - Ensure month name translates in the event card in Map view. [ECP-875]
+* Tweak - Remove incorrect aria-label from icons, pass icon label where needed. [TEC-3396]
+* Language - 0 new strings added, 9 updated, 0 fuzzied, and 0 obsoleted
 
 = [5.7.0] 2021-05-27 =
 
