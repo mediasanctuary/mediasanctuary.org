@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf1b571b23969033e6a2a2ddb2a6a4ffd
+class ComposerStaticInitc6ae8259d742711036294545a08a09e6
 {
     public static $prefixLengthsPsr4 = array (
         'T' => 
@@ -170,6 +170,9 @@ class ComposerStaticInitf1b571b23969033e6a2a2ddb2a6a4ffd
         'Psr\\Log\\Test\\DummyTest' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/DummyTest.php',
         'Psr\\Log\\Test\\LoggerInterfaceTest' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/LoggerInterfaceTest.php',
         'Psr\\Log\\Test\\TestLogger' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/TestLogger.php',
+        'Tribe\\Admin\\Conditional_Content\\Black_Friday' => __DIR__ . '/../..' . '/src/Tribe/Admin/Conditional_Content/Black_Friday.php',
+        'Tribe\\Admin\\Conditional_Content\\Datetime_Conditional_Abstract' => __DIR__ . '/../..' . '/src/Tribe/Admin/Conditional_Content/Datetime_Conditional_Abstract.php',
+        'Tribe\\Admin\\Conditional_Content\\Service_Provider' => __DIR__ . '/../..' . '/src/Tribe/Admin/Conditional_Content/Service_Provider.php',
         'Tribe\\Admin\\Notice\\Date_Based' => __DIR__ . '/../..' . '/src/Tribe/Admin/Notice/Date_Based.php',
         'Tribe\\Admin\\Notice\\Marketing\\Black_Friday' => __DIR__ . '/../..' . '/src/Tribe/Admin/Notice/Marketing/Black_Friday.php',
         'Tribe\\Admin\\Notice\\Marketing\\Stellar_Sale' => __DIR__ . '/../..' . '/src/Tribe/Admin/Notice/Marketing/Stellar_Sale.php',
@@ -242,10 +245,10 @@ class ComposerStaticInitf1b571b23969033e6a2a2ddb2a6a4ffd
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitf1b571b23969033e6a2a2ddb2a6a4ffd::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitf1b571b23969033e6a2a2ddb2a6a4ffd::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitf1b571b23969033e6a2a2ddb2a6a4ffd::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitf1b571b23969033e6a2a2ddb2a6a4ffd::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitc6ae8259d742711036294545a08a09e6::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitc6ae8259d742711036294545a08a09e6::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitc6ae8259d742711036294545a08a09e6::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitc6ae8259d742711036294545a08a09e6::$classMap;
 
         }, null, ClassLoader::class);
     }
