@@ -96,7 +96,7 @@ class Event_Meta {
 		foreach ( $flattened_array as $meta_key => $meta_value ) {
 			$encrypted_field_key = str_replace( $prefix, '', $meta_key );
 
-			if ( ! isset( $encrypted_fields[ $encrypted_field_key ] ) ) {
+			if ( ! array_key_exists( $encrypted_field_key, $encrypted_fields ) ) {
 				continue;
 			}
 
@@ -121,6 +121,11 @@ class Event_Meta {
 		$event = tribe_get_event( $event );
 
 		if ( ! $event instanceof \WP_Post || ! current_user_can( 'read_private_posts' ) ) {
+			return $data;
+		}
+
+		// Return when Zoom is not the source.
+		if ( 'zoom' !== $event->virtual_video_source ) {
 			return $data;
 		}
 
@@ -201,6 +206,19 @@ class Event_Meta {
 	 * @return \WP_Post The decorated event post object, with Zoom related properties added to it.
 	 */
 	public static function add_event_properties( \WP_Post $event ) {
+
+		// Get the current actions
+		$current_action = tribe_get_request_var( 'action' );
+		$create_actions = [
+			'ev_zoom_meetings_create',
+			'ev_zoom_webinars_create',
+		];
+
+		// Return when Zoom is not the source and not running the create actions for meetings and webinars.
+		if ( 'zoom' !== $event->virtual_video_source && ! in_array( $current_action, $create_actions ) ) {
+			return $event;
+		}
+
 		$prefix = Virtual_Event_Meta::$prefix;
 
 		$is_new_event = empty( $event->ID );

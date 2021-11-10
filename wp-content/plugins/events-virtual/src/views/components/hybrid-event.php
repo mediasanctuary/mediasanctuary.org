@@ -20,6 +20,11 @@
 
 use Tribe\Events\Virtual\Event_Meta;
 
+// Don't print anything when this event is not virtual.
+if ( ! $event->virtual || ! $event->virtual_show_on_views ) {
+	return;
+}
+
 // Don't print anything when this event is not hybrid.
 if ( Event_Meta::$value_hybrid_event_type !== $event->virtual_event_type ) {
 	return;
@@ -34,10 +39,15 @@ $hybrid_event_label = tribe_get_hybrid_event_label_singular();
 <div class="tribe-common-b2 tribe-common-b2--bold tribe-events-virtual-hybrid-event">
 	<em
 		class="tribe-events-virtual-hybrid-event__icon"
-		aria-label="<?php echo esc_attr( $hybrid_label ); ?>"
 		title="<?php echo esc_attr( $hybrid_label ); ?>"
 	>
-		<?php $this->template( 'components/icons/hybrid', [ 'classes' => [ 'tribe-events-virtual-hybrid-event__icon-svg' ] ] ); ?>
+		<?php $this->template(
+			'v2/components/icons/hybrid',
+			[
+				'classes' => [ 'tribe-events-virtual-hybrid-event__icon-svg' ],
+				'icon_label' => $hybrid_label
+			]
+		); ?>
 	</em>
 	<span class="tribe-events-virtual-virtual-event__text">
 		<?php echo esc_html( $hybrid_event_label ); ?>

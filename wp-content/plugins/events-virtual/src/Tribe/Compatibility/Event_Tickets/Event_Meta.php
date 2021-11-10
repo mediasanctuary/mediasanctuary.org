@@ -79,7 +79,6 @@ class Event_Meta {
 	 *
 	 * @param int                 $post_id The post ID of the post the date is being saved for.
 	 * @param array<string,mixed> $data    The data to save, directly from the metabox.
-	 * @return void
 	 */
 	public function update_post_meta( $post_id, $data ) {
 		update_post_meta( $post_id, self::$key_rsvp_email_link, Arr::get( $data, 'rsvp-email-link', false ) );

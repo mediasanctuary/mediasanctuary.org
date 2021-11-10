@@ -1,4 +1,3 @@
-/* eslint-disable no-var */
 /**
  * Makes sure we have all the required levels on the Tribe Object
  *
@@ -29,7 +28,7 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
  */
 ( function( $, obj ) {
 	'use-strict';
-	var $document = $( document ); // eslint-disable-line no-var
+	var $document = $( document );
 
 	/**
 	 * Selectors used for configuration and setup
@@ -50,6 +49,10 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
 		setupCheckbox: '#tribe-events-virtual-setup',
 		showOptions: '.tribe-events-virtual-show input',
 		showAll: '#tribe-events-virtual-show-to-all',
+		videoSource: '#tribe-events-virtual-video-source',
+		videoSourcesWrap: '.tribe-events-virtual-video-sources-wrap',
+		videoSourceDetails: '.tribe-events-virtual-video-sources',
+		videoSourcesFloat: '.tribe-events-virtual-video-sources--float',
 		virtualContainer: '#tribe-virtual-events',
 		virtualUrl: '.tribe-events-virtual-video-source__virtual-url-input',
 	};
@@ -64,7 +67,84 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
 	 * @return {function} Handler to check the checkbox or not
 	 */
 	obj.setCheckboxCheckedAttr = function( checked ) {
+		if ( obj.isGutenbergActive() ) {
+			return function() {
+				const blocks = wp.data.select( 'core/block-editor' ).getBlocks();
+				// Ensure we have a date block.
+				const dateBlock = blocks.find( block => 'tribe/event-price' === block.name ); // eslint-disable-line es5/no-es6-methods,max-len
+
+				if ( checked ) {
+					// See if we have a VE block already.
+					const existingBlock = blocks.filter( block => 'tribe/virtual-event' === block.name );
+					// If we already have a block there's no need to add a new one.
+					if ( existingBlock.length ) {
+						$( obj.selectors.setupCheckbox )
+							.prop( 'checked', checked ).trigger( 'verify.dependency' );
+						return;
+					}
+
+					if ( dateBlock ) {
+						// If the date block is present, insert immediately after it.
+						const index = wp.data.select( 'core/block-editor' ).getBlockIndex( dateBlock.clientId );
+						const newBlock = wp.blocks.createBlock( 'tribe/virtual-event' );
+						wp.data.dispatch( 'core/block-editor' ).insertBlock(
+							newBlock,
+							index + 1,
+							'',
+							false
+						);
+					} else {
+						// Insert at the end.
+						const newBlock = wp.blocks.createBlock( 'tribe/virtual-event' );
+						wp.data.dispatch( 'core/block-editor' ).insertBlock( newBlock );
+					}
+
+					// Trigger add event for hooking.
+					$document.trigger( 'virtual.add' );
+
+					// Attempt to keep from scrolling away from the metabox.
+					const metabox = document.getElementById( 'tribe-virtual-events' );
+					metabox.scrollIntoView();
+				} else {
+					// Add confirmation if deleting the virtual settings.
+					var confirmed = confirm( tribe_events_virtual_strings.deleteConfirm );
+					if ( ! confirmed ) {
+						return;
+					}
+
+					tribe.events.metaboxDelete = true;
+					// Remove the VE block if it's there.
+					blocks.forEach( element => {
+						if ( 'tribe/virtual-event' === element.name ) {
+							wp.data.dispatch( 'core/block-editor' ).removeBlock( element.clientId );
+						}
+					} );
+
+					// Trigger delete event for hooking.
+					$document.trigger( 'virtual.delete' );
+
+					tribe.events.metaboxDelete = false;
+				}
+
+				$( obj.selectors.setupCheckbox ).prop( 'checked', checked ).trigger( 'verify.dependency' );
+			};
+		}
+
 		return function() {
+			if ( checked ) {
+				// Trigger add event for hooking.
+				$document.trigger( 'virtual.add' );
+			} else {
+				// Add confirmation if deleting the virtual settings.
+				var confirmed = confirm( tribe_events_virtual_strings.deleteConfirm );
+				if ( ! confirmed ) {
+					return;
+				}
+
+				// Trigger delete event for hooking.
+				$document.trigger( 'virtual.delete' );
+			}
+
 			$( obj.selectors.setupCheckbox ).prop( 'checked', checked ).trigger( 'verify.dependency' );
 		};
 	};
@@ -73,8 +153,14 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
 	 * Checks the virtual URL for embeddability.
 	 *
 	 * @since 1.0.0
+	 * @since 1.6.0 - Video source dropdown support.
 	 */
 	obj.testEmbed = function() {
+		var $videoSource = $( obj.selectors.videoSource );
+		if ( 'video' !== $videoSource.val() ) {
+			return;
+		}
+
 		const $input = $( obj.selectors.virtualUrl );
 		const url = $input.val();
 		const nonce = $input.attr( 'data-nonce' );
@@ -150,7 +236,7 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
 	};
 
 	obj.handleShowOptionInteractivity = function( e ) {
-		if ( ! ( e && e.hasOwnProperty( 'target' ) ) ) {
+		if ( ! ( e && Object.prototype.hasOwnProperty.call( e, 'target' ) ) ) {
 			// Empty on new posts.
 			return;
 		}
@@ -183,16 +269,53 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
 			.on( 'change', obj.selectors.showOptions, obj.handleShowOptionInteractivity );
 	};
 
+	obj.isGutenbergActive = function() {
+		return typeof wp !== 'undefined' && typeof wp.blocks !== 'undefined';
+	};
+
 	/**
 	 * Handles the initialization of the admin when Document is ready
 	 *
 	 * @since 1.0.0
+	 * @since 1.6.0 - Support for video sources dropdown.
 	 *
 	 * @return {void}
 	 */
 	obj.ready = function() {
 		obj.bindEvents();
 		obj.testEmbed();
+
+		// Trigger tribe dependency for video source fields to display.
+		// Set on a delay or it does not correctly load the selected video source fields.
+		setTimeout( function() {
+			$( obj.selectors.videoSource ).trigger( 'verify.dependency' );
+		}, 0 );
+	};
+
+	/**
+	 * Handles the classes for the video source details.
+	 *
+	 * @since 1.6.0
+	 * @deprecated 1.7.0
+	 */
+	obj.handleVideoSourceClasses = function() {
+		console.info( 'Method deprecated with no replacement.' ); // eslint-disable-line no-console
+
+		var $sourceDetails = $( obj.selectors.videoSourceDetails );
+		if ( ! $sourceDetails.length ) {
+			return;
+		}
+
+		var $sourceDropdownField = $( obj.selectors.videoSourcesWrap );
+		var content = $sourceDropdownField.parent();
+		var isWide = content.width() >=
+			$sourceDetails.outerWidth( true ) + $sourceDropdownField.outerWidth( true );
+
+		if ( isWide ) {
+			$sourceDetails.addClass( obj.selectors.videoSourcesFloat.className() );
+		} else {
+			$sourceDetails.removeClass( obj.selectors.videoSourcesFloat.className() );
+		}
 	};
 
 	// Configure on document ready

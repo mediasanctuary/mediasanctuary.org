@@ -10,9 +10,10 @@
 namespace Tribe\Events\Virtual\Meetings;
 
 use Tribe\Events\Virtual\Meetings\Zoom\Migration_Notice;
-use Tribe\Events\Virtual\Meetings\Zoom\Users;
+use Tribe\Events\Virtual\Meetings\Zoom\Settings;
 use Tribe\Events\Virtual\Event_Meta;
 use Tribe\Events\Virtual\Meetings\Zoom\Event_Meta as Zoom_Meta;
+use Tribe\Events\Virtual\Meetings\Zoom\Api;
 use Tribe\Events\Virtual\Meetings\Zoom\Meetings;
 use Tribe\Events\Virtual\Meetings\Zoom\OAuth;
 use Tribe\Events\Virtual\Meetings\Zoom\Password;
@@ -21,6 +22,7 @@ use Tribe\Events\Virtual\Meetings\Zoom\Webinars;
 use Tribe\Events\Virtual\Plugin;
 use Tribe\Events\Virtual\Traits\With_Nonce_Routes;
 use Tribe__Events__Main as Events_Plugin;
+use Tribe__Admin__Helpers as Admin_Helpers;
 
 /**
  * Class Zoom_Provider
@@ -72,7 +74,17 @@ class Zoom_Provider extends Meeting_Provider {
 
 		$this->hook_templates();
 		$this->enqueue_assets();
-		$this->route_admin_by_nonce( $this->admin_routes(), 'manage_options' );
+
+		/**
+		 * Allows filtering of the capability required to use the Zoom integration ajax features.
+		 *
+		 * @since 1.6.0
+		 *
+		 * @param string $ajax_capability The capability required to use the ajax features, default manage_options.
+		 */
+		$ajax_capability = apply_filters( 'tribe_events_virtual_zoom_admin_ajax_capability', 'manage_options' );
+
+		$this->route_admin_by_nonce( $this->admin_routes(), $ajax_capability );
 	}
 
 	/**
@@ -103,7 +115,7 @@ class Zoom_Provider extends Meeting_Provider {
 	 */
 	public function render_classic_meeting_link_ui( $file, $entry_point, \Tribe__Template $template ) {
 		$this->container->make( Zoom\Classic_Editor::class )
-		                ->render_meeting_link_generator( $template->get( 'post' ) );
+						->render_initial_zoom_setup_options( $template->get( 'post' ) );
 	}
 
 	/**
@@ -157,6 +169,24 @@ class Zoom_Provider extends Meeting_Provider {
 	}
 
 	/**
+	 * Check Zoom Meeting Account in the admin on every event for compatibility with multiple accounts.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param \WP_Post $event The event post object.
+	 *
+	 * @return bool|void Whether the update completed.
+	 */
+	public function update_event_for_multiple_accounts_support( $event ) {
+		if ( ! $event instanceof \WP_Post ) {
+			// We should only act on event posts, else bail.
+			return $event;
+		}
+
+		return $this->container->make( Api::class )->update_event_for_multiple_accounts_support( $event );
+	}
+
+	/**
 	 * Check Zoom Meeting on Front End and Set Transient.
 	 *
 	 * @since 1.0.4
@@ -200,7 +230,7 @@ class Zoom_Provider extends Meeting_Provider {
 	protected function hook_templates() {
 		// Metabox.
 		add_action(
-			'tribe_template_entry_point:events-virtual/admin-views/virtual-metabox/container/video-source:before_li_close',
+			'tribe_template_entry_point:events-virtual/admin-views/virtual-metabox/container/video-source:video_sources',
 			[ $this, 'render_classic_meeting_link_ui' ],
 			10,
 			3
@@ -233,8 +263,13 @@ class Zoom_Provider extends Meeting_Provider {
 		);
 
 		// Event Single - Blocks.
+		add_action( 'wp', [ $this, 'hook_block_template' ] );
+
+		// The location which the template is injected depends on whether or not V2 is enabled.
+		$zoom_details_inject_action = tribe_events_single_view_v2_is_enabled() ? 'tribe_events_virtual_block_content' : 'tribe_template_after_include:events/blocks/event-datetime';
+
 		add_action(
-			'tribe_template_after_include:events/blocks/event-datetime',
+			$zoom_details_inject_action,
 			[ $this, 'action_add_event_single_zoom_details' ],
 			20,
 			0
@@ -247,18 +282,25 @@ class Zoom_Provider extends Meeting_Provider {
 	 * @since 1.0.0
 	 */
 	protected function enqueue_assets() {
+		$admin_helpers = Admin_Helpers::instance();
+
 		tribe_asset(
 			tribe( Plugin::class ),
 			'tribe-events-virtual-zoom-admin-js',
 			'events-virtual-zoom-admin.js',
-			[ 'jquery' ],
+			[ 'jquery', 'tribe-dropdowns' ],
 			'admin_enqueue_scripts',
 			[
+				'conditionals' => [
+					'operator' => 'OR',
+					[ $admin_helpers, 'is_screen' ],
+				],
 				'localize' => [
 					'name' => 'tribe_events_virtual_placeholder_strings',
 					'data' => [
-						'video' => Event_Meta::get_video_source_text(),
-						'zoom'  => self::get_zoom_link_placeholder_text(),
+						'video'         => Event_Meta::get_video_source_text(),
+						'zoom'          => self::get_zoom_link_placeholder_text(),
+						'removeConfirm' => self::get_zoom_confirmation_to_remove_connection_text(),
 					],
 				],
 			]
@@ -269,7 +311,13 @@ class Zoom_Provider extends Meeting_Provider {
 			'tribe-events-virtual-zoom-admin-style',
 			'events-virtual-zoom-admin.css',
 			[],
-			'admin_enqueue_scripts'
+			'admin_enqueue_scripts',
+			[
+				'conditionals' => [
+					'operator' => 'OR',
+					[ $admin_helpers, 'is_screen' ],
+				],
+			]
 		);
 
 		tribe_asset(
@@ -277,7 +325,20 @@ class Zoom_Provider extends Meeting_Provider {
 			'tribe-events-virtual-zoom-settings-js',
 			'events-virtual-zoom-settings.js',
 			[ 'jquery' ],
-			'admin_enqueue_scripts'
+			'admin_enqueue_scripts',
+			[
+				'conditionals' => [
+					'operator' => 'OR',
+					[ $admin_helpers, 'is_screen' ],
+				],
+				'localize' => [
+					'name' => 'tribe_events_virtual_settings_strings',
+					'data' => [
+						'refreshConfirm' => self::get_zoom_confirmation_to_refresh_account(),
+						'deleteConfirm'  => self::get_zoom_confirmation_to_delete_account(),
+					],
+				],
+			]
 		);
 	}
 
@@ -306,8 +367,6 @@ class Zoom_Provider extends Meeting_Provider {
 	 * @param int     $post_id     The post ID.
 	 * @param WP_Post $unused_post The post object.
 	 * @param bool    $update      Whether this is an existing post being updated or not.
-	 *
-	 * @return void
 	 */
 	public function on_post_save( $post_id, $unused_post, $update ) {
 		if ( ! $update ) {
@@ -343,8 +402,6 @@ class Zoom_Provider extends Meeting_Provider {
 	 *
 	 * @param Api $api An instance of the Zoom API handler.
 	 * @param Url $url An instance of the URL handler.
-	 *
-	 * @return void
 	 */
 	public function zoom_api_authorize_fields( $api, $url ) {
 		$this->container->make( Template_Modifications::class )->add_zoom_api_authorize_fields( $api, $url );
@@ -456,6 +513,51 @@ class Zoom_Provider extends Meeting_Provider {
 	}
 
 	/**
+	 * Get the confirmation text for removing a Zoom connection.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @return string The confirmation text.
+	 */
+	public static function get_zoom_confirmation_to_remove_connection_text() {
+		return _x(
+			'Are you sure you want to remove this Zoom meeting from this event? This operation cannot be undone.',
+			'The message to display to confirm a user would like to remove the Zoom connection from an event.',
+			'events-virtual'
+		);
+	}
+
+	/**
+	 * Get the confirmation text for refreshing a Zoom account.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @return string The confirmation text.
+	 */
+	public static function get_zoom_confirmation_to_refresh_account() {
+		return _x(
+			'Before refreshing the connection, make sure you are logged into the Zoom account in this browser.',
+			'The message to display before a user attempts to refresh a Zoom account connection.',
+			'events-virtual'
+		);
+	}
+
+	/**
+	 * Get the confirmation text for deleting a Zoom account.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @return string The confirmation text.
+	 */
+	public static function get_zoom_confirmation_to_delete_account() {
+		return _x(
+			'Are you sure you want to delete this Zoom connection? This operation cannot be undone. Existing meetings tied to this account will not be impacted.',
+			'The message to display to confirm a user would like to delete a Zoom account.',
+			'events-virtual'
+		);
+	}
+
+	/**
 	 * Filters whether embed video control is hidden.
 	 *
 	 * @param boolean $is_hidden Whether the embed video control is hidden.
@@ -499,29 +601,14 @@ class Zoom_Provider extends Meeting_Provider {
 	}
 
 	/**
-	 * Get the host list to use to assign to Zoom Meetings and Webinars.
+	 * Get the list of Zoom ajax nonce actions.
 	 *
-	 * @since 1.4.0
+	 * @since 1.5.0
 	 *
-	 * @return array<string,mixed>  An array of Zoom Users to use as the host.
+	 * @return array<string,callable> A map from the nonce actions to the corresponding handlers.
 	 */
-	public function filter_virtual_meetings_zoom_hosts() {
-		return tribe( Users::class )->get_formatted_hosts_list();
-	}
-
-	/**
-	 * Get the host list to use to assign to Zoom Meetings and Webinars.
-	 *
-	 * @since 1.4.0
-	 *
-	 * @param array<string,mixed>   An array of Zoom Users to use as the alternative hosts.
-	 * @param string $selected_alt_hosts The list of alternative host emails.
-	 * @param string $current_host       The email of the current host.
-	 *
-	 * @return array<string,mixed>  An array of Zoom Users to use as the host.
-	 */
-	public function filter_virtual_meetings_zoom_alternative_hosts( $alternative_hosts, $selected_alt_hosts, $current_host ) {
-		return tribe( Users::class )->get_alternative_users( $alternative_hosts, $selected_alt_hosts, $current_host );
+	public function filter_virtual_meetings_zoom_ajax_actions() {
+		return $this->admin_routes();
 	}
 
 	/**
@@ -544,7 +631,32 @@ class Zoom_Provider extends Meeting_Provider {
 			Webinars::$create_action         => $this->container->callback( Webinars::class, 'ajax_create' ),
 			Webinars::$update_action         => $this->container->callback( Webinars::class, 'ajax_update' ),
 			Webinars::$remove_action         => $this->container->callback( Webinars::class, 'ajax_remove' ),
+			API::$select_action              => $this->container->callback( API::class, 'ajax_selection' ),
+			Settings::$status_action         => $this->container->callback( Settings::class, 'ajax_status' ),
+			Settings::$delete_action         => $this->container->callback( Settings::class, 'ajax_delete' ),
 		];
+	}
+
+	/**
+	 * Add the Zoom Video Source.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @param array<string|string> An array of video sources.
+	 * @param \WP_Post $post       The current event post object, as decorated by the `tribe_get_event` function.
+	 *
+	 * @return array<string|mixed> An array of video sources.
+	 */
+	public function add_video_source( $video_sources, $post ) {
+
+		$video_sources[] = [
+			'text'     => _x( 'Zoom', 'The name of the video source.', 'events-virtual' ),
+			'id'       => 'zoom',
+			'value'    => 'zoom',
+			'selected' => 'zoom' === $post->virtual_video_source ? true : false,
+		];
+
+		return $video_sources;
 	}
 
 	/**
@@ -589,17 +701,10 @@ class Zoom_Provider extends Meeting_Provider {
 			2
 		);
 		add_filter(
-			'tribe_events_virtual_meetings_zoom_hosts',
-			[ $this, 'filter_virtual_meetings_zoom_hosts' ],
-			10
+			'tribe_events_virtual_meetings_zoom_ajax_actions',
+			[ $this, 'filter_virtual_meetings_zoom_ajax_actions' ]
 		);
-
-		add_filter(
-			'tribe_events_virtual_meetings_zoom_alternative_hosts',
-			[ $this, 'filter_virtual_meetings_zoom_alternative_hosts' ],
-			10,
-			3
-		);
+		add_filter( 'tribe_events_virtual_video_sources', [ $this, 'add_video_source' ], 20, 2 );
 	}
 
 	/**
@@ -611,13 +716,30 @@ class Zoom_Provider extends Meeting_Provider {
 		// Filter event object properties to add the ones related to Zoom meetings for virtual events.
 		add_action( 'tribe_events_virtual_add_event_properties', [ $this, 'add_event_properties' ] );
 		add_action( 'add_meta_boxes_' . Events_Plugin::POSTTYPE, [ $this, 'check_admin_zoom_meeting' ] );
+		add_action( 'add_meta_boxes_' . Events_Plugin::POSTTYPE, [ $this, 'update_event_for_multiple_accounts_support' ], 0 );
 		add_action( 'wp', [ $this, 'check_zoom_meeting' ], 50 );
 		add_action( 'tribe_events_virtual_metabox_save', [ $this, 'on_metabox_save' ], 10, 2 );
 		add_action( 'save_post_tribe_events', [ $this, 'on_post_save' ], 100, 3 );
-		add_action(
-			'wp_ajax_events_virtual_meetings_zoom_autosave_client_keys',
-			[ Zoom\OAuth::class, 'ajax_credentials_save' ]
-		);
 		add_action( 'admin_init', [ $this, 'render_migration_notice' ] );
+	}
+
+	/**
+	 * Hook block templates - legacy or new VE block.
+	 * Has to be postponed to `wp` action or later so global $post is available.
+	 *
+	 * @since 1.7.1
+	 */
+	public function hook_block_template() {
+		/* The action/location which the template is injected depends on whether or not V2 is enabled
+		 * and whether the virtual event block is present in the post content.
+		 */
+		$embed_inject_action = tribe( 'events-virtual.hooks' )->get_virtual_embed_action();
+
+		add_action(
+			$embed_inject_action,
+			[ $this, 'action_add_event_single_zoom_details' ],
+			20,
+			0
+		);
 	}
 }

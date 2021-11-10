@@ -90,6 +90,14 @@ docker compose exec web wp core upgrade
 
 Updating WordPress on the dev or prod servers requires that you SSH in and run `wp core upgrade` on the server.
 
+## Installing new plugins
+
+Plugin files are stored in source control. The way to install a new one is to install it locally, commit the files, then update the servers.
+
+```
+docker compose exec web wp plugin install [new plugin]
+```
+
 ## Continuous integration
 
 We use [GitHub Actions](https://github.com/mediasanctuary/mediasanctuary.org/actions) to deploy updates to the servers.

@@ -12,6 +12,7 @@ namespace Tribe\Events\Virtual\Meetings\Zoom;
 use Tribe\Events\Virtual\Encryption;
 use Tribe\Events\Virtual\Event_Meta as Virtual_Events_Meta;
 use Tribe\Events\Virtual\Meetings\Zoom\Event_Meta as Zoom_Meta;
+use Tribe\Events\Virtual\Traits\With_AJAX;
 use Tribe__Date_Utils as Dates;
 use Tribe__Timezones as Timezones;
 
@@ -23,6 +24,8 @@ use Tribe__Timezones as Timezones;
  * @package Tribe\Events\Virtual\Meetings\Zoom
  */
 class Abstract_Meetings {
+	use With_AJAX;
+
 	/**
 	 * The  integer value associated to the Scheduled meeting type.
 	 *
@@ -165,6 +168,29 @@ class Abstract_Meetings {
 			return false;
 		}
 
+		// Load the account.
+		$zoom_account_id = tribe_get_request_var( 'zoom_account_id' );
+		// if no id, fail the request.
+		if ( empty( $zoom_account_id ) ) {
+			$error_message = _x( 'The Zoom Account ID is missing to access the API.', 'Account ID is missing error message.', 'events-virtual' );
+			$this->classic_editor->render_meeting_generation_error_details( $event, $error_message, true );
+
+			wp_die();
+
+			return false;
+		}
+
+		$this->api->load_account_by_id( $zoom_account_id );
+		// If there is no token, then stop as the connection will fail.
+		if ( ! $this->api->get_token_authorization_header() ) {
+			$error_message = _x( 'The Zoom Account could not be loaded to access to API.', 'Zoom account loading error message.', 'events-virtual' );
+			$this->classic_editor->render_meeting_generation_error_details( $event, $error_message, true );
+
+			wp_die();
+
+			return false;
+		}
+
 		$post_id = $event->ID;
 		$cached  = $this->encryption->decrypt( get_post_meta( $post_id, Virtual_Events_Meta::$prefix . 'zoom_meeting_data', true ), true );
 
@@ -186,7 +212,7 @@ class Abstract_Meetings {
 		);
 
 		if ( ! $force && ! empty( $cached ) ) {
-			$this->classic_editor->render_meeting_link_generator( $event );
+			$this->classic_editor->render_meeting_link_generator( $event, true, false, $zoom_account_id  );
 
 			wp_die();
 
@@ -251,18 +277,18 @@ class Abstract_Meetings {
 			Api::$api_base . "users/{$zoom_host_id}/{$this::$api_endpoint}",
 			[
 				'headers' => [
-					'authorization' => $this->api->token_authorization_header(),
+					'authorization' => $this->api->get_token_authorization_header(),
 					'content-type'  => 'application/json; charset=utf-8',
 				],
 				'body'    => wp_json_encode( $body ),
 			],
 			Api::POST_RESPONSE_CODE
 		)->then(
-			function ( array $response ) use ( $post_id, &$success ) {
+			function ( array $response ) use ( $post_id, &$success, &$zoom_account_id ) {
 				$this->process_meeting_creation_response( $response, $post_id );
 
-				$event = tribe_get_event( $post_id );
-				$this->classic_editor->render_meeting_link_generator( $event );
+				$event = tribe_get_event( $post_id, OBJECT, 'raw', true );
+				$this->classic_editor->render_meeting_link_generator( $event, true, false, $zoom_account_id  );
 
 				$success = true;
 
@@ -399,91 +425,6 @@ class Abstract_Meetings {
 	}
 
 	/**
-	 * Checks if the current AJAX request is valid and authorized or not.
-	 *
-	 * In a normal flow, where the AJAX response is not intercepted by an handler, the method will echo an error data
-	 * and `die`.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string      $action The action to check the AJAX referer and the nonce against.
-	 * @param string|null $nonce  The nonce to check, the `null` value is allowed and will always fail.
-	 *
-	 * @return bool Whether the AJAX referer and nonce are valid or not.
-	 */
-	protected function check_ajax_nonce( $action, $nonce = null ) {
-		if (
-			! check_ajax_referer( $action )
-			|| ! wp_verify_nonce( $nonce, $action )
-		) {
-			wp_send_json_error(
-				[
-					'status'  => 'fail',
-					'code'    => 'invalid-nonce',
-					'message' => _x( 'The provided nonce is not valid.', 'Ajax error message.', 'events-virtual' ),
-				],
-				403
-			);
-
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Checks the request post ID is set and corresponds to an event.
-	 *
-	 * While the method will return a boolean value, in the normal flow, where AJAX requests are not intercepted by
-	 * handlers, the method will return the failure JSON response and `die`.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param int|null $post_id The post ID of the post to check or `null` to use the one from the request variable.
-	 *
-	 * @return \WP_Post|false Either the event post object, as decorated by the `tribe_get_event` function, or `false`
-	 *                        if AJAX responses are handled and the post is not valid.
-	 */
-	protected function check_ajax_post( $post_id = null ) {
-		$post_id = $post_id ? $post_id : tribe_get_request_var( 'post_id', false );
-
-		if ( empty( $post_id ) ) {
-			$error = _x(
-				'The post ID is missing from the request.',
-				'An error raised in the context of the Zoom API integration.',
-				'events-virtual'
-			);
-
-			wp_send_json_error(
-				[
-					'status'  => 'fail',
-					'code'    => 'missing-post-id',
-					'message' => $error,
-				],
-				400
-			);
-
-			return false;
-		}
-
-		$event = tribe_get_event( $post_id );
-
-		if ( ! $event instanceof \WP_Post ) {
-			wp_send_json_error(
-				[
-					'status' => 'fail',
-					'code'   => 'event-not-found',
-				],
-				404
-			);
-
-			return false;
-		}
-
-		return $event;
-	}
-
-	/**
 	 * Processes the Zoom API Meeting creation response to massage, filter and save the data.
 	 *
 	 * @since 1.0.0
@@ -583,6 +524,9 @@ class Abstract_Meetings {
 		// Cache the raw meeting data for future use.
 		update_post_meta( $post_id, $prefix . 'zoom_meeting_data', $this->encryption->encrypt( $response_body, true ) );
 
+		// Set the video source to prevent issues with loading the information later.
+		update_post_meta( $post_id, Virtual_Events_Meta::$key_video_source, 'zoom' );
+
 		$map = [
 			$prefix . 'zoom_meeting_id'             => 'id',
 			$prefix . 'zoom_join_url'               => 'join_url',
@@ -636,7 +580,7 @@ class Abstract_Meetings {
 		Zoom_Meta::delete_meeting_meta( $event->ID );
 
 		// Send the HTML for the meeting creation.
-		$this->classic_editor->render_meeting_link_generator( $event, true, true );
+		$this->classic_editor->render_initial_zoom_setup_options( $event, true );
 
 		wp_die();
 
@@ -650,29 +594,28 @@ class Abstract_Meetings {
 	 * @since 1.2.0 Utilize the datepicker format when parse the Event Date to prevent the wrong date in Zoom.
 	 *
 	 * @param \WP_Post|int $event The event (or event ID) we're updating the meeting for.
-	 *
-	 * @return void
 	 */
 	public function update( $event ) {
-		$event = tribe_get_event( $event );
+		// Get event if not an object.
+		if ( ! ( $event instanceof \WP_Post ) ) {
+			$event = tribe_get_event( $event );
+		}
 
 		// There is no meeting to update.
 		if ( ! ( $event instanceof \WP_Post ) || empty( $event->zoom_meeting_id ) ) {
 			return;
 		}
-		$start_date = tribe_get_request_var( 'EventStartDate' );
-		if ( empty( $start_date ) ) {
-			$start_date = $event->start_date;
-		}
 
-		$start_time = tribe_get_request_var( 'EventStartTime' );
-		if ( empty( $start_time ) ) {
-			$start_time = $event->start_time;
-		}
+		$start_date = tribe_get_request_var( 'EventStartDate', $event->start_date );
+		$start_time = tribe_get_request_var( 'EventStartTime', $event->start_time );
+		$time_zone  = tribe_get_request_var( 'EventTimezone', $event->timezone );
+		$end_date   = tribe_get_request_var( 'EventEndDate', $event->end_date );
+		$end_time   = tribe_get_request_var( 'EventEndTime', $event->end_time );
 
-		$time_zone = tribe_get_request_var( 'EventTimezone' );
-		if ( empty( $time_zone ) ) {
-			$time_zone = $event->timezone;
+		// Get the duration of the event from the field values instead of the event object, which has previously saved values.
+		$duration = $this->calculate_duration( $start_date, $start_time, $end_date, $end_time, $time_zone );
+		if ( empty( $duration ) ) {
+			$duration = $event->duration;
 		}
 
 		$zoom_date         = $this->format_date_for_zoom( $start_date, $start_time, $time_zone );
@@ -683,7 +626,7 @@ class Abstract_Meetings {
 			'topic'             => $event->post_title,
 			'start_time'        => $zoom_date,
 			'timezone'          => $time_zone,
-			'duration'          => (int) ceil( (int) $event->duration / 60 ),
+			'duration'          => (int) ceil( (int) $duration / 60 ),
 			'alternative_hosts' => esc_attr( implode( ";", $alternative_hosts ) ),
 		];
 
@@ -725,12 +668,23 @@ class Abstract_Meetings {
 			$this
 		);
 
+		// Load the account.
+		$zoom_account_id = $this->api->get_account_id_in_admin( $post_id );
+		if ( empty( $zoom_account_id ) ) {
+			return;
+		}
+
+		$this->api->load_account_by_id( $zoom_account_id );
+		if ( ! $this->api->get_token_authorization_header() ) {
+			return;
+		}
+
 		// Update.
 		$this->api->patch(
 			Api::$api_base . "{$this::$api_endpoint}/{$event->zoom_meeting_id}",
 			[
 				'headers' => [
-					'Authorization' => $this->api->token_authorization_header(),
+					'Authorization' => $this->api->get_token_authorization_header(),
 					'Content-Type'  => 'application/json; charset=utf-8',
 				],
 				'body'    => wp_json_encode( $body ),
@@ -789,11 +743,22 @@ class Abstract_Meetings {
 
 		$success = false;
 
+		// Load the account.
+		$zoom_account_id = $this->api->get_account_id_in_admin( $post_id );
+		if ( empty( $zoom_account_id ) ) {
+			return false;
+		}
+
+		$this->api->load_account_by_id( $zoom_account_id );
+		if ( ! $this->api->get_token_authorization_header() ) {
+			return false;
+		}
+
 		$this->api->get(
 			Api::$api_base . "{$this::$api_endpoint}/{$event->zoom_meeting_id}",
 			[
 				'headers' => [
-					'Authorization' => $this->api->token_authorization_header(),
+					'Authorization' => $this->api->get_token_authorization_header(),
 					'Content-Type'  => 'application/json; charset=utf-8',
 				],
 			],
@@ -855,5 +820,31 @@ class Abstract_Meetings {
 		$start_date_time   = Dates::datetime_from_format( $datepicker_format, $start_date ) . ' ' . $start_time;
 
 		return Dates::build_date_object( $start_date_time, $time_zone )->setTimezone( $timezone_object )->format( 'Y-m-d\TH:i:s\Z' );
+	}
+
+	/**
+	 * Get the duration of an event.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param string $start_date The start date of the event.
+	 * @param string $start_time The start time of the event.
+	 * @param string $end_date   The end date of the event.
+	 * @param string $end_time   The end time of the event.
+	 * @param string $time_zone  The timezone of the event.
+	 *
+	 * @return string The duration in seconds.
+	 */
+	private function calculate_duration( $start_date, $start_time, $end_date, $end_time, $time_zone ) {
+		$timezone_object   = Timezones::build_timezone_object( 'UTC' );
+		$datepicker_format = Dates::datepicker_formats( tribe_get_option( 'datepickerFormat' ) );
+
+		$start_date_time = Dates::datetime_from_format( $datepicker_format, $start_date ) . ' ' . $start_time;
+		$start_timestamp = Dates::build_date_object( $start_date_time, $time_zone )->setTimezone( $timezone_object )->getTimestamp();
+
+		$end_date_time = Dates::datetime_from_format( $datepicker_format, $end_date ) . ' ' . $end_time;
+		$end_timestamp = Dates::build_date_object( $end_date_time, $time_zone )->setTimezone( $timezone_object )->getTimestamp();
+
+		return absint( $end_timestamp - $start_timestamp );
 	}
 }

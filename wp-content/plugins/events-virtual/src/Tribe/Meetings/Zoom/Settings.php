@@ -9,8 +9,10 @@
 
 namespace Tribe\Events\Virtual\Meetings\Zoom;
 
+use Tribe\Events\Virtual\Admin_Template;
 use Tribe\Events\Virtual\Encryption;
-use Tribe\Events\Virtual\Meetings\Zoom\Template_Modifications;
+use Tribe__Main as Common;
+use Tribe\Events\Virtual\Traits\With_AJAX;
 
 /**
  * Class Settings
@@ -20,6 +22,8 @@ use Tribe\Events\Virtual\Meetings\Zoom\Template_Modifications;
  * @package Tribe\Events\Virtual\Meetings\Zoom
  */
 class Settings {
+	use With_AJAX;
+
 	/**
 	 * The prefix, in the context of tribe options, of each setting for this extension.
 	 *
@@ -28,6 +32,24 @@ class Settings {
 	 * @var string
 	 */
 	public static $option_prefix = 'tribe_zoom_';
+
+	/**
+	 * The name of the action used to change the status of an account.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @var string
+	 */
+	public static $status_action = 'events-virtual-meetings-zoom-settings-status';
+
+	/**
+	 * The name of the action used to delete an account.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @var string
+	 */
+	public static $delete_action = 'events-virtual-meetings-zoom-settings-delete';
 
 	/**
 	 * The URL handler instance.
@@ -55,7 +77,7 @@ class Settings {
 	 * @param Api $api An instance of the Zoom API handler.
 	 * @param Url $url An instance of the URL handler.
 	 */
-	public function __construct( Api $api, Url $url ) {
+	public function __construct( Api $api, Url $url, Admin_Template $template ) {
 		$this->url        = $url;
 		$this->api        = $api;
 	}
@@ -72,19 +94,6 @@ class Settings {
 	}
 
 	/**
-	 * Returns the current API refresh token.
-	 *
-	 * If not available, then a new token should be fetched by the API.
-	 *
-	 * @since 1.0.1
-	 *
-	 * @return string|boolean The API access token, or false if the token cannot be fetched (error).
-	 */
-	public static function get_refresh_token() {
-		return tribe( Encryption::class )->decrypt( tribe_get_option( static::$option_prefix . 'refresh_token', false ) );
-	}
-
-	/**
 	 * Adds the Zoom API fields to the ones in the Events > Settings > APIs tab.
 	 *
 	 * @since 1.0.0
@@ -97,16 +106,8 @@ class Settings {
 		$wrapper_classes = tribe_get_classes(
 			[
 				'tribe-settings-zoom-application' => true,
-				'tribe-zoom-authorized'           => $this->api->is_authorized(),
 			]
 		);
-		$client_id_attrs     = [ 'id' => 'zoom-application__client-id' ];
-		$client_secret_attrs = [ 'id' => 'zoom-application__client-secret' ];
-
-		if ( $this->get_refresh_token() && $this->api->client_id() && $this->api->client_secret() ) {
-			$client_id_attrs['disabled']     = 'disabled';
-			$client_secret_attrs['disabled'] = 'disabled';
-		}
 
 		$zoom_fields = [
 			static::$option_prefix . 'wrapper_open'  => [
@@ -138,9 +139,11 @@ class Settings {
 		$zoom_fields = apply_filters( 'tribe_events_virtual_meetings_zoom_settings_fields', $zoom_fields, $this );
 
 		// Insert the link after the other APIs and before the Google Maps API ones.
-		$gmaps_fields = array_splice( $fields, array_search( 'gmaps-js-api-start', array_keys( $fields ) ) );
-
-		$fields = array_merge( $fields, $zoom_fields, $gmaps_fields );
+		$fields = Common::array_insert_before_key(
+			'gmaps-js-api-start',
+			$fields,
+			$zoom_fields
+		);
 
 		return $fields;
 	}
@@ -189,4 +192,169 @@ class Settings {
 		return tribe( Template_Modifications::class )->get_disabled_button();
 	}
 
+	/**
+	 * The message template to display on user account changes.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param string $message The message to display.
+	 * @param string $type    The type of message, either standard or error.
+	 *
+	 * @return string The message with html to display
+	 */
+	public function get_settings_message_template( $message, $type = 'standard' ) {
+		return tribe( Template_Modifications::class )->get_settings_message_template( $message, $type );
+	}
+
+	/**
+	 * Handles the request to change the status of a Zoom account.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param string|null $nonce The nonce that should accompany the request.
+	 *
+	 * @return bool Whether the request was handled or not.
+	 */
+	public function ajax_status( $nonce = null ) {
+		if ( ! $this->check_ajax_nonce( static::$status_action, $nonce ) ) {
+			return false;
+		}
+
+		$success = false;
+
+		$zoom_account_id = tribe_get_request_var( 'zoom_account_id' );
+		$account         = $this->api->get_account_by_id( $zoom_account_id );
+		// If no account id found, fail the request.
+		if ( empty( $zoom_account_id ) || empty( $account ) ) {
+			$error_message =
+				_x(
+					'The Zoom Account ID or Account is missing to change the status.',
+					'Account ID is missing on status change error message.',
+					'events-virtual'
+				);
+			$this->get_settings_message_template( $error_message, 'error' );
+
+			wp_die();
+
+			return false;
+		}
+
+		// Set the status to the opposite of what is saved.
+		$new_status        = tribe_is_truthy( $account['status'] ) ? false : true;
+		$account['status'] = $new_status;
+		$this->api->set_account_by_id( $account );
+
+		// Attempt to load the account when status is changed to enabled and on failure display a message.
+		$loaded = $new_status ? $this->api->load_account_by_id( $account['id'] ) : true;
+		if ( empty( $loaded ) ) {
+			$error_message =
+				_x(
+					'There seems to be a problem with the connection to this Zoom account. Please refresh the connection.',
+					'Message to display when the Zoom account could not be loaded after being enabled.',
+					'events-virtual'
+				);
+			$this->get_settings_message_template( $error_message, 'error' );
+
+			wp_die();
+
+			return false;
+		}
+
+		$status_msg = $new_status
+			? _x(
+				'Zoom connection enabled for %1$s',
+				'Enables the Zoom Account for the Website.',
+				'events-virtual'
+			)
+			: _x(
+				'Zoom connection disabled for %1$s',
+				'Disables the Zoom Account for the Website.',
+				'events-virtual'
+			);
+
+		$message = sprintf(
+			/* Translators: %1$s: the name of the account that has the status change. */
+			$status_msg,
+			$account['name']
+		);
+		$this->get_settings_message_template( $message );
+
+		wp_die();
+
+		return $success;
+	}
+
+	/**
+	 * Handles the request to delete a Zoom account.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param string|null $nonce The nonce that should accompany the request.
+	 *
+	 * @return bool Whether the request was handled or not.
+	 */
+	public function ajax_delete( $nonce = null ) {
+
+		if ( ! $this->check_ajax_nonce( static::$delete_action, $nonce ) ) {
+			return false;
+		}
+
+		$success = false;
+
+		$zoom_account_id = tribe_get_request_var( 'zoom_account_id' );
+		$account = $this->api->get_account_by_id( $zoom_account_id );
+		// If no account id found, fail the request.
+		if ( empty( $zoom_account_id ) || empty( $account ) ) {
+			$error_message = _x( 'The Zoom Account ID or Account is missing and cannot be deleted.', 'Account ID is missing on delete error message.', 'events-virtual' );
+			$this->get_settings_message_template( $error_message, 'error' );
+
+			wp_die();
+
+			return false;
+		}
+
+		$success = $this->api->delete_account_by_id( $zoom_account_id );
+		if ( $success ){
+			$message = sprintf(
+				/* Translators: %1$s: the name of the account that has been deleted. */
+				_x(
+					'%1$s was successfully deleted',
+					'The message after a Zoom Account has been deleted from the Website.',
+					'events-virtual'
+				),
+				$account['name']
+			);
+			$this->get_settings_message_template( $message );
+
+			wp_die();
+
+			return $success;
+		}
+
+		$error_message = _x(
+			'The Zoom Account access token could not be revoked.',
+			'The message to display if a Zoom account access token could not be revoked.',
+			'events-virtual'
+		);
+		$this->get_settings_message_template( $error_message, 'error' );
+
+		wp_die();
+
+		return $success;
+	}
+
+	/**
+	 * Returns the current API refresh token.
+	 *
+	 * If not available, then a new token should be fetched by the API.
+	 *
+	 * @since 1.0.1
+	 * @deprecated 1.5.0 - Remove for Multiple Account Support.
+	 *
+	 * @return string|boolean The API access token, or false if the token cannot be fetched (error).
+	 */
+	public static function get_refresh_token() {
+		_deprecated_function( __FUNCTION__, '1.5.0', 'Removed for multiple account support with no replacement.' );
+		return tribe( Encryption::class )->decrypt( tribe_get_option( static::$option_prefix . 'refresh_token', false ) );
+	}
 }

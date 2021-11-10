@@ -14,7 +14,10 @@
  * @var string $today_date      Today's date in `Y-m-d`.
  * @var string $week_start_date The week start date, in `Y-m-d` format.
  *
- * @version 5.0.3
+ * @version 5.9.2
+ *
+ * @since   5.9.2   Remove incorrect aria-selected attribute.
+ * @since   5.0.3
  *
  */
 $selected    = 'false';
@@ -37,7 +40,6 @@ $label = sprintf( __( 'Has %s', 'tribe-events-calendar-pro' ), tribe_get_event_l
 	<button
 		<?php tribe_classes( $day_classes ) ?>
 		aria-expanded="<?php echo esc_attr( $selected ); ?>"
-		aria-selected="<?php echo esc_attr( $selected ); ?>"
 		aria-controls="tribe-events-pro-week-mobile-events-day-<?php echo esc_attr( $day[ 'datetime' ] ); ?>"
 		data-js="tribe-events-pro-week-day-selector-day"
 	>
@@ -45,7 +47,6 @@ $label = sprintf( __( 'Has %s', 'tribe-events-calendar-pro' ), tribe_get_event_l
 		<?php if ( ! empty( $day['found_events'] ) ) : ?>
 			<em
 				class="tribe-events-pro-week-day-selector__events-icon"
-				aria-label="<?php echo esc_attr( $label ); ?>"
 				title="<?php echo esc_attr( $label ); ?>"
 			>
 			</em>
