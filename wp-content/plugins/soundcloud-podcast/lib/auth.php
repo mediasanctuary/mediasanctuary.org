@@ -29,8 +29,7 @@ add_action('wp_ajax_soundcloud_podcast_auth_code', function() {
 	$body = wp_remote_retrieve_body($rsp);
 	$token = json_decode($body, 'as hash');
 	soundcloud_podcast_save_token($token);
-	echo '<pre>';
-	print_r($token);
+	header('Location: /wp-admin/admin.php?page=soundcloud');
 	exit;
 });
 
