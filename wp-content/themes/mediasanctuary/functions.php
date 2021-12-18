@@ -64,7 +64,7 @@ add_action('after_setup_theme', function() {
 
 add_action('wp_enqueue_scripts', function() {
 	list($src, $version) = get_asset_url('js/main.js', true);
-  wp_enqueue_script( '_sanctuary_slick', get_template_directory_uri() . '/js/slick.min.js', array(), $version, true );
+	wp_enqueue_script( '_sanctuary_slick', get_template_directory_uri() . '/js/slick.min.js', array(), $version, true );
 	wp_enqueue_script('main', $src, ['jquery'], $version, true);
 });
 
@@ -84,6 +84,12 @@ add_action('acf/init', function() {
 			'position'   => '20',
 			'icon_url'   => 'dashicons-redo',
 			'capability' => 'activate_plugins'
+		]);
+		acf_add_options_page([
+			'page_title' => 'SoundCloud',
+			'menu_title' => 'SoundCloud',
+			'menu_slug'  => 'soundcloud',
+			'capability' => 'create_users',
 		]);
 	}
 });
@@ -245,7 +251,7 @@ function social_meta_tags() {
       $title = get_the_archive_title().' '.$postType;
       $term = get_queried_object();
       $description = strip_tags(get_field('category_description', "category_$term->term_id" ));
-      $thumb_url = get_asset_url('img/share.jpg'); 
+      $thumb_url = get_asset_url('img/share.jpg');
       $url = get_category_link( $term->term_id );
     }
 
@@ -262,4 +268,23 @@ function social_meta_tags() {
     echo '<meta name="twitter:image" content="'.$thumb_url.'">';
 
 }
-add_action( 'wp_head', 'social_meta_tags');
+add_action( 'wp_head', 'social_meta_tags' );
+
+add_action( 'wp_ajax_soundcloud_token_info', function() {
+	header('Content-Type: application/json');
+	$token = get_option('soundcloud_podcast_token', null);
+	if (! $token) {
+		$token_info = 'No auth token found.';
+	} else {
+		$token = json_decode($token, 'as hash');
+		if ($token['expires'] > time()) {
+			$token_info = 'API token will expire at ' . wp_date( DATE_RFC3339, $token['expires'] );
+		} else {
+			$token_info = 'API token expired at ' . wp_date( DATE_RFC3339, $token['expires'] );
+		}
+	}
+	echo json_encode([
+		'token_info' => $token_info
+	]);
+	exit;
+});
