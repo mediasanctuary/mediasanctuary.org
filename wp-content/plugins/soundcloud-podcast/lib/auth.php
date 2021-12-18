@@ -42,13 +42,14 @@ function soundcloud_podcast_save_token($token) {
 
 function soundcloud_podcast_token() {
 	$now = time();
+	$next_run = $now + 36 * 60;
 	$token = get_option('soundcloud_podcast_token', null);
 	if (empty($token)) {
 		error_log("No SoundCloud auth token found.");
 		exit;
 	}
 	$token = json_decode($token, 'as hash');
-	if ($now >= $token['expires']) {
+	if ($next_run >= $token['expires']) {
 		$rsp = wp_remote_post('https://api.soundcloud.com/oauth2/token', [
 			'headers' => [
 				'Content-Type' => 'application/x-www-form-urlencoded'
