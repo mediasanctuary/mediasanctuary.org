@@ -1,0 +1,42 @@
+{
+    "key": "group_61be28a7e8605",
+    "title": "SoundCloud Options",
+    "fields": [
+        {
+            "key": "field_61be28ad9ce7b",
+            "label": "SoundCloud API token",
+            "name": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "<p><a href=\"\/wp-admin\/admin-ajax.php?action=soundcloud_podcast_login\" class=\"button\">Authenticate with SoundCloud<\/a><\/p>\r\n<p id=\"soundcloud-token-info\">Loading API token info...<\/p>",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "soundcloud"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1639853910
+}
