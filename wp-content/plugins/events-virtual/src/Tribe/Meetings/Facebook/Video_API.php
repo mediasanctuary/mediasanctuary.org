@@ -79,6 +79,19 @@ abstract class Video_API {
 	}
 
 	/**
+	 * Get the Facebook page url with the provided page id.
+	 *
+	 * @since 1.7.3
+	 *
+	 * @param string $page_id The Facebook Page ID.
+	 *
+	 * @return string The url with page id.
+	 */
+	public static function get_facebook_page_url_with_page_id( $page_id ) {
+		return esc_url( static::get_page_url_with_page_id( $page_id ) );
+	}
+
+	/**
 	 * Get the Facebook API url with the provided page id.
 	 *
 	 * @since 1.7.0

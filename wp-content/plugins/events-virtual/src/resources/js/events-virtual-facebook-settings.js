@@ -266,12 +266,13 @@ tribe.events.facebookSettingsAdmin = tribe.events.facebookSettingsAdmin || {};
 	 * Initialize the Facebook SDK.
 	 *
 	 * @since 1.7.0
+	 * @since 1.7.3 Add check for Facebook App ID.
 	 *
 	 */
 	obj.facebookInit = function() {
 		const facebookAppId = $( obj.selectors.facebookAppId ).val();
 
-		if ( facebookAppId < 1 ) {
+		if ( ! facebookAppId || facebookAppId < 1 ) {
 			return;
 		}
 

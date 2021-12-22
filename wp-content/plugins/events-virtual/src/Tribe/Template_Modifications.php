@@ -118,7 +118,11 @@ class Template_Modifications {
 			return $classes;
 		}
 
-		$event = tribe_get_event( $event );
+		/**
+		 * We're specifically forcing here (last param) as otherwise
+		 * this runs into issues with the event list table in the admin.
+		 */
+		$event = tribe_get_event( $event, OBJECT, 'raw', true );
 
 		if ( ! $event instanceof \WP_Post) {
 			return $classes;

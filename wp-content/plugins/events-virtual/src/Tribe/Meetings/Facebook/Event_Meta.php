@@ -305,4 +305,30 @@ class Event_Meta {
 
 		return $event;
 	}
+
+	/**
+	 * Filter the ticket email url.
+	 *
+	 * @since 1.7.2
+	 *
+	 * @param string  $virtual_url The virtual url for the ticket and rsvp emails.
+	 * @param WP_Post $event       The event post object with properties added by the `tribe_get_event` function.
+	 *
+	 * @return string The Facebook Live virtual url for the ticket and rsvp emails.
+	 */
+	public function filter_ticket_email_url( $virtual_url, WP_Post $event ) {
+
+		if ( 'facebook' !== $event->virtual_video_source ) {
+			return $virtual_url;
+		}
+
+		if ( ! isset( $event->facebook_local_id ) ) {
+			return $virtual_url;
+		}
+
+		// Setup Facebook Live Stream.
+		$live_stream = $this->api->get_live_stream( $event->facebook_local_id );
+
+		return ! empty( $live_stream['page_url'] ) ? $live_stream['page_url'] : $virtual_url;
+	}
 }
