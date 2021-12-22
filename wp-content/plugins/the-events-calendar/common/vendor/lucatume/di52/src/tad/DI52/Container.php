@@ -160,7 +160,6 @@ class tad_DI52_Container implements ArrayAccess {
 	 * @return void
 	 * @since 5.0.0
 	 */
-	#[\ReturnTypeWillChange]
 	public function offsetSet($offset, $value) {
 		if ($value instanceof tad_DI52_ProtectedValue) {
 			$this->protected[$offset] = true;
@@ -216,7 +215,6 @@ class tad_DI52_Container implements ArrayAccess {
 	 *
 	 * @return mixed
 	 */
-	#[\ReturnTypeWillChange]
 	public function offsetGet($offset) {
 		if (is_object($offset)) {
 			return is_callable($offset) ? call_user_func($offset, $this) : $offset;
@@ -548,7 +546,6 @@ class tad_DI52_Container implements ArrayAccess {
 	 * The return value will be casted to boolean if non-boolean was returned.
 	 * @since 5.0.0
 	 */
-	#[\ReturnTypeWillChange]
 	public function offsetExists($offset) {
 		return isset($this->bindings[$offset]);
 	}
@@ -603,7 +600,6 @@ class tad_DI52_Container implements ArrayAccess {
 	 * @return void
 	 * @since 5.0.0
 	 */
-	#[\ReturnTypeWillChange]
 	public function offsetUnset($offset) {
 		unset(
 			$this->strings[$offset],

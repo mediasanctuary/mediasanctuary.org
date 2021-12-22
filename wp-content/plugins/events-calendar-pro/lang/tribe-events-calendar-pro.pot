@@ -2,13 +2,13 @@
 # This file is distributed under the same license as the The Events Calendar PRO package.
 msgid ""
 msgstr ""
-"Project-Id-Version: The Events Calendar PRO 5.11.0\n"
+"Project-Id-Version: The Events Calendar PRO 5.9.1\n"
 "Report-Msgid-Bugs-To: http://m.tri.be/191x\n"
-"POT-Creation-Date: 2021-12-01 18:56:29+00:00\n"
+"POT-Creation-Date: 2021-10-11 18:14:14+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2021-12-01 18:56\n"
+"PO-Revision-Date: 2021-10-11 18:14\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 
@@ -21,7 +21,7 @@ msgid ""
 "To begin using Events Calendar PRO, please install the latest version of"
 msgstr ""
 
-#. #-#-#-#-#  tribe-events-calendar-pro.pot (The Events Calendar PRO 5.11.0)  #-#-#-#-#
+#. #-#-#-#-#  tribe-events-calendar-pro.pot (The Events Calendar PRO 5.9.1)  #-#-#-#-#
 #. Author of the plugin/theme
 #: events-calendar-pro.php:176 events-calendar-pro.php:177
 #: src/Tribe/Integrations/Elementor/Service_Provider.php:124
@@ -222,27 +222,26 @@ msgstr ""
 msgid "You are about to split this series in two."
 msgstr ""
 
-#: src/Tribe/Admin/Manager/Page.php:89 src/Tribe/Admin/Manager/Settings.php:46
-#: src/admin-views/manager/page.php:36
+#: src/Tribe/Admin/Manager/Page.php:89 src/admin-views/manager/page.php:36
 msgid "Events Manager"
 msgstr ""
 
-#: src/Tribe/Admin/Manager/Page.php:214
+#: src/Tribe/Admin/Manager/Page.php:220
 msgctxt "Link ot the Events Manager page"
 msgid "Back to Manager"
 msgstr ""
 
-#: src/Tribe/Admin/Manager/Page.php:216
+#: src/Tribe/Admin/Manager/Page.php:222
 msgctxt "Link ot the Events Manager page"
 msgid "Manager"
 msgstr ""
 
-#: src/Tribe/Admin/Manager/Page.php:436
+#: src/Tribe/Admin/Manager/Page.php:418
 msgid "Edit %s"
 msgstr ""
 
 #. translators: %s: Number of posts.
-#: src/Tribe/Admin/Manager/Page.php:502
+#: src/Tribe/Admin/Manager/Page.php:484
 msgctxt "posts"
 msgid "Mine <span class=\"count\">(%s)</span>"
 msgid_plural "Mine <span class=\"count\">(%s)</span>"
@@ -250,7 +249,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: Number of posts.
-#: src/Tribe/Admin/Manager/Page.php:523
+#: src/Tribe/Admin/Manager/Page.php:505
 msgctxt "posts"
 msgid "All <span class=\"count\">(%s)</span>"
 msgid_plural "All <span class=\"count\">(%s)</span>"
@@ -258,7 +257,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: Number of posts.
-#: src/Tribe/Admin/Manager/Page.php:573
+#: src/Tribe/Admin/Manager/Page.php:555
 msgctxt "posts"
 msgid "Sticky <span class=\"count\">(%s)</span>"
 msgid_plural "Sticky <span class=\"count\">(%s)</span>"
@@ -266,47 +265,51 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: Number of posts.
-#: src/Tribe/Admin/Manager/Page.php:712
+#: src/Tribe/Admin/Manager/Page.php:694
 msgid "%s post updated."
 msgid_plural "%s posts updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Tribe/Admin/Manager/Page.php:713
+#: src/Tribe/Admin/Manager/Page.php:695
 msgid "1 post not updated, somebody is editing it."
 msgstr ""
 
 #. translators: %s: Number of posts.
-#: src/Tribe/Admin/Manager/Page.php:715
+#: src/Tribe/Admin/Manager/Page.php:697
 msgid "%s post not updated, somebody is editing it."
 msgid_plural "%s posts not updated, somebody is editing them."
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: Number of posts.
-#: src/Tribe/Admin/Manager/Page.php:717
+#: src/Tribe/Admin/Manager/Page.php:699
 msgid "%s post permanently deleted."
 msgid_plural "%s posts permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: Number of posts.
-#: src/Tribe/Admin/Manager/Page.php:719
+#: src/Tribe/Admin/Manager/Page.php:701
 msgid "%s post moved to the Trash."
 msgid_plural "%s posts moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: Number of posts.
-#: src/Tribe/Admin/Manager/Page.php:721
+#: src/Tribe/Admin/Manager/Page.php:703
 msgid "%s post restored from the Trash."
 msgid_plural "%s posts restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
+#: src/Tribe/Admin/Manager/Settings.php:46
+msgid "Calendar Manager"
+msgstr ""
+
 #: src/Tribe/Admin/Manager/Settings.php:47
 msgid ""
-"Enable the Events Manager as the default page for viewing Events on the "
+"Enable the Calendar Manager as the default page for viewing Events on the "
 "Administration page."
 msgstr ""
 
@@ -339,12 +342,12 @@ msgstr ""
 msgid "Upcoming Events"
 msgstr ""
 
-#: src/Tribe/Assets.php:471
+#: src/Tribe/Assets.php:415
 msgctxt "Event title map marker prefix"
 msgid "%s: "
 msgstr ""
 
-#: src/Tribe/Assets.php:472
+#: src/Tribe/Assets.php:416
 msgid "Address: "
 msgstr ""
 
@@ -409,7 +412,7 @@ msgstr ""
 msgid "Related Events"
 msgstr ""
 
-#: src/Tribe/Editor.php:212 src/Tribe/Editor.php:250 src/Tribe/Main.php:704
+#: src/Tribe/Editor.php:212 src/Tribe/Editor.php:250 src/Tribe/Main.php:703
 #: src/admin-views/event-meta-options.php:3
 msgid "Additional Fields"
 msgstr ""
@@ -1093,94 +1096,94 @@ msgid ""
 "value set in Events > Settings."
 msgstr ""
 
-#: src/Tribe/Main.php:218
+#: src/Tribe/Main.php:217
 msgid "Month/Week View"
 msgstr ""
 
-#: src/Tribe/Main.php:463 src/Tribe/Views/V2/Template/Title.php:52
+#: src/Tribe/Main.php:462 src/Tribe/Views/V2/Template/Title.php:52
 msgid "All %1$s for %2$s"
 msgstr ""
 
-#: src/Tribe/Main.php:469 src/Tribe/Views/V2/Template/Title.php:70
+#: src/Tribe/Main.php:468 src/Tribe/Views/V2/Template/Title.php:70
 msgid "%1$s for week of %2$s"
 msgstr ""
 
-#: src/Tribe/Main.php:529
+#: src/Tribe/Main.php:528
 msgctxt "debug recurrence"
 msgid "Unknown"
 msgstr ""
 
-#: src/Tribe/Main.php:547
+#: src/Tribe/Main.php:546
 msgctxt "debug recurrence"
 msgid "invalid date"
 msgstr ""
 
-#: src/Tribe/Main.php:578 src/Tribe/Main.php:591
+#: src/Tribe/Main.php:577 src/Tribe/Main.php:590
 msgctxt "debug recurrence"
 msgid "incorrect slug"
 msgstr ""
 
 #. Translators: 1: Error message, 2: URL
-#: src/Tribe/Main.php:615
+#: src/Tribe/Main.php:614
 msgctxt "debug recurrence"
 msgid ""
 "Invalid instance of a recurring event was requested (%1$s) redirecting to "
 "%2$s"
 msgstr ""
 
-#: src/Tribe/Main.php:702 src/admin-views/tribe-options-defaults.php:42
+#: src/Tribe/Main.php:701 src/admin-views/tribe-options-defaults.php:42
 msgid "Default Content"
 msgstr ""
 
-#: src/Tribe/Main.php:721
+#: src/Tribe/Main.php:720
 msgid "Hide related events"
 msgstr ""
 
-#: src/Tribe/Main.php:722
+#: src/Tribe/Main.php:721
 msgid "Remove related events from the single event view (with classic editor)"
 msgstr ""
 
-#: src/Tribe/Main.php:734
+#: src/Tribe/Main.php:733
 msgid "Week Day Format"
 msgstr ""
 
-#: src/Tribe/Main.php:735
+#: src/Tribe/Main.php:734
 msgid ""
 "Enter the format to use for week days. Used when showing days of the week in "
 "Week view."
 msgstr ""
 
-#: src/Tribe/Main.php:748
+#: src/Tribe/Main.php:747
 msgid "Hide weekends on Week View"
 msgstr ""
 
-#: src/Tribe/Main.php:749
+#: src/Tribe/Main.php:748
 msgid ""
 "Check this to only show weekdays on Week View. This also affects the Events "
 "by Week widget."
 msgstr ""
 
-#: src/Tribe/Main.php:761
+#: src/Tribe/Main.php:760
 msgid "Enable the Before HTML (below) on shortcodes."
 msgstr ""
 
-#: src/Tribe/Main.php:762
+#: src/Tribe/Main.php:761
 msgid ""
 "Check this to show the Before HTML from the text area below on events "
 "displayed via shortcode."
 msgstr ""
 
-#: src/Tribe/Main.php:774
+#: src/Tribe/Main.php:773
 msgid "Enable the After HTML (below) on shortcodes."
 msgstr ""
 
-#: src/Tribe/Main.php:775
+#: src/Tribe/Main.php:774
 msgid ""
 "Check this to show the After HTML from the text area below on events "
 "displayed via shortcode."
 msgstr ""
 
-#: src/Tribe/Main.php:793
+#: src/Tribe/Main.php:792
 msgid ""
 "Thanks for buying Events Calendar PRO! From all of us at The Events "
 "Calendar, we sincerely appreciate it. If you're looking for help with Events "
@@ -1189,14 +1192,14 @@ msgid ""
 "will help get you there."
 msgstr ""
 
-#: src/Tribe/Main.php:805
+#: src/Tribe/Main.php:804
 msgid ""
 "If this is your first time using The Events Calendar Pro, you're in for a "
 "treat and are already well on your way to creating a first event. Here are "
 "some basics we've found helpful for users jumping into it for the first time:"
 msgstr ""
 
-#: src/Tribe/Main.php:808
+#: src/Tribe/Main.php:807
 msgid ""
 "%sOur New User Primer%s was designed for folks in your exact position. "
 "Featuring both step-by-step videos and written walkthroughs that feature "
@@ -1204,7 +1207,7 @@ msgid ""
 "no time."
 msgstr ""
 
-#: src/Tribe/Main.php:810
+#: src/Tribe/Main.php:809
 msgid ""
 "%sInstallation/Setup FAQs%s from our support page can help give an overview "
 "of what the plugin can and cannot do. This section of the FAQs may be "
@@ -1212,7 +1215,7 @@ msgid ""
 "the new user primer."
 msgstr ""
 
-#: src/Tribe/Main.php:812
+#: src/Tribe/Main.php:811
 msgid ""
 "Take care of your license key. Though not required to create your first "
 "event, you'll want to get it in place as soon as possible to guarantee your "
@@ -1220,19 +1223,19 @@ msgid ""
 "you don't have it handy."
 msgstr ""
 
-#: src/Tribe/Main.php:814
+#: src/Tribe/Main.php:813
 msgid ""
 "Otherwise, if you're feeling adventurous, you can get started by heading to "
 "the Events menu and adding your first event."
 msgstr ""
 
-#: src/Tribe/Main.php:827
+#: src/Tribe/Main.php:826
 msgid ""
 "Written documentation can only take things so far...sometimes, you need help "
 "from a real person. This is where our %ssupport forums%s come into play."
 msgstr ""
 
-#: src/Tribe/Main.php:828
+#: src/Tribe/Main.php:827
 msgid ""
 "Users who have purchased an Events Calendar PRO license are granted total "
 "access to our %spremium support forums%s. Unlike at the %sWordPress.org "
@@ -1242,7 +1245,7 @@ msgid ""
 "than 24-hours without a response."
 msgstr ""
 
-#: src/Tribe/Main.php:829
+#: src/Tribe/Main.php:828
 msgid ""
 "Our number one goal is helping you succeed, and to whatever extent possible, "
 "we'll help troubleshoot and guide your customizations or tweaks. While we "
@@ -1252,7 +1255,7 @@ msgid ""
 "as is often more importantly the case -- satisfied."
 msgstr ""
 
-#: src/Tribe/Main.php:830
+#: src/Tribe/Main.php:829
 msgid ""
 "Before posting a new thread, please do a search to make sure your issue "
 "hasn't already been addressed. When posting please make sure to provide as "
@@ -1261,97 +1264,97 @@ msgid ""
 "conflict could be at play in your initial message."
 msgstr ""
 
-#: src/Tribe/Main.php:1490
+#: src/Tribe/Main.php:1471
 msgid "Settings"
 msgstr ""
 
-#: src/Tribe/Main.php:1518
+#: src/Tribe/Main.php:1499
 msgid "Venue updated. <a href=\"%s\">View venue</a>"
 msgstr ""
 
 #. translators: %s: date and time of the revision
-#: src/Tribe/Main.php:1520
+#: src/Tribe/Main.php:1501
 msgid "Venue published. <a href=\"%s\">View venue</a>"
 msgstr ""
 
-#: src/Tribe/Main.php:1521
+#: src/Tribe/Main.php:1502
 msgid "Venue submitted. <a target=\"_blank\" href=\"%s\">Preview venue</a>"
 msgstr ""
 
-#: src/Tribe/Main.php:1523
+#: src/Tribe/Main.php:1504
 msgid ""
 "Venue scheduled for: <strong>%1$s</strong>. <a target=\"_blank\" href=\"%2$s"
 "\">Preview venue</a>"
 msgstr ""
 
 #. translators: Publish box date format, see http://php.net/date
-#: src/Tribe/Main.php:1525 src/Tribe/Main.php:1535
+#: src/Tribe/Main.php:1506 src/Tribe/Main.php:1516
 msgid "M j, Y @ G:i"
 msgstr ""
 
-#: src/Tribe/Main.php:1527
+#: src/Tribe/Main.php:1508
 msgid "Venue draft updated. <a target=\"_blank\" href=\"%s\">Preview venue</a>"
 msgstr ""
 
-#: src/Tribe/Main.php:1529
+#: src/Tribe/Main.php:1510
 msgid "Organizer updated. <a href=\"%s\">View organizer</a>"
 msgstr ""
 
-#: src/Tribe/Main.php:1530
+#: src/Tribe/Main.php:1511
 msgid "Organizer published. <a href=\"%s\">View organizer</a>"
 msgstr ""
 
-#: src/Tribe/Main.php:1531
+#: src/Tribe/Main.php:1512
 msgid ""
 "Organizer submitted. <a target=\"_blank\" href=\"%s\">Preview organizer</a>"
 msgstr ""
 
-#: src/Tribe/Main.php:1533
+#: src/Tribe/Main.php:1514
 msgid ""
 "Organizer scheduled for: <strong>%1$s</strong>. <a target=\"_blank\" href="
 "\"%2$s\">Preview organizer</a>"
 msgstr ""
 
-#: src/Tribe/Main.php:1537
+#: src/Tribe/Main.php:1518
 msgid ""
 "Organizer draft updated. <a target=\"_blank\" href=\"%s\">Preview organizer</"
 "a>"
 msgstr ""
 
-#: src/Tribe/Main.php:1636
+#: src/Tribe/Main.php:1617
 msgid "Support"
 msgstr ""
 
-#: src/Tribe/Main.php:1638
+#: src/Tribe/Main.php:1619
 msgid "View All Add-Ons"
 msgstr ""
 
-#: src/Tribe/Main.php:1867
+#: src/Tribe/Main.php:1848
 msgid "Week"
 msgstr ""
 
-#: src/Tribe/Main.php:1885
+#: src/Tribe/Main.php:1866
 msgid "Photo"
 msgstr ""
 
-#: src/Tribe/Main.php:1902
+#: src/Tribe/Main.php:1883
 msgid "Week Of"
 msgstr ""
 
-#: src/Tribe/Main.php:1980
+#: src/Tribe/Main.php:1961
 msgid "Events Calendar PRO"
 msgstr ""
 
-#: src/Tribe/Main.php:2084
+#: src/Tribe/Main.php:2065
 msgid "all"
 msgstr ""
 
-#: src/Tribe/Main.php:2085 src/admin-views/event-recurrence.php:113
+#: src/Tribe/Main.php:2066 src/admin-views/event-recurrence.php:113
 #: src/admin-views/event-recurrence.php:389
 msgid "week"
 msgstr ""
 
-#: src/Tribe/Main.php:2086
+#: src/Tribe/Main.php:2067
 msgid "photo"
 msgstr ""
 
@@ -2643,11 +2646,11 @@ msgctxt "The archive for events, \"/organizer/\" URL string component."
 msgid "organizer"
 msgstr ""
 
-#: src/Tribe/Views/V2/Service_Provider.php:37
+#: src/Tribe/Views/V2/Service_Provider.php:36
 msgid "Summary"
 msgstr ""
 
-#: src/Tribe/Views/V2/Service_Provider.php:37
+#: src/Tribe/Views/V2/Service_Provider.php:36
 msgid "summary"
 msgstr ""
 
@@ -2850,32 +2853,32 @@ msgctxt "The name of the Month Widget."
 msgid "%1$s Calendar"
 msgstr ""
 
-#: src/Tribe/Views/V2/Widgets/Widget_Month.php:114
+#: src/Tribe/Views/V2/Widgets/Widget_Month.php:115
 msgctxt "Description of the Events Calendar Widget."
-msgid "Displays this month's events."
+msgid "The %1$s calendar mini calendar widget"
 msgstr ""
 
-#: src/Tribe/Views/V2/Widgets/Widget_Month.php:340
+#: src/Tribe/Views/V2/Widgets/Widget_Month.php:343
 msgctxt "The default title of the Month Widget."
 msgid "Events Calendar"
 msgstr ""
 
-#: src/Tribe/Views/V2/Widgets/Widget_Month.php:368
+#: src/Tribe/Views/V2/Widgets/Widget_Month.php:371
 msgctxt "The label for the title field of the Month Widget."
 msgid "Title:"
 msgstr ""
 
-#: src/Tribe/Views/V2/Widgets/Widget_Month.php:374
+#: src/Tribe/Views/V2/Widgets/Widget_Month.php:377
 msgctxt "The title of the Month Widget."
 msgid "%1$s Calendar"
 msgstr ""
 
-#: src/Tribe/Views/V2/Widgets/Widget_Month.php:384
+#: src/Tribe/Views/V2/Widgets/Widget_Month.php:387
 msgctxt "tribe-events-calendar-pro"
 msgid "Number of events to list below the widget calendar:"
 msgstr ""
 
-#: src/Tribe/Views/V2/Widgets/Widget_Month.php:400
+#: src/Tribe/Views/V2/Widgets/Widget_Month.php:403
 msgctxt "The label for the option to enable JSON-LD in the Month Widget."
 msgid "Generate JSON-LD data"
 msgstr ""

@@ -378,7 +378,7 @@ if ( class_exists( 'Tribe__Events__Main' ) ) {
 	/**
 	 * Organizer website url
 	 *
-	 * Returns the url to the event Organizer's supplied website.
+	 * Returns the event Organizer Name with a url to their supplied website
 	 *
 	 * @param $postId post ID for an event
 	 *

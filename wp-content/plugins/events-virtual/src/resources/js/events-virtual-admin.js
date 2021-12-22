@@ -269,24 +269,8 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
 			.on( 'change', obj.selectors.showOptions, obj.handleShowOptionInteractivity );
 	};
 
-	/**
-	 * Check if block editor is active adn virtual event block is registered.
-	 *
-	 * @since 1.7.0
-	 * @since 1.7.3 - Add additional check if wp.data if defined and if the VE block is registered.
-	 *
-	 * @returns {boolean} Whether the block editor scripts are available and if VE block is registered.
-	 */
 	obj.isGutenbergActive = function() {
-		if (
-			typeof wp === 'undefined' ||
-			typeof wp.blocks === 'undefined' ||
-			typeof wp.data === 'undefined'
-		) {
-			return false;
-		}
-
-		return !!wp.data.select( 'core/blocks' ).getBlockType( 'tribe/virtual-event' );
+		return typeof wp !== 'undefined' && typeof wp.blocks !== 'undefined';
 	};
 
 	/**

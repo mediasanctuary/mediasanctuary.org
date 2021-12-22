@@ -1,12 +1,12 @@
 === Virtual Events ===
 
-Contributors: theeventscalendar, aguseo, borkweb, bordoni, brianjessee, Camwyn, hazelquimpo, juanfra, leahkoerper, lirianojoel, lucatume, neillmcshea, rafsuntaskin, zbtirrell
+Contributors: theeventscalendar, aguseo, borkweb, bordoni, brianjessee, Camwyn, dcronian, hazelquimpo, juanfra, leahkoerper, lirianojoel, lucatume, neillmcshea, paulskim, rafsuntaskin, remaworksattribe, sc0ttkclark, zbtirrell
 Tags: virtual events, events, calendar, event, venue, organizer, dates, date, schema, conference, online events, concert, meeting, seminar, summit, class, the events calendar, tec, zoom, livestream
 Donate link: https://evnt.is/29
-Requires at least: 5.6
-Tested up to: 5.8.2
-Stable tag: 1.7.3
-Requires PHP: 7.1
+Requires at least: 4.9.18
+Tested up to: 5.8.1
+Stable tag: 1.7.1
+Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,25 +120,6 @@ Our premium products:
 * <a href="https://evnt.is/1ako" target="_blank">Image Widget Plus</a>
 
 == Changelog ==
-
-= [1.7.3] 2021-12-14 =
-
-* Version - Virtual Events 1.7.3 is only compatible with The Events Calendar 5.12.1 and higher
-* Feature - Add Moved Online event status option to use to add the related schema to an event. [VE-94]
-* Feature - Add Moved Online event status as an option in the Event Status Filter bar setting if active. [FBAR-92]
-* Fix - Add an additional check for the Virtual Events block to prevent block editor scripts from running in the classic editor. [VE-443]
-* Fix - Prevent undefined errors in Javascript by adding a check for Facebook App ID before trying to load FB SDK. [VE-451]
-* Fix - Update gCal and iCal export location for better support for Zoom, Facebook Live, and YouTube Live. [VE-442]
-* Fix - Bypass caching of the event when dealing with the admin event list table to prevent event title duplication. [VE-454]
-* Tweak - Load tooltip style sheet for compatibility with Community Events front end form. [VE-368]
-* Tweak - Update the override template paths for the files in the components directory 'src/views/components'. [VE-385]
-* Language - 2 new strings added, 19 updated, 0 fuzzied, and 0 obsoleted
-
-= [1.7.2] 2021-11-17 =
-
-* Fix - Add the YouTube Live channel link or Facebook page link to ticket emails when that setting is selected by using a new filter. [VE-399]
-* Tweak - Remove coding that disables the video url field if the virtual event is connected to Zoom. [VE-427]
-* Language - 0 new strings added, 20 updated, 1 fuzzied, and 0 obsoleted
 
 = [1.7.1] 2021-10-19 =
 

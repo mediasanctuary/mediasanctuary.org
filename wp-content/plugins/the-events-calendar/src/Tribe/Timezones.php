@@ -94,6 +94,7 @@ class Tribe__Events__Timezones extends Tribe__Timezones {
 			: $abbr;
 	}
 
+
 	/**
 	 * Returns a timestamp for the event start date that can be passed to tribe_format_date()
 	 * in order to produce the time in the correct timezone.
@@ -180,6 +181,7 @@ class Tribe__Events__Timezones extends Tribe__Timezones {
 
 		return $timestamps[ $cache_key ];
 	}
+
 
 	/**
 	 * Returns a string representing the timezone/offset currently desired for

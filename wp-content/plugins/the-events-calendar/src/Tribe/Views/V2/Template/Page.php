@@ -316,8 +316,6 @@ class Page {
 	 *
 	 * @todo  Integrate with Template + Context classes
 	 *
-	 * @since [5.11.0] Now running do_shortcode() on content returned, since we are inserting our output in lieu of the_content results
-	 *
 	 * @since  4.9.2
 	 *
 	 * @param  string $content Default content of the page we hijacked
@@ -333,7 +331,7 @@ class Page {
 
 		$this->prevent_page_looping();
 
-		return do_shortcode( $html );
+		return $html;
 	}
 
 	/**

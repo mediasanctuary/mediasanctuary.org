@@ -9,7 +9,6 @@
 
 namespace Tribe\Events\Virtual\Meetings;
 
-use Tribe\Events\Virtual\Meetings\Zoom\Event_Export as Zoom_Event_Export;
 use Tribe\Events\Virtual\Meetings\Zoom\Migration_Notice;
 use Tribe\Events\Virtual\Meetings\Zoom\Settings;
 use Tribe\Events\Virtual\Event_Meta;
@@ -300,6 +299,7 @@ class Zoom_Provider extends Meeting_Provider {
 					'name' => 'tribe_events_virtual_placeholder_strings',
 					'data' => [
 						'video'         => Event_Meta::get_video_source_text(),
+						'zoom'          => self::get_zoom_link_placeholder_text(),
 						'removeConfirm' => self::get_zoom_confirmation_to_remove_connection_text(),
 					],
 				],
@@ -469,6 +469,50 @@ class Zoom_Provider extends Meeting_Provider {
 	}
 
 	/**
+	 * Adds placeholder text for Zoom links.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string        $text  The placeholder text.
+	 * @param \WP_Post|null $event The events post object we're editing.
+	 *
+	 * @return string The placeholder text.
+	 */
+	public static function zoom_link_placeholder_text( $text, $event ) {
+		if (
+			empty( $event->virtual_meeting )
+			|| tribe( self::class )->get_slug() !== $event->virtual_meeting_provider
+		) {
+			return $text;
+		}
+
+		return self::get_zoom_link_placeholder_text();
+	}
+
+	/**
+	 * Get default placeholder text and filter it.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The placeholder text.
+	 */
+	public static function get_zoom_link_placeholder_text() {
+		$text = __( 'Zoom link generated', 'events-virtual' );
+
+		/**
+		 * Allows filtering of the placeholder text for when Zoom overrides the URL field.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $text The current placeholder text.
+		 */
+		return apply_filters(
+			'tribe_events_virtual_zoom_link_placeholder_text',
+			$text
+		);
+	}
+
+	/**
 	 * Get the confirmation text for removing a Zoom connection.
 	 *
 	 * @since 1.5.0
@@ -522,6 +566,37 @@ class Zoom_Provider extends Meeting_Provider {
 	 * @return boolean Whether the embed video control is hidden.
 	 */
 	public function filter_display_embed_video_hidden( $is_hidden, $event ) {
+		return $event->virtual_meeting && tribe( self::class )->get_slug() === $event->virtual_meeting_provider;
+	}
+
+	/**
+	 * Filters the video source virtual url.
+	 *
+	 * @param string  $virtual_url The virtual url.
+	 * @param WP_Post $event       The event object.
+	 *
+	 * @return string The filtered virtual url.
+	 */
+	public function filter_video_source_virtual_url( $virtual_url, $event ) {
+		if (
+			empty( $event->virtual_meeting )
+			|| tribe( self::class )->get_slug() !== $event->virtual_meeting_provider
+		) {
+			return $virtual_url;
+		}
+
+		return '';
+	}
+
+	/**
+	 * Filters whether the video source virtual url is disabled.
+	 *
+	 * @param boolean $is_disabled Whether the video source virtual url is disabled.
+	 * @param WP_Post $event       The event object.
+	 *
+	 * @return boolean Whether the video source virtual url is disabled.
+	 */
+	public function filter_video_source_virtual_url_disabled( $is_disabled, $event ) {
 		return $event->virtual_meeting && tribe( self::class )->get_slug() === $event->virtual_meeting_provider;
 	}
 
@@ -585,39 +660,6 @@ class Zoom_Provider extends Meeting_Provider {
 	}
 
 	/**
-	 * Filter the Google Calendar export fields for a Zoom source event.
-	 *
-	 * @since 1.7.3
-	 *
-	 * @param array<string|string> $fields   The various file format components for this specific event.
-	 * @param \WP_Post             $event    The WP_Post of this event.
-	 * @param string               $key_name The name of the array key to modify.
-	 * @param string               $type     The name of the export type.
-	 *
-	 * @return  array<string|string> Google Calendar Link params.
-	 */
-	public function filter_zoom_source_google_calendar_parameters( $fields, $event, $key_name, $type ) {
-
-		return $this->container->make( Zoom_Event_Export::class )->modify_video_source_export_output( $fields, $event, $key_name, $type );
-	}
-
-	/**
-	 * Filter the iCal export fields for a Zoom source event.
-	 *
-	 * @since 1.7.3
-	 *
-	 * @param array<string|string> $fields   The various file format components for this specific event.
-	 * @param \WP_Post             $event    The WP_Post of this event.
-	 * @param string               $key_name The name of the array key to modify.
-	 * @param string               $type     The name of the export type.
-	 *
-	 * @return array<string|string>  The various iCal file format components of this specific event item.
-	 */
-	public function filter_zoom_source_ical_feed_items( $fields, $event, $key_name, $type ) {
-		return $this->container->make( Zoom_Event_Export::class )->modify_video_source_export_output( $fields, $event, $key_name, $type );
-	}
-
-	/**
 	 * Hooks the filters required for the Zoom API integration to work correctly.
 	 *
 	 * @since 1.1.1
@@ -635,8 +677,26 @@ class Zoom_Provider extends Meeting_Provider {
 		}
 
 		add_filter(
+			'tribe_events_virtual_video_source_placeholder_text',
+			[ $this, 'zoom_link_placeholder_text' ],
+			10,
+			2
+		);
+		add_filter(
 			'tribe_events_virtual_display_embed_video_hidden',
 			[ $this, 'filter_display_embed_video_hidden' ],
+			10,
+			2
+		);
+		add_filter(
+			'tribe_events_virtual_video_source_virtual_url',
+			[ $this, 'filter_video_source_virtual_url' ],
+			10,
+			2
+		);
+		add_filter(
+			'tribe_events_virtual_video_source_virtual_url_disabled',
+			[ $this, 'filter_video_source_virtual_url_disabled' ],
 			10,
 			2
 		);
@@ -645,8 +705,6 @@ class Zoom_Provider extends Meeting_Provider {
 			[ $this, 'filter_virtual_meetings_zoom_ajax_actions' ]
 		);
 		add_filter( 'tribe_events_virtual_video_sources', [ $this, 'add_video_source' ], 20, 2 );
-		add_filter( 'tec_events_virtual_export_fields', [ $this, 'filter_zoom_source_google_calendar_parameters' ], 10, 4 );
-		add_filter( 'tec_events_virtual_export_fields', [ $this, 'filter_zoom_source_ical_feed_items' ], 10, 4 );
 	}
 
 	/**
@@ -683,90 +741,5 @@ class Zoom_Provider extends Meeting_Provider {
 			20,
 			0
 		);
-	}
-
-	/**
-	 * Adds placeholder text for Zoom links.
-	 *
-	 * @since 1.0.0
-	 * @deprecated 1.7.2 - With the video source dropdown Zoom no longer modifies the video url field.
-	 *
-	 * @param string        $text  The placeholder text.
-	 * @param \WP_Post|null $event The events post object we're editing.
-	 *
-	 * @return string The placeholder text.
-	 */
-	public static function zoom_link_placeholder_text( $text, $event ) {
-		_deprecated_function( __FUNCTION__, '1.7.2', 'Deprecated with no replacement.' );
-		if (
-			empty( $event->virtual_meeting )
-			|| tribe( self::class )->get_slug() !== $event->virtual_meeting_provider
-		) {
-			return $text;
-		}
-
-		return self::get_zoom_link_placeholder_text();
-	}
-
-	/**
-	 * Get default placeholder text and filter it.
-	 *
-	 * @since 1.0.0
-	 * @deprecated 1.7.2 - With the video source dropdown Zoom no longer modifies the video url field.
-	 *
-	 * @return string The placeholder text.
-	 */
-	public static function get_zoom_link_placeholder_text() {
-		_deprecated_function( __FUNCTION__, '1.7.2', 'Deprecated with no replacement.' );
-		$text = __( 'Zoom link generated', 'events-virtual' );
-
-		/**
-		 * Allows filtering of the placeholder text for when Zoom overrides the URL field.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param string $text The current placeholder text.
-		 */
-		return apply_filters(
-			'tribe_events_virtual_zoom_link_placeholder_text',
-			$text
-		);
-	}
-
-	/**
-	 * Filters the video source virtual url.
-	 *
-	 * @deprecated 1.7.2 - With the video source dropdown Zoom no longer modifies the video url field.
-	 *
-	 * @param string  $virtual_url The virtual url.
-	 * @param WP_Post $event       The event object.
-	 *
-	 * @return string The filtered virtual url.
-	 */
-	public function filter_video_source_virtual_url( $virtual_url, $event ) {
-		_deprecated_function( __FUNCTION__, '1.7.2', 'Deprecated with no replacement.' );
-		if (
-			empty( $event->virtual_meeting )
-			|| tribe( self::class )->get_slug() !== $event->virtual_meeting_provider
-		) {
-			return $virtual_url;
-		}
-
-		return '';
-	}
-
-	/**
-	 * Filters whether the video source virtual url is disabled.
-	 *
-	 * @deprecated 1.7.2 - With the video source dropdown Zoom no longer modifies the video url field.
-	 *
-	 * @param boolean $is_disabled Whether the video source virtual url is disabled.
-	 * @param WP_Post $event       The event object.
-	 *
-	 * @return boolean Whether the video source virtual url is disabled.
-	 */
-	public function filter_video_source_virtual_url_disabled( $is_disabled, $event ) {
-		_deprecated_function( __FUNCTION__, '1.7.2', 'Deprecated with no replacement.' );
-		return $event->virtual_meeting && tribe( self::class )->get_slug() === $event->virtual_meeting_provider;
 	}
 }

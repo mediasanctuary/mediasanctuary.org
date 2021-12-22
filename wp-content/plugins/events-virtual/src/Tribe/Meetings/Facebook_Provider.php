@@ -12,7 +12,6 @@ namespace Tribe\Events\Virtual\Meetings;
 use Tribe\Events\Virtual\Meetings\Facebook\Classic_Editor;
 use Tribe\Events\Virtual\Meetings\Facebook\Page_API;
 use Tribe\Events\Virtual\Meetings\Facebook\Settings;
-use Tribe\Events\Virtual\Meetings\Facebook\Event_Export as Facebook_Event_Export;
 use Tribe\Events\Virtual\Meetings\Facebook\Event_Meta as Facebook_Meta;
 use Tribe\Events\Virtual\Meetings\Facebook\Template_Modifications;
 use Tribe\Events\Virtual\Plugin;
@@ -120,15 +119,11 @@ class Facebook_Provider extends Meeting_Provider {
 	protected function add_filters() {
 		add_filter( 'tribe_addons_tab_fields', [ $this, 'filter_addons_tab_fields' ], 20 );
 		add_filter( 'tribe_events_virtual_video_sources', [ $this, 'add_video_source' ], 10, 2 );
-		add_filter( 'tec_events_virtual_export_fields', [ $this, 'filter_facebook_source_google_calendar_parameters' ], 10, 4 );
-		add_filter( 'tec_events_virtual_export_fields', [ $this, 'filter_facebook_source_ical_feed_items' ], 10, 4 );
 		add_filter( 'tribe_rest_event_data', [ $this, 'attach_rest_properties' ], 10, 2 );
 
 		// Filter event object properties to add Facebook Live Status
 		add_filter( 'tribe_get_event_after', [ $this, 'add_dynamic_properties' ], 15 );
 
-		// Filter the ticket email virtual url.
-		add_filter( 'tribe_events_virtual_ticket_email_url', [ $this, 'filter_ticket_email_url' ], 15, 2 );
 	}
 
 	/**
@@ -230,39 +225,6 @@ class Facebook_Provider extends Meeting_Provider {
 	}
 
 	/**
-	 * Filter the Google Calendar export fields for a Zoom source event.
-	 *
-	 * @since 1.7.3
-	 *
-	 * @param array<string|string> $fields   The various file format components for this specific event.
-	 * @param \WP_Post             $event    The WP_Post of this event.
-	 * @param string               $key_name The name of the array key to modify.
-	 * @param string               $type     The name of the export type.
-	 *
-	 * @return  array<string|string> Google Calendar Link params.
-	 */
-	public function filter_facebook_source_google_calendar_parameters( $fields, $event, $key_name, $type ) {
-
-		return $this->container->make( Facebook_Event_Export::class )->modify_video_source_export_output( $fields, $event, $key_name, $type );
-	}
-
-	/**
-	 * Filter the iCal export fields for a Zoom source event.
-	 *
-	 * @since 1.7.3
-	 *
-	 * @param array<string|string> $fields   The various file format components for this specific event.
-	 * @param \WP_Post             $event    The WP_Post of this event.
-	 * @param string               $key_name The name of the array key to modify.
-	 * @param string               $type     The name of the export type.
-	 *
-	 * @return array<string|string>  The various iCal file format components of this specific event item.
-	 */
-	public function filter_facebook_source_ical_feed_items( $fields, $event, $key_name, $type ) {
-		return $this->container->make( Facebook_Event_Export::class )->modify_video_source_export_output( $fields, $event, $key_name, $type );
-	}
-
-	/**
 	 * Add information about the Facebook live stream if available via the REST Api.
 	 *
 	 * @since 1.7.0
@@ -296,20 +258,6 @@ class Facebook_Provider extends Meeting_Provider {
 		}
 
 		return $this->container->make( Facebook_Meta::class )->add_dynamic_properties( $post );
-	}
-
-	/**
-	 * Filter the ticket email url.
-	 *
-	 * @since 1.7.2
-	 *
-	 * @param string  $virtual_url The virtual url for the ticket and rsvp emails.
-	 * @param WP_Post $event       The event post object with properties added by the `tribe_get_event` function.
-	 *
-	 * @return string The Facebook Live virtual url for the ticket and rsvp emails.
-	 */
-	public function filter_ticket_email_url( $virtual_url, WP_Post $event ) {
-		return $this->container->make( Facebook_Meta::class )->filter_ticket_email_url( $virtual_url, $event );
 	}
 
 	/**

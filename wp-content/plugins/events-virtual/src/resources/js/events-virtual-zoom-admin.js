@@ -291,6 +291,13 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 		var $linkedButtonOption = $( obj.selectors.linkedButtonOption );
 
 		if ( $( obj.selectors.meetingDetails ).length ) {
+			// Disable the URL field.
+			$urlField
+				.prop( { disabled: true } )
+				.attr(
+					'placeholder',
+					tribe_events_virtual_placeholder_strings.zoom
+				);
 			// Hide the "Embed Video" option.
 			$embedVideoOptionItem.addClass( obj.selectors.hidden.className() );
 			// Show the Zoom link display option.

@@ -76,10 +76,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
    */
 
 
-  function isNewBlock(_ref) {
-    let {
-      attributes
-    } = _ref;
+  function isNewBlock({
+    attributes
+  }) {
     return !attributes.id;
   }
   /**
@@ -94,11 +93,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
    */
 
 
-  function isDuplicateBlock(_ref2) {
-    let {
-      attributes,
-      clientId
-    } = _ref2;
+  function isDuplicateBlock({
+    attributes,
+    clientId
+  }) {
     return getBlocks().filter(block => block.attributes.id === attributes.id).filter(block => block.clientId !== clientId).length;
   }
   /**
@@ -140,12 +138,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
     } // Check category exists and fallback to "common".
 
 
-    const category = wp.blocks.getCategories().filter(_ref3 => {
-      let {
-        slug
-      } = _ref3;
-      return slug === blockType.category;
-    }).pop();
+    const category = wp.blocks.getCategories().filter(({
+      slug
+    }) => slug === blockType.category).pop();
 
     if (!category) {
       //console.warn( `The block "${blockType.name}" is registered with an unknown category "${blockType.category}".` );
@@ -276,12 +271,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 
     for (const k in args) {
-      blocks = blocks.filter(_ref4 => {
-        let {
-          attributes
-        } = _ref4;
-        return attributes[k] === args[k];
-      });
+      blocks = blocks.filter(({
+        attributes
+      }) => attributes[k] === args[k]);
     } // Return results.
 
 
@@ -393,11 +385,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 
     const nodeAttrs = {};
-    acf.arrayArgs(node.attributes).map(parseNodeAttr).forEach(_ref5 => {
-      let {
-        name,
-        value
-      } = _ref5;
+    acf.arrayArgs(node.attributes).map(parseNodeAttr).forEach(({
+      name,
+      value
+    }) => {
       nodeAttrs[name] = value;
     }); // Define args for React.createElement().
 
@@ -870,14 +861,11 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
       }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(Placeholder, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(Spinner, null)));
     }
 
-    shouldComponentUpdate(_ref6, _ref7) {
-      let {
-        index
-      } = _ref6;
-      let {
-        html
-      } = _ref7;
-
+    shouldComponentUpdate({
+      index
+    }, {
+      html
+    }) {
       if (index !== this.props.index) {
         this.componentWillMove();
       }
@@ -975,10 +963,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 
   class BlockForm extends DynamicHTML {
-    setup(_ref8) {
-      let {
-        attributes
-      } = _ref8;
+    setup({
+      attributes
+    }) {
       this.id = `BlockForm-${attributes.id}`;
     }
 
@@ -1000,10 +987,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
         query: {
           form: true
         }
-      }).done(_ref9 => {
-        let {
-          data
-        } = _ref9;
+      }).done(({
+        data
+      }) => {
         this.setHtml(data.form);
       });
     }
@@ -1020,8 +1006,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
         $el
       } = this.state; // Callback for updating block data.
 
-      function serializeData() {
-        let silent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      function serializeData(silent = false) {
         const data = acf.serialize($el, `acf-${attributes.id}`); //console.log('serializeData', props, data);
 
         if (silent) {
@@ -1061,11 +1046,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 
   class BlockPreview extends DynamicHTML {
-    setup(_ref10) {
-      let {
-        attributes,
-        name
-      } = _ref10;
+    setup({
+      attributes,
+      name
+    }) {
       this.id = `BlockPreview-${attributes.id}`;
       const blockType = getBlockType(name);
 
@@ -1075,8 +1059,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
     }
 
-    fetch() {
-      let args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    fetch(args = {}) {
       const {
         attributes = this.props.attributes,
         delay = 0
@@ -1099,10 +1082,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
           preview: true
         },
         delay
-      }).done(_ref11 => {
-        let {
-          data
-        } = _ref11;
+      }).done(({
+        data
+      }) => {
         this.setHtml(data.preview);
       });
     }

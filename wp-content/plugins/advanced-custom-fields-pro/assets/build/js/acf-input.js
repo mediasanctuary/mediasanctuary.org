@@ -4722,10 +4722,10 @@
       return data;
     }
 
-    const query_nonce = field.get('queryNonce');
+    const $query_nonce = $(`#acf-${field.get('key')}-query-nonce`);
 
-    if (query_nonce && query_nonce.length) {
-      data.user_query_nonce = query_nonce;
+    if ($query_nonce.length) {
+      data.user_query_nonce = $query_nonce.val();
     }
 
     return data;
@@ -7782,7 +7782,7 @@
               if ($(this).data('data')) {
                 var $option = $($(this).data('data').element);
               } else {
-                var $option = $($(this).find('span.acf-selection').data('element'));
+                var $option = $($(this).children('span.acf-selection').data('element'));
               } // detach and re-append to end
 
 
@@ -7796,12 +7796,8 @@
         $select.on('select2:select', this.proxy(function (e) {
           this.getOption(e.params.data.id).detach().appendTo(this.$el);
         }));
-      } // add handler to auto-focus searchbox (for jQuery 3.6)
+      } // add class
 
-
-      $select.on('select2:open', () => {
-        $('.select2-container--open .select2-search__field').get(-1).focus();
-      }); // add class
 
       $container.addClass('-acf'); // Add back temporarily removed attr.
 
@@ -8003,10 +7999,7 @@
       var params = {
         term: term,
         page: page
-      }; // filter
-
-      var field = this.get('field');
-      params = acf.applyFilters('select2_ajax_data', params, this.data, this.$el, field || false, this); // return
+      }; // return
 
       return Select2.prototype.getAjaxData.apply(this, [params]);
     }

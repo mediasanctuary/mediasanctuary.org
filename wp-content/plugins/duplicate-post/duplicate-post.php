@@ -1,18 +1,15 @@
 <?php
 /**
- * Duplicate Post plugin.
- *
- * @package Yoast\WP\Duplicate_Post
- * @since   0.1
- *
- * @wordpress-plugin
  * Plugin Name: Yoast Duplicate Post
- * Plugin URI:  https://yoast.com/wordpress/plugins/duplicate-post/
+ * Plugin URI: https://yoast.com/wordpress/plugins/duplicate-post/
  * Description: The go-to tool for cloning posts and pages, including the powerful Rewrite & Republish feature.
- * Version:     4.3
- * Author:      Enrico Battocchi & Team Yoast
- * Author URI:  https://yoast.com
+ * Version: 4.1.2
+ * Author: Enrico Battocchi & Team Yoast
+ * Author URI: https://yoast.com
  * Text Domain: duplicate-post
+ *
+ * @package Duplicate Post
+ * @since 0.1
  *
  * Copyright 2020 Yoast BV (email : info@yoast.com)
  *
@@ -45,15 +42,13 @@ if ( ! defined( 'DUPLICATE_POST_PATH' ) ) {
 	define( 'DUPLICATE_POST_PATH', plugin_dir_path( __FILE__ ) );
 }
 
-define( 'DUPLICATE_POST_CURRENT_VERSION', '4.3' );
+define( 'DUPLICATE_POST_CURRENT_VERSION', '4.1.2' );
 
-$duplicate_post_autoload_file = DUPLICATE_POST_PATH . 'vendor/autoload.php';
+$duplicate_post_autoload_file = __DIR__ . '/vendor/autoload.php';
 
 if ( is_readable( $duplicate_post_autoload_file ) ) {
 	require $duplicate_post_autoload_file;
-}
 
-if ( class_exists( Duplicate_Post::class ) ) {
 	// Initialize the main autoloaded class.
 	add_action( 'plugins_loaded', '__duplicate_post_main' );
 }
@@ -61,11 +56,7 @@ if ( class_exists( Duplicate_Post::class ) ) {
 /**
  * Loads the Duplicate Post main class.
  *
- * {@internal Function name change would be BC-break.}
- *
- * @phpcs:disable PHPCompatibility.FunctionNameRestrictions.ReservedFunctionNames.FunctionDoubleUnderscore
- * @phpcs:disable WordPress.NamingConventions.ValidFunctionName.FunctionDoubleUnderscore
- * @phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+ * @phpcs:disable PHPCompatibility.FunctionNameRestrictions.ReservedFunctionNames.FunctionDoubleUnderscore,WordPress.NamingConventions.ValidFunctionName.FunctionDoubleUnderscore,WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function name change would be BC-break.
  */
 function __duplicate_post_main() {
 	new Duplicate_Post();
@@ -76,7 +67,7 @@ function __duplicate_post_main() {
  * Initialises the internationalisation domain.
  */
 function duplicate_post_load_plugin_textdomain() {
-	load_plugin_textdomain( 'duplicate-post', false, basename( __DIR__ ) . '/languages/' );
+	load_plugin_textdomain( 'duplicate-post', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 }
 add_action( 'plugins_loaded', 'duplicate_post_load_plugin_textdomain' );
 
@@ -85,27 +76,28 @@ add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'duplicate_pos
 /**
  * Adds 'Settings' link to plugin entry in the Plugins list.
  *
+ * @ignore
  * @see 'plugin_action_links_$plugin_file'
  *
  * @param array $actions An array of plugin action links.
  * @return array
  */
 function duplicate_post_plugin_actions( $actions ) {
-	$settings_action = [
+	$settings_action = array(
 		'settings' => sprintf(
 			'<a href="%1$s" %2$s>%3$s</a>',
 			menu_page_url( 'duplicatepost', false ),
 			'aria-label="' . __( 'Settings for Duplicate Post', 'duplicate-post' ) . '"',
-			esc_html__( 'Settings', 'duplicate-post' )
+			esc_html__( 'Settings', 'default' )
 		),
-	];
+	);
 
-	$actions = ( $settings_action + $actions );
+	$actions = $settings_action + $actions;
 	return $actions;
 }
 
-require_once DUPLICATE_POST_PATH . 'common-functions.php';
+require_once dirname( __FILE__ ) . '/duplicate-post-common.php';
 
 if ( is_admin() ) {
-	include_once DUPLICATE_POST_PATH . 'admin-functions.php';
+	include_once dirname( __FILE__ ) . '/duplicate-post-admin.php';
 }

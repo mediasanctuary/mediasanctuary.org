@@ -2,13 +2,23 @@
 # This file is distributed under the same license as the The Events Calendar: Virtual Events package.
 msgid ""
 msgstr ""
-"Project-Id-Version: The Events Calendar: Virtual Events 1.7.3\n"
+<<<<<<< HEAD
+"Project-Id-Version: The Events Calendar: Virtual Events 1.7.0\n"
 "Report-Msgid-Bugs-To: http://m.tri.be/191x\n"
-"POT-Creation-Date: 2021-12-13 14:10:51+00:00\n"
+"POT-Creation-Date: 2021-10-11 18:14:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2021-12-13 14:10\n"
+"PO-Revision-Date: 2021-10-11 18:14\n"
+=======
+"Project-Id-Version: The Events Calendar: Virtual Events 1.6.2\n"
+"Report-Msgid-Bugs-To: http://m.tri.be/191x\n"
+"POT-Creation-Date: 2021-10-07 18:18:17+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2021-10-07 18:18\n"
+>>>>>>> b4c93194feafb04b873b851b3e2af145b38c24a7
 "Last-Translator: \n"
 "Language-Team: \n"
 
@@ -110,17 +120,11 @@ msgctxt "Default placeholder text for the virtual event URL input."
 msgid "Enter URL for YouTube, Vimeo, etc."
 msgstr ""
 
-#: src/Tribe/Event_Status/Compatibility/Filter_Bar/Events_Status_Virtual_Filter.php:40
-msgctxt "Moved online label for filter bar to show moved online events."
-msgid "Show only moved online events"
-msgstr ""
-
-#: src/Tribe/Event_Status/Status_Labels.php:61
-msgctxt "Moved Online event status label"
-msgid "Moved Online"
-msgstr ""
-
-#: src/Tribe/Hooks.php:1008
+<<<<<<< HEAD
+#: src/Tribe/Hooks.php:1041
+=======
+#: src/Tribe/Hooks.php:1000
+>>>>>>> b4c93194feafb04b873b851b3e2af145b38c24a7
 msgctxt "The name of the video source."
 msgid "Video URL"
 msgstr ""
@@ -262,7 +266,7 @@ msgid "The Live Stream is Offline."
 msgstr ""
 
 #. translators: the placeholder is for the error as returned from Facebook API.
-#: src/Tribe/Meetings/Facebook/Video_API.php:233
+#: src/Tribe/Meetings/Facebook/Video_API.php:220
 msgctxt ""
 "The prefix of a message reporting a Facebook API communication error, the "
 "placeholder is for the error."
@@ -273,7 +277,7 @@ msgstr ""
 
 #. translators: the placeholders are, respectively, for the expected and actual
 #. response codes.
-#: src/Tribe/Meetings/Facebook/Video_API.php:264
+#: src/Tribe/Meetings/Facebook/Video_API.php:251
 msgctxt ""
 "The message reporting a Facebook API unexpected response code, placeholders "
 "are the codes."
@@ -282,31 +286,31 @@ msgid ""
 "Please, try again in a minute."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:223
+#: src/Tribe/Meetings/Facebook_Provider.php:225
 msgctxt "The name of the video source."
 msgid "Facebook Live"
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:372
+#: src/Tribe/Meetings/Facebook_Provider.php:327
 msgctxt ""
 "The message to display if no local id is found when trying to authorize a "
 "facebook page."
 msgid "The local id for the Facebook is not set."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:387
+#: src/Tribe/Meetings/Facebook_Provider.php:342
 msgctxt "The message to display if no Facebook page wrap found."
 msgid "No Facebook Page data found."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:402
+#: src/Tribe/Meetings/Facebook_Provider.php:357
 msgctxt ""
 "The message to display if no connection is established to the Facebook sdk."
 msgid ""
 "The Facebook Page could not be connected to your site, please try again."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:417
+#: src/Tribe/Meetings/Facebook_Provider.php:372
 msgctxt ""
 "The message to display if a Facebook user could not obtain an extended "
 "access token."
@@ -314,7 +318,7 @@ msgid ""
 "The attempt to get an extended Facebook user access token failed with error"
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:432
+#: src/Tribe/Meetings/Facebook_Provider.php:387
 msgctxt ""
 "The message to display if a Facebook Page could not obtain an access token."
 msgid ""
@@ -322,14 +326,14 @@ msgid ""
 "Facebook app credentials. The attempt failed with error"
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:447
+#: src/Tribe/Meetings/Facebook_Provider.php:402
 msgctxt "The message to display to confirm when deleting a Facebook Page."
 msgid ""
 "Are you sure you want to delete the Facebook Page? Deleting it will "
 "disconnect any upcoming virtual events using this Facebook Page."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:462
+#: src/Tribe/Meetings/Facebook_Provider.php:417
 msgctxt "The message to display to confirm clear Facebook Page's access token."
 msgid ""
 "Are you sure you want to clear the access token? Clearing it will disconnect "
@@ -435,12 +439,20 @@ msgctxt "YouTube offline message"
 msgid "The Live Stream is Offline."
 msgstr ""
 
-#: src/Tribe/Meetings/YouTube_Provider.php:146
+<<<<<<< HEAD
+#: src/Tribe/Meetings/YouTube_Provider.php:147
+=======
+#: src/Tribe/Meetings/YouTube_Provider.php:141
+>>>>>>> b4c93194feafb04b873b851b3e2af145b38c24a7
 msgctxt "The name of the video source."
 msgid "YouTube Live"
 msgstr ""
 
-#: src/Tribe/Meetings/YouTube_Provider.php:285
+<<<<<<< HEAD
+#: src/Tribe/Meetings/YouTube_Provider.php:253
+=======
+#: src/Tribe/Meetings/YouTube_Provider.php:247
+>>>>>>> b4c93194feafb04b873b851b3e2af145b38c24a7
 msgctxt ""
 "The message to display to confirm a user would like to delete a YouTube "
 "channel ID."
@@ -766,7 +778,11 @@ msgctxt ""
 msgid "The Zoom Account access token could not be revoked."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:479
+#: src/Tribe/Meetings/Zoom_Provider.php:500
+msgid "Zoom link generated"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom_Provider.php:523
 msgctxt ""
 "The message to display to confirm a user would like to remove the Zoom "
 "connection from an event."
@@ -775,7 +791,7 @@ msgid ""
 "operation cannot be undone."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:494
+#: src/Tribe/Meetings/Zoom_Provider.php:538
 msgctxt ""
 "The message to display before a user attempts to refresh a Zoom account "
 "connection."
@@ -784,7 +800,7 @@ msgid ""
 "account in this browser."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:509
+#: src/Tribe/Meetings/Zoom_Provider.php:553
 msgctxt ""
 "The message to display to confirm a user would like to delete a Zoom account."
 msgid ""
@@ -792,13 +808,9 @@ msgid ""
 "be undone. Existing meetings tied to this account will not be impacted."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:578
+#: src/Tribe/Meetings/Zoom_Provider.php:653
 msgctxt "The name of the video source."
 msgid "Zoom"
-msgstr ""
-
-#: src/Tribe/Meetings/Zoom_Provider.php:721
-msgid "Zoom link generated"
 msgstr ""
 
 #: src/Tribe/Metabox.php:83
@@ -1244,7 +1256,11 @@ msgstr ""
 msgid "To begin using Virtual Events, please install the latest version of"
 msgstr ""
 
-#. #-#-#-#-#  events-virtual.pot (The Events Calendar: Virtual Events 1.7.3)  #-#-#-#-#
+<<<<<<< HEAD
+#. #-#-#-#-#  events-virtual.pot (The Events Calendar: Virtual Events 1.7.0)  #-#-#-#-#
+=======
+#. #-#-#-#-#  events-virtual.pot (The Events Calendar: Virtual Events 1.6.2)  #-#-#-#-#
+>>>>>>> b4c93194feafb04b873b851b3e2af145b38c24a7
 #. Author of the plugin/theme
 #: src/functions/load.php:31
 msgid "The Events Calendar"
@@ -1319,7 +1335,7 @@ msgctxt "Capitalized \"hybrid\" term, capitalized singular event term."
 msgid "%1$s %2$s"
 msgstr ""
 
-#: src/views/compatibility/event-tickets/email/ticket-email-link.php:30
+#: src/views/compatibility/event-tickets/email/ticket-email-link.php:27
 msgid "Join"
 msgstr ""
 

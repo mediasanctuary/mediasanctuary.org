@@ -1000,8 +1000,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
         $el
       } = this.state; // Callback for updating block data.
 
-      function serializeData() {
-        let silent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      function serializeData(silent = false) {
         const data = acf.serialize($el, `acf-${attributes.id}`);
 
         if (silent) {
@@ -1051,8 +1050,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
     }
 
-    fetch() {
-      let args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    fetch(args = {}) {
       const {
         attributes = this.props.attributes,
         delay = 0

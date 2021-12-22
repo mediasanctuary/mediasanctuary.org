@@ -58,6 +58,5 @@ class Service_Provider extends \tad_DI52_ServiceProvider {
 
 		tribe( Marketing\Stellar_Sale::class );
 		tribe( Marketing\Black_Friday::class );
-		tribe( Marketing\End_Of_Year_Sale::class );
 	}
 }

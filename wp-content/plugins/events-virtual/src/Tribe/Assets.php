@@ -81,7 +81,7 @@ class Assets extends \tad_DI52_ServiceProvider {
 			$plugin,
 			'tribe-events-virtual-admin-css',
 			'events-virtual-admin.css',
-			[ 'tec-variables-full', 'tribe-tooltip' ],
+			[ 'tec-variables-full' ],
 			'admin_enqueue_scripts',
 			[
 				'conditionals' => [

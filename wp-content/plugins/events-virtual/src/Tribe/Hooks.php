@@ -21,8 +21,6 @@
 
 namespace Tribe\Events\Virtual;
 
-use Tribe\Events\Virtual\Event_Status\Compatibility\Filter_Bar\Service_Provider as Event_Status_Filter_Bar_Provider;
-use Tribe\Events\Virtual\Event_Status\Status_Labels;
 use Tribe\Events\Virtual\Meetings\Facebook_Provider;
 use Tribe\Events\Virtual\Meetings\YouTube_Provider;
 use Tribe\Events\Virtual\Meetings\Zoom_Provider;
@@ -53,7 +51,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		$this->add_actions();
 		$this->add_filters();
 		$this->add_meetings_support();
-		$this->container->register( Event_Status_Filter_Bar_Provider::class );
 	}
 
 	/**
@@ -444,9 +441,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 
 		// Add Video Source.
 		add_filter( 'tribe_events_virtual_video_sources', [ $this, 'add_video_source' ], 10, 2 );
-
-		// Add Event status.
-		add_filter( 'tec_event_statuses', [ $this, 'filter_event_status' ], 10, 2 );
 	}
 
 	/**
@@ -1012,20 +1006,6 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		];
 
 		return $video_sources;
-	}
-
-	/**
-	 * Add the moved online event status.
-	 *
-	 * @since 1.7.3
-	 *
-	 * @param array<string|mixed> $statuses       The event status options for an event.
-	 * @param string              $current_status The current event status for the event or empty string if none.
-	 *
-	 * @return array<string|mixed> The event status options for an event.
-	 */
-	public function filter_event_status( $statuses, $current_status ) {
-		return $this->container->make( Status_Labels::class )->filter_event_statuses( $statuses, $current_status );
 	}
 
 	/**
