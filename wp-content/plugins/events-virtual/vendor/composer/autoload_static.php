@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit352d41f51c4043d0e2c9d8b130205820
+class ComposerStaticInit0f81bac7a0430458aef6010264d7a279
 {
     public static $prefixLengthsPsr4 = array (
         'T' => 
@@ -64,12 +64,17 @@ class ComposerStaticInit352d41f51c4043d0e2c9d8b130205820
         'Tribe\\Events\\Virtual\\Editor\\Template\\Frontend' => __DIR__ . '/../..' . '/src/Tribe/Editor/Template/Frontend.php',
         'Tribe\\Events\\Virtual\\Encryption' => __DIR__ . '/../..' . '/src/Tribe/Encryption.php',
         'Tribe\\Events\\Virtual\\Event_Meta' => __DIR__ . '/../..' . '/src/Tribe/Event_Meta.php',
+        'Tribe\\Events\\Virtual\\Event_Status\\Compatibility\\Filter_Bar\\Events_Status_Virtual_Filter' => __DIR__ . '/../..' . '/src/Tribe/Event_Status/Compatibility/Filter_Bar/Events_Status_Virtual_Filter.php',
+        'Tribe\\Events\\Virtual\\Event_Status\\Compatibility\\Filter_Bar\\Service_Provider' => __DIR__ . '/../..' . '/src/Tribe/Event_Status/Compatibility/Filter_Bar/Service_Provider.php',
+        'Tribe\\Events\\Virtual\\Event_Status\\Status_Labels' => __DIR__ . '/../..' . '/src/Tribe/Event_Status/Status_Labels.php',
+        'Tribe\\Events\\Virtual\\Export\\Abstract_Export' => __DIR__ . '/../..' . '/src/Tribe/Export/Abstract_Export.php',
         'Tribe\\Events\\Virtual\\Export\\Event_Export' => __DIR__ . '/../..' . '/src/Tribe/Export/Event_Export.php',
         'Tribe\\Events\\Virtual\\Export\\Export_Provider' => __DIR__ . '/../..' . '/src/Tribe/Export/Export_Provider.php',
         'Tribe\\Events\\Virtual\\Hooks' => __DIR__ . '/../..' . '/src/Tribe/Hooks.php',
         'Tribe\\Events\\Virtual\\JSON_LD' => __DIR__ . '/../..' . '/src/Tribe/JSON_LD.php',
         'Tribe\\Events\\Virtual\\Meetings\\Api_Response' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Api_Response.php',
         'Tribe\\Events\\Virtual\\Meetings\\Facebook\\Classic_Editor' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Facebook/Classic_Editor.php',
+        'Tribe\\Events\\Virtual\\Meetings\\Facebook\\Event_Export' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Facebook/Event_Export.php',
         'Tribe\\Events\\Virtual\\Meetings\\Facebook\\Event_Meta' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Facebook/Event_Meta.php',
         'Tribe\\Events\\Virtual\\Meetings\\Facebook\\Page_API' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Facebook/Page_API.php',
         'Tribe\\Events\\Virtual\\Meetings\\Facebook\\Settings' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Facebook/Settings.php',
@@ -81,6 +86,7 @@ class ComposerStaticInit352d41f51c4043d0e2c9d8b130205820
         'Tribe\\Events\\Virtual\\Meetings\\YouTube\\Classic_Editor' => __DIR__ . '/../..' . '/src/Tribe/Meetings/YouTube/Classic_Editor.php',
         'Tribe\\Events\\Virtual\\Meetings\\YouTube\\Connection' => __DIR__ . '/../..' . '/src/Tribe/Meetings/YouTube/Connection.php',
         'Tribe\\Events\\Virtual\\Meetings\\YouTube\\Embeds' => __DIR__ . '/../..' . '/src/Tribe/Meetings/YouTube/Embeds.php',
+        'Tribe\\Events\\Virtual\\Meetings\\YouTube\\Event_Export' => __DIR__ . '/../..' . '/src/Tribe/Meetings/YouTube/Event_Export.php',
         'Tribe\\Events\\Virtual\\Meetings\\YouTube\\Event_Meta' => __DIR__ . '/../..' . '/src/Tribe/Meetings/YouTube/Event_Meta.php',
         'Tribe\\Events\\Virtual\\Meetings\\YouTube\\Settings' => __DIR__ . '/../..' . '/src/Tribe/Meetings/YouTube/Settings.php',
         'Tribe\\Events\\Virtual\\Meetings\\YouTube\\Template_Modifications' => __DIR__ . '/../..' . '/src/Tribe/Meetings/YouTube/Template_Modifications.php',
@@ -90,6 +96,7 @@ class ComposerStaticInit352d41f51c4043d0e2c9d8b130205820
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Account_API' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Account_API.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Api' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Api.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Classic_Editor' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Classic_Editor.php',
+        'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Event_Export' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Event_Export.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Event_Meta' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Event_Meta.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Meetings' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Meetings.php',
         'Tribe\\Events\\Virtual\\Meetings\\Zoom\\Migration_Notice' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Zoom/Migration_Notice.php',
@@ -128,9 +135,9 @@ class ComposerStaticInit352d41f51c4043d0e2c9d8b130205820
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit352d41f51c4043d0e2c9d8b130205820::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit352d41f51c4043d0e2c9d8b130205820::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit352d41f51c4043d0e2c9d8b130205820::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit0f81bac7a0430458aef6010264d7a279::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit0f81bac7a0430458aef6010264d7a279::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit0f81bac7a0430458aef6010264d7a279::$classMap;
 
         }, null, ClassLoader::class);
     }
