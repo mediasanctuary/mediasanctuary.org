@@ -1,13 +1,14 @@
 <section id="news" class="posts p60">
 	<div class="container">
-		<h2>Sanctuary News</h2>
 		<?php
-
-		if (function_exists('get_field')) {
-			$news_cat = get_term_by('name', 'Sanctuary News', 'category');
-			the_field('category_description', 'category_' . $news_cat->term_id);
-		}
-
+			$news = get_field('news_section');
+			if ($news) {
+				echo '<h2>'.$news['heading'].'</h2>';
+				echo $news['description'];
+			} else {
+				echo '<h2>Sanctuary News</h2>';
+				echo '<p>The latest happenings at The Sanctuary for Independent Media. You can also view the <a href="/sanctuary-news/">archive</a> or listen to WOOC 105.3 FM Troy for more updates.</p>';
+			}  		
 		?>
 		<ul class="posts__list three-col">
 

@@ -1,7 +1,15 @@
 <section id="events" class="posts p60">
 	<div class="container">
-		<h2>Upcoming Events</h2>
-		<p>We aren&rsquo;t physically gathering at the Sanctuary for most events – but that doesn&rsquo;t mean our programming has stopped! Check out our <a href="/events/">full schedule</a> of upcoming events.</p>
+	<?php
+		$events = get_field('events_section');
+		if ($radio) {
+			echo '<h2>'.$events['heading'].'</h2>';
+			echo $events['description'];
+		} else {
+			echo '<h2>Upcoming Events</h2>';
+			echo '<p>We aren&rsquo;t physically gathering at the Sanctuary for most events – but that doesn&rsquo;t mean our programming has stopped! Check out our <a href="/events/">full schedule</a> of upcoming events.</p>';
+		}  		
+	?>
 		
 		<ul class="posts__list three-col">
       <?php

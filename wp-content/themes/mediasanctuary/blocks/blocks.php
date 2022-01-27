@@ -62,6 +62,7 @@ $blocks = [
 		'title'       => 'Stories / Projects',
 		'description' => 'Display Stories or Projects',
 		'icon'        => 'images-alt',
+		'post_types'  => ['post', 'page', 'project', 'tribe_events', 'peoplepower'],
 	],					
 ];
 
