@@ -189,8 +189,17 @@
     list-style: none !important;
     padding: 0 !important;
 
+    &.event {
+      margin-right: 30px;
+      &.top {
+        margin:25px 0 0;
+      }
+    }
+
 		li {
 			padding:0 4px 0 0 !important;
+      list-style: none !important;
+
 
 			strong {
 				display: block;
