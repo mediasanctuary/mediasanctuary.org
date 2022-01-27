@@ -16,7 +16,6 @@ include get_template_directory() . '/sections/section-events.php';?>
 
 <section id="initiatives" class="initiatives p60">
 	<div class="container">
-		<h2>Initiatives</h2>
     <?php include get_template_directory() . '/sections/section-initiatives.php';?>
 	</div>
 </section>

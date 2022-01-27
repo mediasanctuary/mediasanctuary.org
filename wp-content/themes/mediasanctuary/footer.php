@@ -58,10 +58,7 @@
         		</ul>			
           </div>
           <div class="col w55">									      		
-            <p>The Sanctuary for Independent Media is a project of <strong>Media Alliance Inc</strong>, a <a href="https://www.guidestar.org/profile/11-2538804" target="_blank">501c(3) non-profit organization</a> located at 3361 6th Avenue in North Troy, New&nbsp;York.</p>
-            <address>
-              P.O. Box 35 Troy, NY 12181
-            </address>
+            <p>The Sanctuary for Independent Media is a project of <strong>Media Alliance Inc</strong>, a <a href="https://www.guidestar.org/profile/11-2538804" target="_blank">501c(3) non-profit organization</a> located at 3361 6th Avenue in North Troy, New&nbsp;York.&nbsp;&nbsp;&bull;&nbsp;&nbsp;EIN 11-2538804. Donations are tax-deductible.<br/>P.O. Box 35 Troy,&nbsp;NY 12181&nbsp;&nbsp;&bull;&nbsp;&nbsp;<a href="/contact/">Contact Us</a>
           </div>
         </div>
       </div>

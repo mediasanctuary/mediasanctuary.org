@@ -1,0 +1,300 @@
+{
+    "key": "group_61f2a65100c30",
+    "title": "Homepage Sections",
+    "fields": [
+        {
+            "key": "field_61f2a65ab8f1d",
+            "label": "Stories Section",
+            "name": "stories_section",
+            "type": "group",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "sub_fields": [
+                {
+                    "key": "field_61f2a695b8f1e",
+                    "label": "Heading",
+                    "name": "heading",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "Recent Stories",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_61f2a6abb8f1f",
+                    "label": "Description",
+                    "name": "description",
+                    "type": "wysiwyg",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "tabs": "visual",
+                    "toolbar": "basic",
+                    "media_upload": 0,
+                    "delay": 0
+                }
+            ]
+        },
+        {
+            "key": "field_61f2a91a7f05b",
+            "label": "Radio Section",
+            "name": "radio_section",
+            "type": "group",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "sub_fields": [
+                {
+                    "key": "field_61f2a91a7f05c",
+                    "label": "Heading",
+                    "name": "heading",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "Recently played on Sanctuary Radio <em>(broadcast on WOOC 105.3 FM Troy and streamed&nbsp;here)<\/em>",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_61f2a91a7f05d",
+                    "label": "Description",
+                    "name": "description",
+                    "type": "wysiwyg",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "tabs": "visual",
+                    "toolbar": "basic",
+                    "media_upload": 0,
+                    "delay": 0
+                }
+            ]
+        },
+        {
+            "key": "field_61f2aa06b7456",
+            "label": "Events Section",
+            "name": "events_section",
+            "type": "group",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "sub_fields": [
+                {
+                    "key": "field_61f2aa06b7457",
+                    "label": "Heading",
+                    "name": "heading",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "Upcoming Events",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_61f2aa06b7458",
+                    "label": "Description",
+                    "name": "description",
+                    "type": "wysiwyg",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "tabs": "visual",
+                    "toolbar": "basic",
+                    "media_upload": 0,
+                    "delay": 0
+                }
+            ]
+        },
+        {
+            "key": "field_61f2aafe90a08",
+            "label": "Initiatives Section",
+            "name": "initiatives_section",
+            "type": "group",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "sub_fields": [
+                {
+                    "key": "field_61f2aafe90a09",
+                    "label": "Heading",
+                    "name": "heading",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "Initiatives",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_61f2aafe90a0a",
+                    "label": "Description",
+                    "name": "description",
+                    "type": "wysiwyg",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "tabs": "visual",
+                    "toolbar": "basic",
+                    "media_upload": 0,
+                    "delay": 0
+                }
+            ]
+        },
+        {
+            "key": "field_61f2ab1790a0b",
+            "label": "News Section",
+            "name": "news_section",
+            "type": "group",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "sub_fields": [
+                {
+                    "key": "field_61f2ab1790a0c",
+                    "label": "Heading",
+                    "name": "heading",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "Sanctuary News",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_61f2ab1790a0d",
+                    "label": "Description",
+                    "name": "description",
+                    "type": "wysiwyg",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "tabs": "visual",
+                    "toolbar": "basic",
+                    "media_upload": 0,
+                    "delay": 0
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "34"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1643293508
+}

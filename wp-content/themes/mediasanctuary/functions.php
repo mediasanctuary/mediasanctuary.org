@@ -55,7 +55,7 @@ add_filter('category_link', function($url) {
 
 add_action('after_setup_theme', function() {
 	add_theme_support('post-thumbnails');
-	add_theme_support('title-tag');
+	// add_theme_support('title-tag');
 	add_theme_support('post-formats', [
 		'audio',
 		'video'
@@ -221,10 +221,11 @@ add_action( 'init', 'register_main_menu' );
 // Social Meta Tags
 function social_meta_tags() {
     global $post;
-    $title = get_the_title();
+    $title = get_field('meta_title') ?: get_the_title();
     $url = get_the_permalink();
     $description = '';
     $type = 'article';
+    $canonical = get_field('canonical_link');
 
     // Featured Image
     $thumb_url = get_asset_url('img/share.jpg');
@@ -239,24 +240,28 @@ function social_meta_tags() {
       $d01 = strip_tags( $post->post_content );
       $d02 = strip_shortcodes( $d01 );
       $d03 = str_replace( array("\n", "\r", "\t"), '', $d02 );
-      $description = mb_substr( $d03, 0, 300, 'utf8' );
+      $description = get_field('meta_description') ?: mb_substr( $d03, 0, 300, 'utf8' );
     }
     if ( is_front_page() ) {
-      $title = get_bloginfo( "name" );
-      $description = get_bloginfo( "description" );
+			$title = get_bloginfo( 'name' ).' - '.get_bloginfo( 'description' );
       $type = 'website';
-    }
+    } else {
+			$title = $title.' - '.get_bloginfo( 'name' );
+		}
     if ( is_category() ) {
       $postType = get_post_type() == 'post' ? 'Stories' : get_post_type();
-      $title = get_the_archive_title().' '.$postType;
+      $title = get_the_archive_title().' '.$postType.' - '.get_bloginfo( 'name' );;
       $term = get_queried_object();
       $description = strip_tags(get_field('category_description', "category_$term->term_id" ));
       $thumb_url = get_asset_url('img/share.jpg');
       $url = get_category_link( $term->term_id );
     }
 
+
     echo "\n";
-    echo '<meta property="og:title" content="'.$title.'">' . "\n";
+		echo '<title>'.$title.'</title>' . "\n";
+		echo '<meta name="description" content="'.$description.'"/>' . "\n";
+		echo '<meta property="og:title" content="'.$title.'">' . "\n";
     echo '<meta property="og:description" content="'.$description.'">' . "\n";
     echo '<meta property="og:image" content="'.$thumb_url.'">' . "\n";
     echo '<meta property="og:url" content="'.$url.'">' . "\n";
@@ -267,6 +272,11 @@ function social_meta_tags() {
     echo '<meta name="twitter:description" content="'.$description.'">' . "\n";
     echo '<meta name="twitter:image" content="'.$thumb_url.'">';
 
+    if($canonical){
+      echo '<link rel="canonical" href="'.$canonical.'" />';
+    } else {
+      echo '<link rel="canonical" href="'.$url.'" />';
+    }		
 }
 add_action( 'wp_head', 'social_meta_tags' );
 

@@ -1,0 +1,32 @@
+.accessibility {
+  background:rgba(32, 127, 149, .2);
+  border:2px solid $c-blue-beetle;
+  padding:25px;
+  margin:-25px 0 0;
+
+  a {
+    text-decoration: underline !important;
+    font-weight: bold;
+    &:hover {
+      opacity: .7;
+    }
+  }
+}
+
+.tribe-block__events-link {
+  border-bottom:1px solid #e1e1e1;
+  margin-bottom:30px;
+}
+
+#tribe-events-content a {
+  &.btn, &.wp-block-button__link {
+    color: #FFF;
+    text-decoration: none;
+    background: $c-ladybug;
+    padding:15px 35px;
+    margin-bottom:15px;
+    &:hover {
+      background:$c-asphalt;
+    }
+  }
+}

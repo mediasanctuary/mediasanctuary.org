@@ -1,19 +1,17 @@
 <section id="stories" class="posts p60">
 	<div class="container">
-		<h2>Recent Stories</h2>
 		<?php
-/*
-  		if (function_exists('get_field')) {
-  			echo '<div class="intro">'.get_field('category_description', 'category_1').'</div>';
+      $stories = get_field('stories_section');
+  		if ($stories) {
+        echo '<h2>'.$stories['heading'].'</h2>';
+  			echo '<div class="intro">'.$stories['description'].'</div>';
   		} else {
-         echo '<div class="intro">Among our major commitments is to provide a platform for community journalism, with an emphasis on storytelling along the intersections of art, science and media.  Here are our most recent multimedia productions.  You can find complete archives and more information at our Sanctuary Radio and Sanctuary TV initiatives.  </div>';
-  		}
-*/
-         echo '<div class="intro"><p>Among our major commitments is to provide a platform for community journalism, with an emphasis on storytelling along the intersections of art, science and media.  Here are our most recent multimedia productions.  You can find complete archives and more information at our Sanctuary Radio and Sanctuary TV initiatives. </p></div>';
-  		
+        echo '<h2>Recent Stories</h2>';
+        echo '<div class="intro"><p>Among our major commitments is to provide a platform for community journalism, with an emphasis on storytelling along the intersections of art, science and media.  Here are our most recent multimedia productions.  You can find complete archives and more information at our Sanctuary Radio and Sanctuary TV initiatives.</p></div>';
+  		}  		
 		?>
-		<ul class="four-col">
 
+		<ul class="four-col">
   		<?php
         $args = array(
           'posts_per_page' => 8,
@@ -32,7 +30,6 @@
         endif;
         wp_reset_query();
   		?>
-
 		</ul>
 		<p class="text-center"><a href="<?php echo home_url('/stories/'); ?>" class="btn">View all stories</a></p>
 		

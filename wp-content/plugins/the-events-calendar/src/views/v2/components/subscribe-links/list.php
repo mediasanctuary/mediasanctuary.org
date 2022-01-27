@@ -18,7 +18,7 @@ if ( empty( $items ) ) {
 	return;
 }
 ?>
-<div class="tribe-events-c-subscribe-dropdown__container">
+<div class="tribe-events-c-subscribe-dropdown__container">this one time
 	<div class="tribe-events-c-subscribe-dropdown">
 		<div class="tribe-common-c-btn-border tribe-events-c-subscribe-dropdown__button" tabindex="0">
 			<button class="tribe-events-c-subscribe-dropdown__button-text">
