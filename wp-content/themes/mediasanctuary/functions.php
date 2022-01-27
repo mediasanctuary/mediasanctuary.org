@@ -245,15 +245,18 @@ function social_meta_tags() {
     if ( is_front_page() ) {
 			$title = get_bloginfo( 'name' ).' - '.get_bloginfo( 'description' );
       $type = 'website';
-    }
+    } else {
+			$title = $title.' - '.get_bloginfo( 'name' );
+		}
     if ( is_category() ) {
       $postType = get_post_type() == 'post' ? 'Stories' : get_post_type();
-      $title = get_the_archive_title().' '.$postType;
+      $title = get_the_archive_title().' '.$postType.' - '.get_bloginfo( 'name' );;
       $term = get_queried_object();
       $description = strip_tags(get_field('category_description', "category_$term->term_id" ));
       $thumb_url = get_asset_url('img/share.jpg');
       $url = get_category_link( $term->term_id );
     }
+
 
     echo "\n";
 		echo '<title>'.$title.'</title>' . "\n";
