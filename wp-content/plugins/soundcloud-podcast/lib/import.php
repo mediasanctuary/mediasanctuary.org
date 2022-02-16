@@ -135,6 +135,14 @@ function soundcloud_podcast_import($num = null, $url = null, $slack_msg = '') {
 			$edit_url = home_url("/wp-admin/post.php?post=$id&action=edit");
 			$slack_msg .= "- <$edit_url|{$track['title']}> (updated)";
 		}
+
+		$tags = soundcloud_podcast_track_tags($track);
+		if (empty($tags)) {
+			fwrite($stderr, "    (no tags)\n");
+		} else {
+			fwrite($stderr, "    tags = " . implode($tags, ', ') . "\n");
+		}
+
 		update_post_meta($id, 'soundcloud_podcast_id', $track['id']);
 		update_post_meta($id, 'soundcloud_podcast_hash', $sc_hash);
 		update_post_meta($id, 'soundcloud_podcast_url', $track['permalink_url']);
@@ -281,10 +289,13 @@ function soundcloud_podcast_track_content($track) {
 
 function soundcloud_podcast_track_date($track = null) {
 	$stderr = fopen('php://stderr', 'w');
+	$category = soundcloud_podcast_track_category_name($track);
+	$four_days = 60 * 60 * 24 * 4;
 
 	if (! empty($track)) {
 		$date = new \DateTime($track['created_at'], wp_timezone());
-		if (current_time('u') - $data->getTimestamp() < 60 * 60 * 24 * 4) {
+		if ($category == 'Stories' &&
+		    current_time('u') - $date->getTimestamp() < $four_days) {
 			// If the track's timestamp is within 4 days, we should schedule
 			// it for the next weekday at 6pm.
 			$date = null;
@@ -320,7 +331,6 @@ function soundcloud_podcast_track_status($track) {
 }
 
 function soundcloud_podcast_track_tags($track) {
-	$stderr = fopen('php://stderr', 'w');
 	$tag_list = strtolower($track['tag_list']);
 	$in_quotes = false;
 	$tags = [];
@@ -332,27 +342,31 @@ function soundcloud_podcast_track_tags($track) {
 			continue;
 		}
 		if ($char == ' ' && ! $in_quotes) {
-			$tags[] = $curr_tag;
+			if (! empty($curr_tag)) {
+				$tags[] = $curr_tag;
+			}
 			$curr_tag = '';
 		} else {
 			$curr_tag .= $char;
 		}
 	}
-	$tags[] = $curr_tag;
-	if (empty($tags)) {
-		fwrite($stderr, "    (no tags)\n");
-	} else {
-		fwrite($stderr, "    tags = " . implode($tags, ', ') . "\n");
+	if (! empty($curr_tag)) {
+		$tags[] = $curr_tag;
 	}
 	return $tags;
 }
 
-function soundcloud_podcast_track_categories($track) {
-	$stderr = fopen('php://stderr', 'w');
+function soundcloud_podcast_track_category_name($track) {
 	$category = 'Stories';
 	if (preg_match('/^HMM\s+\d+\s*-\s*\d+\s*-\s*\d+\s*$/i', $track['title'])) {
 		$category = 'Hudson Mohawk Magazine';
 	}
+	return $category;
+}
+
+function soundcloud_podcast_track_categories($track) {
+	$stderr = fopen('php://stderr', 'w');
+	$category = soundcloud_podcast_track_category_name($track);
 	$cat = get_term_by('name', $category, 'category', ARRAY_A);
 	if (empty($cat)) {
 		$cat = wp_create_term($category, 'category');
