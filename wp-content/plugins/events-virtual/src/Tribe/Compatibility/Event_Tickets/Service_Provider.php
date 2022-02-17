@@ -79,6 +79,8 @@ class Service_Provider extends \tad_DI52_ServiceProvider {
 		add_filter( 'tribe_events_virtual_event_meta_keys', [ $this, 'filter_virtual_event_meta_keys' ] );
 
 		add_filter( 'tribe_events_virtual_show_virtual_content', [ $this, 'filter_show_virtual_content' ], 10, 2 );
+
+		add_filter( 'tec_events_virtual_export_should_show', [ $this, 'filter_export_should_show' ], 10, 2 );
 	}
 
 	/**
@@ -276,5 +278,19 @@ class Service_Provider extends \tad_DI52_ServiceProvider {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Filter whether the current user should see the video source in the export.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param boolean  $should_show Whether to modify the export fields for the current user, default to false.
+	 * @param \WP_Post $event       The WP_Post of this event.
+	 *
+	 * @return boolean Whether to modify the export fields for the current user.
+	 */
+	public function filter_export_should_show( $should_show, $event ) {
+		return $this->filter_show_virtual_content( $should_show, $event );
 	}
 }

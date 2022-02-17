@@ -1,14 +1,14 @@
-# Copyright (C) 2021 Modern Tribe
+# Copyright (C) 2022 Modern Tribe
 # This file is distributed under the same license as the The Events Calendar: Virtual Events package.
 msgid ""
 msgstr ""
-"Project-Id-Version: The Events Calendar: Virtual Events 1.7.3\n"
+"Project-Id-Version: The Events Calendar: Virtual Events 1.8.1\n"
 "Report-Msgid-Bugs-To: http://m.tri.be/191x\n"
-"POT-Creation-Date: 2021-12-13 14:10:51+00:00\n"
+"POT-Creation-Date: 2022-02-09 17:16:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2021-12-13 14:10\n"
+"PO-Revision-Date: 2022-02-09 17:16\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 
@@ -16,7 +16,7 @@ msgstr ""
 msgid "Events Virtual"
 msgstr ""
 
-#: src/Tribe/Assets.php:461
+#: src/Tribe/Assets.php:499
 msgctxt ""
 "The block editor message to display to confirm a user would like to delete "
 "the virtual settings."
@@ -27,7 +27,7 @@ msgid ""
 "This operation cannot be undone."
 msgstr ""
 
-#: src/Tribe/Assets.php:468
+#: src/Tribe/Assets.php:506
 msgctxt ""
 "The classic editor message to display to confirm a user would like to delete "
 "the virtual settings."
@@ -35,6 +35,46 @@ msgid ""
 "Are you sure you want to delete the virtual settings? \n"
 "\n"
 "This operation cannot be undone."
+msgstr ""
+
+#: src/Tribe/Autodetect/AJAX.php:84
+msgctxt "The autodetect no url found message."
+msgid "No URL found."
+msgstr ""
+
+#: src/Tribe/Autodetect/AJAX.php:106
+msgctxt "An error raised in the context of the Autodetect ajax request."
+msgid "The post ID is missing from the request."
+msgstr ""
+
+#: src/Tribe/Autodetect/AJAX.php:118
+msgctxt "An error raised in the context of the Autodetect ajax request."
+msgid "The event could not be found."
+msgstr ""
+
+#: src/Tribe/Autodetect/AJAX.php:154
+msgctxt "The autodetect no video source found message."
+msgid "No video found. Please check the URL."
+msgstr ""
+
+#: src/Tribe/Autodetect/Metabox.php:152
+msgctxt "The label to choose the Smart URL/autodetect source."
+msgid "Video source:"
+msgstr ""
+
+#: src/Tribe/Autodetect/Metabox.php:163
+msgctxt ""
+"The placeholder for the dropdown to choose the virtual Smart URL/autodetect "
+"source."
+msgid "Choose a video source:"
+msgstr ""
+
+#: src/Tribe/Autodetect/Metabox.php:175
+msgctxt "Explains what the smart url/autodetect video source is used for."
+msgid ""
+"Video source is detected based on the URL you’ve entered. If no video was "
+"found, you may need to manually select a different video source from the "
+"dropdown below and click Find."
 msgstr ""
 
 #: src/Tribe/Compatibility/Events_Control_Extension/metabox-container.php:23
@@ -100,14 +140,14 @@ msgstr ""
 msgid "Virtual Events"
 msgstr ""
 
-#: src/Tribe/Event_Meta.php:226
+#: src/Tribe/Event_Meta.php:254
 msgctxt "Default label of the virtual event URL call-to-action link."
 msgid "Watch"
 msgstr ""
 
-#: src/Tribe/Event_Meta.php:245
-msgctxt "Default placeholder text for the virtual event URL input."
-msgid "Enter URL for YouTube, Vimeo, etc."
+#: src/Tribe/Event_Meta.php:273
+msgctxt "Default placeholder text for the virtual event smart URL input."
+msgid "Enter URL for hosted video (YouTube, Vimeo, Zoom, etc.)"
 msgstr ""
 
 #: src/Tribe/Event_Status/Compatibility/Filter_Bar/Events_Status_Virtual_Filter.php:40
@@ -120,149 +160,256 @@ msgctxt "Moved Online event status label"
 msgid "Moved Online"
 msgstr ""
 
-#: src/Tribe/Hooks.php:1008
-msgctxt "The name of the video source."
-msgid "Video URL"
+#: src/Tribe/Hooks.php:996
+msgctxt "The label of the video source option."
+msgid "Search for video by URL"
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Classic_Editor.php:86
+#: src/Tribe/Hooks.php:1033
+msgctxt "The name of the autodetect source."
+msgid "OEmbed"
+msgstr ""
+
+#: src/Tribe/Importer/Events.php:67
+msgctxt "Column name for importer of virtual events."
+msgid "Configure %1$s %2$s"
+msgstr ""
+
+#: src/Tribe/Importer/Events.php:78
+msgctxt "Column name for importer of virtual event type."
+msgid "Type of %1$s (Virtual, Hybrid)"
+msgstr ""
+
+#: src/Tribe/Importer/Events.php:87
+msgctxt "Column name for importer of virtual event source url."
+msgid "Video Source URL"
+msgstr ""
+
+#: src/Tribe/Importer/Events.php:94
+msgctxt "Column name for importer of virtual event to embed the video."
+msgid "Embed Video"
+msgstr ""
+
+#: src/Tribe/Importer/Events.php:101
+msgctxt "Column name for importer of virtual event linked button shows."
+msgid "Linked Button"
+msgstr ""
+
+#: src/Tribe/Importer/Events.php:108
+msgctxt "Column name for importer of virtual event linked button text."
+msgid "Linked Button Text"
+msgstr ""
+
+#: src/Tribe/Importer/Events.php:115
+msgctxt ""
+"Column name for importer of virtual event for when to show the emebed."
+msgid "Show Embed At"
+msgstr ""
+
+#: src/Tribe/Importer/Events.php:122
+msgctxt ""
+"Column name for importer of virtual event to show virtual icon on signle "
+"view."
+msgid "Show Virtual Event Icon on Single"
+msgstr ""
+
+#: src/Tribe/Importer/Events.php:129
+msgctxt ""
+"Column name for importer of virtual event to show virtual icon on all views."
+msgid "Show Virtual Event on all Views"
+msgstr ""
+
+#: src/Tribe/Importer/Events.php:136
+msgctxt "Column name for importer of virtual event to show the embed to."
+msgid "Show Embed to"
+msgstr ""
+
+#: src/Tribe/Importer/Events.php:143
+msgctxt "Column name for importer of virtual event RSVP email link."
+msgid "Include Link in RSVP Email"
+msgstr ""
+
+#: src/Tribe/Importer/Events.php:150
+msgctxt "Column name for importer of virtual event ticket email link."
+msgid "Include Link in Ticket Email"
+msgstr ""
+
+#: src/Tribe/Meetings/Facebook/Classic_Editor.php:97
 msgctxt "The label of Facebook Page to choose."
 msgid "Choose Page:"
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Classic_Editor.php:96
+#: src/Tribe/Meetings/Facebook/Classic_Editor.php:107
 msgctxt "The placeholder for the dropdown to select a Facebook Page."
 msgid "Select a Facebook Page"
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Classic_Editor.php:124
+#: src/Tribe/Meetings/Facebook/Classic_Editor.php:135
 msgctxt "The title of Facebook Live incomplete setup message."
 msgid "Facebook Live"
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Classic_Editor.php:129
+#: src/Tribe/Meetings/Facebook/Classic_Editor.php:140
 msgctxt "The message to complete the Facebook setup."
 msgid ""
-"No connected Facebook Pages have been found, please use the following link "
-"to setup your Facebook App and add Facebook Pages to your site."
+"No connected Facebook Pages found. You must connect a Facebook App to your "
+"site before you can add Facebook Live videos to events."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Classic_Editor.php:135
+#: src/Tribe/Meetings/Facebook/Classic_Editor.php:146
 msgctxt "The label of the link to setup Facebook Live."
-msgid "Setup Facebook Live"
+msgid "Set up Facebook Live"
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Page_API.php:551
+#: src/Tribe/Meetings/Facebook/Page_API.php:552
 msgctxt "The local id for the facebook page is missing error message."
 msgid "The local id to save the Facebook Page is missing."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Page_API.php:565
+#: src/Tribe/Meetings/Facebook/Page_API.php:566
 msgctxt "Facebook Page Name or ID is missing error message."
 msgid "The Facebook Page Name or ID is missing."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Page_API.php:593
+#: src/Tribe/Meetings/Facebook/Page_API.php:594
 msgctxt "Facebook Page is saved to the options."
 msgid "Facebook Page Saved."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Page_API.php:684
+#: src/Tribe/Meetings/Facebook/Page_API.php:685
 msgctxt "Facebook Page ID, local ID, or access token is missing error message."
 msgid "The Facebook Page ID, local ID, or access token is missing."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Page_API.php:697
+#: src/Tribe/Meetings/Facebook/Page_API.php:698
 msgctxt "Error message if the Facebook Page was not found in the options."
 msgid "No Facebook Page found to update."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Page_API.php:712
+#: src/Tribe/Meetings/Facebook/Page_API.php:713
 msgctxt "Facebook Page is saved to the options."
 msgid "Facebook Page access token saved."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Page_API.php:742
+#: src/Tribe/Meetings/Facebook/Page_API.php:743
 msgctxt "Facebook Page ID local ID is missing error message."
 msgid "No access token to clear as the the Facebook Page local ID is missing."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Page_API.php:755
+#: src/Tribe/Meetings/Facebook/Page_API.php:756
 msgctxt "Error message if the Facebook Page was not found in the options."
 msgid "No access token is cleared as no Facebook Page was found to update."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Page_API.php:767
+#: src/Tribe/Meetings/Facebook/Page_API.php:768
 msgctxt "Facebook Page access token is cleared message."
 msgid "Facebook Page access token cleared."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Page_API.php:794
+#: src/Tribe/Meetings/Facebook/Page_API.php:795
 msgctxt "Facebook Page new fields are added message."
 msgid "Facebook Page fields added."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Page_API.php:832
+#: src/Tribe/Meetings/Facebook/Page_API.php:833
 msgctxt "Facebook Page local id missing when trying to delete error message."
 msgid "The Facebook Page local id is missing and cannot be deleted."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Page_API.php:844
+#: src/Tribe/Meetings/Facebook/Page_API.php:845
 msgctxt "Error message if the Facebook Page was not found in the options."
 msgid "No Facebook Page Found to Delete."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Page_API.php:856
+#: src/Tribe/Meetings/Facebook/Page_API.php:857
 msgctxt "Message when a Facebook Page is deleted from the options table."
 msgid "Facebook Page Deleted."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Settings.php:134
+#: src/Tribe/Meetings/Facebook/Page_API.php:920
+msgctxt ""
+"The start of the message for smart url/autodetect when there is no Facebook "
+"App ID."
+msgid "No connected Facebook Pages found. You must"
+msgstr ""
+
+#: src/Tribe/Meetings/Facebook/Page_API.php:926
+msgctxt ""
+"The link text in message for smart url/autodetect when there is no Facebook "
+"App ID."
+msgid "connect a Facebook App"
+msgstr ""
+
+#: src/Tribe/Meetings/Facebook/Page_API.php:931
+msgctxt ""
+"The end of the message for smart url/autodetect when there is no Facebook "
+"App ID."
+msgid "to your site before you can add a Facebook video to an event."
+msgstr ""
+
+#: src/Tribe/Meetings/Facebook/Settings.php:136
 msgid "Facebook App ID"
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Settings.php:135
+#: src/Tribe/Meetings/Facebook/Settings.php:137
 msgctxt "The Facebook App ID to use for Facebook Live."
 msgid "Enter your Facebook App ID."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Settings.php:140
+#: src/Tribe/Meetings/Facebook/Settings.php:142
 msgid "Facebook App Secret"
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Settings.php:141
+#: src/Tribe/Meetings/Facebook/Settings.php:143
 msgctxt "The Facebook App secret key to use for Facebook Live."
 msgid "Enter your Facebook App Secret."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Settings.php:278
+#: src/Tribe/Meetings/Facebook/Settings.php:165
+msgctxt "The label for the Facebook Video settings."
+msgid "Facebook Video"
+msgstr ""
+
+#: src/Tribe/Meetings/Facebook/Settings.php:169
+msgctxt "The label to disable Facebook JS sdk."
+msgid "Disable Facebook JS SDK for Facebook Video"
+msgstr ""
+
+#: src/Tribe/Meetings/Facebook/Settings.php:170
+msgctxt "The tooltip for the option to disable the Facebook JS SDK."
+msgid ""
+"Disable the Facebook JS SDK script for single events on the frontend. This "
+"may be necessary to prevent conflicts with other Facebook plugins or scripts."
+msgstr ""
+
+#: src/Tribe/Meetings/Facebook/Settings.php:292
 msgctxt "Facebook App ID is missing error message."
 msgid "The Facebook App ID field is missing."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Settings.php:292
+#: src/Tribe/Meetings/Facebook/Settings.php:306
 msgctxt "Facebook App Secret is missing error message."
 msgid "The Facebook App Secret field is missing."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Settings.php:313
+#: src/Tribe/Meetings/Facebook/Settings.php:327
 msgctxt "The message after a Facebook app id and secret have been saved."
 msgid "The Facebook App was successfully saved."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Settings.php:326
+#: src/Tribe/Meetings/Facebook/Settings.php:340
 msgctxt ""
 "The message after a Facebook app id and secret did not save successfully."
 msgid "The Facebook App was not saved."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook/Template_Modifications.php:201
+#: src/Tribe/Meetings/Facebook/Template_Modifications.php:203
 msgctxt "Facebook offline message"
 msgid "The Live Stream is Offline."
 msgstr ""
 
 #. translators: the placeholder is for the error as returned from Facebook API.
-#: src/Tribe/Meetings/Facebook/Video_API.php:233
+#: src/Tribe/Meetings/Facebook/Video_API.php:264
 msgctxt ""
 "The prefix of a message reporting a Facebook API communication error, the "
 "placeholder is for the error."
@@ -273,7 +420,7 @@ msgstr ""
 
 #. translators: the placeholders are, respectively, for the expected and actual
 #. response codes.
-#: src/Tribe/Meetings/Facebook/Video_API.php:264
+#: src/Tribe/Meetings/Facebook/Video_API.php:295
 msgctxt ""
 "The message reporting a Facebook API unexpected response code, placeholders "
 "are the codes."
@@ -282,31 +429,54 @@ msgid ""
 "Please, try again in a minute."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:223
+#: src/Tribe/Meetings/Facebook/Video_API.php:495
+msgctxt "Facebook video autodetect missing video url error message."
+msgid ""
+"No video found. Please enter a Facebook video URL or change the selected "
+"source."
+msgstr ""
+
+#: src/Tribe/Meetings/Facebook/Video_API.php:504
+msgctxt "Invalid Facebook video url for autodetect error message."
+msgid ""
+"This is not a valid Facebook video URL. Please recheck the URL and try again."
+msgstr ""
+
+#: src/Tribe/Meetings/Facebook/Video_API.php:516
+msgctxt "Facebook video valid success message."
+msgid "Success! Save your event to add this video."
+msgstr ""
+
+#: src/Tribe/Meetings/Facebook_Provider.php:228
 msgctxt "The name of the video source."
 msgid "Facebook Live"
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:372
+#: src/Tribe/Meetings/Facebook_Provider.php:288
+msgctxt "The name of the autodetect source."
+msgid "Facebook Video"
+msgstr ""
+
+#: src/Tribe/Meetings/Facebook_Provider.php:448
 msgctxt ""
 "The message to display if no local id is found when trying to authorize a "
 "facebook page."
 msgid "The local id for the Facebook is not set."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:387
+#: src/Tribe/Meetings/Facebook_Provider.php:463
 msgctxt "The message to display if no Facebook page wrap found."
 msgid "No Facebook Page data found."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:402
+#: src/Tribe/Meetings/Facebook_Provider.php:478
 msgctxt ""
 "The message to display if no connection is established to the Facebook sdk."
 msgid ""
 "The Facebook Page could not be connected to your site, please try again."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:417
+#: src/Tribe/Meetings/Facebook_Provider.php:493
 msgctxt ""
 "The message to display if a Facebook user could not obtain an extended "
 "access token."
@@ -314,7 +484,7 @@ msgid ""
 "The attempt to get an extended Facebook user access token failed with error"
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:432
+#: src/Tribe/Meetings/Facebook_Provider.php:508
 msgctxt ""
 "The message to display if a Facebook Page could not obtain an access token."
 msgid ""
@@ -322,14 +492,14 @@ msgid ""
 "Facebook app credentials. The attempt failed with error"
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:447
+#: src/Tribe/Meetings/Facebook_Provider.php:523
 msgctxt "The message to display to confirm when deleting a Facebook Page."
 msgid ""
 "Are you sure you want to delete the Facebook Page? Deleting it will "
 "disconnect any upcoming virtual events using this Facebook Page."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:462
+#: src/Tribe/Meetings/Facebook_Provider.php:538
 msgctxt "The message to display to confirm clear Facebook Page's access token."
 msgid ""
 "Are you sure you want to clear the access token? Clearing it will disconnect "
@@ -440,7 +610,7 @@ msgctxt "The name of the video source."
 msgid "YouTube Live"
 msgstr ""
 
-#: src/Tribe/Meetings/YouTube_Provider.php:285
+#: src/Tribe/Meetings/YouTube_Provider.php:289
 msgctxt ""
 "The message to display to confirm a user would like to delete a YouTube "
 "channel ID."
@@ -450,7 +620,7 @@ msgstr ""
 #. Translators: %1$s: the name of the account that has been added or refreshed
 #. from Zoom .
 #: src/Tribe/Meetings/Zoom/Abstract_Meetings.php:175
-#: src/Tribe/Meetings/Zoom/Account_API.php:837
+#: src/Tribe/Meetings/Zoom/Account_API.php:880
 msgctxt "Account ID is missing error message."
 msgid "The Zoom Account ID is missing to access the API."
 msgstr ""
@@ -460,17 +630,17 @@ msgctxt "Zoom account loading error message."
 msgid "The Zoom Account could not be loaded to access to API."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Account_API.php:664
+#: src/Tribe/Meetings/Zoom/Account_API.php:665
 msgctxt "The refresh message if the account exists."
 msgid "Zoom connection refreshed for %1$s"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Account_API.php:665
+#: src/Tribe/Meetings/Zoom/Account_API.php:666
 msgctxt "The refresh message if the account exists."
 msgid "Zoom Account added for %1$s"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Account_API.php:848
+#: src/Tribe/Meetings/Zoom/Account_API.php:891
 msgctxt "Zoom account loading error message."
 msgid ""
 "The Zoom Account could not be loaded to access the API. Please try "
@@ -478,7 +648,7 @@ msgid ""
 msgstr ""
 
 #. translators: the placeholder is for the error as returned from Zoom API.
-#: src/Tribe/Meetings/Zoom/Api.php:188
+#: src/Tribe/Meetings/Zoom/Api.php:199
 msgctxt ""
 "The prefix of a message reporting a Zoom API communication error, the "
 "placeholder is for the error."
@@ -489,7 +659,7 @@ msgstr ""
 
 #. translators: the placeholders are, respectively, for the expected and actual
 #. response codes.
-#: src/Tribe/Meetings/Zoom/Api.php:219
+#: src/Tribe/Meetings/Zoom/Api.php:230
 msgctxt ""
 "The message reporting a Zoom API unexpected response code, placeholders are "
 "the codes."
@@ -498,60 +668,97 @@ msgid ""
 "Please, try again in a minute."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:231
+#: src/Tribe/Meetings/Zoom/Api.php:589
+msgctxt "Zoom autodetect missing video url error message."
+msgid ""
+"No url found. Please enter a Zoom meeting URL or change the selected source."
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Api.php:598
+msgctxt "No Zoom meeting/webinar ID found for autodetect error message."
+msgid "No Zoom ID found. Please check your meeting URL."
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Api.php:632
+msgctxt "No Zoom meeting or webinar found for autodetect error message."
+msgid ""
+"This Zoom meeting could not be found in the selected account. Please select "
+"the associated account below and try again."
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Api.php:650
+msgctxt "Zoom meeting/webinar connected success message."
+msgid "Zoom meeting successfully connected!"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Api.php:666
+msgctxt ""
+"The start of the message for smart url/autodetect when there is no Zoom "
+"account found."
+msgid "No Zoom account found. Please check"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Api.php:672
+msgctxt ""
+"The link in of the message for smart url/autodetect when no zoom account is "
+"found."
+msgid "check your account connection."
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:232
 msgctxt ""
 "The label of the button to try and generate a Zoom Meeting or Webinar link "
 "again."
 msgid "Try again"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:270
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:271
 msgctxt ""
 "Header of the disabled account details section when an account is disabled."
 msgid "Zoom Account Disabled"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:275
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:276
 msgctxt ""
 "Header of the account details section shown when no account is loaded."
 msgid "Zoom Account Not Found"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:282
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:283
 msgctxt "The message to display when a Zoom account is disabled."
 msgid ""
 "The Zoom account is disabled on your website, please use the link to go to "
 "the API settings and activate it."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:287
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:288
 msgctxt "The message to display when a Zoom account is not found."
 msgid ""
 "The Zoom account is not found on your website, please use the link and add "
 "back the account to your site."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:294
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:295
 msgctxt ""
 "The label of the button to link back to the settings to enable a Zoom "
 "account."
 msgid "Enable your account on the settings page"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:299
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:300
 msgctxt ""
 "The label of the button to link back to the settings to add a Zoom account."
 msgid "Add your account on the settings page"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:340
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:341
 msgctxt ""
 "Header shown if no hosts are found before generating a Zoom meeting or "
 "webinar."
 msgid "No Hosts Found"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:346
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:347
 msgctxt ""
 "The message shown if no hosts are found before generating a Zoom meeting or "
 "webinar."
@@ -560,149 +767,177 @@ msgid ""
 "refresh your account and try again."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:352
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:353
 msgctxt ""
 "The label of the button to link back to the settings to refresh a zoom "
 "account."
 msgid "Refresh your account on the settings page"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:379
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:380
 msgctxt ""
 "Label for the link to set up the Zoom integration in the event classic "
 "editor UI."
 msgid "Set up Zoom integration"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:395
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:396
 msgctxt ""
 "A message to indicate an unknown error happened while interacting with the "
 "Zoom API integration."
 msgid "Unknown error"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:425
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:426
 msgctxt ""
 "The label for the admin UI control that allows removing the Zoom Meeting or "
 "Webinar link from the event."
 msgid "Remove Zoom link"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:457
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:577
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:863
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:458
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:578
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:985
 msgctxt ""
 "The lowercase \"or\" label used to offer the creation of a Zoom Meetings or "
 "Webinars API link."
 msgid "or"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:463
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:464
 msgctxt ""
 "The label used to designate the next step after selecting a Zoom Account."
 msgid "Next "
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:469
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:470
 msgctxt "The label of the meeting or webinar host."
 msgid "Choose account:"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:479
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:480
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:932
 msgctxt "The placeholder for the dropdown to select an account."
 msgid "Select an Account"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:582
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:583
 msgctxt "The label used to designate the account of a Zoom Meeting or Webinar."
 msgid "Account: "
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:588
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:589
 msgctxt ""
 "The label of the toggle to show the links to generate Zoom Meetings or "
 "Webinars."
 msgid "Generate Zoom Link"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:594
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:595
 msgctxt ""
 "The label used to designate the next step in generation of a Zoom Meeting or "
 "Webinar."
 msgid "Create "
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:600
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:601
 msgctxt "The label of the meeting or webinar host."
 msgid "Meeting Host"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:610
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:611
 #: src/admin-views/virtual-metabox/zoom/setup.php:76
 msgctxt "The placeholder for the dropdown to select a host."
 msgid "Select a Host"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:642
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:643
 msgctxt ""
 "Label for the control to generate a Zoom meeting link in the event classic "
 "editor UI."
 msgid "Generate Zoom Meeting"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:647
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:648
 msgctxt ""
 "Label for the control to generate a Zoom meeting link in the event classic "
 "editor UI, w/o the \"Generate\" prefix."
 msgid "Meeting"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:652
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:653
 msgctxt ""
 "Label for the control to generate a Zoom webinar link in the event classic "
 "editor UI."
 msgid "Generate Zoom Webinar"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:657
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:658
 msgctxt ""
 "Label for the control to generate a Zoom webinar link in the event classic "
 "editor UI, w/o the \"Generate\" prefix."
 msgid "Webinar"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:717
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:743
 msgctxt ""
 "Title of the details box shown for a generated Zoom Webinar link in the "
 "backend."
 msgid "Zoom Webinar:"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:722
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:748
 msgctxt ""
 "Title of the details box shown for a generated Zoom Meeting link in the "
 "backend."
 msgid "Zoom Meeting:"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:762
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:783
+msgctxt "Message for a manually connected Zoom meeting or webinar."
+msgid ""
+"This webinar is manually connected to the event and changes to the event "
+"will not alter the Zoom webinar."
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:788
+msgctxt "Message for a manually connected Zoom meeting or webinar."
+msgid ""
+"This meeting is manually connected to the event and changes to the event "
+"will not alter the Zoom meeting."
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:806
 msgctxt "The label used to designate the host of a Zoom Meeting or Webinar."
 msgid "Host: "
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:773
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:817
 msgctxt "The label used to prefix a Zoom Meeting or Webinar ID in the backend."
 msgid "ID: "
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:783
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:827
 msgctxt "The label of the alternative host multiselect"
 msgid "Alternative Hosts"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:793
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:837
 msgctxt "The placeholder for the multiselect to select alternative hosts."
 msgid "Add Alternative hosts"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:908
+msgctxt ""
+"The message for smart url/autodetect when there are no valid zoom accouns."
+msgid ""
+"No Zoom accounts found, use the link to authorize a new account or "
+"reauthorize an existing account:"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:925
+msgctxt "The label of zoom accounts dropdown."
+msgid "Choose account:"
 msgstr ""
 
 #: src/Tribe/Meetings/Zoom/Migration_Notice.php:61
@@ -766,7 +1001,7 @@ msgctxt ""
 msgid "The Zoom Account access token could not be revoked."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:479
+#: src/Tribe/Meetings/Zoom_Provider.php:480
 msgctxt ""
 "The message to display to confirm a user would like to remove the Zoom "
 "connection from an event."
@@ -775,7 +1010,7 @@ msgid ""
 "operation cannot be undone."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:494
+#: src/Tribe/Meetings/Zoom_Provider.php:495
 msgctxt ""
 "The message to display before a user attempts to refresh a Zoom account "
 "connection."
@@ -784,7 +1019,7 @@ msgid ""
 "account in this browser."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:509
+#: src/Tribe/Meetings/Zoom_Provider.php:510
 msgctxt ""
 "The message to display to confirm a user would like to delete a Zoom account."
 msgid ""
@@ -792,12 +1027,17 @@ msgid ""
 "be undone. Existing meetings tied to this account will not be impacted."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:578
+#: src/Tribe/Meetings/Zoom_Provider.php:579
 msgctxt "The name of the video source."
+msgid "Zoom Account"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom_Provider.php:639
+msgctxt "The name of the autodetect source."
 msgid "Zoom"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:721
+#: src/Tribe/Meetings/Zoom_Provider.php:770
 msgid "Zoom link generated"
 msgstr ""
 
@@ -807,13 +1047,35 @@ msgid "Virtual Event"
 msgstr ""
 
 #. Translators: %1$s: opening anchor tag, %2$s: closing anchor tag
-#: src/Tribe/OEmbed.php:126
+#: src/Tribe/OEmbed.php:164
 msgctxt ""
 "Tells user that URL cannot be embedded, and links to the WordPress oEmbed "
 "page for a list of embeddable sites."
 msgid ""
-"The URL you have entered is not embeddable because the source is not "
-"supported by %1$sWordPress oEmbed%2$s."
+"This video cannot be embedded because the source is not supported by "
+"%1$sWordPress oEmbed%2$s."
+msgstr ""
+
+#: src/Tribe/OEmbed.php:192
+msgctxt "Tells user the URL is embedded and to save to use that url."
+msgid "Success! Save your event to add this video."
+msgstr ""
+
+#. Translators: %1$s: opening anchor tag, %2$s: closing anchor tag
+#: src/Tribe/OEmbed.php:220
+msgctxt ""
+"Tells user the URL is used in the linked button and that it cannot be "
+"embedded, and links to the WordPress oEmbed page for a list of embeddable "
+"sites."
+msgid ""
+"This video cannot be embedded because the source is not supported by "
+"%1$sWordPress oEmbed%2$s. You can link to the video source with a button "
+"instead."
+msgstr ""
+
+#: src/Tribe/OEmbed.php:354
+msgctxt "The label for the autodetect video source input."
+msgid "Video"
 msgstr ""
 
 #: src/Tribe/Traits/With_AJAX.php:43
@@ -924,6 +1186,21 @@ msgstr ""
 #: src/admin-views/facebook/save.php:27
 msgctxt "Save a Facebook App ID and App Secret."
 msgid "Save Facebook App"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/autodetect/controls.php:37
+msgctxt "Title for video source."
+msgid "Video URL"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/autodetect/controls.php:51
+msgctxt "Label for button to find the video source."
+msgid "Find"
+msgstr ""
+
+#: src/admin-views/virtual-metabox/autodetect/video-preview.php:24
+msgctxt "Label for video preview of the Smart URL/autodetect."
+msgid "Preview"
 msgstr ""
 
 #. Translators: %1$s: singular ticket term.
@@ -1081,15 +1358,10 @@ msgid ""
 msgstr ""
 
 #: src/admin-views/virtual-metabox/container/video-source.php:26
-msgid "Add Video Source:"
+msgid "Add Video:"
 msgstr ""
 
-#: src/admin-views/virtual-metabox/container/video-source.php:44
-msgctxt "The label to choose the video source."
-msgid "Choose Video Source"
-msgstr ""
-
-#: src/admin-views/virtual-metabox/container/video-source.php:54
+#: src/admin-views/virtual-metabox/container/video-source.php:50
 msgctxt "The placeholder for the dropdown to choose the virtual video source."
 msgid "Choose Video Source"
 msgstr ""
@@ -1099,12 +1371,12 @@ msgctxt "Title for Zoom Meeting or Webinar creation."
 msgid "Facebook Live"
 msgstr ""
 
-#: src/admin-views/virtual-metabox/video/input.php:64
+#: src/admin-views/virtual-metabox/video/input.php:65
 msgctxt "Title for video source."
 msgid "Video"
 msgstr ""
 
-#: src/admin-views/virtual-metabox/video/input.php:73
+#: src/admin-views/virtual-metabox/video/input.php:74
 msgctxt "Label for live stream URL field"
 msgid "Live Stream URL"
 msgstr ""
@@ -1244,7 +1516,7 @@ msgstr ""
 msgid "To begin using Virtual Events, please install the latest version of"
 msgstr ""
 
-#. #-#-#-#-#  events-virtual.pot (The Events Calendar: Virtual Events 1.7.3)  #-#-#-#-#
+#. #-#-#-#-#  events-virtual.pot (The Events Calendar: Virtual Events 1.8.1)  #-#-#-#-#
 #. Author of the plugin/theme
 #: src/functions/load.php:31
 msgid "The Events Calendar"

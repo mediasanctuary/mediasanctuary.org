@@ -4,12 +4,13 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit8fcd0e8f1cb20be34d25c0372ff7d46c
+class ComposerStaticInit1393bd67b4ca98bb30ecff09848a666d
 {
     public static $prefixLengthsPsr4 = array (
         'T' => 
         array (
             'Tribe\\Events\\' => 13,
+            'TEC\\Events\\' => 11,
         ),
     );
 
@@ -18,9 +19,16 @@ class ComposerStaticInit8fcd0e8f1cb20be34d25c0372ff7d46c
         array (
             0 => __DIR__ . '/../..' . '/src/Tribe',
         ),
+        'TEC\\Events\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Events',
+        ),
     );
 
     public static $classMap = array (
+        'TEC\\Events\\Legacy\\Views\\V1\\Provider' => __DIR__ . '/../..' . '/src/Events/Legacy/Views/V1/Provider.php',
+        'Tribe\\Events\\Admin\\Filter_Bar\\Provider' => __DIR__ . '/../..' . '/src/Tribe/Admin/Filter_Bar/Provider.php',
+        'Tribe\\Events\\Admin\\Notice\\Full_Site_Editor' => __DIR__ . '/../..' . '/src/Tribe/Admin/Notice/Full_Site_Editor.php',
         'Tribe\\Events\\Admin\\Notice\\Legacy_Views_Deprecation' => __DIR__ . '/../..' . '/src/Tribe/Admin/Notice/Legacy_Views_Deprecation.php',
         'Tribe\\Events\\Aggregator\\Processes\\Batch_Imports' => __DIR__ . '/../..' . '/src/Tribe/Aggregator/Processes/Batch_Imports.php',
         'Tribe\\Events\\Aggregator\\Record\\Batch_Queue' => __DIR__ . '/../..' . '/src/Tribe/Aggregator/Record/Batch_Queue.php',
@@ -133,9 +141,9 @@ class ComposerStaticInit8fcd0e8f1cb20be34d25c0372ff7d46c
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit8fcd0e8f1cb20be34d25c0372ff7d46c::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit8fcd0e8f1cb20be34d25c0372ff7d46c::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit8fcd0e8f1cb20be34d25c0372ff7d46c::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit1393bd67b4ca98bb30ecff09848a666d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit1393bd67b4ca98bb30ecff09848a666d::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit1393bd67b4ca98bb30ecff09848a666d::$classMap;
 
         }, null, ClassLoader::class);
     }

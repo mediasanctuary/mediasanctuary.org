@@ -40,14 +40,25 @@ class Classic_Editor {
 	protected $page_api;
 
 	/**
+	 * An instance of the Facebook Setting handler.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @var Settings
+	 */
+	protected $settings;
+
+	/**
 	 * Classic_Editor constructor.
 	 *
 	 * @param Admin_Template $template An instance of the Template class to handle the rendering of admin views.
 	 * @param Page_API       $page_api An instance of the Facebook Page API handler.
+	 * @param Settings           $settings           An instance of the Settings handler.
 	 */
-	public function __construct( Admin_Template $template, Page_API $page_api ) {
+	public function __construct( Admin_Template $template, Page_API $page_api, Settings $settings ) {
 		$this->template = $template;
 		$this->page_api = $page_api;
+		$this->settings = $settings;
 	}
 
 	/**
@@ -127,18 +138,52 @@ class Classic_Editor {
 					'events-virtual'
 				),
 				'disabled_body'  => _x(
-					'No connected Facebook Pages have been found, please use the following link to setup your Facebook App and add Facebook Pages to your site.',
+					'No connected Facebook Pages found. You must connect a Facebook App to your site before you can add Facebook Live videos to events.',
 					'The message to complete the Facebook setup.',
 					'events-virtual'
 				),
 				'link_url'       => Settings::admin_url(),
 				'link_label'     => _x(
-					'Setup Facebook Live',
+					'Set up Facebook Live',
 					'The label of the link to setup Facebook Live.',
 					'events-virtual'
 				),
 			],
 			 $echo
 		);
+	}
+
+	/**
+	 * Add the Facebook video message to autodetect fields.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param array<string|mixed> $autodetect   An array of the autodetect resukts.
+	 * @param string              $video_url    The url to use to autodetect the video source.
+	 * @param string              $video_source The optional name of the video source to attempt to autodetect.
+	 * @param \WP_Post|null       $event        The event post object, as decorated by the `tribe_get_event` function.
+	 * @param array<string|mixed> $ajax_data    An array of extra values that were sent by the ajax script.
+	 *
+	 * @return array<string|mixed> An array of the autodetect results.
+	 */
+	public function classic_autodetect_video_source_message( $autodetect_fields, $video_url, $video_source, $event, $ajax_data ) {
+		if ( ! $event instanceof \WP_Post ) {
+			return $autodetect_fields;
+		}
+
+		// All video sources are checked on the first autodetect run, only prevent checking of this source if it is set.
+		if ( ! empty( $video_source ) && Facebook_Meta::$autodetect_fb_video_id !== $video_source ) {
+			return $autodetect_fields;
+		}
+
+		// If app id return fields.
+		if( tribe_get_option( $this->settings->get_prefix( 'app_id' ), '' ) ) {
+			return $autodetect_fields;
+		}
+
+		// If no app id return the no Facebook App ID message.
+		$autodetect_fields[] = $this->page_api->get_no_facebook_app_id_message_content();
+
+		return $autodetect_fields;
 	}
 }

@@ -36,5 +36,5 @@ if ( ! empty( $message_classes ) ) {
 	id="tribe-events-virtual-settings-message"
 	<?php tribe_classes( $message_classes ); ?>
 >
-	<?php esc_html_e( $message ); ?>
+	<?php echo wp_kses_post( $message ); ?>
 </div>

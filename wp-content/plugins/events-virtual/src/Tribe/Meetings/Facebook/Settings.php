@@ -105,21 +105,23 @@ class Settings {
 	 * Adds the Facebook Live API fields to the ones in the Events > Settings > APIs tab.
 	 *
 	 * @since 1.7.0
+	 * @since 1.8.0 - Add setting section for Facebook Video to disable the JS SDK.
 	 *
 	 * @param array<string,array> $fields The current fields.
 	 *
 	 * @return array<string,array> The fields, as updated by the settings.
 	 */
 	public function add_fields( array $fields = [] ) {
-		$wrapper_classes = tribe_get_classes( [
+		$live_wrapper_classes = tribe_get_classes( [
 			'tribe-settings-facebook-integration' => true,
 			'tribe-common'                        => true,
 		] );
 
-		$facebook_live_fields = [
+		$facebook_fields = [
+			// Facebook Live.
 			$this->get_prefix( 'wrapper_open' )  => [
 				'type' => 'html',
-				'html' => '<div id="tribe-settings-facebook-integration" class="' . implode( ' ', $wrapper_classes ) . '">',
+				'html' => '<div id="tribe-settings-facebook-integration" class="' . implode( ' ', $live_wrapper_classes ) . '">',
 			],
 			$this->get_prefix( 'header' )        => [
 				'type' => 'html',
@@ -157,6 +159,18 @@ class Settings {
 				'type' => 'html',
 				'html' => '<div class="clear"></div></div>',
 			],
+			// Facebook Video.
+			$this->get_prefix( 'header-video' )      => [
+				'type' => 'html',
+				'html' => '<h3>' . esc_html_x( 'Facebook Video', 'The label for the Facebook Video settings.', 'events-virtual' ) . '</h3>',
+			],
+			$this->get_prefix( 'disable_fb_js_sdk' ) => [
+				'type'            => 'checkbox_bool',
+				'label'           => esc_html_x( 'Disable Facebook JS SDK for Facebook Video', 'The label to disable Facebook JS sdk.', 'events-virtual' ),
+				'tooltip'         => esc_html_x( 'Disable the Facebook JS SDK script for single events on the frontend. This may be necessary to prevent conflicts with other Facebook plugins or scripts.', 'The tooltip for the option to disable the Facebook JS SDK.', 'events-virtual' ),
+				'default'         => false,
+				'validation_type' => 'boolean',
+			],
 		];
 
 		/**
@@ -167,10 +181,10 @@ class Settings {
 		 * @param array<string,array> A map of the Facebook Live API fields that will be printed on the page.
 		 * @param Settings $this This Settings instance.
 		 */
-		$facebook_live_fields = apply_filters( 'tribe_events_virtual_meetings_facebook_live_settings_fields', $facebook_live_fields, $this );
+		$facebook_fields = apply_filters( 'tribe_events_virtual_meetings_facebook_live_settings_fields', $facebook_fields, $this );
 
 		// Insert the link after the other APIs and before the Google Maps API ones.
-		$fields = Common::array_insert_before_key( 'gmaps-js-api-start', $fields, $facebook_live_fields );
+		$fields = Common::array_insert_before_key( 'gmaps-js-api-start', $fields, $facebook_fields );
 
 		return $fields;
 	}

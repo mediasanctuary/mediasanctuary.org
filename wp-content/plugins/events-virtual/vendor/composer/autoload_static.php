@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit0f81bac7a0430458aef6010264d7a279
+class ComposerStaticInit834ab8f0ee46cdecb2f02c649376f2e5
 {
     public static $prefixLengthsPsr4 = array (
         'T' => 
@@ -45,6 +45,12 @@ class ComposerStaticInit0f81bac7a0430458aef6010264d7a279
         'Defuse\\Crypto\\RuntimeTests' => __DIR__ . '/..' . '/defuse/php-encryption/src/RuntimeTests.php',
         'Tribe\\Events\\Virtual\\Admin_Template' => __DIR__ . '/../..' . '/src/Tribe/Admin_Template.php',
         'Tribe\\Events\\Virtual\\Assets' => __DIR__ . '/../..' . '/src/Tribe/Assets.php',
+        'Tribe\\Events\\Virtual\\Autodetect\\AJAX' => __DIR__ . '/../..' . '/src/Tribe/Autodetect/AJAX.php',
+        'Tribe\\Events\\Virtual\\Autodetect\\Autodetect_Provider' => __DIR__ . '/../..' . '/src/Tribe/Autodetect/Autodetect_Provider.php',
+        'Tribe\\Events\\Virtual\\Autodetect\\Fields' => __DIR__ . '/../..' . '/src/Tribe/Autodetect/Fields.php',
+        'Tribe\\Events\\Virtual\\Autodetect\\Metabox' => __DIR__ . '/../..' . '/src/Tribe/Autodetect/Metabox.php',
+        'Tribe\\Events\\Virtual\\Autodetect\\Template_Modifications' => __DIR__ . '/../..' . '/src/Tribe/Autodetect/Template_Modifications.php',
+        'Tribe\\Events\\Virtual\\Autodetect\\Url' => __DIR__ . '/../..' . '/src/Tribe/Autodetect/Url.php',
         'Tribe\\Events\\Virtual\\Compatibility' => __DIR__ . '/../..' . '/src/Tribe/Compatibility.php',
         'Tribe\\Events\\Virtual\\Compatibility\\Event_Tickets\\Email' => __DIR__ . '/../..' . '/src/Tribe/Compatibility/Event_Tickets/Email.php',
         'Tribe\\Events\\Virtual\\Compatibility\\Event_Tickets\\Event_Meta' => __DIR__ . '/../..' . '/src/Tribe/Compatibility/Event_Tickets/Event_Meta.php',
@@ -71,6 +77,8 @@ class ComposerStaticInit0f81bac7a0430458aef6010264d7a279
         'Tribe\\Events\\Virtual\\Export\\Event_Export' => __DIR__ . '/../..' . '/src/Tribe/Export/Event_Export.php',
         'Tribe\\Events\\Virtual\\Export\\Export_Provider' => __DIR__ . '/../..' . '/src/Tribe/Export/Export_Provider.php',
         'Tribe\\Events\\Virtual\\Hooks' => __DIR__ . '/../..' . '/src/Tribe/Hooks.php',
+        'Tribe\\Events\\Virtual\\Importer\\Events' => __DIR__ . '/../..' . '/src/Tribe/Importer/Events.php',
+        'Tribe\\Events\\Virtual\\Importer\\Importer_Provider' => __DIR__ . '/../..' . '/src/Tribe/Importer/Importer_Provider.php',
         'Tribe\\Events\\Virtual\\JSON_LD' => __DIR__ . '/../..' . '/src/Tribe/JSON_LD.php',
         'Tribe\\Events\\Virtual\\Meetings\\Api_Response' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Api_Response.php',
         'Tribe\\Events\\Virtual\\Meetings\\Facebook\\Classic_Editor' => __DIR__ . '/../..' . '/src/Tribe/Meetings/Facebook/Classic_Editor.php',
@@ -135,9 +143,9 @@ class ComposerStaticInit0f81bac7a0430458aef6010264d7a279
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit0f81bac7a0430458aef6010264d7a279::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit0f81bac7a0430458aef6010264d7a279::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit0f81bac7a0430458aef6010264d7a279::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit834ab8f0ee46cdecb2f02c649376f2e5::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit834ab8f0ee46cdecb2f02c649376f2e5::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit834ab8f0ee46cdecb2f02c649376f2e5::$classMap;
 
         }, null, ClassLoader::class);
     }

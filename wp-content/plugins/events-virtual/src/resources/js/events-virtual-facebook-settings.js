@@ -49,6 +49,7 @@ tribe.events.facebookSettingsAdmin = tribe.events.facebookSettingsAdmin || {};
 
 		facebookAppId: 'input[name="tribe_facebook_app_id"]',
 		facebookAppSecret: 'input[name="tribe_facebook_app_secret"]',
+		autoDetectPreviewClass: '.tec-virtual-video-embed__facebook',
 	};
 
 	/**
@@ -270,7 +271,15 @@ tribe.events.facebookSettingsAdmin = tribe.events.facebookSettingsAdmin || {};
 	 *
 	 */
 	obj.facebookInit = function() {
-		const facebookAppId = $( obj.selectors.facebookAppId ).val();
+		if ( typeof FB === 'undefined' ) {
+			return false;
+		}
+
+		// If no app id on the page load from the localized option.
+		let facebookAppId = $( obj.selectors.facebookAppId ).val();
+		if ( ! facebookAppId || facebookAppId < 1 ) {
+			facebookAppId = tribe_events_virtual_facebook_settings_strings.facebookAppId;
+		}
 
 		if ( ! facebookAppId || facebookAppId < 1 ) {
 			return;
@@ -494,6 +503,28 @@ tribe.events.facebookSettingsAdmin = tribe.events.facebookSettingsAdmin || {};
 	};
 
 	/**
+	 * Handle the Autodetect Response for Facebook Video.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param {Event} event The trigger event.
+	 * @param {data} data The data object included with the trigger event.
+	 */
+	obj.handleAutoDetectFacebookVideo = function( event, data ) {
+		if ( ! data.html ) {
+			return;
+		}
+
+		const $videoPreview = $( data.html ).filter( obj.selectors.autoDetectPreviewClass );
+		if ( 0 === $videoPreview.length ) {
+			return;
+		}
+
+		// Initialize the Facebook App to load the video preview.
+		obj.facebookInit();
+	};
+
+	/**
 	 * Bind the Facebook events.
 	 *
 	 * @since 1.7.0
@@ -511,6 +542,8 @@ tribe.events.facebookSettingsAdmin = tribe.events.facebookSettingsAdmin || {};
 			.on( 'click', obj.selectors.facebookDeletePage, obj.handleDeletePage );
 		$( obj.selectors.facebookContainer )
 			.on( 'click', obj.selectors.facebookAddPage, obj.handleAddPage );
+
+		$document.on( 'autodetect.videoPreview', obj.handleAutoDetectFacebookVideo );
 	};
 
 	/**

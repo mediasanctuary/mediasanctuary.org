@@ -63,6 +63,7 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 		remove: '.tribe-remove-virtual-event',
 		setupZoomCheckbox: '#tribe-events-virtual-zoom-link-generate',
 		urlField: '.tribe-events-virtual-video-source__virtual-url-input',
+		videoSource: '#tribe-events-virtual-video-source',
 		virtualContainer: '#tribe-virtual-events',
 		zoomMeetingsContainer: '#tribe-events-virtual-meetings-zoom',
 		zoomType: 'input[name="tribe-events-virtual[zoom-meeting-type]"]:checked',
@@ -200,9 +201,43 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 		$( obj.selectors.zoomMeetingsContainer ).replaceWith( html );
 		obj.setupControls();
 		obj.checkButtons();
-		virtualAdmin.handleVideoSourceClasses();
 		obj.initTribeDropdowns();
 		$( virtualAdmin.selectors.videoSource ).trigger( 'verify.dependency' );
+
+		if (
+			virtualAdmin.handleShowOptionInteractivity &&
+			typeof virtualAdmin.handleShowOptionInteractivity === 'function'
+		) {
+			virtualAdmin.handleShowOptionInteractivity();
+		}
+	};
+
+	/**
+	 * Handle the Autodetect Response for Zoom.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param {Event} event The trigger event.
+	 * @param {data} data The data object included with the trigger event.
+	 */
+	obj.handleAutoDetectZoom = function( event, data ) {
+		if ( ! data.html ) {
+			return;
+		}
+
+		const $meetingDetails = $( data.html ).filter( obj.selectors.zoomMeetingsContainer );
+		if ( 0 === $meetingDetails.length ) {
+			return;
+		}
+
+		$( obj.selectors.zoomMeetingsContainer ).html( $meetingDetails );
+		obj.setupControls();
+		obj.checkButtons();
+		obj.initTribeDropdowns();
+		$( virtualAdmin.selectors.videoSource )
+			.val('zoom')
+			.trigger('change')
+			.trigger( 'verify.dependency' );
 
 		if (
 			virtualAdmin.handleShowOptionInteractivity &&
@@ -223,7 +258,6 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 		var checkExist = setInterval( function() {
 			counter--;
 			if ( $( obj.selectors.meetingDetails ).length || counter === 0 ) {
-				virtualAdmin.handleVideoSourceClasses();
 				clearInterval( checkExist );
 			}
 		}, 200 );
@@ -254,12 +288,12 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 	 */
 	obj.bindEvents = function() {
 		$( obj.selectors.virtualContainer )
-			.on( 'verify.dependency', obj.waitForVirtualEventsToLoad )
 			.on( 'click', obj.selectors.configureZoom, obj.setZoomCheckboxCheckedAttr( true ) )
 			.on( 'click', obj.selectors.accountSelect, obj.handleAccountSelection )
 			.on( 'click', obj.selectors.meetingCreate, obj.handleMeetingRequest )
 			.on( 'click', obj.selectors.meetingRemove, obj.handleRemoveRequest );
 		$document.on( 'virtual.delete', obj.handleLinkedMetaRemove );
+		$document.on( 'autodetect.complete', obj.handleAutoDetectZoom );
 	};
 
 	/**

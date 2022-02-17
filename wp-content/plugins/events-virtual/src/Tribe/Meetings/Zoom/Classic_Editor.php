@@ -10,6 +10,7 @@
 namespace Tribe\Events\Virtual\Meetings\Zoom;
 
 use Tribe\Events\Virtual\Admin_Template;
+use Tribe\Events\Virtual\Event_Meta as Virtual_Events_Meta;
 use Tribe\Events\Virtual\Event_Meta as Virtual_Meta;
 use Tribe\Events\Virtual\Meetings\Zoom\Event_Meta as Zoom_Meta;
 use Tribe\Events\Virtual\Metabox;
@@ -476,14 +477,14 @@ class Classic_Editor {
 					'name'        => 'tribe-events-virtual-zoom-account',
 					'selected'    =>  '',
 					'attrs'       => [
-						'placeholder' => _x(
+						'placeholder'        => _x(
 						    'Select an Account',
 						    'The placeholder for the dropdown to select an account.',
 						    'events-virtual'
 						),
 						'data-prevent-clear' => true,
-						'data-hide-search' => true,
-						'data-options' => json_encode( $accounts ),
+						'data-force-search'  => true,
+						'data-options'       => json_encode( $accounts ),
 					],
 				],
 				'remove_link_url'       => $this->get_remove_link( $post ),
@@ -607,15 +608,15 @@ class Classic_Editor {
 					'name'        => 'tribe-events-virtual-zoom-host',
 					'selected'    =>  $post->zoom_host_id,
 					'attrs'       => [
-						'placeholder' => _x(
+						'placeholder'       => _x(
 						    'Select a Host',
 						    'The placeholder for the dropdown to select a host.',
 						    'events-virtual'
 						),
-						'data-selected' => $post->zoom_host_id,
+						'data-selected'      => $post->zoom_host_id,
 						'data-prevent-clear' => true,
-						'data-hide-search' => true,
-						'data-options' => json_encode( $hosts ),
+						'data-force-search'  => true,
+						'data-options'       => json_encode( $hosts ),
 					],
 				],
 				'remove_link_url'       => $this->get_remove_link( $post ),
@@ -690,6 +691,31 @@ class Classic_Editor {
 	}
 
 	/**
+	 * Get an existing Meeting details.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param \WP_Post    $post           The post object of the Event context of the link generation.
+	 * @param bool        $echo           Whether to print the rendered HTML to the page or not.
+	 * @param null|string $account_id     The account id to use to load the link generators.
+	 * @param bool        $account_loaded The account is loaded successfully into the API.
+	 *
+	 * @return string|false Either the final content HTML or `false` if the template could be found.
+	 */
+	public function get_meeting_details( \WP_Post $post, $echo = true, $account_id = null, $account_loaded = false ) {
+
+		// Make sure to apply the Zoom properties to the event.
+		$post = Zoom_Meta::add_event_properties( $post );
+
+		// Load the account for the API instance.
+		if ( ! $account_loaded ) {
+			$account_loaded = $this->api->load_account_by_id( $account_id );
+		}
+
+		return $this->render_meeting_details( $post, $echo, $account_id, $account_loaded );
+	}
+
+	/**
 	 * Renders an existing Meeting details.
 	 *
 	 * @since 1.1.1
@@ -750,9 +776,27 @@ class Classic_Editor {
 			$message = $this->render_account_disabled_details( true, true, false );
 		}
 
+		$connected_msg = '';
+		$manual_connected = get_post_meta( $post->ID, Virtual_Events_Meta::$key_autodetect_source, true );
+		if ( Zoom_Meta::$key_zoom_source_id === $manual_connected ) {
+			$connected_msg = Webinars::$meeting_type === $meeting_type
+				? _x(
+					'This webinar is manually connected to the event and changes to the event will not alter the Zoom webinar.',
+					'Message for a manually connected Zoom meeting or webinar.',
+					'events-virtual'
+				)
+				: _x(
+					'This meeting is manually connected to the event and changes to the event will not alter the Zoom meeting.',
+					'Message for a manually connected Zoom meeting or webinar.',
+					'events-virtual'
+				);
+		}
+
 		return $this->template->template(
 			'virtual-metabox/zoom/details',
 			[
+				'connected'             => Zoom_Meta::$key_zoom_source_id === $manual_connected,
+				'connected_msg'         => $connected_msg,
 				'event'                 => $post,
 				'details_title'         => $details_title,
 				'update_link_url'       => $update_link_url,
@@ -795,8 +839,9 @@ class Classic_Editor {
 							'The placeholder for the multiselect to select alternative hosts.',
 							'events-virtual'
 						),
-						'data-selected'    => $post->zoom_host_id,
-						'data-options'     => json_encode( $alt_hosts ),
+						'data-force-search' => true,
+						'data-selected'     => $post->zoom_host_id,
+						'data-options'      => json_encode( $alt_hosts ),
 					],
 				],
 				'message'               => $message,
@@ -825,6 +870,83 @@ class Classic_Editor {
 			],
 			$echo
 		);
+	}
+
+	/**
+	 * Add the Zoom accounts dropdown to autodetect fields.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param array<string|mixed> $autodetect   An array of the autodetect resukts.
+	 * @param string              $video_url    The url to use to autodetect the video source.
+	 * @param string              $video_source The optional name of the video source to attempt to autodetect.
+	 * @param \WP_Post|null       $event        The event post object, as decorated by the `tribe_get_event` function.
+	 * @param array<string|mixed> $ajax_data    An array of extra values that were sent by the ajax script.
+	 *
+	 * @return array<string|mixed> An array of the autodetect results.
+	 */
+	public function classic_autodetect_video_source_accounts( $autodetect_fields, $video_url, $video_source, $event, $ajax_data ) {
+		if ( ! $event instanceof \WP_Post ) {
+			return $autodetect_fields;
+		}
+
+		// All video sources are checked on the first autodetect run, only prevent checking of this source if it is set.
+		if ( ! empty( $video_source ) && Zoom_Meta::$key_zoom_source_id !== $video_source ) {
+			return $autodetect_fields;
+		}
+
+		// Get optional chosen zoom account.
+		$zoom_account = Arr::get( $ajax_data, 'zoom-accounts', '' );
+
+		$accounts = $this->api->get_formatted_account_list( true );
+
+		if ( empty( $accounts ) ) {
+			$autodetect_fields[] = [
+				'path'  => 'virtual-metabox/zoom/autodetect-no-account',
+				'field' => [
+					'classes_wrap' => [ 'tribe-dependent', 'tribe-events-virtual-meetings-autodetect-zoom__message-wrap', 'error' ],
+					'message'        => _x(
+						'No Zoom accounts found, use the link to authorize a new account or reauthorize an existing account:',
+						'The message for smart url/autodetect when there are no valid zoom accouns.',
+						'events-virtual'
+					),
+					'setup_link_label' => $this->get_connect_to_zoom_label(),
+					'setup_link_url'   => Settings::admin_url(),
+					'wrap_attrs'   => [
+						'data-depends'   => '#tribe-events-virtual-autodetect-source',
+						'data-condition' => 'zoom',
+					],
+				]
+			];
+		} else {
+			$autodetect_fields[] = [
+				'path'  => 'components/dropdown',
+				'field' => [
+					'label'        => _x( 'Choose account:', 'The label of zoom accounts dropdown.', 'events-virtual' ),
+					'id'           => 'tribe-events-virtual-autodetect-zoom-account',
+					'class'        => 'tribe-events-virtual-meetings-autodetect-zoom__account-dropdown',
+					'classes_wrap' => [ 'tribe-dependent', 'tribe-events-virtual-meetings-autodetect-zoom__account-wrap' ],
+					'name'         => 'tribe-events-virtual-autodetect[zoom-account]',
+					'selected'     => $zoom_account,
+					'attrs'        => [
+						'placeholder'        => _x(
+							'Select an Account',
+							'The placeholder for the dropdown to select an account.',
+							'events-virtual'
+						),
+						'data-prevent-clear' => true,
+						'data-hide-search'   => true,
+						'data-options'       => json_encode( $accounts ),
+					],
+					'wrap_attrs'   => [
+						'data-depends'   => '#tribe-events-virtual-autodetect-source',
+						'data-condition' => 'zoom',
+					],
+				]
+			];
+		}
+
+		return $autodetect_fields;
 	}
 
 	/**
