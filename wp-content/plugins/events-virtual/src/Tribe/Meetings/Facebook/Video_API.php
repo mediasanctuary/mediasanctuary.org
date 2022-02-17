@@ -9,7 +9,10 @@
 
 namespace Tribe\Events\Virtual\Meetings\Facebook;
 
+use Tribe\Events\Virtual\Event_Meta as Virtual_Events_Meta;
 use Tribe\Events\Virtual\Meetings\Api_Response;
+use Tribe\Events\Virtual\Meetings\Facebook\Event_Meta as Facebook_Meta;
+use Tribe\Events\Virtual\Template;
 
 /**
  * Class Video_API
@@ -55,6 +58,16 @@ abstract class Video_API {
 	 * @var string
 	 */
 	public static $live_video_permalink_with_placeholder = 'https://graph.facebook.com/%%VIDEOID%%?fields=permalink_url';
+
+	/**
+	 * The regex to detect a Facebook video url.
+	 * Source - https://stackoverflow.com/a/65484777
+	 *
+	 * @since 1.8.0
+	 *
+	 * @var string
+	 */
+	public static $facebook_video_regex = '/(?:https?:\/\/)?(?:www.|web.|m.)?(facebook|fb).(com|watch)\/(?:video.php\?v=\d+|(\S+)|photo.php\?v=\d+|\?v=\d+)|\S+\/videos\/((\S+)\/(\d+)|(\d+))\/?/';
 
 	/**
 	 * Get the Facebook page url with the provided page id.
@@ -133,6 +146,24 @@ abstract class Video_API {
 		$live_video_url = apply_filters( 'tribe_events_virtual_facebook_live_video_permalink_with_placeholder', static::$live_video_permalink_with_placeholder );
 
 		return str_replace( '%%VIDEOID%%', $video_id, $live_video_url );
+	}
+
+	/**
+	 * Get the Facebook video regex.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @return string The regex to detect the Facebook video url.
+	 */
+	protected static function get_facebook_video_regex() {
+		/**
+		 * Allow filtering of Facebook video regex.
+		 *
+		 * @since TB
+		 *
+		 * @param string The regex to detect the Facebook video url.
+		 */
+		return apply_filters( 'tec_virtual_facebook_video_regex', static::$facebook_video_regex );
 	}
 
 	/**
@@ -435,4 +466,62 @@ abstract class Video_API {
 	 * @return bool|string Whether the page is loaded or an error code. False or code means the page did not load.
 	 */
 	abstract function load_page_by_id( $local_id );
+
+	/**
+	 * Filter the autodetect source to detect if a Facebook video link.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param array<string|mixed> $autodetect   An array of the autodetect defaults.
+	 * @param string              $video_url    The url to use to autodetect the video source.
+	 * @param string              $video_source The optional name of the video source to attempt to autodetect.
+	 * @param \WP_Post|null       $event        The event post object, as decorated by the `tribe_get_event` function.
+	 * @param array<string|mixed> $ajax_data    An array of extra values that were sent by the ajax script.
+	 *
+	 * @return array<string|mixed> An array of the autodetect results.
+	 */
+	public function filter_virtual_autodetect_facebook_video( $autodetect, $video_url, $video_source, $event, $ajax_data ) {
+		if ( $autodetect['detected'] || $autodetect['guess'] ) {
+			return $autodetect;
+		}
+
+		// All video sources are checked on the first autodetect run, only prevent checking of this source if it is set.
+		if ( ! empty( $video_source ) && Facebook_Meta::$autodetect_fb_video_id !== $video_source ) {
+			return $autodetect;
+		}
+
+		// If no video url found, fail the request.
+		if ( empty( $video_url ) ) {
+			$autodetect['message'] = _x( 'No video found. Please enter a Facebook video URL or change the selected source.', 'Facebook video autodetect missing video url error message.', 'events-virtual' );
+
+			return $autodetect;
+		}
+
+		// Detect if the url is a Facebook video url.
+		preg_match( $this->get_facebook_video_regex(), $video_url, $matches );
+		$facebook_url     = isset( $matches[1] ) ? $matches[1] : false;
+		if ( ! $facebook_url ) {
+			$error_message = _x( 'This is not a valid Facebook video URL. Please recheck the URL and try again.', 'Invalid Facebook video url for autodetect error message.', 'events-virtual' );
+			$autodetect['message'] = $error_message;
+
+			return $autodetect;
+		}
+
+		$autodetect['guess'] = Facebook_Meta::$autodetect_fb_video_id;
+
+		// Set Facebook video as the autodetect source and setup success data and send back to smart url ui.
+		update_post_meta( $event->ID, Virtual_Events_Meta::$key_autodetect_source, Facebook_Meta::$autodetect_fb_video_id );
+		$autodetect['detected']          = true;
+		$autodetect['autodetect-source'] = Facebook_Meta::$autodetect_fb_video_id;
+		$autodetect['message']           = _x( "Success! Save your event to add this video.", 'Facebook video valid success message.', 'events-virtual' );
+
+		// Preview video setup.
+		$event->virtual_url = filter_var( $video_url, FILTER_VALIDATE_URL );
+		// Set for the preview video to always show.
+		$event->virtual_embed_video       = $event->virtual_should_show_embed = true;
+		$event->virtual_autodetect_source = Facebook_Meta::$autodetect_fb_video_id;
+		$autodetect['preview-html'] = tribe( Template::class )->template( 'facebook/single/facebook-video-embed', [ 'event' => $event ] );
+
+		return $autodetect;
+	}
 }

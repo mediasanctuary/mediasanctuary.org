@@ -9,6 +9,7 @@
 
 namespace Tribe\Events\Virtual;
 
+use Tribe\Events\Virtual\Meetings\Facebook\Event_Meta as Facebook_Meta;
 use Tribe__Events__Main as Events_Plugin;
 use WP_Post;
 
@@ -362,7 +363,7 @@ class Template_Modifications {
 		}
 
 		// Only embed when the source is video.
-		if ( 'video' !== $event->virtual_video_source ) {
+		if ( Event_Meta::$key_video_source_id !== $event->virtual_video_source ) {
 			return;
 		}
 
@@ -374,6 +375,12 @@ class Template_Modifications {
 		$context = [
 			'event' => $event,
 		];
+
+		if ( Facebook_Meta::$autodetect_fb_video_id === $event->virtual_autodetect_source ) {
+			$this->template->template( 'facebook/single/facebook-video-embed', $context );
+
+			return;
+		}
 
 		$this->template->template( 'single/video-embed', $context );
 	}

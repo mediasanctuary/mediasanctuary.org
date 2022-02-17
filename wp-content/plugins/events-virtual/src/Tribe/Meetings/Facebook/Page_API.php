@@ -9,6 +9,7 @@
 
 namespace Tribe\Events\Virtual\Meetings\Facebook;
 
+use Tribe\Events\Virtual\Meetings\Facebook\Event_Meta as Facebook_Meta;
 use Tribe\Events\Virtual\Traits\With_AJAX;
 use Tribe__Utils__Array as Arr;
 use Tribe__Events__Main as TEC;
@@ -900,5 +901,44 @@ class Page_API extends Video_API {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get the message to content for no Facebook App ID.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @return array<string|mixed> An array of the content for the template to display no Facebook App ID.
+	 */
+	public function get_no_facebook_app_id_message_content() {
+		return [
+			'path'  => 'virtual-metabox/facebook/autodetect-message',
+			'field' => [
+				'classes_wrap' => [ 'tribe-dependent', 'tribe-events-virtual-meetings-autodetect-facebook-video__message-wrap', 'error', 'inline' ],
+				'message'      => sprintf(
+					'%1$s <a href="%2$s" target="_blank">%3$s</a> %4$s',
+					esc_html_x(
+						'No connected Facebook Pages found. You must',
+					'The start of the message for smart url/autodetect when there is no Facebook App ID.',
+					'events-virtual'
+					),
+					Settings::admin_url(),
+					esc_html_x(
+						'connect a Facebook App',
+						'The link text in message for smart url/autodetect when there is no Facebook App ID.',
+						'events-virtual'
+					),
+					esc_html_x(
+						'to your site before you can add a Facebook video to an event.',
+						'The end of the message for smart url/autodetect when there is no Facebook App ID.',
+						'events-virtual'
+					)
+				),
+				'wrap_attrs'   => [
+					'data-depends'   => '#tribe-events-virtual-autodetect-source',
+					'data-condition' => Facebook_Meta::$autodetect_fb_video_id,
+				],
+			]
+		];
 	}
 }

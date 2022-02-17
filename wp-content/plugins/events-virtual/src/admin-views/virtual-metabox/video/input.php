@@ -8,6 +8,7 @@
  * See more documentation about our views templating system.
  *
  * @since   1.6.0
+ * @deprecated 1.8.0 - Replaced with Autodetect, src/admin-views/virtual-metabox/autodetect/controls.php
  *
  * @version 1.6.0
  *

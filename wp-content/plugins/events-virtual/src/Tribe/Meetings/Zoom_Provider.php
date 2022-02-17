@@ -10,6 +10,7 @@
 namespace Tribe\Events\Virtual\Meetings;
 
 use Tribe\Events\Virtual\Meetings\Zoom\Event_Export as Zoom_Event_Export;
+use Tribe\Events\Virtual\Meetings\Zoom\Classic_Editor;
 use Tribe\Events\Virtual\Meetings\Zoom\Migration_Notice;
 use Tribe\Events\Virtual\Meetings\Zoom\Settings;
 use Tribe\Events\Virtual\Event_Meta;
@@ -575,10 +576,10 @@ class Zoom_Provider extends Meeting_Provider {
 	public function add_video_source( $video_sources, $post ) {
 
 		$video_sources[] = [
-			'text'     => _x( 'Zoom', 'The name of the video source.', 'events-virtual' ),
-			'id'       => 'zoom',
-			'value'    => 'zoom',
-			'selected' => 'zoom' === $post->virtual_video_source ? true : false,
+			'text'     => _x( 'Zoom Account', 'The name of the video source.', 'events-virtual' ),
+			'id'       => Zoom_Meta::$key_zoom_source_id,
+			'value'    => Zoom_Meta::$key_zoom_source_id,
+			'selected' => Zoom_Meta::$key_zoom_source_id === $post->virtual_video_source,
 		];
 
 		return $video_sources;
@@ -588,33 +589,78 @@ class Zoom_Provider extends Meeting_Provider {
 	 * Filter the Google Calendar export fields for a Zoom source event.
 	 *
 	 * @since 1.7.3
+	 * @since 1.8.0 add should_show parameter.
 	 *
-	 * @param array<string|string> $fields   The various file format components for this specific event.
-	 * @param \WP_Post             $event    The WP_Post of this event.
-	 * @param string               $key_name The name of the array key to modify.
-	 * @param string               $type     The name of the export type.
+	 * @param array<string|string> $fields      The various file format components for this specific event.
+	 * @param \WP_Post             $event       The WP_Post of this event.
+	 * @param string               $key_name    The name of the array key to modify.
+	 * @param string               $type        The name of the export type.
+	 * @param boolean              $should_show Whether to modify the export fields for the current user, default to false.
 	 *
 	 * @return  array<string|string> Google Calendar Link params.
 	 */
-	public function filter_zoom_source_google_calendar_parameters( $fields, $event, $key_name, $type ) {
+	public function filter_zoom_source_google_calendar_parameters( $fields, $event, $key_name, $type, $should_show ) {
 
-		return $this->container->make( Zoom_Event_Export::class )->modify_video_source_export_output( $fields, $event, $key_name, $type );
+		return $this->container->make( Zoom_Event_Export::class )->modify_video_source_export_output( $fields, $event, $key_name, $type, $should_show );
 	}
 
 	/**
 	 * Filter the iCal export fields for a Zoom source event.
 	 *
 	 * @since 1.7.3
+	 * @since 1.8.0 add should_show parameter.
 	 *
-	 * @param array<string|string> $fields   The various file format components for this specific event.
-	 * @param \WP_Post             $event    The WP_Post of this event.
-	 * @param string               $key_name The name of the array key to modify.
-	 * @param string               $type     The name of the export type.
+	 * @param array<string|string> $fields      The various file format components for this specific event.
+	 * @param \WP_Post             $event       The WP_Post of this event.
+	 * @param string               $key_name    The name of the array key to modify.
+	 * @param string               $type        The name of the export type.
+	 * @param boolean              $should_show Whether to modify the export fields for the current user, default to false.
 	 *
 	 * @return array<string|string>  The various iCal file format components of this specific event item.
 	 */
-	public function filter_zoom_source_ical_feed_items( $fields, $event, $key_name, $type ) {
-		return $this->container->make( Zoom_Event_Export::class )->modify_video_source_export_output( $fields, $event, $key_name, $type );
+	public function filter_zoom_source_ical_feed_items( $fields, $event, $key_name, $type, $should_show ) {
+		return $this->container->make( Zoom_Event_Export::class )->modify_video_source_export_output( $fields, $event, $key_name, $type, $should_show );
+	}
+
+	/**
+	 * Add Zoom to Autodetect Source.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param array<string|string>        An array of autodetect sources.
+	 * @param string   $autodetect_source The ID of the current selected video source.
+	 * @param \WP_Post $post              The current event post object, as decorated by the `tribe_get_event` function.
+	 *
+	 * @return array<string|string> An array of video sources.
+	 */
+	public function add_autodetect_source( $autodetect_sources, $autodetect_source, $post ) {
+
+		$autodetect_sources[] = [
+			'text'     => _x( 'Zoom', 'The name of the autodetect source.', 'events-virtual' ),
+			'id'       => Zoom_Meta::$key_zoom_source_id,
+			'value'    => Zoom_Meta::$key_zoom_source_id,
+			'selected' => Zoom_Meta::$key_zoom_source_id === $autodetect_source,
+		];
+
+		return $autodetect_sources;
+	}
+
+	/**
+	 * Add the Zoom accounts dropdown field to the autodetect fields.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param array<string|mixed> $autodetect        An array of the autodetect resukts.
+	 * @param string              $video_url         The url to use to autodetect the video source.
+	 * @param string              $autodetect_source The optional name of the video source to attempt to autodetect.
+	 * @param \WP_Post|null       $event             The event post object, as decorated by the `tribe_get_event` function.
+	 * @param array<string|mixed> $ajax_data         An array of extra values that were sent by the ajax script.
+	 *
+	 * @return array<string|mixed> An array of the autodetect results.
+	 */
+	public function filter_virtual_autodetect_field_accounts( $autodetect_fields, $video_url, $autodetect_source, $event, $ajax_data ) {
+		return $this->container->make( Classic_Editor::class )
+		                ->classic_autodetect_video_source_accounts( $autodetect_fields, $video_url, $autodetect_source, $event, $ajax_data );
 	}
 
 	/**
@@ -645,8 +691,11 @@ class Zoom_Provider extends Meeting_Provider {
 			[ $this, 'filter_virtual_meetings_zoom_ajax_actions' ]
 		);
 		add_filter( 'tribe_events_virtual_video_sources', [ $this, 'add_video_source' ], 20, 2 );
-		add_filter( 'tec_events_virtual_export_fields', [ $this, 'filter_zoom_source_google_calendar_parameters' ], 10, 4 );
-		add_filter( 'tec_events_virtual_export_fields', [ $this, 'filter_zoom_source_ical_feed_items' ], 10, 4 );
+		add_filter( 'tec_events_virtual_export_fields', [ $this, 'filter_zoom_source_google_calendar_parameters' ], 10, 5 );
+		add_filter( 'tec_events_virtual_export_fields', [ $this, 'filter_zoom_source_ical_feed_items' ], 10, 5 );
+		add_filter( 'tec_events_virtual_autodetect_video_sources', [ $this, 'add_autodetect_source' ], 20, 3 );
+				add_filter( 'tec_events_virtual_video_source_autodetect_field_all', [ $this, 'filter_virtual_autodetect_field_accounts' ], 20, 5 );
+				add_filter( 'tec_events_virtual_video_source_autodetect_field_zoom-accounts', [ $this, 'filter_virtual_autodetect_field_accounts' ], 20, 5 );
 	}
 
 	/**

@@ -10,6 +10,7 @@
 namespace Tribe\Events\Virtual\Meetings\Facebook;
 
 use Tribe\Events\Virtual\Event_Meta as Virtual_Event_Meta;
+use Tribe\Events\Virtual\Meetings\Facebook\Event_Meta as Facebook_Meta;
 use Tribe\Events\Virtual\Meetings\Facebook_Provider;
 use Tribe__Utils__Array as Arr;
 use WP_Post;
@@ -22,6 +23,24 @@ use WP_Post;
  * @package Tribe\Events\Virtual\Meetings\Facebook
  */
 class Event_Meta {
+
+	/**
+	 * The video source Facebook internal ID.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @var string
+	 */
+	public static $video_source_fb_id = 'facebook';
+
+	/**
+	 * The Autodetect Facebook video internal ID.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @var string
+	 */
+	public static $autodetect_fb_video_id = 'facebook-video';
 
 	/**
 	 * The array of Facebook fields.
@@ -118,7 +137,7 @@ class Event_Meta {
 		}
 
 		// Return when Facebook is not the source.
-		if ( 'facebook' !== $event->virtual_video_source ) {
+		if ( static::$video_source_fb_id !== $event->virtual_video_source ) {
 			return $data;
 		}
 
@@ -128,7 +147,7 @@ class Event_Meta {
 
 		$data['meetings']['facebook'] = [
 			'local_id' => $event->facebook_local_id,
-			'is_live' => $event->virtual_meeting_is_live,
+			'is_live'  => $event->virtual_meeting_is_live,
 		];
 
 		return $data;
@@ -145,7 +164,7 @@ class Event_Meta {
 	 */
 	public static function add_event_properties( \WP_Post $event ) {
 		// Return when Facebook is not the source.
-		if ( 'facebook' !== $event->virtual_video_source ) {
+		if ( static::$video_source_fb_id !== $event->virtual_video_source ) {
 			return $event;
 		}
 
@@ -191,7 +210,7 @@ class Event_Meta {
 	 */
 	public function save_metabox_data( $post_id, array $data ) {
 		$event = tribe_get_event( $post_id );
-		if ( 'facebook' !== $event->virtual_video_source ) {
+		if ( static::$video_source_fb_id !== $event->virtual_video_source ) {
 			return;
 		}
 
@@ -258,7 +277,7 @@ class Event_Meta {
 
 		if (
 			! isset( $event->virtual_video_source ) ||
-			'facebook' !== $event->virtual_video_source
+			static::$video_source_fb_id !== $event->virtual_video_source
 		) {
 			return $event;
 		}
@@ -318,7 +337,7 @@ class Event_Meta {
 	 */
 	public function filter_ticket_email_url( $virtual_url, WP_Post $event ) {
 
-		if ( 'facebook' !== $event->virtual_video_source ) {
+		if ( static::$video_source_fb_id !== $event->virtual_video_source ) {
 			return $virtual_url;
 		}
 
