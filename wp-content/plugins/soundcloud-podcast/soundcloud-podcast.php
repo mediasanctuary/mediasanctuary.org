@@ -11,6 +11,7 @@ require_once __DIR__ . '/lib/auth.php';
 require_once __DIR__ . '/lib/rss.php';
 require_once __DIR__ . '/lib/cli.php';
 require_once __DIR__ . '/lib/import.php';
+require_once __DIR__ . '/lib/export.php';
 require_once __DIR__ . '/lib/inventory.php';
 require_once __DIR__ . '/lib/categories.php';
 
