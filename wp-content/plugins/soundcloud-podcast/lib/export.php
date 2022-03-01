@@ -10,7 +10,11 @@ function soundcloud_podcast_export($post_id = null) {
 		$track_id = get_post_meta($post->ID, 'soundcloud_podcast_id', true);
 		$dir = soundcloud_podcast_export_dir($post);
 		$files = soundcloud_podcast_export_files($post, $track_id, $dir);
-		print_r($files);
+		$id = soundcloud_podcast_export_upload($post, $files);
+		if ($id) {
+			update_post_meta($post->ID, 'internet_archive_id', $id);
+		}
+		soundcloud_podcast_export_cleanup($files);
 	}
 }
 
@@ -142,4 +146,60 @@ function soundcloud_podcast_export_request($url) {
 	}
 
 	return $body;
+}
+
+function soundcloud_podcast_export_upload($post, $file_list) {
+	$ia = '/usr/local/bin/ia';
+
+	$id = soundcloud_podcast_export_id($post);
+	$files = implode(' ', $file_list);
+
+	$title = str_replace('"', '\"', escapeshellarg($post->post_title));
+	$description = str_replace('"', '\"', escapeshellarg($post->post_content));
+	$date = substr($post->post_date, 0, 10);
+	$year = substr($post->post_date, 0, 4);
+
+	$metadata_list = [
+		'mediatype:audio',
+		"identifier:$id",
+		"title:$title",
+		"description:$description",
+		"date:$date",
+		"year:$year",
+		"publicdate:$post->post_date",
+		"addeddate:$post->post_date",
+		'language:eng',
+		'collection:mediasanctuaryaudio',
+		'creator:The Sanctuary for Independent Media'
+	];
+
+	$metadata = [];
+	foreach ($metadata_list as $item) {
+		$metadata[] = "--metadata=\"$item\"";
+	}
+	$metadata = implode(' ', $metadata);
+
+	$command = "$ia upload $id $files $metadata";
+	$result = null;
+	$retval = null;
+
+	exec($command, $result, $retval);
+
+	if ($retval == 0) {
+		return $id;
+	}
+	return false;
+}
+
+function soundcloud_podcast_export_cleanup($file_list) {
+	foreach ($file_list as $file) {
+		if (substr($file, 0, 4) != '/tmp') {
+			continue;
+		}
+		$dir = dirname($file);
+		unlink($file);
+	}
+	if (! empty($dir)) {
+		rmdir($dir);
+	}
 }
