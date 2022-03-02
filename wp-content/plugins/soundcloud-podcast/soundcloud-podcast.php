@@ -15,6 +15,8 @@ require_once __DIR__ . '/lib/export.php';
 require_once __DIR__ . '/lib/inventory.php';
 require_once __DIR__ . '/lib/categories.php';
 
+add_image_size('internet_archive_thumbnail', 280, 0);
+
 function soundcloud_podcast() {
 	global $post;
 
