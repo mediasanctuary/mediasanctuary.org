@@ -20,6 +20,7 @@ use Tribe\Events\Virtual\Meetings\Zoom\Meetings;
 use Tribe\Events\Virtual\Meetings\Zoom\OAuth;
 use Tribe\Events\Virtual\Meetings\Zoom\Password;
 use Tribe\Events\Virtual\Meetings\Zoom\Template_Modifications;
+use Tribe\Events\Virtual\Meetings\Zoom\Users;
 use Tribe\Events\Virtual\Meetings\Zoom\Webinars;
 use Tribe\Events\Virtual\Plugin;
 use Tribe\Events\Virtual\Traits\With_Nonce_Routes;
@@ -558,6 +559,7 @@ class Zoom_Provider extends Meeting_Provider {
 			Webinars::$update_action         => $this->container->callback( Webinars::class, 'ajax_update' ),
 			Webinars::$remove_action         => $this->container->callback( Webinars::class, 'ajax_remove' ),
 			API::$select_action              => $this->container->callback( API::class, 'ajax_selection' ),
+			Users::$validate_user_action     => $this->container->callback( Users::class, 'validate_user' ),
 			Settings::$status_action         => $this->container->callback( Settings::class, 'ajax_status' ),
 			Settings::$delete_action         => $this->container->callback( Settings::class, 'ajax_delete' ),
 		];

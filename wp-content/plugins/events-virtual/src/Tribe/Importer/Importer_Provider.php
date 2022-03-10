@@ -52,7 +52,11 @@ class Importer_Provider extends \tad_DI52_ServiceProvider {
 	 * @param array<string|mixed> $record         An event record from the import.
 	 * @param CSV_Event_Importer  $csv_events_obj An instance of the Tribe__Events__Importer__File_Importer_Events class.
 	 */
-	public function import_save_event_meta( int $event_id, array $record, CSV_Event_Importer $csv_events_obj ) {
+	public function import_save_event_meta( int $event_id, array $record, $csv_events_obj ) {
+		if ( ! $csv_events_obj instanceof CSV_Event_Importer ) {
+			return;
+		}
+
 		return $this->container->make( Events::class )->import_save_event_meta( $event_id, $record, $csv_events_obj );
 	}
 

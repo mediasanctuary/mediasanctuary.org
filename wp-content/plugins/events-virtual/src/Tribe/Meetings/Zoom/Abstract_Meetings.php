@@ -162,6 +162,8 @@ class Abstract_Meetings {
 		$zoom_host_id = tribe_get_request_var( 'zoom_host_id' );
 		// If no host id found, fail the request as account level apps do not support 'me'
 		if ( empty( $zoom_host_id ) ) {
+			$error_message = _x( 'The Zoom Host ID is missing to access the API.', 'Host ID is missing error message.', 'events-virtual' );
+			$this->classic_editor->render_meeting_generation_error_details( $event, $error_message, true );
 
 			wp_die();
 

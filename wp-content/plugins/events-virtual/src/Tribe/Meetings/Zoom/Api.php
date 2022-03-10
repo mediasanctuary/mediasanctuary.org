@@ -468,18 +468,17 @@ class Api extends Account_API {
 	}
 
 	/**
-	 * Get the List of Users
+	 * Get the List of all Users
 	 *
 	 * @since 1.4.0
+	 * @since 1.8.2 - Add pagination support.
 	 *
-	 * @return array An array of data from the Zoom API.
+	 * @return array An array of users from the Zoom API.
 	 */
 	public function fetch_users() {
 		if ( ! $this->get_token_authorization_header() ) {
 			return [];
 		}
-
-		$data = '';
 
 		$args = [
 			'page_size'   => 300,
@@ -490,11 +489,67 @@ class Api extends Account_API {
 		 * Filters the arguments for fetching users.
 		 *
 		 * @since 1.8.0
-		 * @since TBD Correct duplicated hook name.
+		 * @since 1.8.2 Correct duplicated hook name.
 		 *
 		 * @param array<string|string> $args The default arguments to fetch users.
 		 */
-		$args = (array) apply_filters( 'tec_events_virtual_zoom_get_users_arguments', $args );
+		$args = (array) apply_filters( 'tec_events_virtual_zoom_user_get_arguments', $args );
+
+		$page_query_atts = [
+			'start' => 1,
+			'limit' => 20,
+		];
+		/**
+		 * Filters the attributes for getting all of an account's users with pagination support.
+		 *
+		 * @since 1.8.2
+		 *
+		 * @param array<string|string> $args The default attributes to fetch users through pagination.
+		 */
+		$page_query_atts = (array) apply_filters( 'tec_events_virtual_zoom_user_pagination_attributes', $page_query_atts );
+
+		// Get the initial page of users.
+		$users = $this->fetch_users_with_args( $args );
+
+		// Support Pagination of users for accounts with over 300 users.
+		if ( isset( $users['page_count'] ) && $users['page_count'] > $page_query_atts['start'] ) {
+			// Use the filtered default arguments for the base of pagination queries.
+			$page_args = $args;
+
+			// Number of pages to get. If no limit, do the total number of pages.
+			// If there is a limit, do the smaller amount between the total number of pages and the limit.
+			$pages = $page_query_atts['limit'] ? min( $page_query_atts['start'] + $page_query_atts['limit'], $users['page_count'] + 1 ) : $users['page_count'] + 1;
+
+			for ( $i = $page_query_atts['start'] + 1; $i < $pages; $i ++ ) {
+				$page_args['page_number'] = $i;
+
+				$page_of_users = $this->fetch_users_with_args( $page_args );
+
+				if ( ! isset( $page_of_users['users'] ) ) {
+					continue;
+				}
+
+				// merge in the current page of users to the previous.
+				$users['users'] = array_merge( $users['users'], $page_of_users['users'] );
+			}
+		}
+
+		return $users;
+	}
+
+	/**
+	 * Get the List of Users by arguments.
+	 *
+	 * @since 1.8.2
+	 *
+	 * @return array An array of data from the Zoom API.
+	 */
+	public function fetch_users_with_args( $args ) {
+		if ( ! $this->get_token_authorization_header() ) {
+			return [];
+		}
+
+		$data = '';
 
 		$this->get(
 			self::$api_base . 'users',
@@ -673,7 +728,7 @@ class Api extends Account_API {
 				'check your account connection.',
 			'The link in of the message for smart url/autodetect when no zoom account is found.',
 			'events-virtual'
-			),
+			)
 		);
 	}
 	/**

@@ -747,7 +747,7 @@ abstract class Account_API {
 	 *
 	 * @return bool Whether the account supports webinars.
 	 */
-	protected function get_webinars_support( $settings ) {
+	public function get_webinars_support( $settings ) {
 		if ( empty( $settings['feature'] ) ) {
 			return false;
 		}
