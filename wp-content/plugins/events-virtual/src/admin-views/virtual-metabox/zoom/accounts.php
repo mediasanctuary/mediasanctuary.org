@@ -9,8 +9,9 @@
  *
  * @since   1.5.0
  * @since   1.6.0 - remove $offer_or_label.
+ * @since   1.8.2 - Add loader template.
  *
- * @version 1.5.0
+ * @version 1.8.2
  *
  * @link    http://m.tri.be/1aiy
  *
@@ -60,6 +61,8 @@ $metabox_id = 'tribe-events-virtual';
 				<?php echo esc_html( $select_label ); ?>
 			</a>
 		</span>
+
+		<?php $this->template( '/components/loader' ); ?>
 
 	</div>
 </div>

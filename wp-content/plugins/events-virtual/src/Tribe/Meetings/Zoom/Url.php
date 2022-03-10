@@ -300,6 +300,24 @@ class Url {
 	}
 
 	/**
+	 * Returns the URL that should be used to check a Zoom users account type.
+	 *
+	 * @since 1.8.2
+	 *
+	 * @return string The URL to validate the Zoom user type.
+	 */
+	public function to_validate_user_type( \WP_Post $post ) {
+		$nonce = wp_create_nonce( Users::$validate_user_action );
+
+		return add_query_arg( [
+			'action'              => 'ev_zoom_validate_user_type',
+			Plugin::$request_slug => $nonce,
+			'post_id'             => $post->ID,
+			'_ajax_nonce'         => $nonce,
+		], admin_url( 'admin-ajax.php' ) );
+	}
+
+	/**
 	 * Returns the URL that should be used to delete an account.
 	 *
 	 * @since 1.5.0

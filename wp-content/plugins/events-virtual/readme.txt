@@ -5,7 +5,7 @@ Tags: virtual events, events, calendar, event, venue, organizer, dates, date, sc
 Donate link: https://evnt.is/29
 Requires at least: 5.6
 Tested up to: 5.9.0
-Stable tag: 1.8.1
+Stable tag: 1.8.2
 Requires PHP: 7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -120,6 +120,14 @@ Our premium products:
 * <a href="https://evnt.is/1ako" target="_blank">Image Widget Plus</a>
 
 == Changelog ==
+
+= [1.8.2] 2022-02-23 =
+
+* Feature - Add support for Zoom accounts with over 300 users. [VE-475]
+* Feature - Add validation for every Zoom user to determine if the user supports webinars. [VE-328]
+* Tweak - Change spacing of Zoom detail icons in RTL languages. [VE-271]
+* Fix - Prevent intermittent fatal error when importing non events.
+* Language - 9 new strings added, 37 updated, 0 fuzzied, and 0 obsoleted.
 
 = [1.8.1] 2022-02-15 =
 

@@ -2,13 +2,13 @@
 # This file is distributed under the same license as the The Events Calendar: Virtual Events package.
 msgid ""
 msgstr ""
-"Project-Id-Version: The Events Calendar: Virtual Events 1.8.1\n"
+"Project-Id-Version: The Events Calendar: Virtual Events 1.8.2\n"
 "Report-Msgid-Bugs-To: http://m.tri.be/191x\n"
-"POT-Creation-Date: 2022-02-09 17:16:26+00:00\n"
+"POT-Creation-Date: 2022-02-23 15:07:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2022-02-09 17:16\n"
+"PO-Revision-Date: 2022-02-23 15:07\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 
@@ -617,15 +617,20 @@ msgctxt ""
 msgid "Are you sure you want to delete your default YouTube channel ID?"
 msgstr ""
 
+#: src/Tribe/Meetings/Zoom/Abstract_Meetings.php:165
+msgctxt "Host ID is missing error message."
+msgid "The Zoom Host ID is missing to access the API."
+msgstr ""
+
 #. Translators: %1$s: the name of the account that has been added or refreshed
 #. from Zoom .
-#: src/Tribe/Meetings/Zoom/Abstract_Meetings.php:175
+#: src/Tribe/Meetings/Zoom/Abstract_Meetings.php:177
 #: src/Tribe/Meetings/Zoom/Account_API.php:880
 msgctxt "Account ID is missing error message."
 msgid "The Zoom Account ID is missing to access the API."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Abstract_Meetings.php:186
+#: src/Tribe/Meetings/Zoom/Abstract_Meetings.php:188
 msgctxt "Zoom account loading error message."
 msgid "The Zoom Account could not be loaded to access to API."
 msgstr ""
@@ -668,37 +673,37 @@ msgid ""
 "Please, try again in a minute."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Api.php:589
+#: src/Tribe/Meetings/Zoom/Api.php:644
 msgctxt "Zoom autodetect missing video url error message."
 msgid ""
 "No url found. Please enter a Zoom meeting URL or change the selected source."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Api.php:598
+#: src/Tribe/Meetings/Zoom/Api.php:653
 msgctxt "No Zoom meeting/webinar ID found for autodetect error message."
 msgid "No Zoom ID found. Please check your meeting URL."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Api.php:632
+#: src/Tribe/Meetings/Zoom/Api.php:687
 msgctxt "No Zoom meeting or webinar found for autodetect error message."
 msgid ""
 "This Zoom meeting could not be found in the selected account. Please select "
 "the associated account below and try again."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Api.php:650
+#: src/Tribe/Meetings/Zoom/Api.php:705
 msgctxt "Zoom meeting/webinar connected success message."
 msgid "Zoom meeting successfully connected!"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Api.php:666
+#: src/Tribe/Meetings/Zoom/Api.php:721
 msgctxt ""
 "The start of the message for smart url/autodetect when there is no Zoom "
 "account found."
 msgid "No Zoom account found. Please check"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Api.php:672
+#: src/Tribe/Meetings/Zoom/Api.php:727
 msgctxt ""
 "The link in of the message for smart url/autodetect when no zoom account is "
 "found."
@@ -796,8 +801,7 @@ msgid "Remove Zoom link"
 msgstr ""
 
 #: src/Tribe/Meetings/Zoom/Classic_Editor.php:458
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:578
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:985
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:579
 msgctxt ""
 "The lowercase \"or\" label used to offer the creation of a Zoom Meetings or "
 "Webinars API link."
@@ -816,118 +820,113 @@ msgid "Choose account:"
 msgstr ""
 
 #: src/Tribe/Meetings/Zoom/Classic_Editor.php:480
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:932
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:935
 msgctxt "The placeholder for the dropdown to select an account."
 msgid "Select an Account"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:583
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:584
 msgctxt "The label used to designate the account of a Zoom Meeting or Webinar."
 msgid "Account: "
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:589
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:590
 msgctxt ""
 "The label of the toggle to show the links to generate Zoom Meetings or "
 "Webinars."
 msgid "Generate Zoom Link"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:595
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:596
 msgctxt ""
 "The label used to designate the next step in generation of a Zoom Meeting or "
 "Webinar."
 msgid "Create "
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:601
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:602
 msgctxt "The label of the meeting or webinar host."
 msgid "Meeting Host"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:611
-#: src/admin-views/virtual-metabox/zoom/setup.php:76
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:612
+#: src/admin-views/virtual-metabox/zoom/type-options.php:38
 msgctxt "The placeholder for the dropdown to select a host."
 msgid "Select a Host"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:643
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:645
 msgctxt ""
 "Label for the control to generate a Zoom meeting link in the event classic "
 "editor UI."
-msgid "Generate Zoom Meeting"
-msgstr ""
-
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:648
-msgctxt ""
-"Label for the control to generate a Zoom meeting link in the event classic "
-"editor UI, w/o the \"Generate\" prefix."
 msgid "Meeting"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:653
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:650
 msgctxt ""
 "Label for the control to generate a Zoom webinar link in the event classic "
 "editor UI."
-msgid "Generate Zoom Webinar"
-msgstr ""
-
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:658
-msgctxt ""
-"Label for the control to generate a Zoom webinar link in the event classic "
-"editor UI, w/o the \"Generate\" prefix."
 msgid "Webinar"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:743
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:667
+msgctxt ""
+"Explains why the webinar field is disabled when creating a meeting/webinar "
+"for an event."
+msgid ""
+"Webinars are not enabled for this host. Webinar support is enabled by the "
+"account plan in Zoom."
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:746
 msgctxt ""
 "Title of the details box shown for a generated Zoom Webinar link in the "
 "backend."
 msgid "Zoom Webinar:"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:748
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:751
 msgctxt ""
 "Title of the details box shown for a generated Zoom Meeting link in the "
 "backend."
 msgid "Zoom Meeting:"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:783
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:786
 msgctxt "Message for a manually connected Zoom meeting or webinar."
 msgid ""
 "This webinar is manually connected to the event and changes to the event "
 "will not alter the Zoom webinar."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:788
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:791
 msgctxt "Message for a manually connected Zoom meeting or webinar."
 msgid ""
 "This meeting is manually connected to the event and changes to the event "
 "will not alter the Zoom meeting."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:806
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:809
 msgctxt "The label used to designate the host of a Zoom Meeting or Webinar."
 msgid "Host: "
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:817
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:820
 msgctxt "The label used to prefix a Zoom Meeting or Webinar ID in the backend."
 msgid "ID: "
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:827
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:830
 msgctxt "The label of the alternative host multiselect"
 msgid "Alternative Hosts"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:837
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:840
 msgctxt "The placeholder for the multiselect to select alternative hosts."
 msgid "Add Alternative hosts"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:908
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:911
 msgctxt ""
 "The message for smart url/autodetect when there are no valid zoom accouns."
 msgid ""
@@ -935,9 +934,37 @@ msgid ""
 "reauthorize an existing account:"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:925
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:928
 msgctxt "The label of zoom accounts dropdown."
 msgid "Choose account:"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:971
+msgctxt ""
+"Label for the control to generate a Zoom meeting link in the event classic "
+"editor UI."
+msgid "Generate Zoom Meeting"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:976
+msgctxt ""
+"Label for the control to generate a Zoom meeting link in the event classic "
+"editor UI, w/o the \"Generate\" prefix."
+msgid "Meeting"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:981
+msgctxt ""
+"Label for the control to generate a Zoom webinar link in the event classic "
+"editor UI."
+msgid "Generate Zoom Webinar"
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:986
+msgctxt ""
+"Label for the control to generate a Zoom webinar link in the event classic "
+"editor UI, w/o the \"Generate\" prefix."
+msgid "Webinar"
 msgstr ""
 
 #: src/Tribe/Meetings/Zoom/Migration_Notice.php:61
@@ -1001,7 +1028,38 @@ msgctxt ""
 msgid "The Zoom Account access token could not be revoked."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:480
+#: src/Tribe/Meetings/Zoom/Users.php:215
+msgctxt "The event is missing error message for Zoom user validation."
+msgid "User validation failed because no event was found."
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Users.php:227
+msgctxt "Host ID is missing error message for Zoom user validation."
+msgid ""
+"The Zoom Host ID is missing to access the API, please select a host from the "
+"dropdown and try again."
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Users.php:239
+msgctxt "Account ID is missing error message for Zoom user validation."
+msgid "The Zoom Account ID is missing to access the API."
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Users.php:251
+msgctxt "Zoom account loading error message for Zoom user validation."
+msgid ""
+"The Zoom Account could not be loaded to access the API. Please try "
+"refreshing the account in the Events API Settings."
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom/Users.php:263
+msgctxt "Zoom API loading error message for Zoom user validation."
+msgid ""
+"The Zoom API did not return the user settings. Please try refreshing the "
+"account in the Events Integration Settings."
+msgstr ""
+
+#: src/Tribe/Meetings/Zoom_Provider.php:481
 msgctxt ""
 "The message to display to confirm a user would like to remove the Zoom "
 "connection from an event."
@@ -1010,7 +1068,7 @@ msgid ""
 "operation cannot be undone."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:495
+#: src/Tribe/Meetings/Zoom_Provider.php:496
 msgctxt ""
 "The message to display before a user attempts to refresh a Zoom account "
 "connection."
@@ -1019,7 +1077,7 @@ msgid ""
 "account in this browser."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:510
+#: src/Tribe/Meetings/Zoom_Provider.php:511
 msgctxt ""
 "The message to display to confirm a user would like to delete a Zoom account."
 msgid ""
@@ -1027,17 +1085,17 @@ msgid ""
 "be undone. Existing meetings tied to this account will not be impacted."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:579
+#: src/Tribe/Meetings/Zoom_Provider.php:581
 msgctxt "The name of the video source."
 msgid "Zoom Account"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:639
+#: src/Tribe/Meetings/Zoom_Provider.php:641
 msgctxt "The name of the autodetect source."
 msgid "Zoom"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:770
+#: src/Tribe/Meetings/Zoom_Provider.php:772
 msgid "Zoom link generated"
 msgstr ""
 
@@ -1396,8 +1454,8 @@ msgctxt "The settings for YouTube Integration for an event."
 msgid "Video Settings"
 msgstr ""
 
-#: src/admin-views/virtual-metabox/zoom/accounts.php:50
-#: src/admin-views/virtual-metabox/zoom/setup.php:56
+#: src/admin-views/virtual-metabox/zoom/accounts.php:51
+#: src/admin-views/virtual-metabox/zoom/setup.php:62
 msgctxt "Title for Zoom Meeting or Webinar creation."
 msgid "Zoom Meeting"
 msgstr ""
@@ -1516,7 +1574,7 @@ msgstr ""
 msgid "To begin using Virtual Events, please install the latest version of"
 msgstr ""
 
-#. #-#-#-#-#  events-virtual.pot (The Events Calendar: Virtual Events 1.8.1)  #-#-#-#-#
+#. #-#-#-#-#  events-virtual.pot (The Events Calendar: Virtual Events 1.8.2)  #-#-#-#-#
 #. Author of the plugin/theme
 #: src/functions/load.php:31
 msgid "The Events Calendar"

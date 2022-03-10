@@ -20,7 +20,7 @@ class Export_Provider extends \tad_DI52_ServiceProvider {
 	 * Binds and sets up implementations and registers the required filters.
 	 *
 	 * @since 1.0.4
-	 * @since TBD Change use of `tribe_google_calendar_parameters` to `tec_views_v2_single_event_gcal_link_parameters`
+	 * @since 1.8.2 Change use of `tribe_google_calendar_parameters` to `tec_views_v2_single_event_gcal_link_parameters`
 	 */
 	public function register() {
 		$this->container->singleton( 'events-virtual.export', $this );

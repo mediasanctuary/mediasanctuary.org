@@ -177,6 +177,10 @@ class Events {
 	 * @param CSV_Event_Importer  $csv_events_obj An instance of the Tribe__Events__Importer__File_Importer_Events class.
 	 */
 	public function import_save_event_meta( $event_id, $record, $csv_events_obj ) {
+		if ( ! $csv_events_obj instanceof CSV_Event_Importer ) {
+			return;
+		}
+
 		$is_virtual = tribe_is_truthy( $csv_events_obj->get_value_by_key( $record, 'virtual' ) );
 		if ( ! $is_virtual ) {
 			return;
