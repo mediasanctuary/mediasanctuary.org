@@ -10,7 +10,7 @@
 namespace Tribe\Events\Virtual\Meetings\Zoom;
 
 use Tribe\Events\Virtual\Event_Meta as Virtual_Events_Meta;
-use Tribe\Events\Virtual\Meetings\Zoom\Settings;
+use Tribe\Events\Virtual\Meetings\Zoom\Event_Meta as Zoom_Meta;
 use Tribe\Events\Virtual\Traits\With_AJAX;
 use Tribe__Utils__Array as Arr;
 use Tribe__Events__Main as TEC;
@@ -275,7 +275,8 @@ abstract class Account_API {
 			$screen = get_current_screen();
 			if ( ! empty( $screen->id ) && $screen->id == TEC::POSTTYPE ) {
 				global $post;
-				$post_id = $post->ID;
+				// Add a safety check for minimum supported versions of PHP(5.6) and WP(4.9.x).
+				$post_id = empty( $post->ID ) ? 0 : $post->ID;
 			}
 		}
 
@@ -713,6 +714,7 @@ abstract class Account_API {
 	 * Prepare a single Zoom's account data to save.
 	 *
 	 * @since 1.5.0
+	 * @since 1.8.0 - Use a method to detect webinar support.
 	 *
 	 * @param array<string|string> $user          The user information from Zoom.
 	 * @param string               $access_token  The Zoom Account API access token.
@@ -731,9 +733,50 @@ abstract class Account_API {
 			'access_token'  => $this->encryption->encrypt( $access_token ),
 			'refresh_token' => $this->encryption->encrypt( $refresh_token ),
 			'expiration'    => $expiration,
-			'webinars'      => tribe_is_truthy( $settings['feature']['webinar'] ),
+			'webinars'      => $this->get_webinars_support( $settings ),
 			'status'        => $status,
 		];
+	}
+
+	/**
+	 * Get whether the account supports webinars.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param array<string|mixed> $settings The user settings from Zoom.
+	 *
+	 * @return bool Whether the account supports webinars.
+	 */
+	public function get_webinars_support( $settings ) {
+		if ( empty( $settings['feature'] ) ) {
+			return false;
+		}
+
+		$webinar_values = [
+			'webinar',
+			'zoom_events',
+		];
+
+		/**
+		 * Filters the values to look for when detecting if a user has webinar support.
+		 *
+		 * @since 1.8.0
+		 *
+		 * @param array<string|string> $webinar_values The default webinar values to detect.
+		 */
+		$webinar_values = (array) apply_filters( 'tec_events_virtual_zoom_webinar_support_values', $webinar_values );
+
+		$supports = false;
+		foreach ( $webinar_values as $webinar_value ) {
+			if ( empty( $settings['feature'][ $webinar_value ] ) ) {
+				continue;
+			}
+
+			$supports = true;
+			break;
+		}
+
+		return $supports;
 	}
 
 	/**
@@ -857,7 +900,7 @@ abstract class Account_API {
 		$post_id = $event->ID;
 
 		// Set the video source to zoo.
-		update_post_meta( $post_id, Virtual_Events_Meta::$key_video_source, 'zoom' );
+		update_post_meta( $post_id, Virtual_Events_Meta::$key_video_source, Zoom_Meta::$key_zoom_source_id );
 
 		// get the setup
 		$classic_editor->render_meeting_link_generator( $event, true, false, $zoom_account_id );

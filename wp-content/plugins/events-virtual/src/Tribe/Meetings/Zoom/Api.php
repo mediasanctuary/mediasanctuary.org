@@ -11,6 +11,8 @@ namespace Tribe\Events\Virtual\Meetings\Zoom;
 
 use Tribe\Events\Virtual\Encryption;
 use Tribe\Events\Virtual\Meetings\Api_Response;
+use Tribe\Events\Virtual\Event_Meta as Virtual_Events_Meta;
+use Tribe\Events\Virtual\Meetings\Zoom\Event_Meta as Zoom_Meta;
 
 /**
  * Class Api
@@ -105,6 +107,15 @@ class Api extends Account_API {
 	 * @var integer
 	 */
 	const PATCH_RESPONSE_CODE = 204;
+
+	/**
+	 * Regex to get the Meeting/Webinar ID from Zoom url.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @var string
+	 */
+	protected $regex_meeting_id_url = '|(\bzoom\b).+?\/(?<id>[^\D]+)|';
 
 	/**
 	 * Api constructor.
@@ -457,21 +468,88 @@ class Api extends Account_API {
 	}
 
 	/**
-	 * Get the List of Users
+	 * Get the List of all Users
 	 *
 	 * @since 1.4.0
+	 * @since 1.8.2 - Add pagination support.
 	 *
-	 * @return array An array of data from the Zoom API.
+	 * @return array An array of users from the Zoom API.
 	 */
 	public function fetch_users() {
 		if ( ! $this->get_token_authorization_header() ) {
 			return [];
 		}
 
-		$data = [
+		$args = [
 			'page_size'   => 300,
 			'page_number' => 1,
 		];
+
+		/**
+		 * Filters the arguments for fetching users.
+		 *
+		 * @since 1.8.0
+		 * @since 1.8.2 Correct duplicated hook name.
+		 *
+		 * @param array<string|string> $args The default arguments to fetch users.
+		 */
+		$args = (array) apply_filters( 'tec_events_virtual_zoom_user_get_arguments', $args );
+
+		$page_query_atts = [
+			'start' => 1,
+			'limit' => 20,
+		];
+		/**
+		 * Filters the attributes for getting all of an account's users with pagination support.
+		 *
+		 * @since 1.8.2
+		 *
+		 * @param array<string|string> $args The default attributes to fetch users through pagination.
+		 */
+		$page_query_atts = (array) apply_filters( 'tec_events_virtual_zoom_user_pagination_attributes', $page_query_atts );
+
+		// Get the initial page of users.
+		$users = $this->fetch_users_with_args( $args );
+
+		// Support Pagination of users for accounts with over 300 users.
+		if ( isset( $users['page_count'] ) && $users['page_count'] > $page_query_atts['start'] ) {
+			// Use the filtered default arguments for the base of pagination queries.
+			$page_args = $args;
+
+			// Number of pages to get. If no limit, do the total number of pages.
+			// If there is a limit, do the smaller amount between the total number of pages and the limit.
+			$pages = $page_query_atts['limit'] ? min( $page_query_atts['start'] + $page_query_atts['limit'], $users['page_count'] + 1 ) : $users['page_count'] + 1;
+
+			for ( $i = $page_query_atts['start'] + 1; $i < $pages; $i ++ ) {
+				$page_args['page_number'] = $i;
+
+				$page_of_users = $this->fetch_users_with_args( $page_args );
+
+				if ( ! isset( $page_of_users['users'] ) ) {
+					continue;
+				}
+
+				// merge in the current page of users to the previous.
+				$users['users'] = array_merge( $users['users'], $page_of_users['users'] );
+			}
+		}
+
+		return $users;
+	}
+
+	/**
+	 * Get the List of Users by arguments.
+	 *
+	 * @since 1.8.2
+	 *
+	 * @return array An array of data from the Zoom API.
+	 */
+	public function fetch_users_with_args( $args ) {
+		if ( ! $this->get_token_authorization_header() ) {
+			return [];
+		}
+
+		$data = '';
 
 		$this->get(
 			self::$api_base . 'users',
@@ -480,7 +558,7 @@ class Api extends Account_API {
 					'Authorization' => $this->get_token_authorization_header(),
 					'Content-Type'  => 'application/json; charset=utf-8',
 				],
-				'body'    => ! empty( $data ) ? $data : null,
+				'body'    => ! empty( $args ) ? $args : null,
 			],
 			200
 		)->then(
@@ -518,7 +596,141 @@ class Api extends Account_API {
 		return $data;
 	}
 
+	/**
+	 * Get the regex to get the Zoom meeting/webinar id from a url.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @return string The regex to get Zoom meeting/webinar id from a url from the filter if a string or the default.
+	 */
+	public function get_regex_meeting_id_url() {
+		/**
+		 * Allow filtering of the regex to get Zoom meeting/webinar id from a url.
+		 *
+		 * @since 1.8.0
+		 *
+		 * @param string The regex to get Zoom meeting/webinar id from a url.
+		 */
+		$regex_meeting_id_url = apply_filters( 'tec_events_virtual_zoom_regex_meeting_id_url', $this->regex_meeting_id_url );
 
+		return is_string( $regex_meeting_id_url ) ? $regex_meeting_id_url : $this->regex_meeting_id_url;
+	}
+
+	/**
+	 * Filter the autodetect source to detect if a Zoom link.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param array<string|mixed> $autodetect   An array of the autodetect defaults.
+	 * @param string              $video_url    The url to use to autodetect the video source.
+	 * @param string              $video_source The optional name of the video source to attempt to autodetect.
+	 * @param \WP_Post|null       $event        The event post object, as decorated by the `tribe_get_event` function.
+	 * @param array<string|mixed> $ajax_data    An array of extra values that were sent by the ajax script.
+	 *
+	 * @return array<string|mixed> An array of the autodetect results.
+	 */
+	public function filter_virtual_autodetect_zoom( $autodetect, $video_url, $video_source, $event, $ajax_data ) {
+		if ( $autodetect['detected'] || $autodetect['guess'] ) {
+			return $autodetect;
+		}
+
+		// All video sources are checked on the first autodetect run, only prevent checking of this source if it is set.
+		if ( ! empty( $video_source ) && Zoom_Meta::$key_zoom_source_id !== $video_source ) {
+			return $autodetect;
+		}
+
+		// If virtual url, fail the request.
+		if ( empty( $video_url ) ) {
+			$autodetect['message'] = _x( 'No url found. Please enter a Zoom meeting URL or change the selected source.', 'Zoom autodetect missing video url error message.', 'events-virtual' );
+
+			return $autodetect;
+		}
+
+		// Attempt to find the Zoom meeting/webinar id from the url.
+		preg_match( $this->get_regex_meeting_id_url(), $video_url, $matches );
+		$zoom_meeting_id     = isset( $matches['id'] ) ? $matches['id'] : false;
+		if ( ! $zoom_meeting_id ) {
+			$error_message = _x( 'No Zoom ID found. Please check your meeting URL.', 'No Zoom meeting/webinar ID found for autodetect error message.', 'events-virtual' );
+			$autodetect['message'] = $error_message;
+
+			return $autodetect;
+		}
+
+		$autodetect['guess'] = Zoom_Meta::$key_zoom_source_id;
+
+		// Use the zoom-account if available, otherwise try with the first account stored in the site.
+		$accounts = $this->get_list_of_accounts();
+		$account_id = empty( $ajax_data['zoom-account'] ) ? array_key_first($accounts) : esc_attr( $ajax_data['zoom-account'] );
+
+		if ( empty( $account_id ) ) {
+			$autodetect['message'] = $this->get_no_account_message();
+
+			return $autodetect;
+		}
+
+		$this->load_account_by_id( $account_id );
+		if ( ! $this->is_ready() ) {
+			$autodetect['message'] = $this->get_no_account_message();
+
+			return $autodetect;
+		}
+
+		$data = $this->fetch_meeting_data( $zoom_meeting_id, 'meeting' );
+
+		// If not meeting found, test with webinar.
+		if ( empty( $data ) ) {
+			$data = $this->fetch_meeting_data( $zoom_meeting_id, 'webinar' );
+		}
+
+		// If no meeting or webinar found it is because the account is not authorized or does not exist.
+		if ( empty( $data ) ) {
+			$autodetect['message'] = _x( 'This Zoom meeting could not be found in the selected account. Please select the associated account below and try again.', 'No Zoom meeting or webinar found for autodetect error message.', 'events-virtual' );
+
+			return $autodetect;
+		}
+
+		// Set as virtual event and video source to zoom.
+		update_post_meta( $event->ID, Virtual_Events_Meta::$key_virtual, true );
+		update_post_meta( $event->ID, Virtual_Events_Meta::$key_video_source, Zoom_Meta::$key_zoom_source_id );
+		$event->virtual_video_source = Zoom_Meta::$key_zoom_source_id;
+
+		// Save Zoom data.
+		$new_response['body'] = json_encode( $data );
+		tribe( Meetings::class )->process_meeting_connection_response( $new_response, $event->ID );
+
+		// Set Zoom as the autodetect source and set up success data and send back to smart url ui.
+		update_post_meta( $event->ID, Virtual_Events_Meta::$key_autodetect_source, Zoom_Meta::$key_zoom_source_id );
+		$autodetect['detected']          = true;
+		$autodetect['autodetect-source'] = Zoom_Meta::$key_zoom_source_id;
+		$autodetect['message']           = _x( 'Zoom meeting successfully connected!', 'Zoom meeting/webinar connected success message.', 'events-virtual' );;
+		$autodetect['html'] = tribe( Classic_Editor::class )->get_meeting_details( $event, false, $account_id, false );
+
+		return $autodetect;
+	}
+
+	/**
+	 * Get the no Zoom account found message.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @return string The message returned when no account found.
+	 */
+	protected function get_no_account_message() {
+		return sprintf(
+			'%1$s <a href="%2$s" target="_blank">%3$s</a>',
+			esc_html_x(
+				'No Zoom account found. Please check',
+			'The start of the message for smart url/autodetect when there is no Zoom account found.',
+			'events-virtual'
+			),
+			Settings::admin_url(),
+			esc_html_x(
+				'check your account connection.',
+			'The link in of the message for smart url/autodetect when no zoom account is found.',
+			'events-virtual'
+			)
+		);
+	}
 	/**
 	 * Returns the current API access token.
 	 *

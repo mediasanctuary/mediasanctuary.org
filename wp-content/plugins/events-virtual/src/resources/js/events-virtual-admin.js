@@ -26,7 +26,7 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
  *
  * @return {void}
  */
-( function( $, obj ) {
+( function( $, obj, tribe_dropdowns ) {
 	'use-strict';
 	var $document = $( document );
 
@@ -38,13 +38,19 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
 	 * @type {PlainObject}
 	 */
 	obj.selectors = {
+		autoDetectButton: '.tribe-events-virtual-video-source-autodetect__button',
+		autoDetectFields: '.tribe-events-virtual-video-source-autodetect__fields',
+		autoDetectSource: '#tribe-events-virtual-autodetect-source',
+		autoDetectMessagesWrap: '.tribe-events-virtual-video-source-autodetect__messages-wrap',
+		autoDetectMessage: '.tribe-events-virtual-settings-message__wrap',
+		autoDetectloader: '.tribe-common-c-loader',
+		autoDetectPreviewWrap: '.tec-autodetect-video-preview__container',
+		autoDetectPreview: '.tec-autodetect-video-preview__inner',
+		autoDetecthiddenElement: '.tribe-common-a11y-hidden',
 		configure: '.tribe-configure-virtual-button',
 		displayOption: '.tribe-events-virtual-display',
 		displayOptionCheckbox: '.tribe-events-virtual-display input[type="checkbox"]',
 		embedCheckbox: '#tribe-events-virtual-embed-video',
-		embedNotice: '.tribe-events-virtual-video-source__not-embeddable-notice',
-		embedNoticeShow: '.tribe-events-virtual-video-source__not-embeddable-notice--show',
-		embedNoticeText: '.tribe-events-virtual-video-source__not-embeddable-text',
 		remove: '.tribe-remove-virtual-event',
 		setupCheckbox: '#tribe-events-virtual-setup',
 		showOptions: '.tribe-events-virtual-show input',
@@ -55,6 +61,11 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
 		videoSourcesFloat: '.tribe-events-virtual-video-sources--float',
 		virtualContainer: '#tribe-virtual-events',
 		virtualUrl: '.tribe-events-virtual-video-source__virtual-url-input',
+
+		// @Deprecated 1.8.0
+		embedNotice: '.tribe-events-virtual-video-source__not-embeddable-notice',
+		embedNoticeShow: '.tribe-events-virtual-video-source__not-embeddable-notice--show',
+		embedNoticeText: '.tribe-events-virtual-video-source__not-embeddable-text',
 	};
 
 	/**
@@ -150,72 +161,148 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
 	};
 
 	/**
-	 * Checks the virtual URL for embeddability.
+	 * Show loader for the container.
 	 *
-	 * @since 1.0.0
-	 * @since 1.6.0 - Video source dropdown support.
+	 * @since 1.8.0
+	 *
+	 * @param {jQuery} $container jQuery object of the container.
+	 *
+	 * @return {void}
 	 */
-	obj.testEmbed = function() {
+	obj.show = function( $container ) {
+		const $loader = $container.find( obj.selectors.autoDetectloader );
+
+		if ( $loader.length ) {
+			$loader.removeClass( obj.selectors.autoDetecthiddenElement.className() );
+		}
+	};
+
+	/**
+	 * Hide loader for the container.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param {jQuery} $container jQuery object of the container.
+	 *
+	 * @return {void}
+	 */
+	obj.hide = function( $container ) {
+		const $loader = $container.find( obj.selectors.autoDetectloader );
+
+		if ( $loader.length ) {
+			$loader.addClass( obj.selectors.autoDetecthiddenElement.className() );
+		}
+	};
+
+	/**
+	 * Show video preview on loading of a saved event.
+	 *
+	 * @since 1.8.0
+	 */
+	obj.handleVideoPreviewOnLoad = function( ) {
+		const $videoPreview = $( obj.selectors.autoDetectPreview );
+		if ( 0 === $.trim( $videoPreview.html() ).length ) {
+			return;
+		}
+
+		$( obj.selectors.autoDetectPreviewWrap ).removeClass( 'hide-preview' );
+	};
+
+	/**
+	 * Handle the Autodetect Response for Oembed.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param {Event} event The trigger event.
+	 * @param {data} data The data object included with the trigger event.
+	 */
+	obj.handleAutoDetectVideoPreview = function( event, data ) {
+		if ( ! data.html ) {
+			return;
+		}
+
+		const $videoPreview = $( data.html ).filter( obj.selectors.autoDetectPreview );
+		if ( 0 === $videoPreview.length ) {
+			return;
+		}
+
+		$( obj.selectors.autoDetectPreviewWrap ).removeClass( 'hide-preview' );
+		$( obj.selectors.autoDetectPreview ).replaceWith( $videoPreview );
+
+		$document.trigger( 'autodetect.videoPreview', { 'html' : data.html } );
+	};
+
+	/**
+	 * Handles the successful response from the backend for autodetect.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param {string} html The HTML resposes from the autodetect.
+	 */
+	obj.onAutoDetectSuccess = function( html ) {
+		obj.hide( $( '.tribe-events-virtual-video-source-autodetect__inner-controls' ) );
+
+		$document.trigger( 'autodetect.complete', { 'html' : html } );
+
+		const $message = $( html ).filter( obj.selectors.autoDetectMessage );
+		const $autoDetectFields = $( html ).filter( obj.selectors.autoDetectFields );
+
+		$( obj.selectors.autoDetectMessagesWrap ).html( $message );
+
+		if ( 0 === $autoDetectFields.length ) {
+			return;
+		}
+
+		$( obj.selectors.autoDetectFields ).replaceWith( $autoDetectFields );
+
+		const $dropdowns = $( obj.selectors.autoDetectFields )
+					.find( tribe_dropdowns.selector.dropdown )
+					.not( tribe_dropdowns.selector.created );
+
+		$dropdowns.tribe_dropdowns();
+
+		$( obj.selectors.autoDetectSource )
+			.trigger( 'setup.dependency' )
+			.trigger( 'verify.dependency' );
+	};
+
+	/**
+	 * Autodetect the source of the url in the video url field.
+	 *
+	 * @since 1.8.0
+	 */
+	obj.detectSource = function() {
 		var $videoSource = $( obj.selectors.videoSource );
 		if ( 'video' !== $videoSource.val() ) {
 			return;
 		}
 
-		const $input = $( obj.selectors.virtualUrl );
-		const url = $input.val();
-		const nonce = $input.attr( 'data-nonce' );
-		const flag = $input.attr( 'data-oembed-test' );
+		const $video_input = $( obj.selectors.virtualUrl );
+		const video_url = $video_input.val();
+		const url = $video_input.data( 'autodetectAjaxUrl' );
+		const $autodetectFields = $( "[name^='tribe-events-virtual-autodetect']" );
+		const ajaxData = {};
+		$autodetectFields.map( function() {
+			let field = $( this ).prop( 'name' ).match( /\[(.*?)\]/ )[1];
+			ajaxData[ field ] = this.value;
+		} ).get();
 
-		// Don't test null data. Or items we don't want tested.
-		if ( ! flag || ! url || ! nonce ) {
-			// But we'll make sure we hide the notice and enable the checkbox.
-			obj.hideOembedNotice();
-			return;
-		}
+		obj.show( $( '.tribe-events-virtual-video-source-autodetect__inner-controls' ) );
+		$( obj.selectors.autoDetectPreviewWrap ).addClass( 'hide-preview' );
 
-		$.ajax( {
-			type: 'post',
-			dataType: 'json',
-			url: ajaxurl,
-			data: {
-				action: 'tribe_events_virtual_check_oembed',
-				url: url,
-				nonce: nonce,
-			},
-		} )
-			.done( function() {
-				obj.hideOembedNotice();
-			} )
-			.fail( function( response ) {
-				obj.showOembedNotice( response );
-			} );
-	};
-
-	/**
-	 * Hide the notice and enable the checkbox.
-	 *
-	 * @since 1.0.0
-	 */
-	obj.hideOembedNotice = function() {
-		$( obj.selectors.embedNotice ).removeClass( obj.selectors.embedNoticeShow.className() );
-		$( obj.selectors.embedCheckbox ).prop( { disabled: false } );
-	};
-
-	/**
-	 * Show the notice, disable and uncheck the checkbox.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param {object} response The ajax response object.
-	 */
-	obj.showOembedNotice = function( response ) {
-		$( obj.selectors.embedNoticeText ).html( response.responseJSON.data );
-		$( obj.selectors.embedNotice ).addClass( obj.selectors.embedNoticeShow.className() );
-		$( obj.selectors.embedCheckbox ).prop( {
-			disabled: true,
-			checked: false,
-		} );
-	};
+		$.ajax(
+			url,
+			{
+				contentType: 'application/json',
+				context: $( obj.selectors.videoSourceDetails ),
+				data: {
+					video_url: video_url,
+					ajax_data: ajaxData, // eslint-disable-line
+				},
+				success: obj.onAutoDetectSuccess,
+			}
+		);
+	}
 
 	/**
 	 * Handle the enabling and disabling of the Show controls depending on the Display options.
@@ -264,9 +351,11 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
 		$( obj.selectors.virtualContainer )
 			.on( 'click', obj.selectors.configure, obj.setCheckboxCheckedAttr( true ) )
 			.on( 'click', obj.selectors.remove, obj.setCheckboxCheckedAttr( false ) )
-			.on( 'blur', obj.selectors.virtualUrl, obj.testEmbed )
+			.on( 'click', obj.selectors.autoDetectButton, obj.detectSource )
 			.on( 'click', obj.selectors.displayOptionCheckbox, obj.handleShowOptionEnablement )
 			.on( 'change', obj.selectors.showOptions, obj.handleShowOptionInteractivity );
+
+		$document.on( 'autodetect.complete', obj.handleAutoDetectVideoPreview );
 	};
 
 	/**
@@ -299,13 +388,89 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
 	 */
 	obj.ready = function() {
 		obj.bindEvents();
-		obj.testEmbed();
 
 		// Trigger tribe dependency for video source fields to display.
 		// Set on a delay or it does not correctly load the selected video source fields.
 		setTimeout( function() {
 			$( obj.selectors.videoSource ).trigger( 'verify.dependency' );
 		}, 0 );
+
+		obj.handleVideoPreviewOnLoad();
+	};
+
+	/**
+	 * Checks the virtual URL for embeddability.
+	 *
+	 * @since 1.0.0
+	 * @since 1.6.0 - Video source dropdown support.
+	 * @deprecated 1.8.0
+	 *
+	 */
+	obj.testEmbed = function() {
+		console.info( 'Method deprecated and replaced with Autodetect feature.' ); // eslint-disable-line no-console, max-len
+		var $videoSource = $( obj.selectors.videoSource );
+		if ( 'video' !== $videoSource.val() ) {
+			return;
+		}
+
+		const $input = $( obj.selectors.virtualUrl );
+		const url = $input.val();
+		const nonce = $input.attr( 'data-nonce' );
+		const flag = $input.attr( 'data-oembed-test' );
+
+		// Don't test null data. Or items we don't want tested.
+		if ( ! flag || ! url || ! nonce ) {
+			// But we'll make sure we hide the notice and enable the checkbox.
+			obj.hideOembedNotice();
+			return;
+		}
+
+		$.ajax( {
+			type: 'post',
+			dataType: 'json',
+			url: ajaxurl,
+			data: {
+				action: 'tribe_events_virtual_check_oembed',
+				url: url,
+				nonce: nonce,
+			},
+		} )
+			.done( function() {
+				obj.hideOembedNotice();
+			} )
+			.fail( function( response ) {
+				obj.showOembedNotice( response );
+			} );
+	};
+
+	/**
+	 * Hide the notice and enable the checkbox.
+	 * @deprecated 1.8.0
+	 *
+	 * @since 1.0.0
+	 */
+	obj.hideOembedNotice = function() {
+		console.info( 'Method deprecated and replaced with Autodetect feature.' ); // eslint-disable-line no-console, max-len
+		$( obj.selectors.embedNotice ).removeClass( obj.selectors.embedNoticeShow.className() );
+		$( obj.selectors.embedCheckbox ).prop( { disabled: false } );
+	};
+
+	/**
+	 * Show the notice, disable and uncheck the checkbox.
+	 *
+	 * @since 1.0.0
+	 * @deprecated 1.8.0
+	 *
+	 * @param {object} response The ajax response object.
+	 */
+	obj.showOembedNotice = function( response ) {
+		console.info( 'Method deprecated and replaced with Autodetect feature.' ); // eslint-disable-line no-console, max-len
+		$( obj.selectors.embedNoticeText ).html( response.responseJSON.data );
+		$( obj.selectors.embedNotice ).addClass( obj.selectors.embedNoticeShow.className() );
+		$( obj.selectors.embedCheckbox ).prop( {
+			disabled: true,
+			checked: false,
+		} );
 	};
 
 	/**
@@ -336,4 +501,4 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
 
 	// Configure on document ready
 	$( obj.ready );
-} )( jQuery, tribe.events.virtualAdmin );
+} )( jQuery, tribe.events.virtualAdmin, tribe_dropdowns );

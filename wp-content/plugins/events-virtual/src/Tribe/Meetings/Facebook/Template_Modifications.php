@@ -9,9 +9,11 @@
 
 namespace Tribe\Events\Virtual\Meetings\Facebook;
 
+use Tribe\Events\Virtual\Meetings\Facebook\Event_Meta as Facebook_Meta;
 use Tribe\Events\Virtual\Template;
 use Tribe\Events\Virtual\Admin_Template;
 use Tribe\Events\Virtual\Template_Modifications as Base_Modifications;
+use WP_Post;
 
 /**
  * Class Template_Modifications
@@ -173,7 +175,7 @@ class Template_Modifications {
 		// Only embed when the source is video.
 		if (
 			! isset( $event->virtual_video_source ) ||
-			'facebook' !== $event->virtual_video_source
+			Facebook_Meta::$video_source_fb_id !== $event->virtual_video_source
 		) {
 			return;
 		}
@@ -220,5 +222,34 @@ class Template_Modifications {
 		];
 
 		$this->template->template( 'facebook/single/facebook-embed', $context );
+	}
+
+	/**
+	 * Add a preview video of Facebook video to autodetect.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param WP_Post $event The event post object, as decorated by the `tribe_get_event` function.
+	 *
+	 * @return string The video player html, missing FB app id message, or an empty string.
+	 */
+	public function autodetect_facebook_video_preview( $event ) {
+		if ( Facebook_Meta::$autodetect_fb_video_id !== $event->virtual_autodetect_source ) {
+			return '';
+		}
+
+		// If no app id return no Facebook App ID message.
+		if( ! tribe_get_option( $this->settings->get_prefix( 'app_id' ), '' ) ) {
+			$no_msg_fields = $this->api->get_no_facebook_app_id_message_content();
+			// Unset the dependency fields as we are reusing template data.
+			unset( $no_msg_fields['field']['classes_wrap'][0] );
+			unset( $no_msg_fields['field']['wrap_attrs'] );
+
+			return $this->admin_template->template( $no_msg_fields['path'], $no_msg_fields['field'] );
+		}
+
+		// Set for the preview video to always show in the admin.
+		$event->virtual_embed_video = $event->virtual_should_show_embed = true;
+		return $this->template->template( 'facebook/single/facebook-video-embed', [ 'event' => $event ] );
 	}
 }

@@ -1,11 +1,11 @@
 === Virtual Events ===
 
-Contributors: theeventscalendar, aguseo, borkweb, bordoni, brianjessee, Camwyn, hazelquimpo, juanfra, leahkoerper, lirianojoel, lucatume, neillmcshea, rafsuntaskin, zbtirrell
+Contributors: theeventscalendar, aguseo, borkweb, bordoni, brianjessee, Camwyn, juanfra, leahkoerper, lirianojoel, lucatume, neillmcshea, rafsuntaskin, zbtirrell
 Tags: virtual events, events, calendar, event, venue, organizer, dates, date, schema, conference, online events, concert, meeting, seminar, summit, class, the events calendar, tec, zoom, livestream
 Donate link: https://evnt.is/29
 Requires at least: 5.6
-Tested up to: 5.8.2
-Stable tag: 1.7.3
+Tested up to: 5.9.0
+Stable tag: 1.8.2
 Requires PHP: 7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -120,6 +120,36 @@ Our premium products:
 * <a href="https://evnt.is/1ako" target="_blank">Image Widget Plus</a>
 
 == Changelog ==
+
+= [1.8.2] 2022-02-23 =
+
+* Feature - Add support for Zoom accounts with over 300 users. [VE-475]
+* Feature - Add validation for every Zoom user to determine if the user supports webinars. [VE-328]
+* Tweak - Change spacing of Zoom detail icons in RTL languages. [VE-271]
+* Fix - Prevent intermittent fatal error when importing non events.
+* Language - 9 new strings added, 37 updated, 0 fuzzied, and 0 obsoleted.
+
+= [1.8.1] 2022-02-15 =
+
+* Version - Virtual Events 1.8.1 is only compatible with The Events Calendar 5.14.0 and higher
+* Tweak - Modify the Virtual Events block to improve performance.
+* Tweak - Alter some code that uses functions and filters deprecated in TEC. [TEC-4235]
+* Language - 0 new strings added, 9 updated, 0 fuzzied, and 0 obsoleted
+
+= [1.8.0] 2022-01-31 =
+
+* Version - Virtual Events 1.8.0 is only compatible with The Events Calendar 5.12.4 and higher
+* Feature - Update the video field to the new 'Smart' url field to be able to autodetect a video source using Oembed. [VE-435]
+* Feature - Connect existing Zoom Meetings or Webinars to your events using the new 'Smart' url field. [VE-438]
+* Feature - Add and display Facebook Videos using the new 'Smart' url field. [VE-428]
+* Feature - Add support for Virtual Event fields in CSV importer. [VE-387]
+* Tweak - Always show a search field for the Zoom Account, Host, and Alternative Host dropdown fields. [VE-417]
+* Fix - Display the Zoom video icon when linked button is disabled. [VE-441]
+* Fix - PHP notices when creating Zoom events in PHP (5.6) and WP minimums (4.9.x). [VE-440]
+* Fix - Add check utilizing the "show to" field to prevent the Zoom links from being added to the export file. [VE-462]
+* Fix - Ensure the virtual event details aren't duplicated in the single events page on the block editor. [VE-463]
+* Fix - Enable webinars on accounts using the Zoom Event account type. [VE-449]
+* Language - 52 new strings added, 85 updated, 2 fuzzied, and 6 obsoleted
 
 = [1.7.3] 2021-12-14 =
 

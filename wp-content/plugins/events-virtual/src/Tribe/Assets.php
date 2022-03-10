@@ -74,6 +74,16 @@ class Assets extends \tad_DI52_ServiceProvider {
 		$this->container->singleton( static::class, $this );
 		$this->container->singleton( 'events-virtual.assets', $this );
 
+		$this->enqueue_admin_assets();
+		$this->enqueue_frontend_assets();
+	}
+
+	/**
+	 * Setup admin assets.
+	 *
+	 * @since 1.8.0
+	 */
+	protected function enqueue_admin_assets() {
 		$plugin = tribe( Plugin::class );
 		$admin_helpers = Admin_Helpers::instance();
 
@@ -95,7 +105,7 @@ class Assets extends \tad_DI52_ServiceProvider {
 			$plugin,
 			'tribe-events-virtual-admin-js',
 			'events-virtual-admin.js',
-			[ 'jquery', 'tribe-tooltip-js', 'tribe-events-views-v2-accordion' ],
+			[ 'jquery', 'tribe-dropdowns', 'tribe-tooltip-js', 'tribe-events-views-v2-accordion' ],
 			'admin_enqueue_scripts',
 			[
 				'conditionals' => [
@@ -110,6 +120,15 @@ class Assets extends \tad_DI52_ServiceProvider {
 				],
 			]
 		);
+	}
+
+	/**
+	 * Setup frontend assets.
+	 *
+	 * @since 1.8.0
+	 */
+	protected function enqueue_frontend_assets() {
+		$plugin = tribe( Plugin::class );
 
 		tribe_asset(
 			$plugin,
@@ -273,6 +292,25 @@ class Assets extends \tad_DI52_ServiceProvider {
 				'priority' => 15,
 				'conditionals' => [
 					[ tribe( Event_Assets::class ), 'should_enqueue_single_event_block_editor_styles' ],
+				],
+			]
+		);
+
+		tribe_asset(
+			$plugin,
+			'tribe-events-virtual-single-js',
+			'events-virtual-single.js',
+			[ 'jquery' ],
+			'wp_enqueue_scripts',
+			[
+				'priority'     => 10,
+				'conditionals' => [ $this, 'should_enqueue_single_event' ],
+				'groups'       => [ static::$group_key ],
+				'localize' => [
+					'name' => 'tribe_events_virtual_settings',
+					'data' => [
+						'facebookAppId' => static::get_facebook_app_id(),
+					],
 				],
 			]
 		);
@@ -470,5 +508,16 @@ class Assets extends \tad_DI52_ServiceProvider {
 			'The classic editor message to display to confirm a user would like to delete the virtual settings.',
 			'events-virtual'
 		);
+	}
+
+	/**
+	 * Get the Facebook app id from the options.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @return string The Facebook app id or empty string if not found.
+	 */
+	public static function get_facebook_app_id() {
+		return tribe_get_option( 'tribe_facebook_app_id', '' );
 	}
 }

@@ -16,6 +16,8 @@
  * @link    http://evnt.is/1aiy
  *
  * @var \WP_Post             $event             The event post object, as decorated by the `tribe_get_event` function.
+ * @var boolean              $connected         Whether the meeting or webinar was connected to the event instead of created by it.
+ * @var string               $connected_msg     A html message to display if a Zoom meeting or webinar is manually connected.
  * @var string               $account_name      The api account name of a Zoom Meeting or Webinar.
  * @var string               $host_label        The label used to designate the host of a Zoom Meeting or Webinar.
  * @var string               $remove_link_url   The URL to remove the event Zoom Meeting.
@@ -65,6 +67,16 @@ $short_zoom_url = implode(
 
 		<?php echo $message; ?>
 
+		<?php
+		 if ( $connected_msg ) {
+		 	?>
+			 <div class="tribe-events-virtual-settings-message__wrap tribe-events-virtual-meetings-zoom__connected-message">
+					<?php echo $connected_msg; ?>
+				</div>
+		 	<?php
+		 }
+		?>
+
 		<div class="tribe-events-virtual-meetings-zoom__title">
 			<?php echo esc_html( $details_title ); ?> <?php echo esc_html( $account_name ); ?>
 		</div>
@@ -74,7 +86,14 @@ $short_zoom_url = implode(
 		</div>
 
 		<div class="tribe-events-virtual-meetings-zoom__alternative-host">
-			<?php $this->template( 'virtual-metabox/zoom/components/multiselect', $alt_hosts );	?>
+			<?php
+			// If the meeting or webinar is connected to the event then only list the altnative hosts.
+			if ( $connected ) {
+				echo esc_html( $alt_hosts['label'] ); ?>: <?php echo esc_html( is_array( $alt_hosts['selected'] ) ? implode( ', ', $alt_hosts['selected'] ) : $alt_hosts['selected'] );
+			} else {
+				$this->template( 'virtual-metabox/zoom/components/multiselect', $alt_hosts );
+			}
+			?>
 		</div>
 
 		<div class="tribe-events-virtual-meetings-zoom__url-wrapper">

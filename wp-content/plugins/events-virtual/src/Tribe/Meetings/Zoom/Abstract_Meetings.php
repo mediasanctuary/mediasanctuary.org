@@ -162,6 +162,8 @@ class Abstract_Meetings {
 		$zoom_host_id = tribe_get_request_var( 'zoom_host_id' );
 		// If no host id found, fail the request as account level apps do not support 'me'
 		if ( empty( $zoom_host_id ) ) {
+			$error_message = _x( 'The Zoom Host ID is missing to access the API.', 'Host ID is missing error message.', 'events-virtual' );
+			$this->classic_editor->render_meeting_generation_error_details( $event, $error_message, true );
 
 			wp_die();
 
@@ -425,6 +427,20 @@ class Abstract_Meetings {
 	}
 
 	/**
+	 * Processes the Zoom API Meeting connection response.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param array<string,mixed> $response The entire Zoom API response.
+	 * @param int                 $post_id  The event post ID.
+	 *
+	 * @return array<string,mixed> The Zoom Meeting data.
+	 */
+	public function process_meeting_connection_response( array $response, $post_id ) {
+		return $this->process_meeting_creation_response( $response, $post_id );
+	}
+
+	/**
 	 * Processes the Zoom API Meeting creation response to massage, filter and save the data.
 	 *
 	 * @since 1.0.0
@@ -525,7 +541,7 @@ class Abstract_Meetings {
 		update_post_meta( $post_id, $prefix . 'zoom_meeting_data', $this->encryption->encrypt( $response_body, true ) );
 
 		// Set the video source to prevent issues with loading the information later.
-		update_post_meta( $post_id, Virtual_Events_Meta::$key_video_source, 'zoom' );
+		update_post_meta( $post_id, Virtual_Events_Meta::$key_video_source, Zoom_Meta::$key_zoom_source_id );
 
 		$map = [
 			$prefix . 'zoom_meeting_id'             => 'id',
@@ -564,7 +580,7 @@ class Abstract_Meetings {
 	 *
 	 * @param string|null $nonce The nonce that should accompany the request.
 	 *
-	 * @return bool Whether the request was handled or not.
+	 * @return bool|string Whether the request was handled or a string with html for meeting creation.
 	 */
 	public function ajax_remove( $nonce = null ) {
 		if ( ! $this->check_ajax_nonce( static::$remove_action, $nonce ) ) {
@@ -603,6 +619,12 @@ class Abstract_Meetings {
 
 		// There is no meeting to update.
 		if ( ! ( $event instanceof \WP_Post ) || empty( $event->zoom_meeting_id ) ) {
+			return;
+		}
+
+		// If manually connected, do not update Zoom meeting or webinar when event details change.
+		$manual_connected = get_post_meta( $event->ID, Virtual_Events_Meta::$key_autodetect_source, true );
+		if ( Zoom_Meta::$key_zoom_source_id === $manual_connected ) {
 			return;
 		}
 

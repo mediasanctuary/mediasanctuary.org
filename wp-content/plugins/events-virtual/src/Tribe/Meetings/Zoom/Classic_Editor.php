@@ -10,6 +10,7 @@
 namespace Tribe\Events\Virtual\Meetings\Zoom;
 
 use Tribe\Events\Virtual\Admin_Template;
+use Tribe\Events\Virtual\Event_Meta as Virtual_Events_Meta;
 use Tribe\Events\Virtual\Event_Meta as Virtual_Meta;
 use Tribe\Events\Virtual\Meetings\Zoom\Event_Meta as Zoom_Meta;
 use Tribe\Events\Virtual\Metabox;
@@ -476,14 +477,14 @@ class Classic_Editor {
 					'name'        => 'tribe-events-virtual-zoom-account',
 					'selected'    =>  '',
 					'attrs'       => [
-						'placeholder' => _x(
+						'placeholder'        => _x(
 						    'Select an Account',
 						    'The placeholder for the dropdown to select an account.',
 						    'events-virtual'
 						),
 						'data-prevent-clear' => true,
-						'data-hide-search' => true,
-						'data-options' => json_encode( $accounts ),
+						'data-force-search'  => true,
+						'data-options'       => json_encode( $accounts ),
 					],
 				],
 				'remove_link_url'       => $this->get_remove_link( $post ),
@@ -511,11 +512,12 @@ class Classic_Editor {
 		 * Allows filtering the account selection link URL.
 		 *
 		 * @since 1.5.0
+		 * @since 1.8.2 - Renamed as the filter name was used in another context.
 		 *
-		 * @param string The url used to setup the account selection.
-		 * @param \WP_Post $post              The post object of the Event context of the link generation.
+		 * @param string   $link The url used to setup the account selection.
+		 * @param \WP_Post $post The post object of the Event context of the link generation.
 		 */
-		$link = apply_filters( 'tribe_events_virtual_zoom_meeting_link_generation_urls', $link, $post );
+		$link = apply_filters( 'tec_events_virtual_zoom_select_account_url', $link, $post );
 
 		return $link;
 	}
@@ -590,7 +592,7 @@ class Classic_Editor {
 					'The label of the toggle to show the links to generate Zoom Meetings or Webinars.',
 					'events-virtual'
 				),
-				'generation_urls'         => $this->get_link_generation_urls( $post, false ),
+				'generation_urls'         => $this->get_link_creation_urls( $post ),
 				'generate_label'        => _x(
 					'Create ',
 					'The label used to designate the next step in generation of a Zoom Meeting or Webinar.',
@@ -607,86 +609,113 @@ class Classic_Editor {
 					'name'        => 'tribe-events-virtual-zoom-host',
 					'selected'    =>  $post->zoom_host_id,
 					'attrs'       => [
-						'placeholder' => _x(
+						'placeholder'       => _x(
 						    'Select a Host',
 						    'The placeholder for the dropdown to select a host.',
 						    'events-virtual'
 						),
-						'data-selected' => $post->zoom_host_id,
+						'data-selected'      => $post->zoom_host_id,
 						'data-prevent-clear' => true,
-						'data-hide-search' => true,
-						'data-options' => json_encode( $hosts ),
+						'data-force-search'  => true,
+						'data-options'       => json_encode( $hosts ),
+						'data-validate-url'  => $this->url->to_validate_user_type( $post ),
 					],
 				],
-				'remove_link_url'       => $this->get_remove_link( $post ),
-				'remove_link_label'     => $this->get_remove_link_label(),
-				'message'               => $message,
+				'remove_link_url'      => $this->get_remove_link( $post ),
+				'remove_link_label'    => $this->get_remove_link_label(),
+				'message'              => $message,
+				'zoom_message_classes' => [ 'tec-events-virtual-video-source-zoom-setup__messages-wrap' ],
 			],
 			$echo
 		);
 	}
 
 	/**
-	 * Returns the link generation URLs and label for a post.
+	 * Returns the meeting/webinar creation links and labels.
 	 *
-	 * @since 1.1.1
+	 * @since 1.8.2
 	 *
-	 * @param \WP_Post $post                  The post object of the Event context of the link generation.
-	 * @param bool     $include_generate_text Whether to include the "Generate" text in the labels or not.
+	 * @param \WP_Post $post            The post object of the Event context of the link creation.
+	 * @param bool     $webinar_support Whether to add the webinar create link.
 	 *
 	 * @return array<string,array<string>> A map (by meeting type) of unpackable arrays, each one containing the URL and
-	 *                                     label for the generation link HTML code.
+	 *                                     label for the creation link HTML code.
 	 */
-	protected function get_link_generation_urls( \WP_Post $post, $include_generate_text = false ) {
-		// Do not make these dynamic or "smart" in any way: "Generate" might not be a prefix in some languages.
-		$w_generate_meeting_label  = _x(
-			'Generate Zoom Meeting',
+	public function get_link_creation_urls( \WP_Post $post, $webinar_support = false ) {
+		$meeting_create_label = _x(
+			'Meeting',
 			'Label for the control to generate a Zoom meeting link in the event classic editor UI.',
 			'events-virtual'
 		);
-		$wo_generate_meeting_label = _x(
-			'Meeting',
-			'Label for the control to generate a Zoom meeting link in the event classic editor UI, w/o the "Generate" prefix.',
-			'events-virtual'
-		);
-		$w_generate_webinar_label  = _x(
-			'Generate Zoom Webinar',
-			'Label for the control to generate a Zoom webinar link in the event classic editor UI.',
-			'events-virtual'
-		);
-		$wo_generate_webinar_label = _x(
+		$webinar_create_label = _x(
 			'Webinar',
-			'Label for the control to generate a Zoom webinar link in the event classic editor UI, w/o the "Generate" prefix.',
+			'Label for the control to generate a Zoom webinar link in the event classic editor UI.',
 			'events-virtual'
 		);
 
 		$data = [
 			Meetings::$meeting_type => [
 				$this->url->to_generate_meeting_link( $post ),
-				$include_generate_text ? $w_generate_meeting_label : $wo_generate_meeting_label,
+				$meeting_create_label,
+				false,
+				[],
 			]
 		];
 
-		// Add webinar if supported.
-		if ( $this->api->supports_webinars() ) {
-			$data[ Webinars::$meeting_type ] = [
-				$this->url->to_generate_webinar_link( $post ),
-				$include_generate_text ? $w_generate_webinar_label : $wo_generate_webinar_label,
-			];
-		}
+		$webinar_tooltip = [
+			'classes_wrap'  => [ 'tec-events-virtual-meetings-zoom__type-options--tooltip' ],
+			'message'   => _x(
+				'Webinars are not enabled for this host. Webinar support is enabled by the account plan in Zoom.',
+				'Explains why the webinar field is disabled when creating a meeting/webinar for an event.',
+				'events-virtual'
+			),
+		];
+
+		// Add webinar, but disable by default
+		$data[ Webinars::$meeting_type ] = [
+			$this->url->to_generate_webinar_link( $post ),
+			$webinar_create_label,
+			// Webinar Disabled, set to true if disabled.
+			$webinar_support || $this->api->supports_webinars() ? false : true,
+			// Add Tooltip.
+			$webinar_support || $this->api->supports_webinars() ? [] : $webinar_tooltip,
+		];
 
 		/**
-		 * Allows filtering the generation links URL and label before rendering them on the admin UI.
+		 * Allows filtering the creation links URL and label before rendering them on the admin UI.
 		 *
-		 * @since 1.1.1
+		 * @since 1.8.2
 		 *
 		 * @param array<string,array<string>> A map (by meeting type) of unpackable arrays, each one containing the URL and
-		 *                                    label for the generation link HTML code.
-		 * @param \WP_Post $post              The post object of the Event context of the link generation.
+		 *                                    label for the creation link HTML code.
+		 * @param \WP_Post $post              The post object of the Event context of the link creation.
 		 */
-		$data = apply_filters( 'tribe_events_virtual_zoom_meeting_link_generation_urls', $data, $post );
+		return apply_filters( 'tec_events_virtual_zoom_meeting_link_creation_urls', $data, $post );
+	}
 
-		return $data;
+	/**
+	 * Get an existing Meeting details.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param \WP_Post    $post           The post object of the Event context of the link generation.
+	 * @param bool        $echo           Whether to print the rendered HTML to the page or not.
+	 * @param null|string $account_id     The account id to use to load the link generators.
+	 * @param bool        $account_loaded The account is loaded successfully into the API.
+	 *
+	 * @return string|false Either the final content HTML or `false` if the template could be found.
+	 */
+	public function get_meeting_details( \WP_Post $post, $echo = true, $account_id = null, $account_loaded = false ) {
+
+		// Make sure to apply the Zoom properties to the event.
+		$post = Zoom_Meta::add_event_properties( $post );
+
+		// Load the account for the API instance.
+		if ( ! $account_loaded ) {
+			$account_loaded = $this->api->load_account_by_id( $account_id );
+		}
+
+		return $this->render_meeting_details( $post, $echo, $account_id, $account_loaded );
 	}
 
 	/**
@@ -750,9 +779,27 @@ class Classic_Editor {
 			$message = $this->render_account_disabled_details( true, true, false );
 		}
 
+		$connected_msg = '';
+		$manual_connected = get_post_meta( $post->ID, Virtual_Events_Meta::$key_autodetect_source, true );
+		if ( Zoom_Meta::$key_zoom_source_id === $manual_connected ) {
+			$connected_msg = Webinars::$meeting_type === $meeting_type
+				? _x(
+					'This webinar is manually connected to the event and changes to the event will not alter the Zoom webinar.',
+					'Message for a manually connected Zoom meeting or webinar.',
+					'events-virtual'
+				)
+				: _x(
+					'This meeting is manually connected to the event and changes to the event will not alter the Zoom meeting.',
+					'Message for a manually connected Zoom meeting or webinar.',
+					'events-virtual'
+				);
+		}
+
 		return $this->template->template(
 			'virtual-metabox/zoom/details',
 			[
+				'connected'             => Zoom_Meta::$key_zoom_source_id === $manual_connected,
+				'connected_msg'         => $connected_msg,
 				'event'                 => $post,
 				'details_title'         => $details_title,
 				'update_link_url'       => $update_link_url,
@@ -795,8 +842,9 @@ class Classic_Editor {
 							'The placeholder for the multiselect to select alternative hosts.',
 							'events-virtual'
 						),
-						'data-selected'    => $post->zoom_host_id,
-						'data-options'     => json_encode( $alt_hosts ),
+						'data-force-search' => true,
+						'data-selected'     => $post->zoom_host_id,
+						'data-options'      => json_encode( $alt_hosts ),
 					],
 				],
 				'message'               => $message,
@@ -828,47 +876,146 @@ class Classic_Editor {
 	}
 
 	/**
-	 * Renders the link generator HTML for one Zoom Meeting types (e.g. Webinars or Meetings).
+	 * Add the Zoom accounts dropdown to autodetect fields.
 	 *
-	 * Currently the available types are, at the most, 2: Meetings and Webinars. This method might need to be
-	 * updated in the future if that assumption changes. If this method runs, then it means that we should render
-	 * generation links for both type of meetings.
+	 * @since 1.8.0
 	 *
-	 * @since 1.1.1
-	 * @deprecated 1.4.0 Use render_multiple_links_generator()
+	 * @param array<string|mixed> $autodetect   An array of the autodetect resukts.
+	 * @param string              $video_url    The url to use to autodetect the video source.
+	 * @param string              $video_source The optional name of the video source to attempt to autodetect.
+	 * @param \WP_Post|null       $event        The event post object, as decorated by the `tribe_get_event` function.
+	 * @param array<string|mixed> $ajax_data    An array of extra values that were sent by the ajax script.
 	 *
-	 * @param string   $type The type of Zoom Meeting to render the link generator HTML for.
-	 * @param \WP_Post $post The post object of the Event context of the link generation.
-	 * @param bool     $echo Whether to print the rendered HTML to the page or not.
-	 *
-	 * @return string|false Either the final content HTML or `false` if the template could be found.
+	 * @return array<string|mixed> An array of the autodetect results.
 	 */
-	public function render_single_link_generator( $type, \WP_Post $post, $echo = true ) {
-		_deprecated_function( __FUNCTION__, '1.4.0', get_class( $this ) . '::render_multiple_links_generator()' );
-
-		$data = Arr::get( $this->get_link_generation_urls( $post, true ), $type, false );
-
-		if ( false === $data ) {
-			// This should not happen as the types are hard-coded, but better safe than sorry.
-			return '';
+	public function classic_autodetect_video_source_accounts( $autodetect_fields, $video_url, $video_source, $event, $ajax_data ) {
+		if ( ! $event instanceof \WP_Post ) {
+			return $autodetect_fields;
 		}
 
-		list( $generate_link_url, $generate_link_label ) = $data;
+		// All video sources are checked on the first autodetect run, only prevent checking of this source if it is set.
+		if ( ! empty( $video_source ) && Zoom_Meta::$key_zoom_source_id !== $video_source ) {
+			return $autodetect_fields;
+		}
 
-		return $this->template->template(
-			'virtual-metabox/zoom/controls',
-			[
-				'event'               => $post,
-				'is_authorized'       => true,
-				'offer_or_label'      => _x(
-					'or',
-					'The lowercase "or" label used to offer the creation of a Zoom Meetings or Webinars API link.',
-					'events-virtual'
-				),
-				'generate_link_label' => $generate_link_label,
-				'generate_link_url'   => $generate_link_url,
-			],
-			$echo
+		// Get optional chosen zoom account.
+		$zoom_account = Arr::get( $ajax_data, 'zoom-accounts', '' );
+
+		$accounts = $this->api->get_formatted_account_list( true );
+
+		if ( empty( $accounts ) ) {
+			$autodetect_fields[] = [
+				'path'  => 'virtual-metabox/zoom/autodetect-no-account',
+				'field' => [
+					'classes_wrap' => [ 'tribe-dependent', 'tribe-events-virtual-meetings-autodetect-zoom__message-wrap', 'error' ],
+					'message'        => _x(
+						'No Zoom accounts found, use the link to authorize a new account or reauthorize an existing account:',
+						'The message for smart url/autodetect when there are no valid zoom accouns.',
+						'events-virtual'
+					),
+					'setup_link_label' => $this->get_connect_to_zoom_label(),
+					'setup_link_url'   => Settings::admin_url(),
+					'wrap_attrs'   => [
+						'data-depends'   => '#tribe-events-virtual-autodetect-source',
+						'data-condition' => 'zoom',
+					],
+				]
+			];
+		} else {
+			$autodetect_fields[] = [
+				'path'  => 'components/dropdown',
+				'field' => [
+					'label'        => _x( 'Choose account:', 'The label of zoom accounts dropdown.', 'events-virtual' ),
+					'id'           => 'tribe-events-virtual-autodetect-zoom-account',
+					'class'        => 'tribe-events-virtual-meetings-autodetect-zoom__account-dropdown',
+					'classes_wrap' => [ 'tribe-dependent', 'tribe-events-virtual-meetings-autodetect-zoom__account-wrap' ],
+					'name'         => 'tribe-events-virtual-autodetect[zoom-account]',
+					'selected'     => $zoom_account,
+					'attrs'        => [
+						'placeholder'        => _x(
+							'Select an Account',
+							'The placeholder for the dropdown to select an account.',
+							'events-virtual'
+						),
+						'data-prevent-clear' => true,
+						'data-hide-search'   => true,
+						'data-options'       => json_encode( $accounts ),
+					],
+					'wrap_attrs'   => [
+						'data-depends'   => '#tribe-events-virtual-autodetect-source',
+						'data-condition' => 'zoom',
+					],
+				]
+			];
+		}
+
+		return $autodetect_fields;
+	}
+
+	/**
+	 * Returns the link generation URLs and label for a post.
+	 *
+	 * @since 1.1.1
+	 * @deprecated 1.8.2 Use get_link_creation_urls()
+	 *
+	 * @param \WP_Post $post                  The post object of the Event context of the link generation.
+	 * @param bool     $include_generate_text Whether to include the "Generate" text in the labels or not.
+	 *
+	 * @return array<string,array<string>> A map (by meeting type) of unpackable arrays, each one containing the URL and
+	 *                                     label for the generation link HTML code.
+	 */
+	protected function get_link_generation_urls( \WP_Post $post, $include_generate_text = false ) {
+		_deprecated_function( __FUNCTION__, '1.8.2', get_class( $this ) . '::get_link_creation_urls()' );
+
+		// Do not make these dynamic or "smart" in any way: "Generate" might not be a prefix in some languages.
+		$w_generate_meeting_label  = _x(
+			'Generate Zoom Meeting',
+			'Label for the control to generate a Zoom meeting link in the event classic editor UI.',
+			'events-virtual'
 		);
+		$wo_generate_meeting_label = _x(
+			'Meeting',
+			'Label for the control to generate a Zoom meeting link in the event classic editor UI, w/o the "Generate" prefix.',
+			'events-virtual'
+		);
+		$w_generate_webinar_label  = _x(
+			'Generate Zoom Webinar',
+			'Label for the control to generate a Zoom webinar link in the event classic editor UI.',
+			'events-virtual'
+		);
+		$wo_generate_webinar_label = _x(
+			'Webinar',
+			'Label for the control to generate a Zoom webinar link in the event classic editor UI, w/o the "Generate" prefix.',
+			'events-virtual'
+		);
+
+		$data = [
+			Meetings::$meeting_type => [
+				$this->url->to_generate_meeting_link( $post ),
+				$include_generate_text ? $w_generate_meeting_label : $wo_generate_meeting_label,
+			]
+		];
+
+		// Add webinar if supported.
+		if ( $this->api->supports_webinars() ) {
+			$data[ Webinars::$meeting_type ] = [
+				$this->url->to_generate_webinar_link( $post ),
+				$include_generate_text ? $w_generate_webinar_label : $wo_generate_webinar_label,
+			];
+		}
+
+		/**
+		 * Allows filtering the generation links URL and label before rendering them on the admin UI.
+		 *
+		 * @since 1.1.1
+		 * @deprecated 1.8.2 Use tec_events_virtual_zoom_meeting_link_creation_urls
+		 *
+		 * @param array<string,array<string>> A map (by meeting type) of unpackable arrays, each one containing the URL and
+		 *                                    label for the generation link HTML code.
+		 * @param \WP_Post $post              The post object of the Event context of the link generation.
+		 */
+		$data = apply_filters_deprecated( 'tribe_events_virtual_zoom_meeting_link_generation_urls', $data, $post );
+
+		return $data;
 	}
 }

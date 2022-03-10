@@ -24,6 +24,15 @@ use Tribe__Utils__Array as Arr;
 class Event_Meta {
 
 	/**
+	 * Key for Zoom video and autodetect source.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @var string
+	 */
+	public static $key_zoom_source_id = 'zoom';
+
+	/**
 	 * An array of fields to encrypt, using names from Zoom API.
 	 *
 	 * @since 1.4.0
@@ -125,7 +134,7 @@ class Event_Meta {
 		}
 
 		// Return when Zoom is not the source.
-		if ( 'zoom' !== $event->virtual_video_source ) {
+		if ( static::$key_zoom_source_id !== $event->virtual_video_source ) {
 			return $data;
 		}
 
@@ -215,7 +224,7 @@ class Event_Meta {
 		];
 
 		// Return when Zoom is not the source and not running the create actions for meetings and webinars.
-		if ( 'zoom' !== $event->virtual_video_source && ! in_array( $current_action, $create_actions ) ) {
+		if ( static::$key_zoom_source_id !== $event->virtual_video_source && ! in_array( $current_action, $create_actions ) ) {
 			return $event;
 		}
 

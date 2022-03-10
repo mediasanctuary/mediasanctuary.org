@@ -9,7 +9,9 @@
 
 namespace Tribe\Events\Virtual\Meetings\Zoom;
 
+use Tribe\Events\Virtual\Admin_Template;
 use Tribe\Events\Virtual\Encryption;
+use Tribe\Events\Virtual\Traits\With_AJAX;
 use Tribe__Utils__Array as Arr;
 
 /**
@@ -20,18 +22,40 @@ use Tribe__Utils__Array as Arr;
  * @package Tribe\Events\Virtual\Meetings\Zoom
  */
 class Users {
+	use With_AJAX;
+
+	/**
+	 * The name of the action used to get an account setup to generate a Zoom meeting or webinar.
+	 *
+	 * @since 1.8.2
+	 *
+	 * @var string
+	 */
+	public static $validate_user_action = 'events-virtual-zoom-user-validate';
+
+	/**
+	 * The template handler instance.
+	 *
+	 * @since 1.8.2
+	 *
+	 * @var Admin_Template
+	 */
+	public $admin_template;
 
 	/**
 	 * Users constructor.
 	 *
 	 * @since 1.4.0
+	 * @since 1.8.2 - Add the admin template class.
 	 *
-	 * @param Api        $api        An instance of the Zoom API handler.
-	 * @param Encryption $encryption An instance of the Encryption handler.
+	 * @param Api            $api        An instance of the Zoom API handler.
+	 * @param Encryption     $encryption An instance of the Encryption handler.
+	 * @param Admin_Template $template   An instance of the Template class to handle the rendering of admin views.
 	 */
-	public function __construct( Api $api, Encryption $encryption ) {
-		$this->api        = $api;
-		$this->encryption = ( ! empty( $encryption ) ? $encryption : tribe( Encryption::class ) );
+	public function __construct( Api $api, Encryption $encryption, Admin_Template $admin_template ) {
+		$this->api            = $api;
+		$this->encryption     = ( ! empty( $encryption ) ? $encryption : tribe( Encryption::class ) );
+		$this->admin_template = $admin_template;
 	}
 
 	/**
@@ -99,7 +123,8 @@ class Users {
 		$active_users    = $available_hosts['users'];
 		$hosts           = [];
 		foreach ( $active_users as $user ) {
-			$name  = Arr::get( $user, 'email', '' );
+			$name  = Arr::get( $user, 'first_name', '' ) . ' ' .  Arr::get( $user, 'last_name', '' ) . ' - '. Arr::get( $user, 'email', '' );
+			$last_name = Arr::get( $user, 'last_name', '' );
 			$value = Arr::get( $user, 'id', '' );
 			$type  = Arr::get( $user, 'type', 0 );
 
@@ -107,13 +132,23 @@ class Users {
 				continue;
 			}
 
+			if ( empty( $last_name ) ) {
+				$last_name = Arr::get( $user, 'first_name', '' );
+			}
+
 			$hosts[] = [
-				'text'             => (string) $name,
+				'text'             => (string) trim( $name ),
+				'sort'             => (string) trim( $last_name ),
 				'id'               => (string) $value,
 				'value'            => (string) $value,
 				'alternative_host' => $type > 1 ? true : false,
+				'selected'         => $account_id === $value ? true : false,
 			];
 		}
+
+		// Sort the hosts array by text(email).
+		$sort_arr = array_column( $hosts, 'sort' );
+		array_multisort( $sort_arr, SORT_ASC, $hosts );
 
 		return $hosts;
 	}
@@ -159,5 +194,94 @@ class Users {
 		);
 
 		return $alternative_hosts_email_id;
+	}
+
+	/**
+	 * Handles the request to validate a Zoom user type.
+	 *
+	 * @since 1.8.2
+	 *
+	 * @param string|null $nonce The nonce that should accompany the request.
+	 *
+	 * @return string The html from the request containing success or error information.
+	 */
+	public function validate_user( $nonce = null ) {
+		if ( ! $this->check_ajax_nonce( static::$validate_user_action, $nonce ) ) {
+			return false;
+		}
+
+		$event = $this->check_ajax_post();
+		if ( empty( $event ) ) {
+			$error_message = _x( 'User validation failed because no event was found.', 'The event is missing error message for Zoom user validation.', 'events-virtual' );
+			$this->admin_template->template( 'components/message', [
+				'message' => $error_message,
+				'type'    => 'error',
+			] );
+
+			wp_die();
+		}
+
+		$zoom_host_id = tribe_get_request_var( 'zoom_host_id' );
+		// If no host id found, fail the request.
+		if ( empty( $zoom_host_id ) ) {
+			$error_message = _x( 'The Zoom Host ID is missing to access the API, please select a host from the dropdown and try again.', 'Host ID is missing error message for Zoom user validation.', 'events-virtual' );
+			$this->admin_template->template( 'components/message', [
+				'message' => $error_message,
+				'type'    => 'error',
+			] );
+
+			wp_die();
+		}
+
+		$zoom_account_id = tribe_get_request_var( 'zoom_account_id' );
+		// If no account id found, fail the request.
+		if ( empty( $zoom_account_id ) ) {
+			$error_message = _x( 'The Zoom Account ID is missing to access the API.', 'Account ID is missing error message for Zoom user validation.', 'events-virtual' );
+			$this->admin_template->template( 'components/message', [
+				'message' => $error_message,
+				'type'    => 'error',
+			] );
+
+			wp_die();
+		}
+
+		$account_loaded = $this->api->load_account_by_id( $zoom_account_id );
+		// If there is no token, then stop as the connection will fail.
+		if ( ! $account_loaded ) {
+			$error_message = _x( 'The Zoom Account could not be loaded to access the API. Please try refreshing the account in the Events API Settings.', 'Zoom account loading error message for Zoom user validation.', 'events-virtual' );
+
+			$this->admin_template->template( 'components/message', [
+				'message' => $error_message,
+				'type'    => 'error',
+			] );
+
+			wp_die();
+		}
+
+		$settings        = $this->api->fetch_user( $zoom_host_id, true );
+		if ( empty( $settings['feature'] ) ) {
+			$error_message = _x( 'The Zoom API did not return the user settings. Please try refreshing the account in the Events Integration Settings.', 'Zoom API loading error message for Zoom user validation.', 'events-virtual' );
+
+			$this->admin_template->template( 'components/message', [
+				'message' => $error_message,
+				'type'    => 'error',
+			] );
+
+			wp_die();
+		}
+
+		$webinar_support = $this->api->get_webinars_support( $settings );
+
+		/** @var \Tribe\Events\Virtual\Meetings\Zoom\Classic_editor */
+		$classic_editor = tribe( Classic_Editor::class );
+		$generation_urls = $classic_editor->get_link_creation_urls( $event, $webinar_support );
+
+		$this->admin_template->template(
+		'virtual-metabox/zoom/type-options',
+			[ 'generation_urls' => $generation_urls, ],
+			true
+		);
+
+		wp_die();
 	}
 }

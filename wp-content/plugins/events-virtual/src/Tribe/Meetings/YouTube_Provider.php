@@ -84,8 +84,8 @@ class YouTube_Provider extends Meeting_Provider {
 		add_filter( 'tribe_addons_tab_fields', [ $this, 'filter_addons_tab_fields' ], 20 );
 		add_filter( 'tribe_field_div_end', [ $this, 'setup_channel_trash_icon' ], 10, 2 );
 		add_filter( 'tribe_events_virtual_video_sources', [ $this, 'add_video_source' ], 15, 2 );
-		add_filter( 'tec_events_virtual_export_fields', [ $this, 'filter_youtube_source_google_calendar_parameters' ], 10, 4 );
-		add_filter( 'tec_events_virtual_export_fields', [ $this, 'filter_youtube_source_ical_feed_items' ], 10, 4 );
+		add_filter( 'tec_events_virtual_export_fields', [ $this, 'filter_youtube_source_google_calendar_parameters' ], 10, 5 );
+		add_filter( 'tec_events_virtual_export_fields', [ $this, 'filter_youtube_source_ical_feed_items' ], 10, 5 );
 
 		// Filter event object properties to add YouTube live status.
 		add_filter( 'tribe_get_event_after', [ $this, 'add_dynamic_properties' ], 15 );
@@ -146,7 +146,7 @@ class YouTube_Provider extends Meeting_Provider {
 			'text'     => _x( 'YouTube Live', 'The name of the video source.', 'events-virtual' ),
 			'id'       => 'youtube',
 			'value'    => 'youtube',
-			'selected' => 'youtube' === $post->virtual_video_source ? true : false,
+			'selected' => 'youtube' === $post->virtual_video_source,
 		];
 
 		return $video_sources;
@@ -156,33 +156,37 @@ class YouTube_Provider extends Meeting_Provider {
 	 * Filter the Google Calendar export fields for a Zoom source event.
 	 *
 	 * @since 1.7.3
+	 * @since 1.8.0 add should_show parameter.
 	 *
-	 * @param array<string|string> $fields   The various file format components for this specific event.
-	 * @param \WP_Post             $event    The WP_Post of this event.
-	 * @param string               $key_name The name of the array key to modify.
-	 * @param string               $type     The name of the export type.
+	 * @param array<string|string> $fields      The various file format components for this specific event.
+	 * @param \WP_Post             $event       The WP_Post of this event.
+	 * @param string               $key_name    The name of the array key to modify.
+	 * @param string               $type        The name of the export type.
+	 * @param boolean              $should_show Whether to modify the export fields for the current user, default to false.
 	 *
 	 * @return  array<string|string> Google Calendar Link params.
 	 */
-	public function filter_youtube_source_google_calendar_parameters( $fields, $event, $key_name, $type ) {
+	public function filter_youtube_source_google_calendar_parameters( $fields, $event, $key_name, $type, $should_show ) {
 
-		return $this->container->make( YouTube_Event_Export::class )->modify_video_source_export_output( $fields, $event, $key_name, $type );
+		return $this->container->make( YouTube_Event_Export::class )->modify_video_source_export_output( $fields, $event, $key_name, $type, $should_show );
 	}
 
 	/**
 	 * Filter the iCal export fields for a Zoom source event.
 	 *
 	 * @since 1.7.3
+	 * @since 1.8.0 add should_show parameter.
 	 *
-	 * @param array<string|string> $fields   The various file format components for this specific event.
-	 * @param \WP_Post             $event    The WP_Post of this event.
-	 * @param string               $key_name The name of the array key to modify.
-	 * @param string               $type     The name of the export type.
+	 * @param array<string|string> $fields      The various file format components for this specific event.
+	 * @param \WP_Post             $event       The WP_Post of this event.
+	 * @param string               $key_name    The name of the array key to modify.
+	 * @param string               $type        The name of the export type.
+	 * @param boolean              $should_show Whether to modify the export fields for the current user, default to false.
 	 *
 	 * @return array<string|string>  The various iCal file format components of this specific event item.
 	 */
-	public function filter_youtube_source_ical_feed_items( $fields, $event, $key_name, $type ) {
-		return $this->container->make( YouTube_Event_Export::class )->modify_video_source_export_output( $fields, $event, $key_name, $type );
+	public function filter_youtube_source_ical_feed_items( $fields, $event, $key_name, $type, $should_show ) {
+		return $this->container->make( YouTube_Event_Export::class )->modify_video_source_export_output( $fields, $event, $key_name, $type, $should_show );
 	}
 
 	/**

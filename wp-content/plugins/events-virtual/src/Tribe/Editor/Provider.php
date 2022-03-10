@@ -31,7 +31,7 @@ class Provider extends \tad_DI52_ServiceProvider {
 		$this->container->singleton( static::class, $this );
 
 		$this->container->register( Assets::class );
-		$this->container->singleton( 'events-virtual.editor.blocks.virtual', Blocks\Virtual_Event::class );
+		$this->container->singleton( 'events-virtual.editor.blocks.virtual', Blocks\Virtual_Event::class, [ 'load' ] );
 		$this->container->singleton( Template\Frontend::class, Template\Frontend::class );
 		$this->container->singleton( Template\Admin::class, Template\Admin::class );
 
@@ -75,10 +75,9 @@ class Provider extends \tad_DI52_ServiceProvider {
 	 */
 	public function add_event_template_blocks( $template, $post_type, $args ) {
 		$post = tribe_get_request_var( 'post' );
-		$is_classic_editor = ! has_blocks( $post );
 
 		// Basically sets up up a different template if this is a classic event.
-		if ( $is_classic_editor ) {
+		if ( ! has_blocks( $post ) ) {
 			return $template;
 		}
 

@@ -1,11 +1,11 @@
 === The Events Calendar PRO ===
 
-Contributors: theeventscalendar, borkweb, bordoni, brianjessee, aguseo, camwynsp, GeoffBel, geoffgraham, jentheo, leahkoerper, lucatume, neillmcshea, paulskim, vicskf, zbtirrell, juanfra
+Contributors: theeventscalendar, borkweb, bordoni, brianjessee, aguseo, camwynsp, GeoffBel, geoffgraham, jentheo, leahkoerper, lucatume, neillmcshea, vicskf, zbtirrell, juanfra
 Tags: events, calendar, event, venue, organizer, dates, date, google maps, conference, workshop, concert, meeting, seminar, summit, class, the events calendar, widget, pro
 Donate link: https://evnt.is/29
 Requires at least: 5.6
-Stable tag: 5.11.1
-Tested up to: 5.8.2
+Stable tag: 5.12.1
+Tested up to: 5.9.0
 Requires PHP: 7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -52,9 +52,9 @@ That's it! Just configure your settings as you see fit, and you're on your way t
 
 = Requirements =
 
-* PHP 5.6 or greater (recommended: PHP 7.0 or greater)
-* WordPress 4.9 or above
-* jQuery 1.11.x
+* PHP 7.1 or greater (recommended: PHP 7.4 or greater)
+* WordPress 5.6 or above
+* jQuery 3.5.x
 * The Events Calendar 5.0 or newer
 
 = Where to Begin =
@@ -208,8 +208,32 @@ Our Premium Plugins:
 
 == Changelog ==
 
+= [5.12.1] 2022-02-15 =
+
+* Version - Events Calendar PRO 5.12.1 is only compatible with The Events Calendar 5.14.0 and higher.
+* Tweak - Remove the `wp.editor.InnerBlocks` gutenberg component in favor of `wp.blockEditor.InnerBlocks` which was deprecated since version 5.3. [ECP-1052]
+* Tweak - Compatibility with the Common Abstract for editor blocks registration.
+* Fix - Major performance improvements gain from preventing improper load of Geolocation classes when not needed.
+* Fix - Prevent infinite loops in events manager when other plugins build the post. [ECP-1048]
+* Fix - Properly observe the disabling of JSON-LD output on the `Events By Week` widget. [ECP-1037]
+* Language - 0 new strings added, 56 updated, 0 fuzzied, and 0 obsoleted
+
+= [5.12.0] 2022-01-19 =
+
+* Feature - Add an `Events Countdown` block to the block editor which is based on the `Events Countdown` widget. [ECP-1016]
+* Feature - Add an `Events Featured Venue` block to the block editor which is based on the `Events Featured Venue` widget. [ECP-1022]
+
+= [5.11.2] 2022-01-10 =
+
+* Version - Events Calendar PRO 5.11.2 is only compatible with The Events Calendar 5.12.3 and higher.
+* Fix - Utilize new hooks in TEC to let ECP control showing mobile default view. [TEC-3826]
+* Fix - Ensure the modifications made through the `tribe_events_views_v2_category_title` are respected. [TEC-4110]
+* Tweak - Boost SEO for category archive pages by fixing the title tag. [TEC-4110]
+* Language - 0 new strings added, 6 updated, 0 fuzzied, and 0 obsoleted
+
 = [5.11.1] 2021-12-14 =
 
+* Feature - Add filters to allow sending Google Maps a region and language param if desired. [ECP-977]
 * Fix - Avoid loading the same CSS file twice. [CE-13]
 * Fix - Correct pagination on shortcodes when the date parameter has been set. [ECP-362]
 * Fix - Properly observe the disabling of JSON-LD output on widget blocks in the block editor. [TEC-4077]
@@ -226,6 +250,7 @@ Our Premium Plugins:
 * Feature - Add a `Mini Calendar` block that is based on the `Mini Calendar` widget to the block editor which users can drag around to any position they want it to appear. [ECP-974]
 * Feature - Add event status options of scheduled, canceled, and postponed with display of the latter two on Pro views and widgets. [TEC-3465]
 * Tweak - Update the `Calendar Manager` label to `Events Manager` under the general event settings page in order to have a consistent nomenclature of features. [ECP-955]
+* Tweak - Change some of the block tests to adapt to the new Editor compatibility in common. [TEC-4016]
 * Fix - Ensure the Calendar Manager link isn't inserted into inappropriate pages. [ECP-982]
 * Language - 0 new strings added, 16 updated, 1 fuzzied, and 1 obsoleted
 
