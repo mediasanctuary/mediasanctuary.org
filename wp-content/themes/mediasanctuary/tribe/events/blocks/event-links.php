@@ -34,7 +34,11 @@ if ( $has_google_cal ) {
 }
 
 if ( $has_ical ) {
-	$ical_link = $subscribe_links ? $subscribe_links[ 'ical' ]->get_uri( null ) : tribe_get_single_ical_link();
+	if ( empty( $subscribe_links ) ) {
+		$ical_link = tribe_get_single_ical_link();
+	} else if ( ! empty( $subscribe_links[ 'ical' ] ) ) {
+		$ical_link = $subscribe_links[ 'ical' ]->get_uri( null );	
+	}
 }
 
 ?>
