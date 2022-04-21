@@ -33,6 +33,7 @@
   &__link {
     color: $c-slate;
     font-size: 0.7em;
+	margin-right: 10px;
 
     &:hover {
       color: $c-raisin;
@@ -58,7 +59,7 @@
     padding: 0 0 30px 30px;
     li {
       padding: 0 0 15px;
-    }    
+    }
   }
 
   .wp-block-image figcaption {
@@ -74,7 +75,7 @@
 .post--single {
   display: flex;
   flex-wrap: wrap;
-  
+
   &.people {
     main {
       width: 100%;
@@ -88,7 +89,7 @@
       }
     }
   }
-  
+
   main {
     width: calc(70% - 20px);
     margin-right:20px;
