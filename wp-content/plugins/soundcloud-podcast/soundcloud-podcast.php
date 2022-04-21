@@ -55,7 +55,6 @@ function soundcloud_podcast() {
 <div class="soundcloud-podcast">
 	<audio controls class="soundcloud-podcast__player">
 		$source_elements
-		<a href="$audio_src">Listen</a>
 	</audio>
 	$internet_archive_link
 	$link_separator
