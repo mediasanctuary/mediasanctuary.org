@@ -29,8 +29,7 @@ function soundcloud_podcast() {
 		return;
 	}
 
-	$client_id = SOUNDCLOUD_PODCAST_CLIENT_ID;
-	$audio_src = "/wp-json/soundcloud-podcast/v1/stream/$track_id";
+	$sources = [];
 
 	$soundcloud_link = '';
 	$soundcloud_url = get_post_meta($post->ID, 'soundcloud_podcast_url', true);
@@ -38,11 +37,27 @@ function soundcloud_podcast() {
 		$soundcloud_link = "<a href=\"$soundcloud_url\" class=\"soundcloud-podcast__link\">Listen on SoundCloud</a>";
 	}
 
+	$internet_archive_link = '';
+	$internet_archive_id = get_post_meta($post->ID, 'internet_archive_id', true);
+	if (! empty($internet_archive_id)) {
+		$internet_archive_link = "<a href=\"https://archive.org/details/$internet_archive_id\" class=\"soundcloud-podcast__link\">Listen on Internet Archive</a>";
+		$sources[] = "https://archive.org/download/$internet_archive_id/$internet_archive_id.mp3";
+	}
+
+	$sources[] = "/wp-json/soundcloud-podcast/v1/stream/$track_id";
+
+	$source_elements = '';
+	foreach ($sources as $src) {
+		$source_elements .= "<source src=\"$src\" type=\"audio/mpeg\"/>\n";
+	}
+
 	echo <<<END
 <div class="soundcloud-podcast">
-	<audio src="$audio_src" controls class="soundcloud-podcast__player">
-		<a href="$audio_src">Listen</a>
+	<audio controls class="soundcloud-podcast__player">
+		$source_elements
 	</audio>
+	$internet_archive_link
+	$link_separator
 	$soundcloud_link
 </div>
 END;
