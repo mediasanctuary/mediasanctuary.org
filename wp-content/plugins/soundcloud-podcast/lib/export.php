@@ -100,7 +100,13 @@ function soundcloud_podcast_export_thumb($post, $dir) {
 	$attachment = wp_get_attachment_metadata($attachment_id);
 	$image_path = soundcloud_podcast_export_image($post);
 	$image_dir = dirname($image_path);
+	if (empty($attachment['sizes']['internet_archive_thumbnail'])) {
+		return false;
+	}
 	$from_path = "$image_dir/{$attachment['sizes']['internet_archive_thumbnail']['file']}";
+	if (! file_exists($from_path)) {
+		return false;
+	}
 	$to_path = "$dir/__ia_thumb.jpg";
 	copy($from_path, $to_path);
 	return $to_path;
@@ -161,7 +167,6 @@ function soundcloud_podcast_export_upload($post, $file_list) {
 		"subject:$subject",
 		'language:eng',
 		'collection:mediasanctuaryaudio',
-		'collection:audio_music',
 		'creator:The Sanctuary for Independent Media'
 	];
 
