@@ -3,10 +3,10 @@
     "title": "Internet Archive",
     "fields": [
         {
-            "key": "field_621bab095cc04",
-            "label": "Access Key",
-            "name": "ia_access_key",
-            "type": "text",
+            "key": "field_62615f28c80fb",
+            "label": "Enable Internet Archive export",
+            "name": "internet_archive_export",
+            "type": "true_false",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -15,30 +15,11 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
-        },
-        {
-            "key": "field_621bab225cc05",
-            "label": "Secret Key",
-            "name": "ia_secret_key",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
         }
     ],
     "location": [
@@ -59,5 +40,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1645980482
+    "modified": 1650548551
 }

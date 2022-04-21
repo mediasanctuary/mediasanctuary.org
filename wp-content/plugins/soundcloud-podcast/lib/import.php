@@ -104,8 +104,9 @@ function soundcloud_podcast_import($num = null, $url = null, $slack_msg = '') {
 			if (! empty($slack_msg)) {
 				$slack_msg .= "\n";
 			}
+			$permalink = get_permalink($id);
 			$edit_url = home_url("/wp-admin/post.php?post=$id&action=edit");
-			$slack_msg .= "- <$edit_url|{$track['title']}> (scheduled)";
+			$slack_msg .= "Imported <$permalink|{$track['title']}> (<$edit_url|edit>)";
 		} else {
 			fwrite($stderr, "Updating existing post for {$track['title']}\n");
 			$id = $post->ID;
@@ -373,20 +374,4 @@ function soundcloud_podcast_track_categories($track) {
 	}
 	fwrite($stderr, "    category = $category ({$cat['term_id']})\n");
 	return [$cat['term_id']];
-}
-
-function soundcloud_podcast_update_slack($message) {
-	if (! defined('SOUNDCLOUD_PODCAST_SLACK_URL')) {
-		return false;
-	}
-	$payload = [
-		'type' => 'mrkdwn',
-		'text' => $message
-	];
-	$rsp = wp_remote_post(SOUNDCLOUD_PODCAST_SLACK_URL, [
-		'body' => [
-			'payload' => json_encode($payload)
-		]
-	]);
-	return $rsp['response']['code'] == 200;
 }
