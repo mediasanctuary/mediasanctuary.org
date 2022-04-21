@@ -1,21 +1,36 @@
 <?php
 
 function soundcloud_podcast_export($post_id = null) {
-	if ($post_id) {
-		$post = get_post($post_id);
-	} else {
-		$post = soundcloud_podcast_export_next_post();
-	}
-	if ($post) {
-		$track_id = get_post_meta($post->ID, 'soundcloud_podcast_id', true);
-		$dir = soundcloud_podcast_export_dir($post);
-		$files = soundcloud_podcast_export_files($post, $track_id, $dir);
-		$id = soundcloud_podcast_export_upload($post, $files);
-		if ($id) {
-			update_post_meta($post->ID, 'internet_archive_id', $id);
+	$stderr = fopen('php://stderr', 'w');
+	try {
+		$enabled = get_field('internet_archive_export', 'options');
+		if (empty($enabled)) {
+			fwrite($stderr, "Internet Archive export is disabled\n");
+			return;
 		}
-		soundcloud_podcast_export_cleanup($files);
+		if ($post_id) {
+			$post = get_post($post_id);
+		} else {
+			$post = soundcloud_podcast_export_next_post();
+		}
+		if ($post) {
+			$track_id = get_post_meta($post->ID, 'soundcloud_podcast_id', true);
+			$dir = soundcloud_podcast_export_dir($post);
+			$files = soundcloud_podcast_export_files($post, $track_id, $dir);
+			$id = soundcloud_podcast_export_upload($post, $files);
+			if ($id) {
+				update_post_meta($post->ID, 'internet_archive_id', $id);
+			}
+			soundcloud_podcast_export_cleanup($files);
+		}
+		$url = "https://archive.org/details/$id";
+		soundcloud_podcast_update_slack("Exported <$url|$post->post_title>");
+	} catch (Exception $err) {
+		update_field('internet_archive_export', false, 'options');
+		soundcloud_podcast_update_slack($err->getMessage());
+		fwrite($stderr, $err->getMessage() . "\n");
 	}
+	fclose($stderr);
 }
 
 function soundcloud_podcast_export_next_post() {
@@ -113,10 +128,8 @@ function soundcloud_podcast_export_thumb($post, $dir) {
 }
 
 function soundcloud_podcast_export_request($url) {
-	$stderr = fopen('php://stderr', 'w');
 	$access_token = soundcloud_podcast_token();
 
-	fwrite($stderr, "requesting $url\n");
 	$rsp = wp_remote_get($url, [
 		'headers' => [
 			'Accept' => 'application/json; charset=utf-8',
@@ -126,17 +139,14 @@ function soundcloud_podcast_export_request($url) {
 	]);
 
 	if (is_wp_error($rsp)) {
-		fwrite($stderr, "Error: " . $rsp->get_error_message() . "\n");
-		return false;
+		throw new Exception("Error downloading $url (" . $rsp->get_error_message() . ")");
 	}
 
 	$status = wp_remote_retrieve_response_code($rsp);
 	$body = wp_remote_retrieve_body($rsp);
 
 	if ($status != 200) {
-		fwrite($stderr, "Error: HTTP $status\n");
-		fwrite($stderr, "$body\n");
-		return false;
+		throw new Exception("Error downloading $url (HTTP $status)");
 	}
 
 	return $body;
@@ -177,14 +187,14 @@ function soundcloud_podcast_export_upload($post, $file_list) {
 	}
 	$metadata = implode(' ', $metadata);
 
-	$command = "$ia upload $id $files $metadata";
+	$command = "$ia --log upload $id $files $metadata";
 	$result = null;
 	$retval = null;
 
-	echo $command . "\n";
+	//echo $command . "\n";
 	exec($command, $result, $retval);
-	echo implode("\n", $result) . "\n";
-	echo "return value $retval";
+	//echo implode("\n", $result) . "\n";
+	//echo "return value $retval";
 
 	if ($retval == 0) {
 		return $id;
