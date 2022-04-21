@@ -62,3 +62,19 @@ function soundcloud_podcast() {
 </div>
 END;
 }
+
+function soundcloud_podcast_update_slack($message) {
+	if (! defined('SOUNDCLOUD_PODCAST_SLACK_URL')) {
+		return false;
+	}
+	$payload = [
+		'type' => 'mrkdwn',
+		'text' => $message
+	];
+	$rsp = wp_remote_post(SOUNDCLOUD_PODCAST_SLACK_URL, [
+		'body' => [
+			'payload' => json_encode($payload)
+		]
+	]);
+	return $rsp['response']['code'] == 200;
+}
