@@ -203,15 +203,14 @@ function soundcloud_podcast_export_upload($post, $file_list) {
 	$result = null;
 	$retval = null;
 
-	//echo $command . "\n";
 	exec($command, $result, $retval);
-	//echo implode("\n", $result) . "\n";
-	//echo "return value $retval";
 
-	if ($retval == 0) {
-		return $id;
+	if ($retval != 0) {
+		$result = implode("\n", $result);
+		echo "Error uploading files to archive.org: $result\n";
+		throw new Exception("Error uploading files to archive.org: $result");
 	}
-	return false;
+	return $id;
 }
 
 function soundcloud_podcast_export_subject($post) {
