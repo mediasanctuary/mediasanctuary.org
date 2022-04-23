@@ -40,6 +40,7 @@ function soundcloud_podcast_save_token($token) {
 }
 
 function soundcloud_podcast_token() {
+	$base_url = get_bloginfo('wpurl');
 	$now = time();
 	$next_run = $now + 36 * 60;
 	$token = get_option('soundcloud_podcast_token', null);
