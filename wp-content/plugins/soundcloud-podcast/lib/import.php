@@ -101,12 +101,7 @@ function soundcloud_podcast_import($num = null, $url = null, $slack_msg = '') {
 				$track['artwork_url']
 			]);
 
-			if (! empty($slack_msg)) {
-				$slack_msg .= "\n";
-			}
-			$permalink = get_permalink($id);
-			$edit_url = home_url("/wp-admin/post.php?post=$id&action=edit");
-			$slack_msg .= "Imported <$permalink|{$track['title']}> (<$edit_url|edit>)";
+
 		} else {
 			fwrite($stderr, "Updating existing post for {$track['title']}\n");
 			$id = $post->ID;
@@ -129,12 +124,6 @@ function soundcloud_podcast_import($num = null, $url = null, $slack_msg = '') {
 				$track['permalink_url'],
 				$track['artwork_url']
 			]);
-
-			if (! empty($slack_msg)) {
-				$slack_msg .= "\n";
-			}
-			$edit_url = home_url("/wp-admin/post.php?post=$id&action=edit");
-			$slack_msg .= "- <$edit_url|{$track['title']}> (updated)";
 		}
 
 		$tags = soundcloud_podcast_track_tags($track);
@@ -204,6 +193,13 @@ function soundcloud_podcast_import($num = null, $url = null, $slack_msg = '') {
 		}
 
 		update_post_meta($id, '_thumbnail_id', $attach_id);
+
+		if (! empty($slack_msg)) {
+			$slack_msg .= "\n";
+		}
+		$edit_url = home_url("/wp-admin/post.php?post=$id&action=edit");
+		$soundcloud_url = $track['permalink_url'];
+		$slack_msg .= "Imported <$edit_url|{$track['title']}> from <$soundcloud_url|soundcloud.com>";
 	}
 
 	if (! empty($tracks['next_href']) && $import_all) {
