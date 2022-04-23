@@ -24,7 +24,7 @@ function soundcloud_podcast_export($post_id = null) {
 			}
 			soundcloud_podcast_export_cleanup($files);
 		}
-		$url = get_permalink($id);
+		$url = get_permalink($post->ID);
 		$export_url = "https://archive.org/details/$id";
 		soundcloud_podcast_update_slack("Exported <$url|$post->post_title> to <$export_url|archive.org>");
 	} catch (Exception $err) {
