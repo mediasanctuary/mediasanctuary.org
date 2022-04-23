@@ -14,6 +14,7 @@ function soundcloud_podcast_export($post_id = null) {
 			$post = soundcloud_podcast_export_next_post();
 		}
 		if ($post) {
+			echo "exporting $post->post_title ($post->ID)\n";
 			$track_id = get_post_meta($post->ID, 'soundcloud_podcast_id', true);
 			$dir = soundcloud_podcast_export_dir($post);
 			$files = soundcloud_podcast_export_files($post, $track_id, $dir);
@@ -23,8 +24,9 @@ function soundcloud_podcast_export($post_id = null) {
 			}
 			soundcloud_podcast_export_cleanup($files);
 		}
-		$url = "https://archive.org/details/$id";
-		soundcloud_podcast_update_slack("Exported <$url|$post->post_title>");
+		$url = get_permalink($id);
+		$export_url = "https://archive.org/details/$id";
+		soundcloud_podcast_update_slack("Exported <$url|$post->post_title> to <$export_url|archive.org>");
 	} catch (Exception $err) {
 		update_field('internet_archive_export', false, 'options');
 		soundcloud_podcast_update_slack($err->getMessage());
@@ -56,7 +58,16 @@ function soundcloud_podcast_export_next_post() {
 }
 
 function soundcloud_podcast_export_id($post) {
-	return "media-sanctuary-" . $post->post_name;
+	$maxlength = 100;
+	$words = explode('-', "media-sanctuary-{$post->post_name}");
+	$id = array_shift($words);
+	foreach ($words as $word) {
+		if (strlen("$id-$word") > $maxlength) {
+			break;
+		}
+		$id = "$id-$word";
+	}
+	return $id;
 }
 
 function soundcloud_podcast_export_dir($post) {
@@ -85,6 +96,7 @@ function soundcloud_podcast_export_files($post, $track_id, $dir) {
 
 function soundcloud_podcast_export_audio($post, $track_id, $dir) {
 	$url = "https://api.soundcloud.com/tracks/$track_id/download";
+	echo "downloading $url\n";
 	$data = soundcloud_podcast_export_request($url);
 	if (! $data) {
 		return false;
