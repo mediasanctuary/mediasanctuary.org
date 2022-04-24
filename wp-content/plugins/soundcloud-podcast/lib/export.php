@@ -129,11 +129,11 @@ function soundcloud_podcast_export_files($post, $track_id, $dir) {
 function soundcloud_podcast_export_audio($post, $track_id, $dir) {
 	$url = "https://api.soundcloud.com/tracks/$track_id/download";
 	echo "downloading $url\n";
-	$data = soundcloud_podcast_export_request($url);
+	list($data, $file_ext) = soundcloud_podcast_export_request($url);
 	if (! $data) {
 		return false;
 	}
-	$filename = soundcloud_podcast_export_id($post) . '.wav';
+	$filename = soundcloud_podcast_export_id($post) . $file_ext;
 	$path = "$dir/$filename";
 	$fh = fopen($path, 'w');
 	fwrite($fh, $data);
@@ -193,11 +193,18 @@ function soundcloud_podcast_export_request($url) {
 		throw new Exception("Error downloading $url (HTTP $status)");
 	}
 
-	if ($rsp['headers']['content-type'] != 'audio/wav') {
-		throw new ContentException("Invalid content-type: {$rsp['headers']['content-type']}");
+	$type = $rsp['headers']['content-type'];
+	if ($type == 'audio/wav') {
+		$file_ext = '.wav';
+	} else if ($type == 'audio/mpeg') {
+		$file_ext = '.mp3';
+	} else if ($type == 'audio/aac') {
+		$file_ext = '.m4a';
+	} else {
+		throw new ContentException("Invalid content-type: $type");
 	}
 
-	return $body;
+	return [$body, $file_ext];
 }
 
 function soundcloud_podcast_export_upload($post, $file_list) {
