@@ -36,6 +36,7 @@ function soundcloud_podcast_export($post_id = null) {
 				soundcloud_podcast_update_slack($errormsg);
 				fwrite($stderr, "$errormsg\n");
 				$id = -1;
+				$files = $dir;
 			}
 
 			if ($id) {
@@ -43,8 +44,10 @@ function soundcloud_podcast_export($post_id = null) {
 			}
 			soundcloud_podcast_export_cleanup($files);
 		}
-		$export_url = "https://archive.org/details/$id";
-		soundcloud_podcast_update_slack("Exported <$url|$post->post_title> to <$export_url|archive.org>");
+		if ($id != -1) {
+			$export_url = "https://archive.org/details/$id";
+			soundcloud_podcast_update_slack("Exported <$url|$post->post_title> to <$export_url|archive.org>");
+		}
 	} catch (Exception $err) {
 		update_field('internet_archive_export', false, 'options');
 		$errormsg = $err->getMessage();
@@ -250,6 +253,9 @@ function soundcloud_podcast_export_subject($post) {
 function soundcloud_podcast_export_cleanup($file_list) {
 	if (empty($file_list)) {
 		return false;
+	} else if (is_string($file_list)) {
+		$dir = $file_list;
+		$file_list = [];
 	}
 	foreach ($file_list as $file) {
 		if (substr($file, 0, 4) != '/tmp') {
