@@ -7,11 +7,17 @@ function soundcloud_podcast_export($post_id = null) {
 	// There are two nested try/catch blocks here. This outer one will disable
 	// exporting if it catches any kind of exception.
 	try {
+		$exporting = get_option('soundcloud_podcast_exporting');
+		if ($exporting) {
+			fwrite($stderr, "Internet Archive export is already running\n");
+			return;
+		}
 		$enabled = get_field('internet_archive_export', 'options');
 		if (empty($enabled)) {
 			fwrite($stderr, "Internet Archive export is disabled\n");
 			return;
 		}
+		update_option('soundcloud_podcast_exporting', true, false);
 		if ($post_id) {
 			$post = get_post($post_id);
 		} else {
@@ -58,6 +64,7 @@ function soundcloud_podcast_export($post_id = null) {
 		fwrite($stderr, "$errormsg\n");
 	}
 	fclose($stderr);
+	update_option('soundcloud_podcast_exporting', false, false);
 }
 
 function soundcloud_podcast_export_next_post() {
