@@ -1,7 +1,11 @@
 <?php
 
+class ContentException extends Exception { }
+
 function soundcloud_podcast_export($post_id = null) {
 	$stderr = fopen('php://stderr', 'w');
+	// There are two nested try/catch blocks here. This outer one will disable
+	// exporting if it catches any kind of exception.
 	try {
 		$enabled = get_field('internet_archive_export', 'options');
 		if (empty($enabled)) {
@@ -14,23 +18,41 @@ function soundcloud_podcast_export($post_id = null) {
 			$post = soundcloud_podcast_export_next_post();
 		}
 		if ($post) {
+			$url = get_permalink($post->ID);
 			echo "exporting $post->post_title ($post->ID)\n";
 			$track_id = get_post_meta($post->ID, 'soundcloud_podcast_id', true);
 			$dir = soundcloud_podcast_export_dir($post);
-			$files = soundcloud_podcast_export_files($post, $track_id, $dir);
-			$id = soundcloud_podcast_export_upload($post, $files);
+
+			// This inner try/catch assigns the post with an Internet Archive ID
+			// of -1 and does *not* disable exporting if it catches a
+			// ContentException. Other kinds of exceptions should get caught by
+			// the outer try/catch.
+			try {
+				$files = soundcloud_podcast_export_files($post, $track_id, $dir);
+				$id = soundcloud_podcast_export_upload($post, $files);
+			} catch(ContentException $err) {
+				update_post_meta($post->ID, 'internet_archive_error', $err->getMessage());
+				$errormsg = "Error exporting <$url|$post->post_title> ($post->ID): " . $err->getMessage();
+				soundcloud_podcast_update_slack($errormsg);
+				fwrite($stderr, "$errormsg\n");
+				$id = -1;
+			}
+
 			if ($id) {
 				update_post_meta($post->ID, 'internet_archive_id', $id);
 			}
 			soundcloud_podcast_export_cleanup($files);
 		}
-		$url = get_permalink($post->ID);
 		$export_url = "https://archive.org/details/$id";
 		soundcloud_podcast_update_slack("Exported <$url|$post->post_title> to <$export_url|archive.org>");
 	} catch (Exception $err) {
 		update_field('internet_archive_export', false, 'options');
-		soundcloud_podcast_update_slack($err->getMessage());
-		fwrite($stderr, $err->getMessage() . "\n");
+		$errormsg = $err->getMessage();
+		if (! empty($post)) {
+			$errormsg = "Error exporting <$url|$post->post_title> ($post->ID): $errormsg";
+		}
+		soundcloud_podcast_update_slack($errormsg);
+		fwrite($stderr, "$errormsg\n");
 	}
 	fclose($stderr);
 }
@@ -159,6 +181,10 @@ function soundcloud_podcast_export_request($url) {
 
 	if ($status != 200) {
 		throw new Exception("Error downloading $url (HTTP $status)");
+	}
+
+	if ($rsp['headers']['content-type'] != 'audio/wav') {
+		throw new ContentException("Invalid content-type: {$rsp['headers']['content-type']}");
 	}
 
 	return $body;
