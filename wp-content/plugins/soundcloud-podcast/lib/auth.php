@@ -5,7 +5,8 @@ add_action('wp_ajax_soundcloud_podcast_login', function() {
 	$query = http_build_query([
 		'client_id' => SOUNDCLOUD_PODCAST_CLIENT_ID,
 		'redirect_uri' => "$base_url/wp-admin/admin-ajax.php?action=soundcloud_podcast_auth_code",
-		'response_type' => 'code'
+		'response_type' => 'code',
+		'scope' => 'non-expiring'
 	]);
 	$url = "https://api.soundcloud.com/connect?$query";
 	header("Location: $url");

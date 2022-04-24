@@ -54,6 +54,7 @@ function soundcloud_podcast_export($post_id = null) {
 			$export_url = "https://archive.org/details/$id";
 			soundcloud_podcast_update_slack("Exported <$url|$post->post_title> to <$export_url|archive.org>");
 		}
+		echo "exported $export_url\n";
 	} catch (Exception $err) {
 		update_field('internet_archive_export', false, 'options');
 		$errormsg = $err->getMessage();
