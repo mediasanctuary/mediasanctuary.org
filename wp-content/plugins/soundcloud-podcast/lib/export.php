@@ -191,7 +191,9 @@ function soundcloud_podcast_export_request($url) {
 	$body = wp_remote_retrieve_body($rsp);
 
 	if ($status != 200) {
-		soundcloud_podcast_update_slack('<@dphiffer> it looks like the SoundCloud API key has expired');
+		$base_url = get_bloginfo('wpurl');
+		$auth_url = "$base_url/wp-admin/admin-ajax.php?action=soundcloud_podcast_login";
+		soundcloud_podcast_update_slack("It looks like the SoundCloud API key has expired. <$auth_url|Reconnect>");
 		throw new Exception("Error downloading $url (HTTP $status)");
 	}
 
