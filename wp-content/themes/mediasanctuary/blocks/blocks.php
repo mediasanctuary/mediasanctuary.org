@@ -4,7 +4,7 @@
 
 $block_defaults = [
 	'category'        => 'common',
-	'post_types'      => ['post', 'page', 'project'],
+	'post_types'      => ['post', 'page', 'project', 'tribe_events'],
 	'mode'            => 'auto',
 	'supports'        => [
 		'align'       => false,
