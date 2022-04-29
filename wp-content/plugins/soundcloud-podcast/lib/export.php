@@ -198,7 +198,7 @@ function soundcloud_podcast_export_request($url) {
 	}
 
 	$type = $rsp['headers']['content-type'];
-	if ($type == 'audio/wav') {
+	if ($type == 'audio/wav' || $type == 'audio/x-wav') {
 		$file_ext = '.wav';
 	} else if ($type == 'audio/mpeg') {
 		$file_ext = '.mp3';
