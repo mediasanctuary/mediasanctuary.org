@@ -204,6 +204,8 @@ function soundcloud_podcast_export_request($url) {
 		$file_ext = '.mp3';
 	} else if ($type == 'audio/aac') {
 		$file_ext = '.m4a';
+	} else if ($type == 'audio/aiff') {
+		$file_ext = '.aiff';
 	} else {
 		throw new ContentException("Invalid content-type: $type");
 	}
@@ -225,23 +227,26 @@ function soundcloud_podcast_export_upload($post, $file_list) {
 	$subject = soundcloud_podcast_export_subject($post);
 
 	$metadata_list = [
-		'mediatype:audio',
-		"identifier:$id",
-		"title:$post->post_title",
-		"description:$post->post_content",
-		"date:$date",
-		"year:$year",
-		"publicdate:$post->post_date",
-		"addeddate:$post->post_date",
-		"subject:$subject",
-		'language:eng',
-		'collection:mediasanctuaryaudio',
-		'creator:The Sanctuary for Independent Media'
+		'mediatype'   => 'audio',
+		'identifier'  => $id,
+		'title'       => $post->post_title,
+		'description' => $post->post_content,
+		'date'        => $date,
+		'year'        => $year,
+		'publicdate'  => $post->post_date,
+		'addeddate'   => $post->post_date,
+		'subject'     => $subject,
+		'language'    => 'eng',
+		'collection'  => 'mediasanctuaryaudio',
+		'creator'     => 'The Sanctuary for Independent Media'
 	];
 
 	$metadata = [];
-	foreach ($metadata_list as $item) {
-		$item = escapeshellarg($item);
+	foreach ($metadata_list as $key => $value) {
+		if (empty($value)) {
+			continue;
+		}
+		$item = escapeshellarg("$key:$value");
 		$metadata[] = "--metadata=$item";
 	}
 	$metadata = implode(' ', $metadata);
