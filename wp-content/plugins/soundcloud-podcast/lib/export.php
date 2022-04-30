@@ -148,6 +148,9 @@ function soundcloud_podcast_export_image($post) {
 		return false;
 	}
 	$attachment = wp_get_attachment_metadata($attachment_id);
+	if (! $attachment) {
+		throw new ContentException("Invalid featured image $attachment_id");
+	}
 	$uploads = wp_upload_dir();
 	return "{$uploads['basedir']}/{$attachment['file']}";
 }
@@ -259,8 +262,8 @@ function soundcloud_podcast_export_upload($post, $file_list) {
 
 	if ($retval != 0) {
 		$result = implode("\n", $result);
-		echo "Error uploading files to archive.org: $result\n";
-		throw new Exception("Error uploading files to archive.org: $result");
+		echo "Error uploading files to archive.org\n";
+		throw new ContentException("Error uploading files to archive.org.");
 	}
 	return $id;
 }
