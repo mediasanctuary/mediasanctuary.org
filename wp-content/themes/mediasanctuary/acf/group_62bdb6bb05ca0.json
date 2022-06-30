@@ -1,0 +1,44 @@
+{
+    "key": "group_62bdb6bb05ca0",
+    "title": "Internet Archive ID",
+    "fields": [
+        {
+            "key": "field_62bdb6c14a3d6",
+            "label": "Internet Archive ID",
+            "name": "internet_archive_id",
+            "type": "text",
+            "instructions": "If set, includes an audio player for stories from archive.org.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_format",
+                "operator": "==",
+                "value": "audio"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "side",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1656600744
+}
