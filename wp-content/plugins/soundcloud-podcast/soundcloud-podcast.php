@@ -39,6 +39,7 @@ function soundcloud_podcast() {
 
 	$internet_archive_id = get_post_meta($post->ID, 'internet_archive_id', true);
 	if (! empty($internet_archive_id) && $internet_archive_id != -1) {
+		$internet_archive_id = str_replace('https://archive.org/download/', '', $internet_archive_id);
 		$internet_archive_link = "<a href=\"https://archive.org/details/$internet_archive_id\" class=\"soundcloud-podcast__link\">Listen on Internet Archive</a>";
 		if (strpos($internet_archive_id, '/') == false) {
 			$internet_archive_id = "$internet_archive_id/$internet_archive_id.mp3";
