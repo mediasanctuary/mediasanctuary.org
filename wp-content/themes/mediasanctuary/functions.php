@@ -276,7 +276,7 @@ function social_meta_tags() {
       echo '<link rel="canonical" href="'.$canonical.'" />';
     } else {
       echo '<link rel="canonical" href="'.$url.'" />';
-    }		
+    }
 }
 add_action( 'wp_head', 'social_meta_tags' );
 
@@ -298,3 +298,13 @@ add_action( 'wp_ajax_soundcloud_token_info', function() {
 	]);
 	exit;
 });
+
+function is_story_post($post) {
+	$terms = get_the_terms($post, 'category');
+	foreach ($terms as $term) {
+		if ($term->slug == 'stories') {
+			return true;
+		}
+	}
+	return false;
+}
