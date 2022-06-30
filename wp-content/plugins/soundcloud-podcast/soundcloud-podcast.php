@@ -24,27 +24,33 @@ function soundcloud_podcast() {
 		return;
 	}
 
-	$track_id = get_post_meta($post->ID, 'soundcloud_podcast_id', true);
-	if (empty($track_id)) {
-		return;
-	}
-
 	$sources = [];
-
 	$soundcloud_link = '';
+	$internet_archive_link = '';
+
+	$soundcloud_id = get_post_meta($post->ID, 'soundcloud_podcast_id', true);
+	if (! empty($soundcloud_id)) {
+		$sources[] = "/wp-json/soundcloud-podcast/v1/stream/$soundcloud_id";
+	}
 	$soundcloud_url = get_post_meta($post->ID, 'soundcloud_podcast_url', true);
 	if (! empty($soundcloud_url)) {
 		$soundcloud_link = "<a href=\"$soundcloud_url\" class=\"soundcloud-podcast__link\">Listen on SoundCloud</a>";
 	}
 
-	$internet_archive_link = '';
 	$internet_archive_id = get_post_meta($post->ID, 'internet_archive_id', true);
 	if (! empty($internet_archive_id) && $internet_archive_id != -1) {
+		$internet_archive_id = str_replace('https://archive.org/download/', '', $internet_archive_id);
 		$internet_archive_link = "<a href=\"https://archive.org/details/$internet_archive_id\" class=\"soundcloud-podcast__link\">Listen on Internet Archive</a>";
-		$sources[] = "https://archive.org/download/$internet_archive_id/$internet_archive_id.mp3";
+		if (strpos($internet_archive_id, '/') == false) {
+			$internet_archive_id = "$internet_archive_id/$internet_archive_id.mp3";
+		}
+		$internet_archive_id = preg_replace('/\.wav$/', '.mp3', $internet_archive_id);
+		$sources[] = "https://archive.org/download/$internet_archive_id";
 	}
 
-	$sources[] = "/wp-json/soundcloud-podcast/v1/stream/$track_id";
+	if (empty($sources)) {
+		return;
+	}
 
 	$source_elements = '';
 	foreach ($sources as $src) {
