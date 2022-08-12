@@ -25,7 +25,7 @@
 	data-depends="#tribe-events-virtual-video-source"
 	data-condition="facebook"
 >
-	<div class="tribe-events-virtual-meetings-video-source__inner tribe-events-virtual-meetings-source-facebook__inner-controls">
+	<div class="tec-events-virtual-meetings-video-source__inner tribe-events-virtual-meetings-source-facebook__inner-controls">
 		<div class="tribe-events-virtual-meetings-facebook-error__details-header">
 			<?php echo esc_html( $disabled_title ); ?>
 		</div>

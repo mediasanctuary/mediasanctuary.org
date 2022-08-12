@@ -11,6 +11,7 @@ namespace Tribe\Events\Virtual\Meetings\Zoom;
 
 use Tribe\Events\Virtual\Admin_Template;
 use Tribe\Events\Virtual\Encryption;
+use Tribe\Events\Virtual\Metabox;
 use Tribe\Events\Virtual\Traits\With_AJAX;
 use Tribe__Utils__Array as Arr;
 
@@ -92,14 +93,14 @@ class Users {
 		 * @param int     The time in seconds until the user cache expires, default 1 hour.
 		 */
 		$expiration = apply_filters( 'tribe_events_virtual_meetings_zoom_user_cache', HOUR_IN_SECONDS );
-		$users      = $cache->get( $cache_id );
+		$users      = $cache->get_transient( $cache_id );
 
 		if ( ! empty( $users ) ) {
 			return $this->encryption->decrypt( $users, true );
 		}
 
 		$available_hosts = $api->fetch_users();
-		$cache->set( $cache_id, $this->encryption->encrypt( $available_hosts, true ), $expiration );
+		$cache->set_transient( $cache_id, $this->encryption->encrypt( $available_hosts, true ), $expiration );
 
 		return $available_hosts;
 	}
@@ -138,6 +139,7 @@ class Users {
 
 			$hosts[] = [
 				'text'             => (string) trim( $name ),
+				'email'            => (string) Arr::get( $user, 'email', '' ),
 				'sort'             => (string) trim( $last_name ),
 				'id'               => (string) $value,
 				'value'            => (string) $value,
@@ -157,6 +159,7 @@ class Users {
 	 * Get the alternative users that can be used as hosts.
 	 *
 	 * @since 1.4.0
+	 * @since 1.9.0 - Update formatting with changes from get_formatted_hosts_list().
 	 *
 	 * @param array<string,mixed>   An array of Zoom Users to use as the alternative hosts.
 	 * @param string $selected_alt_hosts The list of alternative host emails.
@@ -186,8 +189,8 @@ class Users {
 		// Change the dropdown value to the email for alternative hosts because that is what Zoom returns.
 		$alternative_hosts_email_id = array_map(
 			static function ( $user ) use ( $selected_alt_hosts ) {
-				$user['id'] = $user['text'];
-				$user['selected'] = in_array( $user['text'], $selected_alt_hosts ) ? true : false;
+				$user['id'] = $user['email'];
+				$user['selected'] = in_array( $user['email'], $selected_alt_hosts ) ? true : false;
 				return $user;
 			},
 			$alternative_hosts
@@ -197,9 +200,9 @@ class Users {
 	}
 
 	/**
-	 * Handles the request to validate a Zoom user type.
+	 * Handles the request to validate a user type.
 	 *
-	 * @since 1.8.2
+	 * @since 1.9.0
 	 *
 	 * @param string|null $nonce The nonce that should accompany the request.
 	 *
@@ -221,7 +224,7 @@ class Users {
 			wp_die();
 		}
 
-		$zoom_host_id = tribe_get_request_var( 'zoom_host_id' );
+		$zoom_host_id = tribe_get_request_var( 'host_id' );
 		// If no host id found, fail the request.
 		if ( empty( $zoom_host_id ) ) {
 			$error_message = _x( 'The Zoom Host ID is missing to access the API, please select a host from the dropdown and try again.', 'Host ID is missing error message for Zoom user validation.', 'events-virtual' );
@@ -233,7 +236,7 @@ class Users {
 			wp_die();
 		}
 
-		$zoom_account_id = tribe_get_request_var( 'zoom_account_id' );
+		$zoom_account_id = tribe_get_request_var( 'account_id' );
 		// If no account id found, fail the request.
 		if ( empty( $zoom_account_id ) ) {
 			$error_message = _x( 'The Zoom Account ID is missing to access the API.', 'Account ID is missing error message for Zoom user validation.', 'events-virtual' );
@@ -270,15 +273,21 @@ class Users {
 			wp_die();
 		}
 
-		$webinar_support = $this->api->get_webinars_support( $settings );
+		$webinar_support       = $this->api->get_webinars_support( $settings );
+		$password_requirements = $this->api->get_password_requirements( $settings );
 
 		/** @var \Tribe\Events\Virtual\Meetings\Zoom\Classic_editor */
 		$classic_editor = tribe( Classic_Editor::class );
 		$generation_urls = $classic_editor->get_link_creation_urls( $event, $webinar_support );
 
 		$this->admin_template->template(
-		'virtual-metabox/zoom/type-options',
-			[ 'generation_urls' => $generation_urls, ],
+		'virtual-metabox/api/type-options',
+			[
+				'api_id'                => $this->api::$api_id,
+				'generation_urls'       => $generation_urls,
+				'password_requirements' => $password_requirements,
+				'metabox_id'            => Metabox::$id,
+			],
 			true
 		);
 

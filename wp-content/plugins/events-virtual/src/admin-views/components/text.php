@@ -26,7 +26,7 @@
 ?>
 <div <?php tribe_classes( $classes_wrap ); ?> >
 	<label
-		class="screen-reader-text tribe-events-virtual-meetings-control__label"
+		class="screen-reader-text tec-events-virtual-meetings-control__label"
 		for="<?php echo esc_attr( $id ); ?>"
 	>
 		<?php echo esc_html( $label ); ?>

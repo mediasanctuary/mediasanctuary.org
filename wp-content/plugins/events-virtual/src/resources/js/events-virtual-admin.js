@@ -42,7 +42,7 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
 		autoDetectFields: '.tribe-events-virtual-video-source-autodetect__fields',
 		autoDetectSource: '#tribe-events-virtual-autodetect-source',
 		autoDetectMessagesWrap: '.tribe-events-virtual-video-source-autodetect__messages-wrap',
-		autoDetectMessage: '.tribe-events-virtual-settings-message__wrap',
+		autoDetectMessage: '.tec-events-virtual-settings-message__wrap',
 		autoDetectloader: '.tribe-common-c-loader',
 		autoDetectPreviewWrap: '.tec-autodetect-video-preview__container',
 		autoDetectPreview: '.tec-autodetect-video-preview__inner',
@@ -471,32 +471,6 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
 			disabled: true,
 			checked: false,
 		} );
-	};
-
-	/**
-	 * Handles the classes for the video source details.
-	 *
-	 * @since 1.6.0
-	 * @deprecated 1.7.0
-	 */
-	obj.handleVideoSourceClasses = function() {
-		console.info( 'Method deprecated with no replacement.' ); // eslint-disable-line no-console
-
-		var $sourceDetails = $( obj.selectors.videoSourceDetails );
-		if ( ! $sourceDetails.length ) {
-			return;
-		}
-
-		var $sourceDropdownField = $( obj.selectors.videoSourcesWrap );
-		var content = $sourceDropdownField.parent();
-		var isWide = content.width() >=
-			$sourceDetails.outerWidth( true ) + $sourceDropdownField.outerWidth( true );
-
-		if ( isWide ) {
-			$sourceDetails.addClass( obj.selectors.videoSourcesFloat.className() );
-		} else {
-			$sourceDetails.removeClass( obj.selectors.videoSourcesFloat.className() );
-		}
 	};
 
 	// Configure on document ready

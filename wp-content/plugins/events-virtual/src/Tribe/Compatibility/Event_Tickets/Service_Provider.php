@@ -225,13 +225,16 @@ class Service_Provider extends \tad_DI52_ServiceProvider {
 	 *
 	 * @since 1.0.4
 	 * @since 1.1.2 Bail earlier if the user isn't logged in.
+	 * @since 1.9.0 - Only use tribe_get_event if an integer.
 	 *
 	 * @param boolean     $show  If the virtual content should show or not.
 	 * @param WP_Post|int $event The post object or ID of the viewed event.
 	 * @return boolean
 	 */
 	public function filter_show_virtual_content( $show, $event ) {
-		$event = tribe_get_event( $event );
+		if ( is_integer( $event ) ) {
+			$event = tribe_get_event( $event );
+		}
 
 		if ( ! $event instanceof \WP_Post ) {
 			return $show;
@@ -292,5 +295,22 @@ class Service_Provider extends \tad_DI52_ServiceProvider {
 	 */
 	public function filter_export_should_show( $should_show, $event ) {
 		return $this->filter_show_virtual_content( $should_show, $event );
+	}
+
+	/**
+	 * Get Tickets settings URL.
+	 *
+	 * @since 1.10.0
+	 *
+	 * @param array $args array of args to add to the url.
+	 * @return string The settings URL.
+	 */
+	public function get_settings_url( array $args = [] ) {
+		if ( ! tribe()->isBound( 'tickets.main' ) ) {
+			return tribe( 'settings' )->get_url( $args );
+		}
+
+		return tribe( 'tickets.main' )->settings()->get_url( $args );
+
 	}
 }

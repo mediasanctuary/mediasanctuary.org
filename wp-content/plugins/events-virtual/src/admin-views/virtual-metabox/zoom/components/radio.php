@@ -11,6 +11,7 @@
  *
  * @since   1.4.0
  * @since   1.8.2 - Add disabled option and tooltip.
+ * @deprecated 1.9.0 Use src/admin-views/components/radio.php.
  *
  * @version 1.8.2
  *
@@ -25,7 +26,7 @@
  * @var array<string,string> $attrs         Associative array of attributes of the radio input.
  */
 
-$label_classes = [ 'tribe-events-virtual-meetings-control__label' ];
+$label_classes = [ 'tec-events-virtual-meetings-control__label' ];
 if ( ! empty( $classes_label ) ) {
 	$label_classes = array_merge( $label_classes, $classes_label );
 }

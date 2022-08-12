@@ -31,14 +31,26 @@ class Template_Modifications {
 	protected $template;
 
 	/**
+	 * An instance of the admin template handler.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @var Admin_Template
+	 */
+	protected $admin_template;
+
+	/**
 	 * Template_Modifications constructor.
 	 *
 	 * @since 1.0.0
+	 * @since 1.9.0 - Add Admin_Template handler.
 	 *
-	 * @param Template $template An instance of the plugin template handler.
+	 * @param Template       $template An instance of the front-end template handler.
+	 * @param Admin_Template $template An instance of the backend template handler.
 	 */
-	public function __construct( Template $template ) {
-		$this->template = $template;
+	public function __construct( Template $template, Admin_Template $admin_template ) {
+		$this->template       = $template;
+		$this->admin_template = $admin_template;
 	}
 
 	/**
@@ -46,20 +58,24 @@ class Template_Modifications {
 	 * based on the `virtual_show_embed_to` setting of the event.
 	 *
 	 * @since 1.0.4
+	 * @since 1.9.0 - Only use tribe_get_event if an integer and handle no show to setting checked.
 	 *
 	 * @param int|WP_Post $event Post ID or post object.
 	 *
 	 * @return boolean
 	 */
 	public function should_show_virtual_content( $event ) {
-		$event = tribe_get_event( $event );
+		if ( is_integer( $event ) ) {
+		     $event = tribe_get_event( $event );
+		}
 
 		if ( ! $event instanceof \WP_Post) {
 			return false;
 		}
 
-		$show = ! in_array( Event_Meta::$value_show_embed_to_logged_in, $event->virtual_show_embed_to, true )
-		        || is_user_logged_in();
+		$show_to_arr = array_flip( $event->virtual_show_embed_to );
+		$show =  isset( $show_to_arr[ Event_Meta::$value_show_embed_to_all ] )
+		 || ( isset(  $show_to_arr[ Event_Meta::$value_show_embed_to_logged_in ] ) && is_user_logged_in() );
 
 		/**
 		 * Filters whether the virtual content should show or not.
@@ -461,5 +477,22 @@ class Template_Modifications {
 		];
 
 		$this->template->template( 'components/link-button', $context );
+	}
+
+	/**
+	 * The message template to display on user account changes.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param string $message The message to display.
+	 * @param string $type    The type of message, either updated or error.
+	 *
+	 * @return string The message with html to display
+	 */
+	public function get_settings_message_template( $message, $type = 'updated' ) {
+		return $this->admin_template->template( 'components/message', [
+			'message' => $message,
+			'type'    => $type,
+		] );
 	}
 }

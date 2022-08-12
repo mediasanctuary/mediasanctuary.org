@@ -130,6 +130,28 @@ class Metabox {
 	}
 
 	/**
+	 * Renders, echoing to the page, the API meeting display controls.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param null|\WP_Post|int $post The post object or ID of the event to generate the controls for, or `null` to use
+	 *                                the global post object.
+	 * @param bool              $echo Whether to echo the template contents to the page (default) or to return it.
+	 *
+	 * @return string The template contents, if not rendered to the page.
+	 */
+	public function render_classic_display_controls( $post = null, $echo = true ) {
+		return $this->template->template(
+			'virtual-metabox/api/display',
+			[
+				'event'      => $post,
+				'metabox_id' => Metabox::$id,
+			],
+			$echo
+		);
+	}
+
+	/**
 	 * Registers the plugin meta box for Blocks Editor support.
 	 *
 	 * @since 1.0.0

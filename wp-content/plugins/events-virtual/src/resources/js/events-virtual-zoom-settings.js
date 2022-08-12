@@ -2,6 +2,7 @@
  * Makes sure we have all the required levels on the Tribe Object
  *
  * @since 1.0.1
+ * @deprecated 1.9.0 - Replaced with tribe.events.apiSettingsAdmin
  *
  * @type {PlainObject}
  */
@@ -11,6 +12,7 @@ tribe.events = tribe.events || {};
  * Configures Virtual Events Admin Object on the Global Tribe variable
  *
  * @since 1.0.1
+ * @deprecated 1.9.0 - Replaced with tribe.events.apiSettingsAdmin
  *
  * @type {PlainObject}
  */
@@ -197,10 +199,12 @@ tribe.events.zoomSettingsAdmin = tribe.events.zoomSettingsAdmin || {};
 	 * Handles the initialization of the admin when Document is ready
 	 *
 	 * @since 1.0.1
+	 * @deprecated 1.9.0 - Replaced with tribe.events.apiSettingsAdmin
 	 *
 	 * @return {void}
 	 */
 	obj.ready = function() {
+		console.info( 'Scripts deprecated and replaced with tribe.events.apiSettingsAdmin.' ); // eslint-disable-line no-console, max-len
 		obj.bindEvents();
 	};
 

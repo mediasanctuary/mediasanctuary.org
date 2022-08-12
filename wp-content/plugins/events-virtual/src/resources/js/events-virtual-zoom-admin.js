@@ -22,6 +22,7 @@ tribe.events.virtualAdmin = tribe.events.virtualAdmin || {};
  * Configures Virtual Events Admin Object on the Global Tribe variable
  *
  * @since 1.0.0
+ * @deprecated 1.9.0 - Replaced with tribe.events.virtualAdminAPI
  *
  * @type   {PlainObject}
  */
@@ -73,7 +74,7 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 		zoomLoader: '.tribe-common-c-loader',
 		zoomHiddenElement: '.tribe-common-a11y-hidden',
 		zoomMessagesWrap: '.tec-events-virtual-video-source-zoom-setup__messages-wrap',
-		zoomMessage: '.tribe-events-virtual-settings-message__wrap',
+		zoomMessage: '.tec-events-virtual-settings-message__wrap',
 	};
 
 	/**
@@ -451,34 +452,6 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 	};
 
 	/**
-	 * Handles the classes for the meeting details.
-	 *
-	 * @deprecated 1.6.0 - Support for video source dropdown.
-	 *
-	 * @since 1.0.0
-	 */
-	obj.handleMeetingDetailsClasses = function() {
-		console.info( 'Method deprecated and replaced with virtualAdmin.handleVideoSourceClasses.' ); // eslint-disable-line no-console, max-len
-
-		var $meetingDetails = $( obj.selectors.meetingDetails );
-
-		if ( ! $meetingDetails.length ) {
-			return;
-		}
-
-		var $urlField = $( obj.selectors.urlField );
-		var content = $urlField.parent();
-		var isWide = content.width() >=
-			$meetingDetails.outerWidth( true ) + $urlField.outerWidth( true );
-
-		if ( isWide ) {
-			$meetingDetails.addClass( obj.selectors.meetingDetailsFloat.className() );
-		} else {
-			$meetingDetails.removeClass( obj.selectors.meetingDetailsFloat.className() );
-		}
-	};
-
-	/**
 	 * Show loader for the container.
 	 *
 	 * @since 1.8.2
@@ -516,10 +489,12 @@ tribe.events.virtualAdminZoom = tribe.events.virtualAdminZoom || {};
 	 * Handles the initialization of the admin when Document is ready
 	 *
 	 * @since 1.0.0
+	 * @deprecated 1.9.0 - Replaced with tribe.events.virtualAdminAPI
 	 *
 	 * @return {void}
 	 */
 	obj.ready = function() {
+		console.info( 'Scripts deprecated and replaced with tribe.events.virtualAdminAPI.' ); // eslint-disable-line no-console, max-len
 		obj.bindEvents();
 	};
 

@@ -315,6 +315,22 @@ class Assets extends \tad_DI52_ServiceProvider {
 			]
 		);
 
+		tribe_asset(
+			$plugin,
+			'tribe-virtual-admin-v2-single-block',
+			'events-virtual-admin-single-block.css',
+			[
+				'tec-variables-full',
+				'tec-variables-skeleton',
+			],
+			[ 'admin_enqueue_scripts' ],
+			[
+				'conditionals' => [
+					[ $this, 'should_enqueue_admin' ]
+				],
+			]
+		);
+
 		$this->maybe_enqueue_accordion_for_v1();
 	}
 
@@ -519,5 +535,28 @@ class Assets extends \tad_DI52_ServiceProvider {
 	 */
 	public static function get_facebook_app_id() {
 		return tribe_get_option( 'tribe_facebook_app_id', '' );
+	}
+
+	/**
+	 * Load assets on the add or edit pages of the block editor only.
+	 *
+	 * @since  1.8.3
+	 *
+	 * @return bool
+	 */
+	public function should_enqueue_admin() {
+		if ( ! is_admin() ) {
+			return false;
+		}
+
+		if ( ! get_current_screen()->is_block_editor ) {
+			return false;
+		}
+
+		if ( ! tribe( 'admin.helpers' )->is_post_type_screen() ) {
+			return;
+		}
+
+		return true;
 	}
 }

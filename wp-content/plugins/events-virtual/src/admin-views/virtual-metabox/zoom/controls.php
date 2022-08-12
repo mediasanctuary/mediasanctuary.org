@@ -29,7 +29,7 @@
 	data-condition="zoom"
 >
 
-	<div class="tribe-events-virtual-meetings-video-source__inner tribe-events-virtual-meetings-zoom-details__inner">
+	<div class="tec-events-virtual-meetings-video-source__inner tribe-events-virtual-meetings-zoom-details__inner">
 
 		<a
 			class="tribe-events-virtual-meetings-zoom__connect-link"

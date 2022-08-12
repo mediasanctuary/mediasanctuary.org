@@ -54,6 +54,11 @@
 			$select.select2( 'destroy' );
 		}
 
+		// If more than one version of select2 gets loaded, we can get duplicated dropdowns - and none of them work!
+		if ( $select.next().hasClass( 'select2-container' ) ) {
+			$select.next().remove();
+		}
+
 		if ( $( 'body' ).hasClass( 'wp-customizer' ) ) {
 			args.dropdownCssClass = 'tribe-customizer-select2';
 		}
@@ -65,20 +70,21 @@
 
 		// By default we allow The field to be cleared
 		args.allowClear = true;
-		if ( $select.is( '[data-prevent-clear]' ) ) {
+		if ( $select.data( 'prevent-clear' ) ) {
 			args.allowClear = false;
 		}
 
 		// If we are dealing with a Input Hidden we need to set the Data for it to work
-		if ( $select.is( '[data-options]' ) ) {
+		if ( $select.data( 'options' ) ) {
 			args.data = $select.data( 'options' );
 		}
 
-		// Prevents the Search box to show
-		if ( $select.is( '[data-hide-search]' ) ) {
+		// Prevents the Search box from showing
+		if ( $select.data( 'hide-search' ) ) {
 			args.minimumResultsForSearch = Infinity;
 		}
 
+		// Multiselect
 		if ( $select.is( '[multiple]' ) ) {
 			args.multiple = true;
 
@@ -128,7 +134,7 @@
 		};
 
 		// Select also allows Tags, so we go with that too
-		if ( $select.is( '[data-tags]' ) ) {
+		if ( $select.data( 'tags' ) ) {
 			args.tags = $select.data( 'options' );
 
 			args.initSelection = function ( element, callback ) {
@@ -165,7 +171,7 @@
 		}
 
 		// When we have a source, we do an AJAX call
-		if ( $select.is( '[data-source]' ) ) {
+		if ( $select.data( 'source' ) ) {
 			var source = $select.data( 'source' );
 
 			// For AJAX we reset the data
@@ -202,7 +208,7 @@
 
 		$select.on( 'open', function () {
 			$( '.select2-drop' ).css( 'z-index', 10000000 );
-		} ).select2TEC( args );
+		} ).trigger( 'change.select2' ).select2TEC( args );
 	};
 
 	tribeWidget.conditional = function( conditional, $widget ) {
@@ -251,6 +257,13 @@
 			'null' !== $filterInput.val()
 		) {
 			$filter.addClass( 'calendar-widget-filters-container--show' );
+
+			if ( $('.fl-nanoscroller').length ) {
+				// Let's be sane and ensure the object exists before trying to use it.
+				if ( typeof FLBuilder !== undefined ) {
+					FLBuilder._initScrollbars(); // eslint-disable-line no-undef
+				}
+			}
 		}
 	};
 
@@ -304,6 +317,10 @@
 
 			$widget = $target.closest( 'div.widget' );
 			$widget.find( '[data-depends]' ).trigger( 'setup.dependency' ).trigger( 'verify.dependency' );
+		}
+
+		if ( 'undefined' === typeof $widget ) {
+			return;
 		}
 
 		// It might be a DOM object, so we try convert to jQuery
@@ -384,92 +401,98 @@
 					.trigger( 'verify.dependency' );
 			}
 		} )
-		.on( 'change', '.calendar-widget-add-filter', function( e ) { // eslint-disable-line no-unused-vars,max-len
-			var $select = $( this );
-			var $widget = $select.parents( '.tribe-widget-form' );
-			var $list = $widget.find( '.calendar-widget-filter-list' );
-			var $field = $widget.find( '.calendar-widget-added-filters' );
-			var values = $field.val() ? JSON.parse( $field.val() ) : {};
-			var term = $select.val();
-			var disabled = $select.data( 'disabled' ) ? $select.data( 'disabled' ) : [];
-			var options = $select.data( 'lastOptions' );
+		.on(
+			'change',
+			'.calendar-widget-add-filter',
+			function( e ) { // eslint-disable-line no-unused-vars,max-len
+				var $select = $( this );
+				var $widget = $select.parents( '.tribe-widget-form' );
+				var $list = $widget.find( '.calendar-widget-filter-list' );
+				var $field = $widget.find( '.calendar-widget-added-filters' );
+				var values = $field.val() ? JSON.parse( $field.val() ) : {};
+				var term = $select.val();
+				var disabled = $select.data( 'disabled' ) ? $select.data( 'disabled' ) : [];
+				var options = $select.data( 'lastOptions' );
 
-			if ( 'undefined' === typeof term ) {
-				return;
-			}
-
-			var term_obj;
-
-			if ( null === values || 'object' !== typeof values ) {
-				values = {};
-			}
-
-			options.results.forEach( function( group ) {
-				if ( ! group.tax ) {
+				if ( 'undefined' === typeof term ) {
 					return;
 				}
-				// If we don't have the given Taxonomy.
-				if ( ! values[ group.tax.name ] ) {
-					values[ group.tax.name ] = [];
+
+				var term_obj;
+
+				if ( null === values || 'object' !== typeof values ) {
+					values = {};
 				}
 
-				group.children.forEach( function( option ) {
-					if ( ! option ) {
-						return;
-					}
+				if ( typeof options !== 'undefined' && typeof options.results !== 'undefined' ) {
+					options.results.forEach( function( group ) {
+						if ( ! group.tax ) {
+							return;
+						}
+						// If we don't have the given Taxonomy.
+						if ( ! values[ group.tax.name ] ) {
+							values[ group.tax.name ] = [];
+						}
 
-					if ( option.id != term ) { // eslint-disable-line eqeqeq
-						return;
-					}
+						group.children.forEach( function( option ) {
+							if ( ! option ) {
+								return;
+							}
 
-					term_obj = option;
-					values[ group.tax.name ].push( option.id );
-				} );
-			} );
+							if ( option.id != term ) { // eslint-disable-line eqeqeq
+								return;
+							}
 
-			if ( ! term_obj ) {
-				return;
-			}
+							term_obj = option;
+							values[ group.tax.name ].push( option.id );
+						} );
+					} );
+				}
 
-			// Bail if we already have the term added.
-			if (
-				-1 !== $.inArray( term.id, values[ term_obj.taxonomy.name ] ) &&
-				-1 !== $.inArray( term, values[ term_obj.taxonomy.name ] )
-			) {
-				// Remove the Selected Option.
+				if ( ! term_obj ) {
+					return;
+				}
+
+				// Bail if we already have the term added.
+				if (
+					-1 !== $.inArray( term.id, values[ term_obj.taxonomy.name ] ) &&
+					-1 !== $.inArray( term, values[ term_obj.taxonomy.name ] )
+				) {
+					// Remove the Selected Option.
+					$select.val( '' );
+					return;
+				}
+
+				// Safety net for items not in the values hash.
+				if ( $list.find( '[data-term="' + term_obj.id + '"]' ).length ) {
+					return;
+				}
+
+				values[ term_obj.taxonomy.name ].push( term.id );
+				$field.val( JSON.stringify( values ) );
+
+				var $link = $( '<a/>' ).attr( {
+					'data-tax': term_obj.taxonomy.name,
+					'data-term': term_obj.id,
+					'class': 'calendar-widget-remove-filter',
+					'href': '#',
+				} ).text( '(remove)' );
+				var $remove = $( '<span/>' ).append( $link );
+				var $li = $( '<li/>' )
+					.addClass( 'calendar-widget-filter-item' )
+					.html( term_obj.taxonomy.labels.name + ': ' + term_obj.text )
+					.append( $remove );
+
+				$list.append( $li );
+
+				disabled.push( term_obj.id );
+				$select.data( 'disabled', disabled );
+				tribeWidget.showFilters( $widget );
+
+				// After all that remove the Opt
 				$select.val( '' );
-				return;
 			}
-
-			// Safety net for items not in the values hash.
-			if ( $list.find( '[data-term="' + term_obj.id + '"]' ).length ) {
-				return;
-			}
-
-			values[ term_obj.taxonomy.name ].push( term.id );
-			$field.val( JSON.stringify( values ) );
-
-			var $link = $( '<a/>' ).attr( {
-				'data-tax': term_obj.taxonomy.name,
-				'data-term': term_obj.id,
-				'class': 'calendar-widget-remove-filter',
-				'href': '#',
-			} ).text( '(remove)' );
-			var $remove = $( '<span/>' ).append( $link );
-			var $li = $( '<li/>' )
-				.addClass( 'calendar-widget-filter-item' )
-				.html( term_obj.taxonomy.labels.name + ': ' + term_obj.text )
-				.append( $remove );
-
-			$list.append( $li );
-
-			disabled.push( term_obj.id );
-			$select.data( 'disabled', disabled );
-			tribeWidget.showFilters( $widget );
-
-			// After all that remove the Opt
-			$select.val( '' );
-		} )
+		)
 		.on( 'click', '.calendar-widget-remove-filter', function ( e ) {
 			e.preventDefault();
 			var $link = $( this ),
@@ -541,4 +564,12 @@
 
 			} );
 	} );
+
+	$( document ).on(
+		'change',
+		'.fl-builder-settings-lightbox',
+		function( event ) {
+			tribeWidget.setup( event, $( ".tribe-widget-form" ).first() );
+		}
+	);
 }( jQuery.noConflict(), _ ) );

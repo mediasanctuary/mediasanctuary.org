@@ -316,6 +316,12 @@ class Event {
 			return (array) $value;
 		}
 
+		// If a meta field with the given key exists, return an empty array.
+		$meta_exists = metadata_exists('post', $event->ID, Event_Meta::$key_show_embed_to);
+		if ( $meta_exists ) {
+			return [];
+		}
+
 		// If the metadata hasn't been set yet we grab the default.
 		return $this->get_default_show_to();
 	}
