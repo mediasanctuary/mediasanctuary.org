@@ -29,7 +29,7 @@
 >
 
 	<div
-		class="tribe-events-virtual-meetings-video-source__inner tribe-events-virtual-meetings-source-facebook__inner-controls"
+		class="tec-events-virtual-meetings-video-source__inner tribe-events-virtual-meetings-source-facebook__inner-controls"
 	>
 		<div class="tribe-events-virtual-meetings-video-source__title">
 			<?php echo esc_html( _x( 'Facebook Live', 'Title for Zoom Meeting or Webinar creation.', 'events-virtual' ) ); ?>

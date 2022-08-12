@@ -8,6 +8,7 @@
  * See more documentation about our views templating system.
  *
  * @since   1.8.2
+ * @deprecated 1.9.0 Use src/admin-views/virtual-metabox/api/type-options.php.
  *
  * @version 1.8.2
  *
@@ -21,7 +22,7 @@
 
 ?>
 
-<div class="tribe-events-virtual-meetings-zoom-details__types">
+<div class="tribe-events-virtual-meetings-api-create__types tribe-events-virtual-meetings-zoom-details__types">
 	<?php foreach ( $generation_urls as $zoom_type => list( $generate_link_url, $generate_link_label, $disabled, $tooltip ) ) : ?>
 		<?php
 		$this->template( 'virtual-metabox/zoom/components/radio', [

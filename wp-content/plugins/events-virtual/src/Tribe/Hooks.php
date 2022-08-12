@@ -26,6 +26,8 @@ use Tribe\Events\Virtual\Importer\Importer_Provider;
 use Tribe\Events\Virtual\Event_Status\Compatibility\Filter_Bar\Service_Provider as Event_Status_Filter_Bar_Provider;
 use Tribe\Events\Virtual\Event_Status\Status_Labels;
 use Tribe\Events\Virtual\Meetings\Facebook_Provider;
+use Tribe\Events\Virtual\Meetings\Google_Provider;
+use Tribe\Events\Virtual\Meetings\Webex_Provider;
 use Tribe\Events\Virtual\Meetings\YouTube_Provider;
 use Tribe\Events\Virtual\Meetings\Zoom_Provider;
 use Tribe\Events\Virtual\Views\V2\Widgets\Widget;
@@ -74,6 +76,14 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		} else {
 			add_action( 'tribe_after_location_details', [ $this, 'render_metabox' ], 5 );
 		}
+
+		// Shared API Display Details.
+		add_action(
+			'tribe_template_entry_point:events-virtual/admin-views/virtual-metabox/container/display:before_ul_close',
+			[ $this, 'render_classic_display_controls' ],
+			10,
+			3
+		);
 
 		add_action( 'save_post_' . Events_Plugin::POSTTYPE, [ $this, 'on_save_post' ], 15, 3 );
 
@@ -457,6 +467,8 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		}
 
 		$this->container->register( Facebook_Provider::class );
+		$this->container->register( Google_Provider::class );
+		$this->container->register( Webex_Provider::class );
 		$this->container->register( YouTube_Provider::class );
 		$this->container->register( Zoom_Provider::class );
 	}
@@ -584,6 +596,21 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 */
 	public function render_metabox( $post_id ) {
 		echo $this->container->make( Metabox::class )->render_template( $post_id ); /* phpcs:ignore */
+	}
+
+	/**
+	 * Renders the API controls related to the display of the API detais.
+	 * I.E. Webex or Zoom Meeting Links and numbers.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param string           $file        The path to the template file, unused.
+	 * @param string           $entry_point The name of the template entry point, unused.
+	 * @param \Tribe__Template $template    The current template instance.
+	 */
+	public function render_classic_display_controls( $file, $entry_point, \Tribe__Template $template ) {
+		$this->container->make( Metabox::class )
+			        ->render_classic_display_controls( $template->get( 'post' ) );
 	}
 
 	/**

@@ -8,6 +8,7 @@
  * See more documentation about our views templating system.
  *
  * @since   1.8.0
+ * @deprecated 1.9.0 - Use src/admin-views/virtual-metabox/api/autodetect-no-account.php
  *
  * @version 1.8.0
  *
@@ -22,7 +23,7 @@
  * @see     tribe_get_event() For the format of the event object.
  */
 
-$wrap_classes = [ 'tribe-events-virtual-meetings-control', 'tribe-events-virtual-meetings-control--message' ];
+$wrap_classes = [ 'tec-events-virtual-meetings-control', 'tec-events-virtual-meetings-control--message' ];
 if ( ! empty( $classes_wrap ) ) {
 	$wrap_classes = array_merge( $wrap_classes, $classes_wrap );
 }

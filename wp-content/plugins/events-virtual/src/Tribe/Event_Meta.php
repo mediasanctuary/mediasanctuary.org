@@ -271,7 +271,7 @@ class Event_Meta {
 		$event = tribe_get_event( $event );
 
 		$text = _x(
-			'Enter URL for hosted video (YouTube, Vimeo, Zoom, etc.)',
+			'Enter URL for hosted video (YouTube, Webex, Vimeo, Zoom, etc.)',
 			'Default placeholder text for the virtual event smart URL input.',
 			'events-virtual'
 		);

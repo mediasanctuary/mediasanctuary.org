@@ -36,7 +36,7 @@ class Template_Modifications {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var Template
+	 * @var Admin_Template
 	 */
 	protected $admin_template;
 
@@ -54,7 +54,7 @@ class Template_Modifications {
 	}
 
 	/**
-	 * Adds zoom details to event single.
+	 * Adds Zoom details to event single.
 	 *
 	 * @since 1.0.0
 	 */
@@ -70,7 +70,7 @@ class Template_Modifications {
 			empty( $event->virtual )
 			|| empty( $event->virtual_meeting )
 			|| empty( $event->virtual_should_show_embed )
-			|| empty( $event->zoom_display_details )
+			|| empty( $event->virtual_meeting_display_details )
 			|| tribe( Zoom_Provider::class )->get_slug() !== $event->virtual_meeting_provider
 		) {
 			return;
@@ -91,11 +91,11 @@ class Template_Modifications {
 		}
 
 		/**
-		 * Filters whether the zoom link should open in a new window or not.
+		 * Filters whether the Zoom link should open in a new window or not.
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param boolean $zoom_link_new_window  Boolean of if zoom link should open in new window.
+		 * @param boolean $zoom_link_new_window  Boolean of if Zoom link should open in new window.
 		 */
 		$zoom_link_new_window = apply_filters( 'tribe_events_virtual_zoom_link_new_window', false );
 
@@ -159,17 +159,6 @@ class Template_Modifications {
 	}
 
 	/**
-	 * Gets Zoom disabled connect button.
-	 *
-	 * @since 1.0.1
-	 *
-	 * @return string HTML for the authorize fields.
-	 */
-	public function get_disabled_button() {
-		return $this->admin_template->template( 'zoom/api/authorize-fields/disabled-button', [], false );
-	}
-
-	/**
 	 * Get intro text for Zoom API UI
 	 *
 	 * @since 1.0.0
@@ -205,4 +194,19 @@ class Template_Modifications {
 			'type'    => $type,
 		] );
 	}
+
+	/**
+	 * Gets Zoom disabled connect button.
+	 *
+	 * @since 1.0.1
+	 * @deprecated 1.11.0 - Replaced with Multiple Account Support, see Account_API class.
+	 *
+	 * @return string HTML for the authorize fields.
+	 */
+	public function get_disabled_button() {
+		_deprecated_function( __METHOD__, '1.11.0', 'No replacement, functionality moved to whodat server.' );
+
+		return $this->admin_template->template( 'zoom/api/authorize-fields/disabled-button', [], false );
+	}
+
 }

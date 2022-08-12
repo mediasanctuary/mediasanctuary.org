@@ -19,7 +19,7 @@ use Tribe\Events\Virtual\Export\Abstract_Export;
 class Event_Export extends Abstract_Export {
 
 	/**
-	 * Modify the export parameters for the zoom source.
+	 * Modify the export parameters for the Zoom source.
 	 *
 	 * @since 1.7.3
 	 * @since 1.8.0 add should_show parameter.
@@ -42,7 +42,7 @@ class Event_Export extends Abstract_Export {
 			! $should_show ||
 			(
 				! $event->virtual_linked_button &&
-				! $event->zoom_display_details
+				! $event->virtual_meeting_display_details
 			)
 		 ) {
 			$fields[ $key_name ] = $this->format_value( get_the_permalink( $event->ID ), $key_name, $type );

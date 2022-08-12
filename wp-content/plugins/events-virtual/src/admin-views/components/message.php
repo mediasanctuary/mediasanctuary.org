@@ -22,7 +22,7 @@ if ( empty( $message ) ) {
 	return;
 }
 
-$message_classes = [ 'tribe-events-virtual-settings-message__wrap' ];
+$message_classes = [ 'tec-events-virtual-settings-message__wrap' ];
 if ( ! empty( $add_classes ) ) {
 	array_push( $message_classes, $add_classes );
 }

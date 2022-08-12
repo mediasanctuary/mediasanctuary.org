@@ -938,10 +938,10 @@ tribe_events_pro_admin.recurrence = {
 		if ( ! end ) {
 			end = $rule.find( '[data-field="end"]' ).attr( 'placeholder' );
 		}
-		
+
 		/**
 		 * Gets the lang attribute of the page’s <html> element, which is set by WP on the server,
-		 * then passes the value to moment js to ensure that all the strings output are translatable. 
+		 * then passes the value to moment js to ensure that all the strings output are translatable.
 		 */
 		moment.locale( document.documentElement.getAttribute( 'lang' ) );
 
