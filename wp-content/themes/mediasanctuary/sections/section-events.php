@@ -17,6 +17,7 @@
 		$events = tribe_get_events( [
 			'posts_per_page' => 10,
 			'start_date'     => 'now',
+			'post_status'    => 'publish',
 			// This commented out query *should* work, but for some mysterious
 			// reason creates an infinite loop condition. Instead we will query
 			// for more posts than we need and break after 3.
