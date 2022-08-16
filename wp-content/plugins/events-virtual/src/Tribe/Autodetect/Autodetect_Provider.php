@@ -14,6 +14,8 @@ use Tribe\Events\Virtual\Meetings\Facebook\Page_API as FB_Page_API;
 use Tribe\Events\Virtual\Meetings\Facebook\Template_Modifications as FB_Template_Modifications;
 use Tribe\Events\Virtual\OEmbed;
 use Tribe\Events\Virtual\Meetings\Zoom\Api as Zoom_API;
+use Tribe\Events\Virtual\Meetings\Webex\Meetings as Webex_Meetings;
+use Tribe\Events\Virtual\Meetings\Google\Meetings as Google_Meet;
 use Tribe\Events\Virtual\Traits\With_Nonce_Routes;
 use WP_Post;
 
@@ -31,6 +33,7 @@ class Autodetect_Provider extends \tad_DI52_ServiceProvider {
 	/**
 	 * Registers the bindings, actions and filters required by the Autodetect provider to work.
 	 *
+	 * @since 1.10.1 updated route to ignore capabilities.
 	 * @since 1.8.0
 	 */
 	public function register() {
@@ -42,7 +45,7 @@ class Autodetect_Provider extends \tad_DI52_ServiceProvider {
 		$this->add_filters();
 		$this->hook_templates();
 
-		$this->route_admin_by_nonce( $this->admin_routes(), $this->get_autodetect_admin_ajax_capability() );
+		$this->public_route_by_nonce( $this->admin_routes() );
 	}
 
 	/**
@@ -63,6 +66,8 @@ class Autodetect_Provider extends \tad_DI52_ServiceProvider {
 	protected function add_filters() {
 		add_filter( 'tec_events_virtual_autodetect_source', [ $this, 'filter_virtual_autodetect_facebook_video' ], 10, 5 );
 		add_filter( 'tec_events_virtual_autodetect_source', [ $this, 'filter_virtual_autodetect_oembed' ], 100, 5 );
+		add_filter( 'tec_events_virtual_autodetect_source', [ $this, 'filter_virtual_autodetect_webex' ], 30, 5 );
+		add_filter( 'tec_events_virtual_autodetect_source', [ $this, 'filter_virtual_autodetect_google' ], 50, 5 );
 		add_filter( 'tec_events_virtual_autodetect_source', [ $this, 'filter_virtual_autodetect_zoom' ], 10, 5 );
 		add_filter( 'tec_events_virtual_video_source_autodetect_field_video', [ $this, 'filter_virtual_autodetect_field_video' ], 10, 5 );
 		add_filter( 'tec_events_virtual_video_source_autodetect_field_video-source', [ $this, 'filter_virtual_autodetect_field_source' ], 15, 5 );
@@ -146,6 +151,42 @@ class Autodetect_Provider extends \tad_DI52_ServiceProvider {
         return $this->container->make( OEmbed::class )
                         ->filter_virtual_autodetect_oembed( $autodetect, $video_url, $video_source, $event, $ajax_data );
     }
+
+	/**
+	 * Filter the autodetect source to detect if a Webex link.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param array<string|mixed> $autodetect   An array of the autodetect defaults.
+	 * @param string              $video_url    The url to use to autodetect the video source.
+	 * @param string              $video_source The optional name of the video source to attempt to autodetect.
+	 * @param \WP_Post|null       $event        The event post object, as decorated by the `tribe_get_event` function.
+	 * @param array<string|mixed> $ajax_data    An array of extra values that were sent by the ajax script.
+	 *
+	 * @return array<string|mixed> An array of the autodetect results.
+	 */
+	public function filter_virtual_autodetect_webex( $autodetect, $video_url, $video_source, $event, $ajax_data ) {
+		return $this->container->make( Webex_Meetings::class )
+		                ->filter_virtual_autodetect_webex( $autodetect, $video_url, $video_source, $event, $ajax_data );
+	}
+
+	/**
+	 * Filter the autodetect source to detect if a Google Meet link.
+	 *
+	 * @since 1.11.0
+	 *
+	 * @param array<string|mixed> $autodetect   An array of the autodetect defaults.
+	 * @param string              $video_url    The url to use to autodetect the video source.
+	 * @param string              $video_source The optional name of the video source to attempt to autodetect.
+	 * @param \WP_Post|null       $event        The event post object, as decorated by the `tribe_get_event` function.
+	 * @param array<string|mixed> $ajax_data    An array of extra values that were sent by the ajax script.
+	 *
+	 * @return array<string|mixed> An array of the autodetect results.
+	 */
+	public function filter_virtual_autodetect_google( $autodetect, $video_url, $video_source, $event, $ajax_data ) {
+		return $this->container->make( Google_Meet::class )
+		                ->filter_virtual_autodetect_google( $autodetect, $video_url, $video_source, $event, $ajax_data );
+	}
 
 	/**
 	 * Filter the autodetect source to detect if a Zoom link.

@@ -9,10 +9,11 @@
 
 namespace Tribe\Events\Virtual\Meetings;
 
+use Tribe\Events\Virtual\Integrations\Api_Response;
 use Tribe\Events\Virtual\Meetings\Zoom\Event_Export as Zoom_Event_Export;
 use Tribe\Events\Virtual\Meetings\Zoom\Classic_Editor;
+use Tribe\Events\Virtual\Meetings\Zoom\Migration;
 use Tribe\Events\Virtual\Meetings\Zoom\Migration_Notice;
-use Tribe\Events\Virtual\Meetings\Zoom\Settings;
 use Tribe\Events\Virtual\Event_Meta;
 use Tribe\Events\Virtual\Meetings\Zoom\Event_Meta as Zoom_Meta;
 use Tribe\Events\Virtual\Meetings\Zoom\Api;
@@ -118,21 +119,7 @@ class Zoom_Provider extends Meeting_Provider {
 	 */
 	public function render_classic_meeting_link_ui( $file, $entry_point, \Tribe__Template $template ) {
 		$this->container->make( Zoom\Classic_Editor::class )
-						->render_initial_zoom_setup_options( $template->get( 'post' ) );
-	}
-
-	/**
-	 * Renders the Zoom API controls related to the display of the Zoom Meeting link.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string           $file        The path to the template file, unused.
-	 * @param string           $entry_point The name of the template entry point, unused.
-	 * @param \Tribe__Template $template    The current template instance.
-	 */
-	public function render_classic_display_controls( $file, $entry_point, \Tribe__Template $template ) {
-		$this->container->make( Zoom\Classic_Editor::class )
-						->render_classic_display_controls( $template->get( 'post' ) );
+						->render_initial_setup_options( $template->get( 'post' ) );
 	}
 
 	/**
@@ -154,21 +141,17 @@ class Zoom_Provider extends Meeting_Provider {
 	}
 
 	/**
-	 * Check Zoom Meeting in the admin on every load.
+	 * Check Zoom Meeting in the admin.
 	 *
 	 * @since 1.0.4
+	 * @since 1.9.0 - moved logic to Password->check_admin_zoom_meeting().
 	 *
 	 * @param \WP_Post $event The event post object.
 	 *
 	 * @return bool|void Whether the update completed.
 	 */
 	public function check_admin_zoom_meeting( $event ) {
-		if ( ! $event instanceof \WP_Post ) {
-			// We should only act on event posts, else bail.
-			return $event;
-		}
-
-		return $this->container->make( Password::class )->update_password_from_zoom( $event );
+		return $this->container->make( Password::class )->check_admin_zoom_meeting( $event );
 	}
 
 	/**
@@ -190,30 +173,15 @@ class Zoom_Provider extends Meeting_Provider {
 	}
 
 	/**
-	 * Check Zoom Meeting on Front End and Set Transient.
+	 * Check Zoom Meeting on Front End.
 	 *
 	 * @since 1.0.4
+	 * @since 1.9.0 - moved logic to Password->check_zoom_meeting().
 	 *
 	 * @return bool|void Whether the update completed.
 	 */
 	public function check_zoom_meeting() {
-
-		if ( ! is_singular( Events_Plugin::POSTTYPE ) ) {
-			return;
-		}
-
-		global $post;
-
-		$transient_name = $post->ID . 'zoom_pw_last_check';
-
-		$last_check = (string) get_transient( $transient_name );
-		if ( $last_check ) {
-			return;
-		}
-
-		set_transient( $transient_name, true, HOUR_IN_SECONDS );
-
-		return $this->container->make( Password::class )->update_password_from_zoom( $post );
+		return $this->container->make( Password::class )->check_zoom_meeting();
 	}
 
 	/**
@@ -226,6 +194,19 @@ class Zoom_Provider extends Meeting_Provider {
 	}
 
 	/**
+	 * If there is no original account for Zoom, save the first one to use to update individual events.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param array<string,mixed>  An array of Accounts formatted for options dropdown.
+	 * @param array<string|string> $account_data The array of data for an account to add to the list.
+	 * @param string               $api_id       The id of the API in use.
+	 */
+	public function update_original_account( $accounts, $account_data, $app_id ) {
+		$this->container->make( Migration::class )->update_original_account( $accounts, $account_data, $app_id );
+	}
+
+	/**
 	 * Hooks the template required for the integration to work.
 	 *
 	 * @since 1.0.0
@@ -235,13 +216,6 @@ class Zoom_Provider extends Meeting_Provider {
 		add_action(
 			'tribe_template_entry_point:events-virtual/admin-views/virtual-metabox/container/video-source:video_sources',
 			[ $this, 'render_classic_meeting_link_ui' ],
-			10,
-			3
-		);
-
-		add_action(
-			'tribe_template_entry_point:events-virtual/admin-views/virtual-metabox/container/display:before_ul_close',
-			[ $this, 'render_classic_display_controls' ],
 			10,
 			3
 		);
@@ -289,8 +263,8 @@ class Zoom_Provider extends Meeting_Provider {
 
 		tribe_asset(
 			tribe( Plugin::class ),
-			'tribe-events-virtual-zoom-admin-js',
-			'events-virtual-zoom-admin.js',
+			'tribe-events-virtual-api-admin-js',
+			'events-virtual-api-admin.js',
 			[ 'jquery', 'tribe-dropdowns' ],
 			'admin_enqueue_scripts',
 			[
@@ -302,7 +276,6 @@ class Zoom_Provider extends Meeting_Provider {
 					'name' => 'tribe_events_virtual_placeholder_strings',
 					'data' => [
 						'video'         => Event_Meta::get_video_source_text(),
-						'removeConfirm' => self::get_zoom_confirmation_to_remove_connection_text(),
 					],
 				],
 			]
@@ -324,21 +297,14 @@ class Zoom_Provider extends Meeting_Provider {
 
 		tribe_asset(
 			tribe( Plugin::class ),
-			'tribe-events-virtual-zoom-settings-js',
-			'events-virtual-zoom-settings.js',
+			'tribe-events-virtual-api-settings-js',
+			'events-virtual-api-settings.js',
 			[ 'jquery' ],
 			'admin_enqueue_scripts',
 			[
 				'conditionals' => [
 					'operator' => 'OR',
 					[ $admin_helpers, 'is_screen' ],
-				],
-				'localize' => [
-					'name' => 'tribe_events_virtual_settings_strings',
-					'data' => [
-						'refreshConfirm' => self::get_zoom_confirmation_to_refresh_account(),
-						'deleteConfirm'  => self::get_zoom_confirmation_to_delete_account(),
-					],
 				],
 			]
 		);
@@ -395,18 +361,6 @@ class Zoom_Provider extends Meeting_Provider {
 		}
 
 		$meeting_handler->update( $event );
-	}
-
-	/**
-	 * Get authorized field template.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param Api $api An instance of the Zoom API handler.
-	 * @param Url $url An instance of the URL handler.
-	 */
-	public function zoom_api_authorize_fields( $api, $url ) {
-		$this->container->make( Template_Modifications::class )->add_zoom_api_authorize_fields( $api, $url );
 	}
 
 	/**
@@ -471,51 +425,6 @@ class Zoom_Provider extends Meeting_Provider {
 	}
 
 	/**
-	 * Get the confirmation text for removing a Zoom connection.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @return string The confirmation text.
-	 */
-	public static function get_zoom_confirmation_to_remove_connection_text() {
-		return _x(
-			'Are you sure you want to remove this Zoom meeting from this event? This operation cannot be undone.',
-			'The message to display to confirm a user would like to remove the Zoom connection from an event.',
-			'events-virtual'
-		);
-	}
-
-	/**
-	 * Get the confirmation text for refreshing a Zoom account.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @return string The confirmation text.
-	 */
-	public static function get_zoom_confirmation_to_refresh_account() {
-		return _x(
-			'Before refreshing the connection, make sure you are logged into the Zoom account in this browser.',
-			'The message to display before a user attempts to refresh a Zoom account connection.',
-			'events-virtual'
-		);
-	}
-
-	/**
-	 * Get the confirmation text for deleting a Zoom account.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @return string The confirmation text.
-	 */
-	public static function get_zoom_confirmation_to_delete_account() {
-		return _x(
-			'Are you sure you want to delete this Zoom connection? This operation cannot be undone. Existing meetings tied to this account will not be impacted.',
-			'The message to display to confirm a user would like to delete a Zoom account.',
-			'events-virtual'
-		);
-	}
-
-	/**
 	 * Filters whether embed video control is hidden.
 	 *
 	 * @param boolean $is_hidden Whether the embed video control is hidden.
@@ -524,7 +433,14 @@ class Zoom_Provider extends Meeting_Provider {
 	 * @return boolean Whether the embed video control is hidden.
 	 */
 	public function filter_display_embed_video_hidden( $is_hidden, $event ) {
-		return $event->virtual_meeting && tribe( self::class )->get_slug() === $event->virtual_meeting_provider;
+		if (
+			! $event->virtual_meeting
+			|| tribe( self::class )->get_slug() !== $event->virtual_meeting_provider
+		) {
+			return $is_hidden;
+		}
+
+		return true;
 	}
 
 	/**
@@ -550,18 +466,17 @@ class Zoom_Provider extends Meeting_Provider {
 	 */
 	public function admin_routes() {
 		return [
-			Oauth::$authorize_nonce_action   => $this->container->callback( OAuth::class, 'handle_auth_request' ),
-			OAuth::$deauthorize_nonce_action => $this->container->callback( OAuth::class, 'handle_deauth_request' ),
-			Meetings::$create_action         => $this->container->callback( Meetings::class, 'ajax_create' ),
-			Meetings::$update_action         => $this->container->callback( Meetings::class, 'ajax_update' ),
-			Meetings::$remove_action         => $this->container->callback( Meetings::class, 'ajax_remove' ),
-			Webinars::$create_action         => $this->container->callback( Webinars::class, 'ajax_create' ),
-			Webinars::$update_action         => $this->container->callback( Webinars::class, 'ajax_update' ),
-			Webinars::$remove_action         => $this->container->callback( Webinars::class, 'ajax_remove' ),
-			API::$select_action              => $this->container->callback( API::class, 'ajax_selection' ),
-			Users::$validate_user_action     => $this->container->callback( Users::class, 'validate_user' ),
-			Settings::$status_action         => $this->container->callback( Settings::class, 'ajax_status' ),
-			Settings::$delete_action         => $this->container->callback( Settings::class, 'ajax_delete' ),
+			Meetings::$create_action       => $this->container->callback( Meetings::class, 'ajax_create' ),
+			Meetings::$update_action       => $this->container->callback( Meetings::class, 'ajax_update' ),
+			Meetings::$remove_action       => $this->container->callback( Meetings::class, 'ajax_remove' ),
+			Webinars::$create_action       => $this->container->callback( Webinars::class, 'ajax_create' ),
+			Webinars::$update_action       => $this->container->callback( Webinars::class, 'ajax_update' ),
+			Webinars::$remove_action       => $this->container->callback( Webinars::class, 'ajax_remove' ),
+			Users::$validate_user_action   => $this->container->callback( Users::class, 'validate_user' ),
+			Oauth::$authorize_nonce_action => $this->container->callback( OAuth::class, 'handle_auth_request' ),
+			API::$select_action            => $this->container->callback( Classic_Editor::class, 'ajax_selection' ),
+			API::$status_action            => $this->container->callback( API::class, 'ajax_status' ),
+			API::$delete_action            => $this->container->callback( API::class, 'ajax_delete' ),
 		];
 	}
 
@@ -579,9 +494,9 @@ class Zoom_Provider extends Meeting_Provider {
 
 		$video_sources[] = [
 			'text'     => _x( 'Zoom Account', 'The name of the video source.', 'events-virtual' ),
-			'id'       => Zoom_Meta::$key_zoom_source_id,
-			'value'    => Zoom_Meta::$key_zoom_source_id,
-			'selected' => Zoom_Meta::$key_zoom_source_id === $post->virtual_video_source,
+			'id'       => Zoom_Meta::$key_source_id,
+			'value'    => Zoom_Meta::$key_source_id,
+			'selected' => Zoom_Meta::$key_source_id === $post->virtual_video_source,
 		];
 
 		return $video_sources;
@@ -639,9 +554,9 @@ class Zoom_Provider extends Meeting_Provider {
 
 		$autodetect_sources[] = [
 			'text'     => _x( 'Zoom', 'The name of the autodetect source.', 'events-virtual' ),
-			'id'       => Zoom_Meta::$key_zoom_source_id,
-			'value'    => Zoom_Meta::$key_zoom_source_id,
-			'selected' => Zoom_Meta::$key_zoom_source_id === $autodetect_source,
+			'id'       => Zoom_Meta::$key_source_id,
+			'value'    => Zoom_Meta::$key_source_id,
+			'selected' => Zoom_Meta::$key_source_id === $autodetect_source,
 		];
 
 		return $autodetect_sources;
@@ -663,6 +578,22 @@ class Zoom_Provider extends Meeting_Provider {
 	public function filter_virtual_autodetect_field_accounts( $autodetect_fields, $video_url, $autodetect_source, $event, $ajax_data ) {
 		return $this->container->make( Classic_Editor::class )
 		                ->classic_autodetect_video_source_accounts( $autodetect_fields, $video_url, $autodetect_source, $event, $ajax_data );
+	}
+
+	/**
+	 * Filters the API error message.
+	 *
+	 * @since 1.11.0
+	 *
+	 * @param string              $api_message The API error message.
+	 * @param array<string,mixed> $body        The json_decoded request body.
+	 * @param Api_Response        $response    The response that will be returned. A non `null` value
+	 *                                         here will short-circuit the response.
+	 *
+	 * @return string              $api_message        The API error message.
+	 */
+	public function filter_api_error_message( $api_message, $body, $response ) {
+		return $this->container->make( Api::class )->filter_api_error_message( $api_message, $body, $response );
 	}
 
 	/**
@@ -696,8 +627,9 @@ class Zoom_Provider extends Meeting_Provider {
 		add_filter( 'tec_events_virtual_export_fields', [ $this, 'filter_zoom_source_google_calendar_parameters' ], 10, 5 );
 		add_filter( 'tec_events_virtual_export_fields', [ $this, 'filter_zoom_source_ical_feed_items' ], 10, 5 );
 		add_filter( 'tec_events_virtual_autodetect_video_sources', [ $this, 'add_autodetect_source' ], 20, 3 );
-				add_filter( 'tec_events_virtual_video_source_autodetect_field_all', [ $this, 'filter_virtual_autodetect_field_accounts' ], 20, 5 );
-				add_filter( 'tec_events_virtual_video_source_autodetect_field_zoom-accounts', [ $this, 'filter_virtual_autodetect_field_accounts' ], 20, 5 );
+		add_filter( 'tec_events_virtual_video_source_autodetect_field_all', [ $this, 'filter_virtual_autodetect_field_accounts' ], 20, 5 );
+		add_filter( 'tec_events_virtual_video_source_autodetect_field_zoom-accounts', [ $this, 'filter_virtual_autodetect_field_accounts' ], 20, 5 );
+		add_filter( 'tec_events_virtual_meetings_api_error_message', [ $this, 'filter_api_error_message' ], 20, 3 );
 	}
 
 	/**
@@ -714,6 +646,7 @@ class Zoom_Provider extends Meeting_Provider {
 		add_action( 'tribe_events_virtual_metabox_save', [ $this, 'on_metabox_save' ], 10, 2 );
 		add_action( 'save_post_tribe_events', [ $this, 'on_post_save' ], 100, 3 );
 		add_action( 'admin_init', [ $this, 'render_migration_notice' ] );
+		add_action( 'tec_events_virtual_before_update_api_accounts', [ $this, 'update_original_account' ], 10, 3 );
 	}
 
 	/**
@@ -737,87 +670,75 @@ class Zoom_Provider extends Meeting_Provider {
 	}
 
 	/**
-	 * Adds placeholder text for Zoom links.
+	 * Get the confirmation text for refreshing a Zoom account.
 	 *
-	 * @since 1.0.0
-	 * @deprecated 1.7.2 - With the video source dropdown Zoom no longer modifies the video url field.
+	 * @since 1.5.0
+	 * @deprecated 1.9.0 - Use API::get_confirmation_to_refresh_account()
 	 *
-	 * @param string        $text  The placeholder text.
-	 * @param \WP_Post|null $event The events post object we're editing.
-	 *
-	 * @return string The placeholder text.
+	 * @return string The confirmation text.
 	 */
-	public static function zoom_link_placeholder_text( $text, $event ) {
-		_deprecated_function( __FUNCTION__, '1.7.2', 'Deprecated with no replacement.' );
-		if (
-			empty( $event->virtual_meeting )
-			|| tribe( self::class )->get_slug() !== $event->virtual_meeting_provider
-		) {
-			return $text;
-		}
-
-		return self::get_zoom_link_placeholder_text();
+	public static function get_zoom_confirmation_to_refresh_account() {
+		_deprecated_function( __METHOD__, '1.9.0', 'Use API::get_confirmation_to_refresh_account().' );
+		return tribe( Api::class )->get_confirmation_to_refresh_account();
 	}
 
 	/**
-	 * Get default placeholder text and filter it.
+	 * Get the confirmation text for deleting a Zoom account.
+	 *
+	 * @since 1.5.0
+	 * @deprecated 1.9.0 - Use API::get_confirmation_to_delete_account()
+	 *
+	 * @return string The confirmation text.
+	 */
+	public static function get_zoom_confirmation_to_delete_account() {
+		_deprecated_function( __METHOD__, '1.9.0', 'Use API::get_confirmation_to_delete_account().' );
+		return tribe( Api::class )->get_confirmation_to_delete_account();
+	}
+
+	/**
+	 * Get authorized field template.
 	 *
 	 * @since 1.0.0
-	 * @deprecated 1.7.2 - With the video source dropdown Zoom no longer modifies the video url field.
+	 * @deprecated 1.9.0
 	 *
-	 * @return string The placeholder text.
+	 * @param Api $api An instance of the Zoom API handler.
+	 * @param Url $url An instance of the URL handler.
 	 */
-	public static function get_zoom_link_placeholder_text() {
-		_deprecated_function( __FUNCTION__, '1.7.2', 'Deprecated with no replacement.' );
-		$text = __( 'Zoom link generated', 'events-virtual' );
+	public function zoom_api_authorize_fields( $api, $url ) {
+		_deprecated_function( __METHOD__, '1.9.0', 'No replacement, authorization system replaced with whodat and multiple accounts.' );
+		$this->container->make( Template_Modifications::class )->add_zoom_api_authorize_fields( $api, $url );
+	}
 
-		/**
-		 * Allows filtering of the placeholder text for when Zoom overrides the URL field.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param string $text The current placeholder text.
-		 */
-		return apply_filters(
-			'tribe_events_virtual_zoom_link_placeholder_text',
-			$text
+	/**
+	 * Renders the Zoom API controls related to the display of the Zoom Meeting link.
+	 *
+	 * @since 1.0.0
+	 * @deprecated 1.9.0 - Moved to a common location to be shared with other APIs.
+	 *
+	 * @param string           $file        The path to the template file, unused.
+	 * @param string           $entry_point The name of the template entry point, unused.
+	 * @param \Tribe__Template $template    The current template instance.
+	 */
+	public function render_classic_display_controls( $file, $entry_point, \Tribe__Template $template ) {
+		_deprecated_function( __METHOD__, '1.9.0', 'Hooks::render_classic_display_controls()' );
+		$this->container->make( Zoom\Classic_Editor::class )
+						->render_classic_display_controls( $template->get( 'post' ) );
+	}
+
+	/**
+	 * Get the confirmation text for removing a Zoom connection.
+	 *
+	 * @since 1.5.0
+	 * @deprecated 1.9.0
+	 *
+	 * @return string The confirmation text.
+	 */
+	public static function get_zoom_confirmation_to_remove_connection_text() {
+		_deprecated_function( __METHOD__, '1.9.0', 'Method removed with no replacement.' );
+		return _x(
+			'Are you sure you want to remove this Zoom meeting from this event? This operation cannot be undone.',
+			'The message to display to confirm a user would like to remove the Zoom connection from an event.',
+			'events-virtual'
 		);
-	}
-
-	/**
-	 * Filters the video source virtual url.
-	 *
-	 * @deprecated 1.7.2 - With the video source dropdown Zoom no longer modifies the video url field.
-	 *
-	 * @param string  $virtual_url The virtual url.
-	 * @param WP_Post $event       The event object.
-	 *
-	 * @return string The filtered virtual url.
-	 */
-	public function filter_video_source_virtual_url( $virtual_url, $event ) {
-		_deprecated_function( __FUNCTION__, '1.7.2', 'Deprecated with no replacement.' );
-		if (
-			empty( $event->virtual_meeting )
-			|| tribe( self::class )->get_slug() !== $event->virtual_meeting_provider
-		) {
-			return $virtual_url;
-		}
-
-		return '';
-	}
-
-	/**
-	 * Filters whether the video source virtual url is disabled.
-	 *
-	 * @deprecated 1.7.2 - With the video source dropdown Zoom no longer modifies the video url field.
-	 *
-	 * @param boolean $is_disabled Whether the video source virtual url is disabled.
-	 * @param WP_Post $event       The event object.
-	 *
-	 * @return boolean Whether the video source virtual url is disabled.
-	 */
-	public function filter_video_source_virtual_url_disabled( $is_disabled, $event ) {
-		_deprecated_function( __FUNCTION__, '1.7.2', 'Deprecated with no replacement.' );
-		return $event->virtual_meeting && tribe( self::class )->get_slug() === $event->virtual_meeting_provider;
 	}
 }

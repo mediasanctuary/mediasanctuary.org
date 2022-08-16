@@ -30,7 +30,7 @@ tribe.events.facebookSettingsAdmin = tribe.events.facebookSettingsAdmin || {};
 	 * @type {PlainObject}
 	 */
 	obj.selectors = {
-		messageWrap: '.tribe-events-virtual-settings-message__wrap',
+		messageWrap: '.tec-events-virtual-settings-message__wrap',
 		facebookContainer: '.tribe-settings-facebook-integration',
 		facebookSaveApp: '.tribe-settings-facebook-application__connect-container',
 		facebookSaveAppBtn: '.tribe-settings-facebook-application__connect-button',
@@ -305,7 +305,7 @@ tribe.events.facebookSettingsAdmin = tribe.events.facebookSettingsAdmin || {};
 		const messageWrap = `
 			<div
 				id="tribe-events-virtual-settings-message"
-				class="tribe-events-virtual-settings-message__wrap ${messageClass}"
+				class="tec-events-virtual-settings-message__wrap ${messageClass}"
 			>
 				${message}
 			</div>

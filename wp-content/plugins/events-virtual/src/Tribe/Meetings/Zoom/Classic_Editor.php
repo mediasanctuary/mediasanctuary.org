@@ -12,6 +12,7 @@ namespace Tribe\Events\Virtual\Meetings\Zoom;
 use Tribe\Events\Virtual\Admin_Template;
 use Tribe\Events\Virtual\Event_Meta as Virtual_Events_Meta;
 use Tribe\Events\Virtual\Event_Meta as Virtual_Meta;
+use Tribe\Events\Virtual\Integrations\Editor\Abstract_Classic_Labels;
 use Tribe\Events\Virtual\Meetings\Zoom\Event_Meta as Zoom_Meta;
 use Tribe\Events\Virtual\Metabox;
 use Tribe__Utils__Array as Arr;
@@ -23,81 +24,42 @@ use Tribe__Utils__Array as Arr;
  *
  * @package Tribe\Events\Virtual\Meetings\Zoom
  */
-class Classic_Editor {
-	/**
-	 * The URLs handler for the integration.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var Url
-	 */
-	protected $url;
+class Classic_Editor extends Abstract_Classic_Labels {
 
 	/**
-	 * The template handler instance.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var Admin_Template
+	 * {@inheritDoc}
 	 */
-	protected $template;
+	public static $api_name = 'Zoom';
 
 	/**
-	 * An instance of the Zoom API handler.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var Api
+	 * {@inheritDoc}
 	 */
-	protected $api;
+	public static $api_id = 'zoom';
 
 	/**
 	 * Classic_Editor constructor.
 	 *
+	 * @since 1.9.0 - Add Settings Dependency
+	 *
 	 * @param Url            $url      The URLs handler for the integration.
 	 * @param Api            $api      An instance of the Zoom API handler.
 	 * @param Admin_Template $template An instance of the Template class to handle the rendering of admin views.
+	 * @param Settings       $settings An instance of the Webex Settings handler.
+	 * @param Users          $users    The Users handler for the integration.
 	 */
-	public function __construct( Url $url, Api $api, Admin_Template $template ) {
-		$this->url = $url;
-		$this->api = $api;
+	public function __construct( Url $url, Api $api, Admin_Template $template, Settings $settings, Users $users ) {
+		$this->url      = $url;
+		$this->api      = $api;
 		$this->template = $template;
+		$this->settings = $settings;
+		$this->users    = $users;
 	}
 
 	/**
-	 * Renders, echoing to the page, the Zoom API initial setup options.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @param null|\WP_Post|int $post            The post object or ID of the event to generate the controls for, or `null` to use
-	 *                                           the global post object.
-	 * @param bool              $echo            Whether to echo the template contents to the page (default) or to return it.
-	 *
-	 * @return string The template contents, if not rendered to the page.
+	 * {@inheritDoc}
 	 */
-	public function render_initial_zoom_setup_options( $post = null, $echo = true ) {
-		$post = tribe_get_event( $post );
-
-		if ( ! $post instanceof \WP_Post ) {
-			return '';
-		}
-
-		// Make sure to apply the Zoom properties to the event.
-		Zoom_Meta::add_event_properties( $post );
-
-		// If an account is found, load the meeting generation links or details.
-		$account_id = $this->api->get_account_id_in_admin();
-		if ( $account_id ) {
-			return $this->render_meeting_link_generator( $post, true, false, $account_id );
-		}
-
-		// Get the list of accounts and if none show the link to setup zoom integration.
-		$accounts = $this->api->get_formatted_account_list( true );
-		if ( empty( $accounts ) ) {
-			return $this->render_api_connection_link( $post, $echo );
-		}
-
-		return $this->render_account_selection( $post, $accounts );
+	public function add_event_properties( $post = null ) {
+		return Zoom_Meta::add_event_properties( $post );
 	}
 
 	/**
@@ -122,8 +84,8 @@ class Classic_Editor {
 			return '';
 		}
 
-		// Make sure to apply the Zoom properties to the event.
-		Zoom_Meta::add_event_properties( $post );
+		// Make sure to apply the properties to the event.
+		$post = $this->add_event_properties( $post );
 
 		// Load the Zoom account.
 		$account_loaded = $this->api->load_account_by_id( $account_id );
@@ -179,225 +141,7 @@ class Classic_Editor {
 			return $this->render_account_disabled_details();
 		}
 
-		return $this->render_initial_zoom_setup_options( $post, $echo );
-	}
-
-	/**
-	 * Renders, echoing to the page, the Zoom API meeting display controls.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param null|\WP_Post|int $post The post object or ID of the event to generate the controls for, or `null` to use
-	 *                                the global post object.
-	 * @param bool              $echo Whether to echo the template contents to the page (default) or to return it.
-	 *
-	 * @return string The template contents, if not rendered to the page.
-	 */
-	public function render_classic_display_controls( $post = null, $echo = true ) {
-		return $this->template->template(
-			'virtual-metabox/zoom/display',
-			[
-				'event'      => $post,
-				'metabox_id' => Metabox::$id,
-			],
-			$echo
-		);
-	}
-
-	/**
-	 * Renders the error details shown to the user when a Zoom Meeting link generation fails.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param int|\WP_Post $event      The event ID or object.
-	 * @param string       $error_body The error details in human-readable form. This can contain HTML
-	 *                                 tags (e.g. links).
-	 * @param bool         $echo       Whether to echo the template to the page or not.
-	 *
-	 * @return string The rendered template contents.
-	 */
-	public function render_meeting_generation_error_details( $event = null, $error_body = null, $echo = true ) {
-		$event = tribe_get_event( $event );
-
-		if ( ! $event instanceof \WP_Post ) {
-			return '';
-		}
-
-		$is_authorized = $this->api->is_ready();
-
-		$link_url   = $is_authorized
-			? $this->url->to_generate_meeting_link( $event )
-			: Settings::admin_url();
-		$link_label = $is_authorized
-			? _x(
-				'Try again',
-				'The label of the button to try and generate a Zoom Meeting or Webinar link again.',
-				'events-virtual'
-			)
-			: $this->get_connect_to_zoom_label();
-
-		if ( null === $error_body ) {
-			$error_body = $this->get_unknown_error_message();
-		}
-		$error_body = wpautop( $error_body );
-
-		return $this->template->template(
-			'virtual-metabox/zoom/meeting-link-error-details',
-			[
-				'remove_link_url'   => $this->get_remove_link( $event ),
-				'remove_link_label' => $this->get_remove_link_label(),
-				'is_authorized'     => $is_authorized,
-				'error_body'        => $error_body,
-				'link_url'          => $link_url,
-				'link_label'        => $link_label,
-			],
-			$echo
-		);
-	}
-
-	/**
-	 * Render the account disabled template.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @param bool $is_loaded    Whether the account is loaded or not.
-	 * @param bool $only_details Whether to echo only the details of the disabled template.
-	 * @param bool $echo         Whether to echo the template to the page or not.
-	 *
-	 * @return string The rendered template contents.
-	 */
-	public function render_account_disabled_details( $is_loaded = true, $only_details = false, $echo = true ) {
-		$disabled_title = $is_loaded
-			? _x(
-				'Zoom Account Disabled',
-				'Header of the disabled account details section when an account is disabled.',
-				'events-virtual'
-			)
-			: _x(
-				'Zoom Account Not Found',
-				'Header of the account details section shown when no account is loaded.',
-				'events-virtual'
-			);
-
-		$disabled_body = $is_loaded
-			? _x(
-				'The Zoom account is disabled on your website, please use the link to go to the API settings and activate it.',
-				'The message to display when a Zoom account is disabled.',
-				'events-virtual'
-			)
-			: _x(
-				'The Zoom account is not found on your website, please use the link and add back the account to your site.',
-				'The message to display when a Zoom account is not found.',
-				'events-virtual'
-			);
-
-		$link_label = $is_loaded
-			? _x(
-				'Enable your account on the settings page',
-				'The label of the button to link back to the settings to enable a Zoom account.',
-				'events-virtual'
-			)
-			: _x(
-				'Add your account on the settings page',
-				'The label of the button to link back to the settings to add a Zoom account.',
-				'events-virtual'
-			);
-
-		if ( $only_details ) {
-			return $this->template->template(
-				'virtual-metabox/zoom/account-disabled-details',
-				[
-					'disabled_title' => $disabled_title,
-					'disabled_body'  => $disabled_body,
-					'link_url'       => Settings::admin_url(),
-					'link_label'     => $link_label,
-				],
-				$echo
-			);
-		}
-
-		return $this->template->template(
-			'virtual-metabox/zoom/account-disabled',
-			[
-				'disabled_title' => $disabled_title,
-				'disabled_body'  => $disabled_body,
-				'link_url'       => Settings::admin_url(),
-				'link_label'     => $link_label,
-			],
-			$echo
-		);
-	}
-
-	/**
-	 * Render no hosts found template.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @param bool $echo Whether to echo the template to the page or not.
-	 *
-	 * @return string The rendered template contents.
-	 */
-	public function render_no_hosts_found( $echo = true ) {
-		$disabled_title = _x(
-				'No Hosts Found',
-				'Header shown if no hosts are found before generating a Zoom meeting or webinar.',
-				'events-virtual'
-			);
-
-		$disabled_body = _x(
-				'The Zoom account could not load any hosts, please follow the link and refresh your account and try again.',
-				'The message shown if no hosts are found before generating a Zoom meeting or webinar.',
-				'events-virtual'
-			);
-
-		$link_label = _x(
-				'Refresh your account on the settings page',
-				'The label of the button to link back to the settings to refresh a zoom account.',
-				'events-virtual'
-			);
-
-		return $this->template->template(
-			'virtual-metabox/zoom/account-disabled',
-			[
-				'disabled_title' => $disabled_title,
-				'disabled_body'  => $disabled_body,
-				'link_url'       => Settings::admin_url(),
-				'link_label'     => $link_label,
-				'echo'           => true,
-			],
-			$echo
-		);
-	}
-
-	/**
-	 * Returns the localized, but not HTML-escaped, message to set up the Zoom integration.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return string The localized, but not HTML-escaped, message to set up the Zoom integration.
-	 */
-	protected function get_connect_to_zoom_label() {
-		return _x(
-			'Set up Zoom integration',
-			'Label for the link to set up the Zoom integration in the event classic editor UI.',
-			'events-virtual'
-		);
-	}
-
-	/**
-	 * Returns the generic message to indicate an error to perform an action in the context of the Zoom API
-	 * integration.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return string The error message, unescaped.
-	 */
-	protected function get_unknown_error_message() {
-		return _x(
-			'Unknown error',
-			'A message to indicate an unknown error happened while interacting with the Zoom API integration.',
-			'events-virtual'
-		);
+		return $this->render_initial_setup_options( $post, $echo );
 	}
 
 	/**
@@ -427,70 +171,6 @@ class Classic_Editor {
 			'Remove Zoom link',
 			'The label for the admin UI control that allows removing the Zoom Meeting or Webinar link from the event.',
 			'events-virtual'
-		);
-	}
-
-	/**
-	 * Renders the dropdown to choose a Zoom account.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @param \WP_Post             $post             The post object of the Event context of the link generation.
-	 * @param array<string|string> $list_of_accounts An array of Zoom Accounts formatted for options dropdown.
-	 * @param bool                 $echo             Whether to print the rendered HTML to the page or not.
-	 *
-	 * @return string|false Either the final content HTML or `false` if the template could be found.
-	 */
-	protected function render_account_selection( \WP_Post $post, array $accounts, $echo = true ) {
-		/**
-		 * Filters the account list to use to generate Zoom Meetings and Webinars.
-		 *
-		 * @since 1.5.0
-		 *
-		 * @param array<string,mixed>  An array of Zoom Accounts formatted for options dropdown.
-		 */
-		$accounts = apply_filters( 'tribe_events_virtual_meetings_zoom_accounts', $accounts );
-
-		return $this->template->template(
-			'virtual-metabox/zoom/accounts',
-			[
-				'event'                   => $post,
-				'offer_or_label'          => _x(
-					'or',
-					'The lowercase "or" label used to offer the creation of a Zoom Meetings or Webinars API link.',
-					'events-virtual'
-				),
-				'select_url'         => $this->get_account_link_selection_url( $post ),
-				'select_label'        => _x(
-					'Next ',
-					'The label used to designate the next step after selecting a Zoom Account.',
-					'events-virtual'
-				),
-				'accounts' => [
-					'label'       => _x(
-						'Choose account:',
-						'The label of the meeting or webinar host.',
-						'events-virtual'
-					),
-					'id'          => 'tribe-events-virtual-zoom-account',
-					'class'       => 'tribe-events-virtual-meetings-zoom__account-dropdown',
-					'name'        => 'tribe-events-virtual-zoom-account',
-					'selected'    =>  '',
-					'attrs'       => [
-						'placeholder'        => _x(
-						    'Select an Account',
-						    'The placeholder for the dropdown to select an account.',
-						    'events-virtual'
-						),
-						'data-prevent-clear' => true,
-						'data-force-search'  => true,
-						'data-options'       => json_encode( $accounts ),
-					],
-				],
-				'remove_link_url'       => $this->get_remove_link( $post ),
-				'remove_link_label'     => $this->get_remove_link_label(),
-			],
-			$echo
 		);
 	}
 
@@ -543,9 +223,7 @@ class Classic_Editor {
 	public function render_multiple_links_generator( \WP_Post $post, $echo = true, $account_id = null, $account_loaded = false ) {
 		$hosts = [];
 		if ( $account_id ) {
-			/** @var \Tribe\Events\Virtual\Meetings\Zoom\Users */
-			$users = tribe( Users::class );
-			$hosts = $users->get_formatted_hosts_list( $account_id );
+			$hosts = $this->users->get_formatted_hosts_list( $account_id );
 		}
 
 		/**
@@ -569,19 +247,25 @@ class Classic_Editor {
 			$message = $this->render_account_disabled_details( true, true, false );
 		}
 
+		$api_id                = $this->api::$api_id;
+		$settings              = $this->api->fetch_user( $account_id, true );
+		$password_requirements = $this->api->get_password_requirements( $settings );
+
 		return $this->template->template(
 			'virtual-metabox/zoom/setup',
 			[
+				'api_id'                  => $api_id,
 				'event'                   => $post,
 				'attrs'                   => [
 					'data-account-id' => $account_id,
+					'data-api-id'     => $api_id,
 				],
 				'offer_or_label'          => _x(
 					'or',
 					'The lowercase "or" label used to offer the creation of a Zoom Meetings or Webinars API link.',
 					'events-virtual'
 				),
-				'account_label'            => _x(
+				'account_label'           => _x(
 					'Account: ',
 					'The label used to designate the account of a Zoom Meeting or Webinar.',
 					'events-virtual'
@@ -593,19 +277,19 @@ class Classic_Editor {
 					'events-virtual'
 				),
 				'generation_urls'         => $this->get_link_creation_urls( $post ),
-				'generate_label'        => _x(
+				'generate_label'          => _x(
 					'Create ',
 					'The label used to designate the next step in generation of a Zoom Meeting or Webinar.',
 					'events-virtual'
 				),
-				'hosts' => [
+				'hosts'                   => [
 					'label'       => _x(
 						'Meeting Host',
 						'The label of the meeting or webinar host.',
 						'events-virtual'
 					),
 					'id'          => 'tribe-events-virtual-zoom-host',
-					'class'       => 'tribe-events-virtual-meetings-zoom__host-dropdown',
+					'class'       => 'tec-events-virtual-meetings-api__host-dropdown tribe-events-virtual-meetings-zoom__host-dropdown',
 					'name'        => 'tribe-events-virtual-zoom-host',
 					'selected'    =>  $post->zoom_host_id,
 					'attrs'       => [
@@ -621,10 +305,14 @@ class Classic_Editor {
 						'data-validate-url'  => $this->url->to_validate_user_type( $post ),
 					],
 				],
-				'remove_link_url'      => $this->get_remove_link( $post ),
-				'remove_link_label'    => $this->get_remove_link_label(),
-				'message'              => $message,
-				'zoom_message_classes' => [ 'tec-events-virtual-video-source-zoom-setup__messages-wrap' ],
+				'remove_link_url'          => $this->get_remove_link( $post ),
+				'remove_link_label'        => $this->get_remove_link_label(),
+				'remove_attrs'             => [
+					'data-confirmation' => $this->get_remove_confirmation_text(),
+				],
+				'message'                  => $message,
+				'zoom_message_classes'     => [ 'tec-events-virtual-video-source-api-setup__messages-wrap' ],
+				'password_requirements'    => $password_requirements,
 			],
 			$echo
 		);
@@ -707,8 +395,8 @@ class Classic_Editor {
 	 */
 	public function get_meeting_details( \WP_Post $post, $echo = true, $account_id = null, $account_loaded = false ) {
 
-		// Make sure to apply the Zoom properties to the event.
-		$post = Zoom_Meta::add_event_properties( $post );
+		// Make sure to apply the properties to the event.
+		$post = $this->add_event_properties( $post );
 
 		// Load the account for the API instance.
 		if ( ! $account_loaded ) {
@@ -756,9 +444,7 @@ class Classic_Editor {
 
 		$alt_hosts = [];
 		if ( $account_id ) {
-			/** @var \Tribe\Events\Virtual\Meetings\Zoom\Users */
-			$users = tribe( Users::class );
-			$alt_hosts = $users->get_alternative_users( [], $post->zoom_alternative_hosts, $post->zoom_host_email, $account_id );
+			$alt_hosts = $this->users->get_alternative_users( [], $post->zoom_alternative_hosts, $post->zoom_host_email, $account_id );
 		}
 
 		/**
@@ -781,7 +467,7 @@ class Classic_Editor {
 
 		$connected_msg = '';
 		$manual_connected = get_post_meta( $post->ID, Virtual_Events_Meta::$key_autodetect_source, true );
-		if ( Zoom_Meta::$key_zoom_source_id === $manual_connected ) {
+		if ( Zoom_Meta::$key_source_id === $manual_connected ) {
 			$connected_msg = Webinars::$meeting_type === $meeting_type
 				? _x(
 					'This webinar is manually connected to the event and changes to the event will not alter the Zoom webinar.',
@@ -798,24 +484,29 @@ class Classic_Editor {
 		return $this->template->template(
 			'virtual-metabox/zoom/details',
 			[
-				'connected'             => Zoom_Meta::$key_zoom_source_id === $manual_connected,
-				'connected_msg'         => $connected_msg,
-				'event'                 => $post,
-				'details_title'         => $details_title,
-				'update_link_url'       => $update_link_url,
-				'remove_link_url'       => $this->get_remove_link( $post ),
-				'remove_link_label'     => $this->get_remove_link_label(),
-				'account_name'          => $this->api->loaded_account_name,
+				'attrs'                    => [
+					'data-depends'            => '#tribe-events-virtual-video-source',
+					'data-condition'          => static::$api_id,
+					'data-update-url'         => $update_link_url,
+					'data-zoom-id'            => $post->zoom_meeting_id,
+					'data-selected-alt-hosts' => $post->zoom_alternative_hosts,
+				],
+				'connected'                => Zoom_Meta::$key_source_id === $manual_connected,
+				'connected_msg'            => $connected_msg,
+				'event'                    => $post,
+				'details_title'            => $details_title,
+				'update_link_url'          => $update_link_url,
+				'remove_link_url'          => $this->get_remove_link( $post ),
+				'remove_link_label'        => $this->get_remove_link_label(),
+				'remove_attrs'             => [
+					'data-confirmation' => $this->get_remove_confirmation_text(),
+				],
+				'account_name'             => $this->api->loaded_account_name,
 				'host_label'            => _x(
 					'Host: ',
 					'The label used to designate the host of a Zoom Meeting or Webinar.',
 					'events-virtual'
 				),
-				'attrs'       => [
-					'data-update-url'         => $update_link_url,
-					'data-zoom-id'            => $post->zoom_meeting_id,
-					'data-selected-alt-hosts' => $post->zoom_alternative_hosts,
-				],
 				'zoom_id'               => $post->zoom_meeting_id,
 				'id_label'              => _x(
 					'ID: ',
@@ -854,102 +545,51 @@ class Classic_Editor {
 	}
 
 	/**
-	 * Renders the link to offer the user the option to connect to the Zoom API.
-	 *
-	 * @since 1.1.1
-	 *
-	 * @param \WP_Post $post The post object of the Event context of the link generation.
-	 * @param bool     $echo Whether to print the rendered HTML to the page or not.
-	 *
-	 * @return string|false Either the final content HTML or `false` if the template could be found.
+	 * {@inheritDoc}
 	 */
-	protected function render_api_connection_link( \WP_Post $post, $echo = true ) {
-		return $this->template->template(
-			'virtual-metabox/zoom/controls',
-			[
-				'event'               => $post,
-				'generate_link_label' => $this->get_connect_to_zoom_label(),
-				'generate_link_url'   => Settings::admin_url(),
-			],
-			$echo
-		);
-	}
-
-	/**
-	 * Add the Zoom accounts dropdown to autodetect fields.
-	 *
-	 * @since 1.8.0
-	 *
-	 * @param array<string|mixed> $autodetect   An array of the autodetect resukts.
-	 * @param string              $video_url    The url to use to autodetect the video source.
-	 * @param string              $video_source The optional name of the video source to attempt to autodetect.
-	 * @param \WP_Post|null       $event        The event post object, as decorated by the `tribe_get_event` function.
-	 * @param array<string|mixed> $ajax_data    An array of extra values that were sent by the ajax script.
-	 *
-	 * @return array<string|mixed> An array of the autodetect results.
-	 */
-	public function classic_autodetect_video_source_accounts( $autodetect_fields, $video_url, $video_source, $event, $ajax_data ) {
-		if ( ! $event instanceof \WP_Post ) {
-			return $autodetect_fields;
+	public function ajax_selection( $nonce = null ) {
+		if ( ! $this->check_ajax_nonce( $this->api::$select_action, $nonce ) ) {
+			return false;
 		}
 
-		// All video sources are checked on the first autodetect run, only prevent checking of this source if it is set.
-		if ( ! empty( $video_source ) && Zoom_Meta::$key_zoom_source_id !== $video_source ) {
-			return $autodetect_fields;
+		$event = $this->check_ajax_post();
+
+		if ( ! $event ) {
+			return false;
 		}
 
-		// Get optional chosen zoom account.
-		$zoom_account = Arr::get( $ajax_data, 'zoom-accounts', '' );
+		$zoom_account_id = tribe_get_request_var( 'zoom_account_id' );
+		if ( empty( $zoom_account_id ) ) {
+			$zoom_account_id = tribe_get_request_var( 'account_id' );
+		}
+		// If no account id found, fail the request.
+		if ( empty( $zoom_account_id ) ) {
+			$error_message = _x( 'The Zoom Account ID is missing to access the API.', 'Account ID is missing error message.', 'events-virtual' );
+			$this->render_meeting_generation_error_details( $event, $error_message, true );
 
-		$accounts = $this->api->get_formatted_account_list( true );
-
-		if ( empty( $accounts ) ) {
-			$autodetect_fields[] = [
-				'path'  => 'virtual-metabox/zoom/autodetect-no-account',
-				'field' => [
-					'classes_wrap' => [ 'tribe-dependent', 'tribe-events-virtual-meetings-autodetect-zoom__message-wrap', 'error' ],
-					'message'        => _x(
-						'No Zoom accounts found, use the link to authorize a new account or reauthorize an existing account:',
-						'The message for smart url/autodetect when there are no valid zoom accouns.',
-						'events-virtual'
-					),
-					'setup_link_label' => $this->get_connect_to_zoom_label(),
-					'setup_link_url'   => Settings::admin_url(),
-					'wrap_attrs'   => [
-						'data-depends'   => '#tribe-events-virtual-autodetect-source',
-						'data-condition' => 'zoom',
-					],
-				]
-			];
-		} else {
-			$autodetect_fields[] = [
-				'path'  => 'components/dropdown',
-				'field' => [
-					'label'        => _x( 'Choose account:', 'The label of zoom accounts dropdown.', 'events-virtual' ),
-					'id'           => 'tribe-events-virtual-autodetect-zoom-account',
-					'class'        => 'tribe-events-virtual-meetings-autodetect-zoom__account-dropdown',
-					'classes_wrap' => [ 'tribe-dependent', 'tribe-events-virtual-meetings-autodetect-zoom__account-wrap' ],
-					'name'         => 'tribe-events-virtual-autodetect[zoom-account]',
-					'selected'     => $zoom_account,
-					'attrs'        => [
-						'placeholder'        => _x(
-							'Select an Account',
-							'The placeholder for the dropdown to select an account.',
-							'events-virtual'
-						),
-						'data-prevent-clear' => true,
-						'data-hide-search'   => true,
-						'data-options'       => json_encode( $accounts ),
-					],
-					'wrap_attrs'   => [
-						'data-depends'   => '#tribe-events-virtual-autodetect-source',
-						'data-condition' => 'zoom',
-					],
-				]
-			];
+			wp_die();
 		}
 
-		return $autodetect_fields;
+		$account_loaded = $this->api->load_account_by_id( $zoom_account_id );
+		// If there is no token, then stop as the connection will fail.
+		if ( ! $account_loaded ) {
+			$error_message = _x( 'The Zoom Account could not be loaded to access the API. Please try refreshing the account in the Events API Settings.', 'Zoom account loading error message.', 'events-virtual' );
+
+			$this->render_meeting_generation_error_details( $event, $error_message, true );
+
+			wp_die();
+		}
+
+		$post_id = $event->ID;
+
+		// Set the video source to zoo.
+		update_post_meta( $post_id, Virtual_Events_Meta::$key_video_source, Zoom_Meta::$key_source_id );
+
+		// get the setup
+		$this->render_meeting_link_generator( $event, true, false, $zoom_account_id );
+		$this->api->save_account_id_to_post( $post_id, $zoom_account_id );
+
+		wp_die();
 	}
 
 	/**
@@ -1017,5 +657,111 @@ class Classic_Editor {
 		$data = apply_filters_deprecated( 'tribe_events_virtual_zoom_meeting_link_generation_urls', $data, $post );
 
 		return $data;
+	}
+
+	/**
+	 * Renders, echoing to the page, the Zoom API initial setup options.
+	 *
+	 * @since 1.5.0
+	 * @deprecated 1.9.0 Use render_initial_setup_options()
+	 *
+	 * @param null|\WP_Post|int $post            The post object or ID of the event to generate the controls for, or `null` to use
+	 *                                           the global post object.
+	 * @param bool              $echo            Whether to echo the template contents to the page (default) or to return it.
+	 *
+	 * @return string The template contents, if not rendered to the page.
+	 */
+	public function render_initial_zoom_setup_options( $post = null, $echo = true ) {
+		_deprecated_function( __FUNCTION__, '1.9.0', get_class( $this ) . '::render_initial_setup_options()' );
+		$post = tribe_get_event( $post );
+
+		if ( ! $post instanceof \WP_Post ) {
+			return '';
+		}
+
+		// Make sure to apply the properties to the event.
+		$post = $this->add_event_properties( $post );
+
+		// If an account is found, load the meeting generation links or details.
+		$account_id = $this->api->get_account_id_in_admin();
+		if ( $account_id ) {
+			return $this->render_meeting_link_generator( $post, true, false, $account_id );
+		}
+
+		// Get the list of accounts and if none show the link to setup Zoom integration.
+		$accounts = $this->api->get_formatted_account_list( true );
+		if ( empty( $accounts ) ) {
+			return $this->render_api_connection_link( $post, $echo );
+		}
+
+		return $this->render_account_selection( $post, $accounts );
+	}
+
+	/**
+	 * Renders, echoing to the page, the Zoom API meeting display controls.
+	 *
+	 * @since 1.0.0
+	 * @deprecated 1.9.0 Use Metabox::render_classic_display_controls()
+	 *
+	 * @param null|\WP_Post|int $post The post object or ID of the event to generate the controls for, or `null` to use
+	 *                                the global post object.
+	 * @param bool              $echo Whether to echo the template contents to the page (default) or to return it.
+	 *
+	 * @return string The template contents, if not rendered to the page.
+	 */
+	public function render_classic_display_controls( $post = null, $echo = true ) {
+		_deprecated_function( __FUNCTION__, '1.9.0', 'Metabox::render_classic_display_controls()' );
+
+		return $this->template->template(
+			'virtual-metabox/zoom/display',
+			[
+				'event'      => $post,
+				'metabox_id' => Metabox::$id,
+			],
+			$echo
+		);
+	}
+
+	/**
+	 * Returns the localized, but not HTML-escaped, message to set up the Zoom integration.
+	 *
+	 * @since 1.0.0
+	 * @deprecated 1.9.0 Use get_connect_to_label()
+	 *
+	 * @return string The localized, but not HTML-escaped, message to set up the Zoom integration.
+	 */
+	protected function get_connect_to_zoom_label() {
+		_deprecated_function( __FUNCTION__, '1.9.0', get_class( $this ) . '::get_connect_to_label()' );
+
+		return _x(
+			'Set up Zoom integration',
+			'Label for the link to set up the Zoom integration in the event classic editor UI.',
+			'events-virtual'
+		);
+	}
+
+	/**
+	 * Renders the link to offer the user the option to connect to the Zoom API.
+	 *
+	 * @since 1.1.1
+	 * @deprecated 1.9.0
+	 *
+	 * @param \WP_Post $post The post object of the Event context of the link generation.
+	 * @param bool     $echo Whether to print the rendered HTML to the page or not.
+	 *
+	 * @return string|false Either the final content HTML or `false` if the template could be found.
+	 */
+	protected function render_api_connection_link( \WP_Post $post, $echo = true ) {
+		_deprecated_function( __FUNCTION__, '1.9.0', 'No replacement' );
+
+		return $this->template->template(
+			'virtual-metabox/zoom/controls',
+			[
+				'event'               => $post,
+				'generate_link_label' => $this->get_connect_to_zoom_label(),
+				'generate_link_url'   => Settings::admin_url(),
+			],
+			$echo
+		);
 	}
 }

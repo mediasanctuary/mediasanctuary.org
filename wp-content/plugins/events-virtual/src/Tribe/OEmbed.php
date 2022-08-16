@@ -350,7 +350,7 @@ class OEmbed {
 		$autodetect_fields[] = [
 			'path' => 'components/text',
 			'field' => [
-				'classes_wrap'  => [ 'tribe-events-virtual-meetings-control', 'tribe-events-virtual-video-source__virtual-url-wrap' ],
+				'classes_wrap'  => [ 'tec-events-virtual-meetings-control', 'tribe-events-virtual-video-source__virtual-url-wrap' ],
 				'label'         => _x( 'Video', 'The label for the autodetect video source input.', 'events-virtual' ),
 				'id'            => "{$metabox_id}-virtual-url",
 				'classes_input' => [ 'tribe-events-virtual-video-source__virtual-url-input' ],

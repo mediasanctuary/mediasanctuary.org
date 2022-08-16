@@ -39,7 +39,7 @@ class Event_Export extends Abstract_Export {
 	}
 
 	/**
-	 * Modify the export parameters for the zoom source.
+	 * Modify the export parameters for the Facebook Live Video source.
 	 *
 	 * @since 1.7.3
 	 * @since 1.8.0 add should_show parameter.

@@ -1,11 +1,11 @@
 === The Events Calendar PRO ===
 
-Contributors: theeventscalendar, borkweb, bordoni, brianjessee, aguseo, camwynsp, GeoffBel, geoffgraham, jentheo, leahkoerper, lucatume, neillmcshea, vicskf, zbtirrell, juanfra
+Contributors: theeventscalendar, borkweb, bordoni, brianjessee, aguseo, camwynsp, GeoffBel, jentheo, leahkoerper, lucatume, neillmcshea, vicskf, zbtirrell, juanfra
 Tags: events, calendar, event, venue, organizer, dates, date, google maps, conference, workshop, concert, meeting, seminar, summit, class, the events calendar, widget, pro
 Donate link: https://evnt.is/29
 Requires at least: 5.6
-Stable tag: 5.12.1
-Tested up to: 5.9.0
+Stable tag: 5.14.5
+Tested up to: 6.0.1
 Requires PHP: 7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -208,6 +208,90 @@ Our Premium Plugins:
 
 == Changelog ==
 
+= [5.14.5] 2022-08-09 =
+
+* Feature - Add Elementor styling support to the `Events View` widget. [ECP-1106]
+* Fix - Add integrations to ensure the Brizy Page Builder plays well with the [tribe_events] shortcode. [ECP-1094]
+* Fix - Correct issue with Week and Day views on datepicker change. [ECP-1136]
+* Fix - Ensure the taxonomy dropdown works in Beaver Builder FE editor. [ECP-1129]
+* Tweak - Update the calendar print design. [TEC-4425]
+* Tweak - Added new function load_brizy_builder_integration to selectively load integrations for Brizy Page Builder. [ECP-1094]
+* Language - 31 new strings added, 313 updated, 0 fuzzied, and 318 obsoleted.
+
+= [5.14.4] 2022-07-20 =
+
+* Feature - Enabled Filter Bar on the admin Events manager. [FBAR-270]
+* Tweak - Add Tag filtering to the TEC `Events List` and `Events View` Elementor widgets. [ECP-1140]
+* Fix - Correct errors when filtering shortcodes or widgets by taxonomy. [ECP-1186]
+* Fix - Ensure custom fields are displayed correctly on the Elementor `Event Widget` for events created using the Block Editor. [ECP-1191]
+* Fix - Ensure the recurring event tooltip displays correctly on the Elementor `Event Widget` for events created using the classic editor. [ECP-1196]
+
+= [5.14.3] 2022-07-06 =
+
+* Fix - Ensure the `Next` arrow in `Photo` view navigates to the correct page when the `Main Events Page` is set as the homepage. [TEC-4247]
+* Fix - Correct admin url used to determine when assets are loaded for Event Settings. [ECP-1175]
+* Tweak - Remove the `Advanced Post Manager` plugin admin notice. [ECP-1163]
+
+= [5.14.2.1] 2022-06-09 =
+
+* Fix - Correct an accidental reversion of 5.14.1.1.
+
+= [5.14.2] 2022-06-09 =
+
+* Fix - Add rel="noindex" to links that point to empty week views so as to not dilute SEO with empty results. [TEC-4354]
+* Fix - Squash bugs related to the Elementor styling support to the `Event` widget. [ECP-1105]
+* Tweak - Changed views: `v2/week/top-bar/nav/next`, `v2/week/top-bar/nav/prev`
+
+= [5.14.1.1] 2022-06-01 =
+
+* Fix - Using the "Recurring event instances" setting no longer triggers 404 for single event pages. [ECP-1174]
+
+= [5.14.1] 2022-05-31 =
+
+* Tweak - Replace Elementor widget usage of font awesome icons with built-in eicons. [ECP-1143]
+* Tweak - Add transport to Customizer to support live preview for view selector. [TEC-4055]
+* Fix - Events hidden from Upcoming List on the frontend will still show on the Events Manager. [ECP-1001]
+* Fix - Ensure we sort distances as numbers, not strings, in Map View. [ECP-1033]
+* Fix - Don't try to access an undefined index on the week view widget. [ECP-1165]
+* Fix - Prevent fatal error in PHP 8.0 in recurring events by ensure queue processor methods do_deletions, do_creations, and do_updates return an array.  [ECP-1112]
+* Fix - On Event tag archives only show events with the tag, change the single event tag links to use the event tag archive, and add link to event tag archive in the admin. [TEC-4314]
+* Language - 0 new strings added, 10 updated, 0 fuzzied, and 0 obsoleted
+
+= [5.14.0.1] 2022-05-20 =
+
+* Fix - URL resolution for the Settings Page on Events Manager now pointing to the new pages correctly [ECP-1164]
+
+= [5.14.0] 2022-05-19 =
+
+* Version - Events Calendar PRO 5.14.0 is only compatible with The Events Calendar 5.15.0 and higher
+* Feature - Add compatibility to the new TEC admin menu system. [ET-1335]
+* Language - 0 new strings added, 150 updated, 0 fuzzied, and 43 obsoleted
+
+= [5.13.1] 2022-04-28 =
+
+* Version - Events Calendar PRO 5.13.1 is only compatible with The Events Calendar 5.14.2 and higher.
+* Feature - Add Elementor styling support to the `Events List` widget. [ECP-1104]
+* Feature - Add Elementor styling support to the `Event` widget. [ECP-1105]
+* Feature - Add Elementor styling support to the `Event Countdown` widget. [ECP-1075]
+* Tweak - Change action for script enqueues to ensure they are loaded in the correct order on FSE themes. [TEC-4267]
+* Tweak - Changed views: `v2/widgets/widget-countdown/complete`.
+* Fix - Ensure widget filter dropdowns populate correctly in page builders. [ECP-651]
+* Fix - Ensure fast-forward link respects categories from shortcodes. [ECP-957]
+* Language - 41 new strings added, 139 updated, 0 fuzzied, and 0 obsoleted.
+
+= [5.13.0] 2022-04-21 =
+
+* Feature - Added the ability to `exclude-category` and `exclude-tag` on the `[tribe_events]` shortcode. [ECP-1120]
+* Feature - Added the ability to restrict events by event `author`, `organizer`, and `venue` on `[tribe_events]` shortcode. [ECP-1123]
+* Feature - Elementor support for restricting events by category on the Events View Elementor widget. [ECP-1120]
+* Feature - Elementor support for restricting events by author, organizer, and venue on the Events View Elementor widget. [ECP-1123]
+* Language - 5 new strings added, 29 updated, 0 fuzzied, and 0 obsoleted
+
+= [5.12.2] 2022-03-17 =
+
+* Fix - Ensure the `Week View` is displayed correctly on Astra theme.  [ECP-1073]
+* Language - 0 new strings added, 1 updated, 0 fuzzied, and 0 obsoleted
+
 = [5.12.1] 2022-02-15 =
 
 * Version - Events Calendar PRO 5.12.1 is only compatible with The Events Calendar 5.14.0 and higher.
@@ -367,7 +451,7 @@ Our Premium Plugins:
 
 = [5.4.0.2] 2021-03-04 =
 
-* Fix - Prevent fatal error in Elementor integration caused by an extra comma. `src/Tribe/Integrations/Elementor/Widgets/Widget_Event_List.php@L94` [BTRIA-768]
+* Fix - Prevent fatal error in Elementor integration caused by an extra comma. `src/Tribe/Integrations/Elementor/Widgets/Widget_Event_List.php@L94` [ECP-727]
 * Fix - Make sure we have not deprecated usage of `FILTER_SANITIZE_MAGIC_QUOTES` for PHP 7.4+.
 
 = [5.4.0.1] 2021-03-03 =

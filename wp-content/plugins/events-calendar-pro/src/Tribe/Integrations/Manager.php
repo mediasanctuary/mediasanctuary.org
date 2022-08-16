@@ -2,6 +2,8 @@
 
 use Tribe\Events\Pro\Integrations\Elementor\Service_Provider as Elementor_Integration;
 use Tribe\Events\Pro\Integrations\Fusion\Service_Provider as Fusion_Integration;
+use Tribe__Events__Pro__Integrations__Beaver_Builder__Page_Builder as BB_Page_Builder;
+use Tribe\Events\Pro\Integrations\Brizy_Builder\Service_Provider as Brizy_Builder;
 
 /**
  * Class Tribe__Events__Pro__Integrations__Manager
@@ -80,6 +82,25 @@ class Tribe__Events__Pro__Integrations__Manager {
 		return true;
 	}
 
+	/**
+	 * Loads Beaver Builder integration classes and event listeners.
+	 *
+	 * @since 5.13.1
+	 *
+	 * @return bool
+	 */
+	private function load_beaver_builder_integration() {
+		if ( ! class_exists( 'FLBuilderLoader' ) ) {
+			return false;
+		}
+
+		tribe_singleton( 'pro.integrations.beaver-builder', BB_Page_Builder::class, array( 'hook' ) );
+		tribe( 'pro.integrations.beaver-builder' );
+
+
+		return true;
+	}
+
 
 	/**
 	 * Conditionally loads the classes needed to integrate with third-party plugins.
@@ -91,8 +112,10 @@ class Tribe__Events__Pro__Integrations__Manager {
 		$this->load_wpml_integration();
 		$this->load_wpseo_integration();
 		$this->load_site_origin_integration();
+		$this->load_beaver_builder_integration();
 		$this->load_elementor_integration();
 		$this->load_fusion_integration();
+		$this->load_brizy_builder_integration();
 	}
 
 	/**
@@ -119,5 +142,18 @@ class Tribe__Events__Pro__Integrations__Manager {
 		}
 
 		tribe_register_provider( Fusion_Integration::class );
+	}
+
+	/**
+	 * Loads the Brizy integrations if the Brizy builder plugin is currently active.
+	 *
+	 * @since 5.14.5
+	 */
+	public function load_brizy_builder_integration() {
+		if ( ! defined( 'BRIZY_FILE' ) || empty( BRIZY_FILE ) ) {
+			return;
+		}
+
+		tribe_register_provider( Brizy_Builder::class );
 	}
 }

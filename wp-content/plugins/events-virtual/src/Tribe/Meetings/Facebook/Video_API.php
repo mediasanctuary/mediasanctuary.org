@@ -10,7 +10,7 @@
 namespace Tribe\Events\Virtual\Meetings\Facebook;
 
 use Tribe\Events\Virtual\Event_Meta as Virtual_Events_Meta;
-use Tribe\Events\Virtual\Meetings\Api_Response;
+use Tribe\Events\Virtual\Integrations\Api_Response;
 use Tribe\Events\Virtual\Meetings\Facebook\Event_Meta as Facebook_Meta;
 use Tribe\Events\Virtual\Template;
 

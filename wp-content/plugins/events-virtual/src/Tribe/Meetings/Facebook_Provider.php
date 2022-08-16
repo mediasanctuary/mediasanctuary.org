@@ -235,7 +235,7 @@ class Facebook_Provider extends Meeting_Provider {
 	}
 
 	/**
-	 * Filter the Google Calendar export fields for a Zoom source event.
+	 * Filter the Google Calendar export fields for a Facebook Live source event.
 	 *
 	 * @since 1.7.3
 	 * @since 1.8.0 add should_show parameter.
@@ -254,7 +254,7 @@ class Facebook_Provider extends Meeting_Provider {
 	}
 
 	/**
-	 * Filter the iCal export fields for a Zoom source event.
+	 * Filter the iCal export fields for a Facebook Live source event.
 	 *
 	 * @since 1.7.3
 	 * @since 1.8.0 add should_show parameter.

@@ -159,7 +159,7 @@ class Abstract_Meetings {
 			return false;
 		}
 
-		$zoom_host_id = tribe_get_request_var( 'zoom_host_id' );
+		$zoom_host_id = tribe_get_request_var( 'host_id' );
 		// If no host id found, fail the request as account level apps do not support 'me'
 		if ( empty( $zoom_host_id ) ) {
 			$error_message = _x( 'The Zoom Host ID is missing to access the API.', 'Host ID is missing error message.', 'events-virtual' );
@@ -171,7 +171,7 @@ class Abstract_Meetings {
 		}
 
 		// Load the account.
-		$zoom_account_id = tribe_get_request_var( 'zoom_account_id' );
+		$zoom_account_id = tribe_get_request_var( 'account_id' );
 		// if no id, fail the request.
 		if ( empty( $zoom_account_id ) ) {
 			$error_message = _x( 'The Zoom Account ID is missing to access the API.', 'Account ID is missing error message.', 'events-virtual' );
@@ -221,8 +221,10 @@ class Abstract_Meetings {
 			return true;
 		}
 
+		$password_requirements = tribe_get_request_var( 'password_requirements', [] );
+
 		// Get the password requirements for Meetings.
-		$password_requirements = $this->password->get_password_requirements();
+		$password_requirements = $this->password->get_password_requirements( $password_requirements );
 
 		/**
 		 * Filters the password for the Zoom Meeting.
@@ -281,6 +283,7 @@ class Abstract_Meetings {
 				'headers' => [
 					'authorization' => $this->api->get_token_authorization_header(),
 					'content-type'  => 'application/json; charset=utf-8',
+					'accept'        => 'application/json;',
 				],
 				'body'    => wp_json_encode( $body ),
 			],
@@ -385,6 +388,7 @@ class Abstract_Meetings {
 				'headers' => [
 					'Authorization' => $this->api->token_authorization_header(),
 					'Content-Type'  => 'application/json; charset=utf-8',
+					'accept'        => 'application/json;',
 				],
 				'body'    => wp_json_encode( $body ),
 			],
@@ -541,7 +545,7 @@ class Abstract_Meetings {
 		update_post_meta( $post_id, $prefix . 'zoom_meeting_data', $this->encryption->encrypt( $response_body, true ) );
 
 		// Set the video source to prevent issues with loading the information later.
-		update_post_meta( $post_id, Virtual_Events_Meta::$key_video_source, Zoom_Meta::$key_zoom_source_id );
+		update_post_meta( $post_id, Virtual_Events_Meta::$key_video_source, Zoom_Meta::$key_source_id );
 
 		$map = [
 			$prefix . 'zoom_meeting_id'             => 'id',
@@ -596,7 +600,7 @@ class Abstract_Meetings {
 		Zoom_Meta::delete_meeting_meta( $event->ID );
 
 		// Send the HTML for the meeting creation.
-		$this->classic_editor->render_initial_zoom_setup_options( $event, true );
+		$this->classic_editor->render_initial_setup_options( $event, true );
 
 		wp_die();
 
@@ -624,7 +628,7 @@ class Abstract_Meetings {
 
 		// If manually connected, do not update Zoom meeting or webinar when event details change.
 		$manual_connected = get_post_meta( $event->ID, Virtual_Events_Meta::$key_autodetect_source, true );
-		if ( Zoom_Meta::$key_zoom_source_id === $manual_connected ) {
+		if ( Zoom_Meta::$key_source_id === $manual_connected ) {
 			return;
 		}
 
@@ -708,6 +712,7 @@ class Abstract_Meetings {
 				'headers' => [
 					'Authorization' => $this->api->get_token_authorization_header(),
 					'Content-Type'  => 'application/json; charset=utf-8',
+					'accept'        => 'application/json;',
 				],
 				'body'    => wp_json_encode( $body ),
 			],
@@ -782,6 +787,7 @@ class Abstract_Meetings {
 				'headers' => [
 					'Authorization' => $this->api->get_token_authorization_header(),
 					'Content-Type'  => 'application/json; charset=utf-8',
+					'accept'        => 'application/json;',
 				],
 			],
 			Api::GET_RESPONSE_CODE
