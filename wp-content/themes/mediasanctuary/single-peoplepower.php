@@ -51,7 +51,22 @@
       <div class="content">
         <?php
           echo $thumb;
-          echo '<div class="copy">'; the_content(); echo '</div">';
+          echo '<div class="copy">'; the_content();
+
+          $initiatives = get_field('initiatives');
+          if (! empty($initiatives)) {
+            echo '<p>Involved with: ';
+            foreach ($initiatives as $index => $initiative) {
+              if ($index > 0) {
+                echo ', ';
+              }
+              echo '<a href="/initiatives/' . esc_attr($initiative->slug) . '/">';
+              echo esc_html($initiative->name) . '</a>';
+            }
+            echo "</p>\n";
+          }
+
+          echo '</div">';
         ?>
       </div>
 
