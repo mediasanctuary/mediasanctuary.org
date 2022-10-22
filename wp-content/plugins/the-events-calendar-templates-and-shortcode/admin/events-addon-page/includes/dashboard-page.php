@@ -1,4 +1,7 @@
 <?php
+if (!defined('ABSPATH')) {
+  exit;
+} 
 /**
  *
  * This page serve as dashboard template
@@ -33,7 +36,7 @@ if (file_exists(WP_PLUGIN_DIR . '/' . $plugin_slug)) {
     $installed_plugins = get_plugins();//get_option('active_plugins', false);
     $is_active = false;
     $classes .= ' installed-plugin';
-
+    $plugin_file = null;
     foreach ($installed_plugins as $plugin=>$data) {
       $thisPlugin = substr($plugin,0,strpos($plugin,'/'));
       if ( strcasecmp($thisPlugin, $plugin_slug) == 0 ) {
@@ -41,7 +44,7 @@ if (file_exists(WP_PLUGIN_DIR . '/' . $plugin_slug)) {
           if( isset($plugin_version) && version_compare( $plugin_version, $data['Version'] ) >0 ){
             $available_version = $plugin_version ;
             $plugin_version =  $data['Version'];
-            $update_stats = '<span class="plugin-update-available">Update Available: v '.$available_version.'</span>';
+            $update_stats = '<span class="plugin-update-available">Update Available: v '.wp_kses_post($available_version).'</span>';
           }
 
           if( is_plugin_active($plugin) ){
@@ -49,7 +52,7 @@ if (file_exists(WP_PLUGIN_DIR . '/' . $plugin_slug)) {
             $classes .= ' active-plugin';
             break;
           }else{
-            $plguin_file = $plugin;
+            $plugin_file = $plugin;
             $classes .= ' inactive-plugin';
           }
 
@@ -58,23 +61,25 @@ if (file_exists(WP_PLUGIN_DIR . '/' . $plugin_slug)) {
     if( $is_active ){
         $button = '<button class="button button-disabled">Active</button>';
     }else{
-        $wp_nonce = wp_create_nonce( 'cool-plugins-activate-' . $plugin_slug );
-        $button .= '<button class="button activate-now cool-plugins-addon plugin-activator" data-plugin-tag="'.$tag.'" data-plugin-id="'.$plguin_file.'" data-action-nonce="'.$wp_nonce.'" data-action-name="cool-plugins-activate-'.$plugin_slug.'">Activate</button>';
+        $wp_nonce = wp_create_nonce( 'ect-plugins-activate-' . $plugin_slug );
+        $button .= '<button class="button activate-now cool-plugins-addon plugin-activator" data-plugin-tag="'.esc_attr($tag).'" data-plugin-id="'.esc_attr($plugin_file).'" 
+        data-action-nonce="'.esc_attr($wp_nonce).'" data-plugin-slug="'.esc_attr($plugin_slug).'">Activate</button>';
     }
 } else {
-    $wp_nonce = wp_create_nonce('cool-plugins-download-' . $plugin_slug );
+    $wp_nonce = wp_create_nonce('ect-plugins-download-' . $plugin_slug );
     $classes .= ' available-plugin';
     if( $plugin_url !=null ){
-      $button = '<button class="button install-now cool-plugins-addon plugin-downloader" data-plugin-tag="'.$tag.'" data-url="' . $plugin_url . '" data-action-nonce="' . $wp_nonce . '" data-action-name="cool-plugins-download-'.$plugin_slug.'">Install</button>';
+      $button = '<button class="button install-now cool-plugins-addon plugin-downloader" data-plugin-tag="'.esc_attr($tag).'"  data-action-nonce="' .esc_attr($wp_nonce) . '" data-plugin-slug="'.esc_attr($plugin_slug).'">Install</button>';
+    
     }elseif( isset($plugin_pro_url) ){
-      $button = '<a class="button install-now cool-plugins-addon pro-plugin-downloader" href="'.$plugin_pro_url.'" target="_new">Buy Pro</a>';
+      $button = '<a class="button install-now cool-plugins-addon pro-plugin-downloader" href="'.esc_url($plugin_pro_url).'" target="_new">Buy Pro</a>';
     }
 }
 
 // Remove install / activate button if pro version is already installed
 if( $pro_already_installed === true ){
   $pro_ver = $this->disable_plugins[ $plugin_slug ] ;
-  $button = '<button class="button button-disabled" title="This plugin is no more required as you already have '.$pro_ver['pro'].'">Pro Installed</button>';
+  $button = '<button class="button button-disabled" title="This plugin is no more required as you already have '.esc_attr($pro_ver['pro']).'">Pro Installed</button>';
 }
 
     // All php condition formation is over here
@@ -82,21 +87,21 @@ if( $pro_already_installed === true ){
 
 
 
-<div class="<?php echo $classes; ?>">
+<div class="<?php echo esc_attr($classes); ?>">
   <div class="plugin-block-inner">
 
     <div class="plugin-logo">
-    <img src="<?php echo $plugin_logo; ?>" width="250px" />
+    <img src="<?php echo esc_url($plugin_logo); ?>" width="250px" />
     </div>
 
     <div class="plugin-info">
-      <h4 class="plugin-title"> <?php echo $plugin_name; ?></h4>
-      <div class="plugin-desc"><?php echo $plugin_desc; ?></div>
+      <h4 class="plugin-title"> <?php echo esc_html($plugin_name); ?></h4>
+      <div class="plugin-desc"><?php echo esc_html($plugin_desc); ?></div>
       <div class="plugin-stats">
-      <?php echo $button ; ?> 
+      <?php echo wp_kses_post($button) ; ?> 
       <?php if( isset($plugin_version) && !empty($plugin_version)) : ?>
-        <div class="plugin-version">v <?php echo $plugin_version; ?></div>
-        <?php echo $update_stats; ?>
+        <div class="plugin-version">v <?php echo esc_html($plugin_version); ?></div>
+        <?php echo wp_kses_post($update_stats); ?>
       <?php endif; ?>
       </div>
     </div>

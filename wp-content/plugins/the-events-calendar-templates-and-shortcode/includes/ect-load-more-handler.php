@@ -21,7 +21,7 @@ if ( $all_events ) {
 			if ($prev_event_month != $event_month || ( $prev_event_month == $event_month && $prev_event_year != $event_year ) ) {		
 				$prev_event_month=$event_month;
 				$prev_event_year= $event_year;
-				$date_header= sprintf( "<span class='tribe-events-list-separator-month'><span>%s</span></span>", tribe_get_start_date( $post, false, $month_year_format ) );
+				$date_header= sprintf( "<span class='tribe-events-list-separator-month'><span>%s</span></span>",esc_attr(tribe_get_start_date( $post, false, $month_year_format ) ));
 				$events_date_header.='<!-- Month / Year Headers -->';
 				$events_date_header.=$date_header;	
 			}
@@ -82,7 +82,13 @@ if ( $all_events ) {
 				$ev_cost='<div class="ect-rate-area" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 				<span class="ect-rate-icon"><i class="ect-icon-ticket" aria-hidden="true"></i></span>
 				<span class="ect-rate" itemprop="price" content="'.tribe_get_cost($event_id, false ).'">'.tribe_get_cost($event_id, true ).'</span>
-				<meta itemprop="priceCurrency" content="'.tribe_get_event_meta( $event_id, '_EventCurrencySymbol', true ).'" /></div>';
+				<meta itemprop="priceCurrency" content="'.tribe_get_event_meta( $event_id, '_EventCurrencySymbol', true ).'" />';
+				if( class_exists('Tribe__Tickets__Main') ){
+                    $ev_cost.='<span class="ect-ticket-info">';	
+                    $ev_cost.=ect_tribe_tickets_buy_button(false,$event_id);
+                    $ev_cost.='</span>';
+                }
+				$ev_cost.='</div>';
 		endif;
 		$event_schedule=ect_event_schedule($event_id,$date_format,$template);
 		$ev_time=ect_tribe_event_time($event_id,false);
@@ -104,7 +110,7 @@ if ( $all_events ) {
 		}
 		$event_content='<div class="ect-event-content" itemprop="description" content="'.esc_attr(wp_strip_all_tags( tribe_events_get_the_excerpt($event_id), true )).'">';
 		$event_content.=tribe_events_get_the_excerpt($event_id, wp_kses_allowed_html( 'post' ) );
-		$event_content.='<a href="'.esc_url( tribe_get_event_link($event_id) ).'" class="ect-events-read-more" rel="bookmark">'.esc_html__( 'Find out more', 'the-events-calendar' ).' &raquo;</a></div>';
+		$event_content.='<a href="'.esc_url( tribe_get_event_link($event_id) ).'" class="ect-events-read-more" rel="bookmark">'.esc_html__( 'Find out more', 'ect' ).' &raquo;</a></div>';
 		//event day
 		$event_day='<span class="event-day">'.tribe_get_start_date($event_id, true, 'l').'</span>';
 		//Address

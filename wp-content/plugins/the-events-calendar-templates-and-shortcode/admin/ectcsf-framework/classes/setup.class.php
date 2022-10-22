@@ -7,12 +7,12 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'ECTCSF' ) ) {
-  class ECTCSF {
+if ( ! class_exists( 'ECTCSF_Setup' ) ) {
+  class ECTCSF_Setup {
 
     // Default constants
     public static $premium  = true;
-    public static $version  = '2.2.4';
+    public static $version  = '2.2.8';
     public static $dir      = '';
     public static $url      = '';
     public static $css      = '';
@@ -39,10 +39,13 @@ if ( ! class_exists( 'ECTCSF' ) ) {
 
     private static $instance = null;
 
-    public static function init( $file = __FILE__ ) {
+    public static function init( $file = __FILE__, $premium = true ) {
 
       // Set file constant
       self::$file = $file;
+
+      // Set file constant
+      self::$premium = $premium;
 
       // Set constants
       self::constants();
@@ -80,7 +83,7 @@ if ( ! class_exists( 'ECTCSF' ) ) {
     // Setup frameworks
     public static function setup() {
 
-      // Welcome page
+      // Welcome
       self::include_plugin_file( 'views/welcome.php' );
 
       // Setup admin option framework
@@ -377,18 +380,18 @@ if ( ! class_exists( 'ECTCSF' ) ) {
     // Include files
     public static function includes() {
 
-      // Helpers
+      // Include common functions
       self::include_plugin_file( 'functions/actions.php'  );
       self::include_plugin_file( 'functions/helpers.php'  );
       self::include_plugin_file( 'functions/sanitize.php' );
       self::include_plugin_file( 'functions/validate.php' );
 
-      // Includes free version classes
+      // Include free version classes
       self::include_plugin_file( 'classes/abstract.class.php'      );
       self::include_plugin_file( 'classes/fields.class.php'        );
       self::include_plugin_file( 'classes/admin-options.class.php' );
 
-      // Includes premium version classes
+      // Include premium version classes
       if ( self::$premium ) {
         self::include_plugin_file( 'classes/customize-options.class.php' );
         self::include_plugin_file( 'classes/metabox-options.class.php'   );
@@ -414,6 +417,7 @@ if ( ! class_exists( 'ECTCSF' ) ) {
         'color_group',
         'content',
         'date',
+        'datetime',
         'dimensions',
         'fieldset',
         'gallery',
@@ -494,76 +498,72 @@ if ( ! class_exists( 'ECTCSF' ) ) {
     // Enqueue admin and fields styles and scripts
     public static function add_admin_enqueue_scripts() {
 
-      // Loads scripts and styles only when needed
-      $wpscreen = get_current_screen();
-      $wpscreen = get_current_screen();
-      $get_page_name = isset($wpscreen->base)?$wpscreen->base:'';
-      $screen_id = isset($wpscreen->id)?$wpscreen->id:'';
-      if($screen_id!=='page' && $screen_id!=='events-addons_page_tribe-events-shortcode-template-settings' && $screen_id!=='post') { 
-        return;
-      }
-      if ( ! empty( self::$args['admin_options'] ) ) {
-        foreach ( self::$args['admin_options'] as $argument ) {
-          if ( substr( $wpscreen->id, -strlen( $argument['menu_slug'] ) ) === $argument['menu_slug'] ) {
-            self::$enqueue = true;
+      if ( ! self::$enqueue ) {
+
+        // Loads scripts and styles only when needed
+        $wpscreen = get_current_screen();
+
+        if ( ! empty( self::$args['admin_options'] ) ) {
+          foreach ( self::$args['admin_options'] as $argument ) {
+            if ( substr( $wpscreen->id, -strlen( $argument['menu_slug'] ) ) === $argument['menu_slug'] ) {
+              self::$enqueue = true;
+            }
           }
         }
-      }
 
-      if ( ! empty( self::$args['metabox_options'] ) ) {
-        foreach ( self::$args['metabox_options'] as $argument ) {
-          if ( in_array( $wpscreen->post_type, (array) $argument['post_type'] ) ) {
-            self::$enqueue = true;
+        if ( ! empty( self::$args['metabox_options'] ) ) {
+          foreach ( self::$args['metabox_options'] as $argument ) {
+            if ( in_array( $wpscreen->post_type, (array) $argument['post_type'] ) ) {
+              self::$enqueue = true;
+            }
           }
         }
-      }
 
-      if ( ! empty( self::$args['taxonomy_options'] ) ) {
-        foreach ( self::$args['taxonomy_options'] as $argument ) {
-          if ( in_array( $wpscreen->taxonomy, (array) $argument['taxonomy'] ) ) {
-            self::$enqueue = true;
+        if ( ! empty( self::$args['taxonomy_options'] ) ) {
+          foreach ( self::$args['taxonomy_options'] as $argument ) {
+            if ( in_array( $wpscreen->taxonomy, (array) $argument['taxonomy'] ) ) {
+              self::$enqueue = true;
+            }
           }
         }
-      }
 
-      if ( ! empty( self::$shortcode_instances ) ) {
-        foreach ( self::$shortcode_instances as $argument ) {
-          if ( ( $argument['show_in_editor'] && $wpscreen->base === 'post' ) || $argument['show_in_custom'] ) {
-            self::$enqueue = true;
+        if ( ! empty( self::$shortcode_instances ) ) {
+          foreach ( self::$shortcode_instances as $argument ) {
+            if ( ( $argument['show_in_editor'] && $wpscreen->base === 'post' ) || $argument['show_in_custom'] ) {
+              self::$enqueue = true;
+            }
           }
         }
-      }
 
-      if ( ! empty( self::$args['widget_options'] ) && ( $wpscreen->id === 'widgets' || $wpscreen->id === 'customize' ) ) {
-        self::$enqueue = true;
-      }
+        if ( ! empty( self::$args['widget_options'] ) && ( $wpscreen->id === 'widgets' || $wpscreen->id === 'customize' ) ) {
+          self::$enqueue = true;
+        }
 
-      if ( ! empty( self::$args['customize_options'] ) && $wpscreen->id === 'customize' ) {
-        self::$enqueue = true;
-      }
+        if ( ! empty( self::$args['customize_options'] ) && $wpscreen->id === 'customize' ) {
+          self::$enqueue = true;
+        }
 
-      if ( ! empty( self::$args['nav_menu_options'] ) && $wpscreen->id === 'nav-menus' ) {
-        self::$enqueue = true;
-      }
+        if ( ! empty( self::$args['nav_menu_options'] ) && $wpscreen->id === 'nav-menus' ) {
+          self::$enqueue = true;
+        }
 
-      if ( ! empty( self::$args['profile_options'] ) && ( $wpscreen->id === 'profile' || $wpscreen->id === 'user-edit' ) ) {
-        self::$enqueue = true;
-      }
+        if ( ! empty( self::$args['profile_options'] ) && ( $wpscreen->id === 'profile' || $wpscreen->id === 'user-edit' ) ) {
+          self::$enqueue = true;
+        }
 
-      if ( ! empty( self::$args['comment_options'] ) && $wpscreen->id === 'comment' ) {
-        self::$enqueue = true;
-      }
+        if ( ! empty( self::$args['comment_options'] ) && $wpscreen->id === 'comment' ) {
+          self::$enqueue = true;
+        }
 
-      if ( $wpscreen->id === 'tools_page_ectcsf-welcome' ) {
-        self::$enqueue = true;
+        if ( $wpscreen->id === 'tools_page_ectcsf-welcome' ) {
+          self::$enqueue = true;
+        }
+
       }
 
       if ( ! apply_filters( 'ectcsf_enqueue_assets', self::$enqueue ) ) {
         return;
       }
-
-      // Check for developer mode
-      $min = ( self::$premium && SCRIPT_DEBUG ) ? '' : '.min';
 
       // Admin utilities
       wp_enqueue_media();
@@ -574,11 +574,14 @@ if ( ! class_exists( 'ECTCSF' ) ) {
 
       // Font awesome 4 and 5 loader
       if ( apply_filters( 'ectcsf_fa4', false ) ) {
-        wp_enqueue_style( 'ectcsf-fa', 'https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome'. $min .'.css', array(), '4.7.0', 'all' );
+        wp_enqueue_style( 'ectcsf-fa', 'https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css', array(), '4.7.0', 'all' );
       } else {
-        wp_enqueue_style( 'ectcsf-fa5', 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all'. $min .'.css', array(), '5.15.5', 'all' );
-        wp_enqueue_style( 'ectcsf-fa5-v4-shims', 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/v4-shims'. $min .'.css', array(), '5.15.5', 'all' );
+        wp_enqueue_style( 'ectcsf-fa5', 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css', array(), '5.15.5', 'all' );
+        wp_enqueue_style( 'ectcsf-fa5-v4-shims', 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/v4-shims.min.css', array(), '5.15.5', 'all' );
       }
+
+      // Check for developer mode
+      $min = ( self::$premium && SCRIPT_DEBUG ) ? '' : '.min';
 
       // Main style
       wp_enqueue_style( 'ectcsf', self::include_plugin_url( 'assets/css/style'. $min .'.css' ), array(), self::$version, 'all' );
@@ -750,10 +753,6 @@ if ( ! class_exists( 'ECTCSF' ) ) {
 
       if ( ! empty( $field_type ) ) {
 
-        if ( ! empty( $field['fancy_title'] ) ) {
-          echo '<div class="ectcsf-fancy-title">' . $field['fancy_title'] .'</div>';
-        }
-
         if ( ! empty( $field['title'] ) ) {
           echo '<div class="ectcsf-title">';
           echo '<h4>'. $field['title'] .'</h4>';
@@ -761,7 +760,7 @@ if ( ! class_exists( 'ECTCSF' ) ) {
           echo '</div>';
         }
 
-        echo ( ! empty( $field['title'] ) || ! empty( $field['fancy_title'] ) ) ? '<div class="ectcsf-fieldset">' : '';
+        echo ( ! empty( $field['title'] ) ) ? '<div class="ectcsf-fieldset">' : '';
 
         $value = ( ! isset( $value ) && isset( $field['default'] ) ) ? $field['default'] : $value;
         $value = ( isset( $field['value'] ) ) ? $field['value'] : $value;
@@ -779,7 +778,7 @@ if ( ! class_exists( 'ECTCSF' ) ) {
         echo '<p>'. esc_html__( 'Field not found!', 'ectcsf' ) .'</p>';
       }
 
-      echo ( ! empty( $field['title'] ) || ! empty( $field['fancy_title'] ) ) ? '</div>' : '';
+      echo ( ! empty( $field['title'] ) ) ? '</div>' : '';
       echo '<div class="clear"></div>';
       echo '</div>';
 
@@ -789,4 +788,16 @@ if ( ! class_exists( 'ECTCSF' ) ) {
 
 }
 
-ECTCSF::init( __FILE__ );
+ECTCSF_Setup::init( __FILE__, true );
+
+/**
+ *
+ * Extended Setup Class for Shortland
+ *
+ * @since 1.0.0
+ * @version 1.0.0
+ *
+ */
+if ( ! class_exists( 'ECTCSF' ) ) {
+  class ECTCSF extends ECTCSF_Setup{}
+}

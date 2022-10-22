@@ -1,6 +1,12 @@
 <?php
-
-// Silence is golden.
+if ( !defined( 'ABSPATH' ) ) {
+	header( 'Status: 403 Forbidden' );
+	header( 'HTTP/1.1 403 Forbidden' );
+	exit();
+}
+/**
+ * This file is used only for dynamic styles in timeline layouts.
+ */
 switch($style)
 {
     case "style-1":

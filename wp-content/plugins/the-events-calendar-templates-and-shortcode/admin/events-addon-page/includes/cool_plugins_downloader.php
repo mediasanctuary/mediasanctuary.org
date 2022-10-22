@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This class is used to update/install/rollback a plugin. It extends wordpress core class Plugin_Upgrader
  * Due to the use of package & namaspace, class can not be extend requiring file
@@ -16,16 +17,9 @@
  class cool_plugins_downloader extends Plugin_Upgrader{
 
     public function rollback($url = null,$action='install'){
-        
-        $key = ( isset( $_POST['key'] ) && !empty( $_POST['key'] ) ) ? $_POST['key'] : null;
-
-        if( $key == null || !wp_verify_nonce($key, 'cool_pluguins_downloader')){
-      //      return 'Nonce verification failed!';
-        }
 
         $this->init();
         $this->upgrade_strings();
-
         add_filter( 'upgrader_pre_install', array( $this, 'deactivate_plugin_before_upgrade' ), 10, 2 );
         add_filter( 'upgrader_clear_destination', array( $this, 'delete_old_plugin' ), 10, 4 );
 
@@ -46,6 +40,6 @@
         if ( ! $this->result || is_wp_error( $this->result ) ) {
             return $this->result;
         }
-        return 'Loco Translate rollback successful!';
+        return 'Events Shortcodes For The Events Calendar rollback successful!';
     }
  }

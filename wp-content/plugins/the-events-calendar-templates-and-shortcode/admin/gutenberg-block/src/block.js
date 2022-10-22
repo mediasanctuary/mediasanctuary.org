@@ -185,7 +185,36 @@ export default registerBlockType( 'ect/shortcode', {
 		socialshare: {
 			type: 'string',
 			default: 'no'
+		},
+		datetxt: {
+            type: 'string',
+            default: 'Date'
+		},
+		timetxt: {
+            type: 'string',
+            default: 'Duration'
+		},
+		desctxt:{
+			type: 'string',
+            default: 'Description'
+		},
+		evttitle: {
+            type: 'string',
+            default: 'Event Name'
+		},
+		eventVenueTittle: {
+            type: 'string',
+            default: 'Location'
+		},
+		viewMoreTittle:{
+			type: 'string',
+            default: 'View More'
+		},
+		cateTitle:{
+			type: 'string',
+            default: 'Category'
 		}
+		
 	},
 	// Defining the edit interface
 	edit: props => {
@@ -199,15 +228,14 @@ export default registerBlockType( 'ect/shortcode', {
 			{label:'Masonry Layout(Categories Filters)',value:'masonry-view'},
 			{label:'Toggle List Layout',value:'accordion-view'},
 			{label: 'Minimal List', value: 'minimal-list'},
-			{label: 'Cover View', value: 'cover-view'}
+			{label: 'Advance List', value: 'advance-list'}
 		];
 		const colContains=[-
 			"carousel-view",
 			"grid-view",
 			"masonry-view"
 		];
-
-	
+		
 		const dateFormatsOptions = [
 			{label:"Default (01 January 2019)",value:"default"},
 			{label:"Md,Y (Jan 01, 2019)",value:"MD,Y"},
@@ -279,6 +307,7 @@ export default registerBlockType( 'ect/shortcode', {
                         value={ props.attributes.template }
 						onChange={ ( value ) =>props.setAttributes( { template: value } ) }
 						/>
+	{props.attributes.template!=='advance-list'&&
 					<SelectControl
                         label={ __( 'Select Style' ) }
                         description={ __( 'Select Style' ) }
@@ -286,6 +315,7 @@ export default registerBlockType( 'ect/shortcode', {
                         value={ props.attributes.style }
 						onChange={ ( value ) =>props.setAttributes( { style: value } ) }
 						/>
+			}
 				{colContains.includes(props.attributes.template)&&
 					<SelectControl
                         label={ __( 'Columns' ) }
@@ -379,6 +409,7 @@ export default registerBlockType( 'ect/shortcode', {
 					value={ props.attributes.showdescription }
 					onChange={ ( value ) =>props.setAttributes( { showdescription: value } ) }
 					/>	
+					
 					<TextControl
 							label={ __( 'Start Date | format(YY-MM-DD)' ) }
 							value={ props.attributes.startDate }
@@ -418,11 +449,62 @@ export default registerBlockType( 'ect/shortcode', {
 						] }
                         value={ props.attributes.socialshare }
 						onChange={ ( value ) =>props.setAttributes( { socialshare: value } ) }
-						/>		
+						/>
+						{props.attributes.template=='advance-list'&&
+						<TextControl
+							label={ __( 'Date Heading Label' ) }
+							value={ props.attributes.datetxt }
+							onChange={ ( value ) =>props.setAttributes( { datetxt: value } ) }
+						/>	
+					}
+					{props.attributes.template=='advance-list'&&	
+						<TextControl
+							label={ __( 'Duration Heading Label' ) }
+							value={ props.attributes.timetxt }
+							onChange={ ( value ) =>props.setAttributes( { timetxt: value } ) }
+						/>
+				}
+				{props.attributes.template=='advance-list'&&
+						<TextControl
+							label={ __( 'Title Heading Label' ) }
+							value={ props.attributes.evttitle }
+							onChange={ ( value ) =>props.setAttributes( { evttitle: value } ) }
+						/>
+			}
+			{props.attributes.template=='advance-list'&&
+						<TextControl
+							label={ __( 'Description Heading Label' ) }
+							value={ props.attributes.desctxt }
+							onChange={ ( value ) =>props.setAttributes( { desctxt: value } ) }
+						/>
+		}
+		{props.attributes.template=='advance-list'&&
+						<TextControl
+							label={ __( 'Venue Heading Label' ) }
+							value={ props.attributes.eventVenueTittle }
+							onChange={ ( value ) =>props.setAttributes( { eventVenueTittle: value } ) }
+						/>
+	}
+	{props.attributes.template=='advance-list'&&
+						<TextControl
+							label={ __( 'Find Out More Heading Label' ) }
+							value={ props.attributes.viewMoreTittle }
+							onChange={ ( value ) =>props.setAttributes( { viewMoreTittle: value } ) }
+						/>
+}
+{props.attributes.template=='advance-list'&&
+						<TextControl
+							label={ __( 'Category Heading Label' ) }
+							value={ props.attributes.cateTitle }
+							onChange={ ( value ) =>props.setAttributes( { cateTitle: value } ) }
+						/>
+					}
+					
 					</PanelBody>
 				</InspectorControls>
 			),
 			<div className={ props.className }>
+				{console.log(props.attributes.datetxt)}
 			<LayoutType  LayoutImgPath={LayoutImgPath} layout={props.attributes.template} />
 			<div class="ect-shortcode-block">
 			[events-calendar-templates 
@@ -444,6 +526,13 @@ export default registerBlockType( 'ect/shortcode', {
 			venues="{props.attributes.venues}"
 			organizers="{props.attributes.organizers}"
 			socialshare="{props.attributes.socialshare}"
+			date-lbl="{props.attributes.datetxt}"
+			time-lbl="{props.attributes.timetxt}"
+			event-lbl="{props.attributes.evttitle}"
+			desc-lbl="{props.attributes.desctxt}"
+			location-lbl="{props.attributes.eventVenueTittle}"
+			vm-lbl="{props.attributes.viewMoreTittle}"
+			category-lbl="{props.attributes.cateTitle}"
 			]	  
 			</div>
 			</div>

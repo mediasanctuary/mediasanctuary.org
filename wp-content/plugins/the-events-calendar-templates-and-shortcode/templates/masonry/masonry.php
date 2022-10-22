@@ -34,7 +34,7 @@ else{
 $eventallFilters=implode(",", $ect_event_in);
 
 $events_html.='<div 
-id = "event-'. $event_id.'"'.$cat_colors_attr.' 
+id = "event-'.esc_attr($event_id).'"'.$cat_colors_attr.' 
 class="ect-grid-event '.$grid_style.' '.$event_type.' '.$ect_grid_columns_cls.'" 
 data-filter="'. $eventallFilters.'"  
 itemscope itemtype="http://schema.org/Event">
@@ -45,12 +45,12 @@ itemscope itemtype="http://schema.org/Event">
 
 if($grid_style=="style-2"){
   $events_html.='<div class="ect-grid-date">
-  '.$event_schedule.'
+  '.wp_kses_post($event_schedule).'
   </div>';
 }
 if($grid_style=="style-4"){
   $events_html.='<div class="ect-grid-image-style4">
-  <a href="'.tribe_get_event_link($event_id).'">
+  <a href="'.esc_url(tribe_get_event_link($event_id)).'">
   <img src="'.$ev_post_img.'" title="'.get_the_title($event_id) .'" alt="'.get_the_title($event_id) .'">
   </a>';
   if($socialshare=="yes") { $events_html.=
@@ -60,14 +60,14 @@ if($grid_style=="style-4"){
   }
     //$events_html.='</div>';
   $events_html.='<div class="ect-date-schedule"><div class="ect-date-schedule-wrap">
-'.$event_schedule.'</div></div>';
+'.wp_kses_post($event_schedule).'</div></div>';
 // if($socialshare=="yes") { $events_html.=ect_pro_share_button($event_id); }
 $events_html.= '</div>';
 
 }
 else{
   $events_html.='<div class="ect-grid-image">
-  <a href="'.tribe_get_event_link($event_id).'">
+  <a href="'.esc_url(tribe_get_event_link($event_id)).'">
   <img src="'.$ev_post_img.'" title="'.get_the_title($event_id) .'" alt="'.get_the_title($event_id) .'">
   </a>';
   if($socialshare=="yes") { $events_html.=ect_pro_share_button($event_id); }
@@ -77,7 +77,7 @@ else{
 if($grid_style=="style-3"){
   if(!empty($ect_cate)){
     $events_html.= '<div class="ect-event-category ect-grid-categories">';
-    $events_html.= $ect_cate;
+    $events_html.= wp_kses_post($ect_cate);
     $events_html.= '</div>';
   }
   /*$events_html.='<div class="ect-grid-categories">';
@@ -87,14 +87,14 @@ if($grid_style=="style-3"){
 
 if($grid_style=="style-1"|| $grid_style=="style-3"){
   $events_html.='<div class="ect-grid-date">
-  '.$event_schedule.'
+  '.wp_kses_post($event_schedule).'
   </div>';
 }
 
 if($grid_style=="style-1"|| $grid_style=="style-2"){
   if(!empty($ect_cate)){
     $events_html.= '<div class="ect-event-category ect-grid-categories">';
-    $events_html.= $ect_cate;
+    $events_html.= wp_kses_post($ect_cate);
     $events_html.= '</div>';
   }
   /*$events_html.='<div class="ect-grid-categories">';
@@ -105,7 +105,7 @@ if($grid_style=="style-1"|| $grid_style=="style-2"){
 $events_html.='<div class="ect-grid-title"><h4>'.$event_title.'</h4></div>';
 
 if (tribe_has_venue($event_id) && $hide_venue!="yes") {
-  $events_html.='<div class="ect-grid-venue">'.$venue_details_html.'</div>';
+  $events_html.='<div class="ect-grid-venue">'.wp_kses_post($venue_details_html).'</div>';
 }
 else {
   $events_html.='';
@@ -117,12 +117,12 @@ if($show_description=="yes"){
 if ( tribe_get_cost($event_id, true ) ) {
   $events_html.= '<div class="ect-grid-cost">'.$ev_cost.'</div>
   <div class="ect-grid-readmore">
-  <a href="'.tribe_get_event_link($event_id).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.__('Find out more','the-events-calendar').'</a>
+  <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.__('Find out more','ect').'</a>
   </div>';
 }
 else {
   $events_html.= '<div class="ect-grid-readmore full-view">
-  <a href="'.tribe_get_event_link($event_id).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.__('Find out more','the-events-calendar').'</a>
+  <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.__('Find out more','ect').'</a>
   </div>';
 }
 

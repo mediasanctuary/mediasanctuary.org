@@ -8,117 +8,117 @@ function ect_event_schedule($event_id,$date_format,$template){
 		$ev_time=ect_tribe_event_time($event_id,false);
 		if($date_format=="DM") {
 			$event_schedule='<div class="ect-date-area '.$template.'-schedule"  itemprop="startDate" content="'.tribe_get_start_date($event_id, false, 'Y-m-dTg:i').'">
-							<span class="ev-day">'.tribe_get_start_date($event_id, false, 'd' ).'</span>
-							<span class="ev-mo">'.tribe_get_start_date($event_id, false, 'M' ).'</span>
+							<span class="ev-day">'.esc_html(tribe_get_start_date($event_id, false, 'd' )).'</span>
+							<span class="ev-mo">'.esc_html(tribe_get_start_date($event_id, false, 'M' )).'</span>
 							</div>
 							<meta itemprop="endDate" content="'.tribe_get_end_date($event_id, false, 'Y-m-dTg:i').'">';
 		}
 		else if($date_format=="MD") {
 			$event_schedule='<div class="ect-date-area '.$template.'-schedule"  itemprop="startDate" content="'.tribe_get_start_date($event_id, false, 'Y-m-dTg:i').'">
-							<span class="ev-mo">'.tribe_get_start_date($event_id, false, 'M' ).'</span>
-							<span class="ev-day">'.tribe_get_start_date($event_id, false, 'd' ).'</span>
+							<span class="ev-mo">'.esc_html(tribe_get_start_date($event_id, false, 'M') ).'</span>
+							<span class="ev-day">'.esc_html(tribe_get_start_date($event_id, false, 'd') ).'</span>
 							</div>
 							<meta itemprop="endDate" content="'.tribe_get_end_date($event_id, false, 'Y-m-dTg:i').'">';
 		}
 		else if($date_format=="FD") {
 			$event_schedule='<div class="ect-date-area '.$template.'-schedule"  itemprop="startDate" content="'.tribe_get_start_date($event_id, false, 'Y-m-dTg:i').'">
-							<span class="ev-mo">'.tribe_get_start_date($event_id, false, 'F' ).'</span>
-							<span class="ev-day">'.tribe_get_start_date($event_id, false, 'd' ).'</span>
+							<span class="ev-mo">'.esc_html(tribe_get_start_date($event_id, false, 'F' )).'</span>
+							<span class="ev-day">'.esc_html(tribe_get_start_date($event_id, false, 'd') ).'</span>
 							</div>
 							<meta itemprop="endDate" content="'.tribe_get_end_date($event_id, false, 'Y-m-dTg:i').'">';
 		}
 		else if($date_format=="DF") {
 			$event_schedule='<div class="ect-date-area '.$template.'-schedule"  itemprop="startDate" content="'.tribe_get_start_date($event_id, false, 'Y-m-dTg:i').'">
-							<span class="ev-day">'.tribe_get_start_date($event_id, false, 'd' ).'</span>
-							<span class="ev-mo">'.tribe_get_start_date($event_id, false, 'F' ).'</span>
+							<span class="ev-day">'.esc_html(tribe_get_start_date($event_id, false, 'd' )).'</span>
+							<span class="ev-mo">'.esc_html(tribe_get_start_date($event_id, false, 'F' )).'</span>
 							</div>
 							<meta itemprop="endDate" content="'.tribe_get_end_date($event_id, false, 'Y-m-dTg:i').'">';
 		}
 		else if($date_format=="FD,Y") {
 			$event_schedule='<div class="ect-date-area '.$template.'-schedule"  itemprop="startDate" content="'.tribe_get_start_date($event_id, false, 'Y-m-dTg:i').'">
-							<span class="ev-mo">'.tribe_get_start_date($event_id, false, 'F' ).'</span>
-							<span class="ev-day">'.tribe_get_start_date($event_id, false, 'd' ).', </span>
-							<span class="ev-yr">'.tribe_get_start_date($event_id, false, 'Y' ).'</span>
+							<span class="ev-mo">'.esc_html(tribe_get_start_date($event_id, false, 'F' )).'</span>
+							<span class="ev-day">'.esc_html(tribe_get_start_date($event_id, false, 'd' )).', </span>
+							<span class="ev-yr">'.esc_html(tribe_get_start_date($event_id, false, 'Y' )).'</span>
 							</div>
 							<meta itemprop="endDate" content="'.tribe_get_end_date($event_id, false, 'Y-m-dTg:i').'">';
 		}
 		else if($date_format=="MD,Y") {
 			$event_schedule='<div class="ect-date-area '.$template.'-schedule"  itemprop="startDate" content="'.tribe_get_start_date($event_id, false, 'Y-m-dTg:i').'">
-							<span class="ev-mo">'.tribe_get_start_date($event_id, false, 'M' ).'</span>
-							<span class="ev-day">'.tribe_get_start_date($event_id, false, 'd' ).', </span>
-							<span class="ev-yr">'.tribe_get_start_date($event_id, false, 'Y' ).'</span>
+							<span class="ev-mo">'.esc_html(tribe_get_start_date($event_id, false, 'M' )).'</span>
+							<span class="ev-day">'.esc_html(tribe_get_start_date($event_id, false, 'd' )).', </span>
+							<span class="ev-yr">'.esc_html(tribe_get_start_date($event_id, false, 'Y' )).'</span>
 							</div>
 							<meta itemprop="endDate" content="'.tribe_get_end_date($event_id, false, 'Y-m-dTg:i').'">';
 		}
 		else if($date_format=="MD,YT") {
 			$event_schedule='<div class="ect-date-area '.$template.'-schedule" itemprop="startDate" content="'.tribe_get_start_date($event_id, false, 'Y-m-dTg:i').'">
-							<span class="ev-mo">'.tribe_get_start_date($event_id, false, 'M' ).'</span>
-							<span class="ev-day">'.tribe_get_start_date($event_id, false, 'd' ).', </span>
-							<span class="ev-yr">'.tribe_get_start_date($event_id, false, 'Y' ).'</span>
+							<span class="ev-mo">'.esc_html(tribe_get_start_date($event_id, false, 'M' )).'</span>
+							<span class="ev-day">'.esc_html(tribe_get_start_date($event_id, false, 'd' )).', </span>
+							<span class="ev-yr">'.esc_html(tribe_get_start_date($event_id, false, 'Y' )).'</span>
 							<span class="ev-time"><span class="ect-icon"><i class="ect-icon-clock" aria-hidden="true"></i></span> '.$ev_time.'</span>
 							</div>
 							<meta itemprop="endDate" content="'.tribe_get_end_date($event_id, false, 'Y-m-dTg:i').'">';
 		}
 		else if($date_format=="jMl") {
 			$event_schedule='<div class="ect-date-area '.$template.'-schedule" itemprop="startDate" content="'.tribe_get_start_date($event_id, false, 'Y-m-dTg:i').'">
-							<span class="ev-day">'.tribe_get_start_date($event_id, false, 'j' ).'</span>
-							<span class="ev-mo">'.tribe_get_start_date($event_id, false, 'M' ).'</span>
-							<span class="ev-weekday">'.tribe_get_start_date($event_id, false, 'l' ).'</span>
+							<span class="ev-day">'.esc_html(tribe_get_start_date($event_id, false, 'j' )).'</span>
+							<span class="ev-mo">'.esc_html(tribe_get_start_date($event_id, false, 'M' )).'</span>
+							<span class="ev-weekday">'.esc_html(tribe_get_start_date($event_id, false, 'l') ).'</span>
 							</div>
 							<meta itemprop="endDate" content="'.tribe_get_end_date($event_id, false, 'Y-m-dTg:i').'">';
 		}
 		else if($date_format=="full") {
 			$event_schedule='<div class="ect-date-area '.esc_attr($template).'-schedule" itemprop="startDate" content="'.tribe_get_start_date($event_id, false, 'Y-m-dTg:i').'">
-							<span class="ev-day">'.tribe_get_start_date($event_id, false, 'd' ).'</span>
-							<span class="ev-mo">'.tribe_get_start_date($event_id, false, 'F' ).'</span>
-							<span class="ev-yr">'.tribe_get_start_date($event_id, false, 'Y' ).'</span>
+							<span class="ev-day">'.esc_html(tribe_get_start_date($event_id, false, 'd' )).'</span>
+							<span class="ev-mo">'.esc_html(tribe_get_start_date($event_id, false, 'F' )).'</span>
+							<span class="ev-yr">'.esc_html(tribe_get_start_date($event_id, false, 'Y' )).'</span>
 							<span class="ev-time"><span class="ect-icon"><i class="ect-icon-clock" aria-hidden="true"></i></span> '.$ev_time.'</span>
 							</div>
 							<meta itemprop="endDate" content="'.tribe_get_end_date($event_id, false, 'Y-m-dTg:i').'">';
 		}
 		else if($date_format=="d.FY") {
 			$event_schedule='<div class="ect-date-area '.esc_attr($template).'-schedule" itemprop="startDate" content="'.tribe_get_start_date($event_id, false, 'Y-m-dTg:i').'">
-							<span class="ev-day">'.tribe_get_start_date($event_id, false, 'd' ).'. </span>
-							<span class="ev-mo">'.tribe_get_start_date($event_id, false, 'F' ).'</span>
-							<span class="ev-yr">'.tribe_get_start_date($event_id, false, 'Y' ).'</span>
+							<span class="ev-day">'.esc_html(tribe_get_start_date($event_id, false, 'd') ).'. </span>
+							<span class="ev-mo">'.esc_html(tribe_get_start_date($event_id, false, 'F' )).'</span>
+							<span class="ev-yr">'.esc_html(tribe_get_start_date($event_id, false, 'Y' )).'</span>
 							</div>
 							<meta itemprop="endDate" content="'.tribe_get_end_date($event_id, false, 'Y-m-dTg:i').'">';
 		}
 		else if($date_format=="d.F") {
 			$event_schedule='<div class="ect-date-area '.esc_attr($template).'-schedule" itemprop="startDate" content="'.tribe_get_start_date($event_id, false, 'Y-m-dTg:i').'">
-							<span class="ev-day">'.tribe_get_start_date($event_id, false, 'd' ).'. </span>
-							<span class="ev-mo">'.tribe_get_start_date($event_id, false, 'F' ).'</span>
+							<span class="ev-day">'.esc_html(tribe_get_start_date($event_id, false, 'd' )).'. </span>
+							<span class="ev-mo">'.esc_html(tribe_get_start_date($event_id, false, 'F' )).'</span>
 							</div>
 							<meta itemprop="endDate" content="'.tribe_get_end_date($event_id, false, 'Y-m-dTg:i').'">';
 		}
 		else if($date_format=="d.Ml") {
 			$event_schedule='<div class="ect-date-area '.esc_attr($template).'-schedule" itemprop="startDate" content="'.tribe_get_start_date($event_id, false, 'Y-m-dTg:i').'">
-							<span class="ev-day">'.tribe_get_start_date($event_id, false, 'd' ).'. </span>
-							<span class="ev-mo">'.tribe_get_start_date($event_id, false, 'M' ).'</span>
-							<span class="ev-yr">'.tribe_get_start_date($event_id, false, 'l' ).'</span>
+							<span class="ev-day">'.esc_html(tribe_get_start_date($event_id, false, 'd' )).'. </span>
+							<span class="ev-mo">'.esc_html(tribe_get_start_date($event_id, false, 'M' )).'</span>
+							<span class="ev-yr">'.esc_html(tribe_get_start_date($event_id, false, 'l' )).'</span>
 							</div>
 							<meta itemprop="endDate" content="'.tribe_get_end_date($event_id, false, 'Y-m-dTg:i').'">';
 		}
 		else if($date_format=="ldF") {
 			$event_schedule='<div class="ect-date-area '.esc_attr($template).'-schedule" itemprop="startDate" content="'.tribe_get_start_date($event_id, false, 'Y-m-dTg:i').'">
-							<span class="ev-day">'.tribe_get_start_date($event_id, false, 'l' ).'</span>
-							<span class="ev-mo">'.tribe_get_start_date($event_id, false, 'd' ).'</span>
-							<span class="ev-yr">'.tribe_get_start_date($event_id, false, 'F' ).'</span>
+							<span class="ev-day">'.esc_html(tribe_get_start_date($event_id, false, 'l' )).'</span>
+							<span class="ev-mo">'.esc_html(tribe_get_start_date($event_id, false, 'd' )).'</span>
+							<span class="ev-yr">'.esc_html(tribe_get_start_date($event_id, false, 'F' )).'</span>
 							</div>
 							<meta itemprop="endDate" content="'.tribe_get_end_date($event_id, false, 'Y-m-dTg:i').'">';
 		}
 		else if($date_format=="Mdl") {
 			$event_schedule='<div class="ect-date-area '.esc_attr($template).'-schedule" itemprop="startDate" content="'.tribe_get_start_date($event_id, false, 'Y-m-dTg:i').'">
-							<span class="ev-day">'.tribe_get_start_date($event_id, false, 'M' ).'</span>
-							<span class="ev-mo">'.tribe_get_start_date($event_id, false, 'd' ).'</span>
-							<span class="ev-yr">'.tribe_get_start_date($event_id, false, 'l' ).'</span>
+							<span class="ev-day">'.esc_html(tribe_get_start_date($event_id, false, 'M' )).'</span>
+							<span class="ev-mo">'.esc_html(tribe_get_start_date($event_id, false, 'd' )).'</span>
+							<span class="ev-yr">'.esc_html(tribe_get_start_date($event_id, false, 'l' )).'</span>
 							</div>
 							<meta itemprop="endDate" content="'.tribe_get_end_date($event_id, false, 'Y-m-dTg:i').'">';
 		}
 		else if($date_format=="dFT") {
 			$event_schedule='<div class="ect-date-area '.esc_attr($template).'-schedule" itemprop="startDate" content="'.tribe_get_start_date($event_id, false, 'Y-m-dTg:i').'">
-							<span class="ev-day">'.tribe_get_start_date($event_id, false, 'd' ).'</span>
-							<span class="ev-mo">'.tribe_get_start_date($event_id, false, 'F' ).'</span>
+							<span class="ev-day">'.esc_html(tribe_get_start_date($event_id, false, 'd' )).'</span>
+							<span class="ev-mo">'.esc_html(tribe_get_start_date($event_id, false, 'F' )).'</span>
 							<span class="ev-time"><span class="ect-icon"><i class="ect-icon-clock" aria-hidden="true"></i></span> '.$ev_time.'</span>
 							</div>
 							<meta itemprop="endDate" content="'.tribe_get_end_date($event_id, false, 'Y-m-dTg:i').'">';
@@ -129,9 +129,9 @@ function ect_event_schedule($event_id,$date_format,$template){
 		else {
 		
 			$event_schedule='<div class="ect-date-area '.esc_attr($template).'-schedule" itemprop="startDate" content="'.tribe_get_start_date($event_id, false, 'Y-m-dTg:i').'">
-							<span class="ev-day">'.tribe_get_start_date($event_id, false, 'd' ).'</span>
-							<span class="ev-mo">'.tribe_get_start_date($event_id, false, 'F' ).'</span>
-							<span class="ev-yr">'.tribe_get_start_date($event_id, false, 'Y' ).'</span>
+							<span class="ev-day">'.esc_html(tribe_get_start_date($event_id, false, 'd' )).'</span>
+							<span class="ev-mo">'.esc_html(tribe_get_start_date($event_id, false, 'F' )).'</span>
+							<span class="ev-yr">'.esc_html(tribe_get_start_date($event_id, false, 'Y' )).'</span>
 							</div>
 							<meta itemprop="endDate" content="'.tribe_get_end_date($event_id, false, 'Y-m-dTg:i').'">';
 		}
@@ -148,18 +148,18 @@ function ect_event_schedule($event_id,$date_format,$template){
 		$start_date = tribe_get_start_date(  $event, false, false );
 		$end_date = tribe_get_end_date(  $event, false, false );
 		if ( $display ) {
-			printf( __( '%s - %s', 'ect' ), $start_date, $end_date );
+			printf( esc_html__( '%s - %s', 'ect' ), esc_html($start_date), esc_html($end_date) );
 		}
 		else {
-			return sprintf( __( '%s - %s', 'ect' ), $start_date, $end_date );
+			return sprintf( esc_html__( '%s - %s', 'ect' ), esc_html($start_date), esc_html($end_date) );
 		}
 	}
 	elseif ( tribe_event_is_all_day( $event ) ) { // all day event
 		if ( $display ) {
-			_e( 'All day', 'the-events-calendar' );
+			printf( esc_html__( 'All day', 'the-events-calendar' ) );
 		}
 		else {
-			return __( 'All day', 'the-events-calendar' );
+			return sprintf( esc_html__( 'All day', 'the-events-calendar' ) );
 		}
 	}
 	else {
@@ -168,43 +168,23 @@ function ect_event_schedule($event_id,$date_format,$template){
 		$end_date = tribe_get_end_date( $event, false, $time_format );
 		if ( $start_date !== $end_date ) {
 			if ( $display ) {
-				printf( __( '%s - %s', 'ect' ), $start_date, $end_date );
+				printf( esc_html__( '%s - %s', 'ect' ), esc_html($start_date), esc_html($end_date) );
 			}
 			else {
-				return sprintf( __( '%s - %s', 'ect' ), $start_date, $end_date );
+				return sprintf( esc_html__( '%s - %s', 'ecct' ), esc_html($start_date), esc_html($end_date) );
 			}
 		}
 		else {
 			if ( $display ) {
-				printf( '%s', $start_date );
+				printf( esc_html__('%s','ect'), esc_html($start_date) );
 			}
 			else {
-				return sprintf( '%s', $start_date );
+				return sprintf( esc_html__('%s','ect'), esc_html($start_date) );
 			}
 		}
 	}
 }
-// grab recurring event detials
- function ect_tribe_event_recurringinfo( $before = '', $after = '', $link_all = true ) 
- {
-	if ( !function_exists('tribe_is_recurring_event') ) {
-		return false;
-	}
-	global $post;
-	$info = '';
-	if ( tribe_is_recurring_event( $post->ID ) ) {
-		if ( function_exists( 'tribe_get_recurrence_text' ) ) {
-			$info .= tribe_get_recurrence_text( $post->ID );
-		}
-		if ( $link_all && function_exists( 'tribe_all_occurences_link' ) ) {
-			$info .= sprintf( ' <a href="%s">%s</a>', esc_url( tribe_all_occurences_link( $post->ID, false ) ), __( '(See All)', 'ect' ) );
-		}
-	}
-	if ( $info ) {
-		$info = $before.$info.$after;
-	}
-	return $info;
-}
+
 
 
   

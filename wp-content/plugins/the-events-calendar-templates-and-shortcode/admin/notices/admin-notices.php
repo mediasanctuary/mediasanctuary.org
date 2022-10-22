@@ -167,9 +167,9 @@ if (!class_exists('ect_admin_notices')):
             });
             </script>';
             $nonce = wp_create_nonce( $id . '_notice_nonce' );
-            $img_path= ( isset( $message['logo'] ) && !empty($message['logo'] ) ) ? $message['logo'] : null;
+            $img_path= ( isset( $message['logo'] ) && !empty($message['logo'] ) ) ? esc_url($message['logo']) : null;
             if( $img_path != null ){
-                $image_html ='<div class="logo_container"><a href="https://wordpress.org/plugins/events-widgets-for-elementor-and-the-events-calendar/"><img src="'.$img_path.'" style="max-width:70px;"></a></div>';
+                $image_html ='<div class="logo_container"><a href="'.esc_url($url).'"><img src="'.esc_url($img_path).'" style="max-width:70px;"></a></div>';
             }
             else{
                 $image_html ='';
@@ -229,7 +229,7 @@ if (!class_exists('ect_admin_notices')):
         $ajax_url=admin_url( 'admin-ajax.php' );
         $ajax_callback = 'cool_plugins_admin_review_notice_dismiss';
         $wrap_cls="notice notice-info is-dismissible";
-        $img_path= ( isset( $messageObj['logo'] ) && !empty($messageObj['logo'] ) ) ? $messageObj['logo'] : null;
+        $img_path= ( isset( $messageObj['logo'] ) && !empty($messageObj['logo'] ) ) ? esc_url($messageObj['logo']) : null;
         $slug = $messageObj['slug'];
         $plugin_name= $messageObj['plugin_name'];
         $like_it_text='Rate Now! ★★★★★';
@@ -303,17 +303,18 @@ if (!class_exists('ect_admin_notices')):
         * This is called by a wordpress ajax hook
         */
         public function ect_admin_review_notice_dismiss(){
-            $slug = filter_var($_REQUEST['slug'], FILTER_SANITIZE_STRING);
-            $id = filter_var($_REQUEST['id'], FILTER_SANITIZE_STRING); 
+            $id = isset($_REQUEST['id'])?sanitize_text_field($_REQUEST['id']):'';
             $nonce_key = $id . '_review_nonce' ;
 
-            if( isset( $_REQUEST['_nonce'] ) && !empty( $_REQUEST['_nonce'] ) && wp_verify_nonce( $_REQUEST['_nonce'], $nonce_key ) ){
-                update_option( 'ect-ratingDiv','yes' );
-                echo json_encode( array("success"=>"true") );
+            if ( ! check_ajax_referer($nonce_key,'_nonce', false ) ) {
+                echo wp_json_encode( array("error"=>"nonce verification failed!"));
+                die();
+               
             }else{
-                echo json_encode( array("error"=>"nonce verification failed!") );
+                update_option( 'ect-ratingDiv','yes' );
+                echo wp_json_encode( array("success"=>"true"));
+                die();
             }
-                exit;
         }
 
         /************************************************************
@@ -323,14 +324,13 @@ if (!class_exists('ect_admin_notices')):
         public function ect_admin_notice_dismiss()
         {
            
-            $id = filter_var($_REQUEST['id'], FILTER_SANITIZE_STRING); 
+            $id = isset($_REQUEST['id'])?sanitize_text_field($_REQUEST['id']):'';
             $wp_nonce = $id . '_notice_nonce';
-
-            if( isset( $_REQUEST[ '_nonce' ] ) && wp_verify_nonce( $_REQUEST[ '_nonce' ] , $wp_nonce ) ){
+            if ( ! check_ajax_referer($wp_nonce,'_nonce', false ) ) {
+                die( 'nonce verification failed!' );
+            }else{
                 $us=update_option( $id . '_remove_notice','yes' );
                 die( 'Admin message removed!' );
-            }else{
-                die( 'nounce verification failed!' );
             }
 
         }
@@ -343,7 +343,7 @@ if (!class_exists('ect_admin_notices')):
             $er = "<div style='text-align:center;margin-left:20px;padding:10px;background-color: #cc0000; color: #fce94f; font-size: x-large;'>";
             $er .= "Error: ".$error_text;
             $er .= "</div>";
-            echo $er;
+            echo wp_kses_post($er);
         }
 
     }   // end of main class ect_admin_notices;
