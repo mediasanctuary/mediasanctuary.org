@@ -1,5 +1,7 @@
 <?php
-
+if (!defined('ABSPATH')) {
+    exit;
+} 
 /**
  * 
  * This is the main class for creating dashbord addon page and all submenu items
@@ -60,15 +62,34 @@ if ( !class_exists('cool_plugins_events_addons')) {
              * handle ajax request for activating plugin from dashboard
              */
             function cool_plugins_activate(){
-                if( isset( $_POST['wp_nonce'] ) && isset( $_POST['nonce_name'] ) && wp_verify_nonce( $_POST['wp_nonce'] , $_POST['nonce_name'] )){
-                    $pluginBase = ( isset( $_POST['pluginbase'] ) && !empty( $_POST['pluginbase'] ) )? $_POST['pluginbase'] : null;
-                    if( $pluginBase != null ){
-                        activate_plugin( $pluginBase );
+                if(current_user_can('upload_plugins')){
+                   
+                $plugin_slug= isset($_POST["ect_activate_slug"])?sanitize_text_field($_POST["ect_activate_slug"]):'';
+                
+                $wp_nonce = 'ect-plugins-activate-' . $plugin_slug ;
+                if(!empty( $plugin_slug)){
+                    if ( ! check_ajax_referer($wp_nonce,'wp_nonce', false ) ) {
+                        wp_send_json_error( 'Invalid security token sent.' );
+                        wp_die();
                     }
+                $pluginBase = ( isset( $_POST['ect_activate_pluginbase'] ) && !empty( $_POST['ect_activate_pluginbase'] ) )? sanitize_text_field($_POST['ect_activate_pluginbase']) : null;
+                
+                $plugin_base_arr=explode("/",$pluginBase);
+                if( isset($plugin_base_arr[0]) && $plugin_base_arr[0]==$plugin_slug ){
+                    activate_plugin( $pluginBase );
+                  
                 }else{
-                    die('wp nonce verification failed!');
+                    wp_send_json_error( 'Something wrong with plugin path.' );
+                    wp_die();
                 }
-
+                }else{
+                    wp_send_json_error( 'Plugin slug is missing.' );
+                    wp_die();  
+                }
+                }else{
+                    wp_send_json_error( 'You have no permission to do this action.' );
+                    wp_die();  
+                }
             }
 
             /**
@@ -76,14 +97,38 @@ if ( !class_exists('cool_plugins_events_addons')) {
              * This function use the core wordpress functionality of installing a plugin through URL
              */
             function cool_plugins_install(){
-                if( isset( $_POST['wp_nonce'] ) && isset( $_POST['nonce_name'] ) && wp_verify_nonce( $_POST['wp_nonce'] , $_POST['nonce_name'] )){
+            if(current_user_can('upload_plugins')){
+                $plugin_slug= isset($_POST['ect_slug'])?sanitize_text_field($_POST['ect_slug']):'';
+                $wp_nonce = wp_create_nonce('ect-plugins-download-' . $plugin_slug );
+                if(!empty( $plugin_slug)){
+                    if ( ! check_ajax_referer( 'ect-plugins-download-' . $plugin_slug,'wp_nonce', false ) ) {
+                  
+                        wp_send_json_error( 'Invalid security token sent.' );
+                        wp_die();
+                    }
+                  
                     require_once 'includes/cool_plugins_downloader.php';
-                    $downloader = new cool_plugins_downloader();
-                    return  $downloader->install( $_REQUEST['url'], 'install' );
-                }else{
-                    die('wp nonce verification failed!');
+                        $downloader = new cool_plugins_downloader();
+                      
+                        $plugins = $this->request_wp_plugins_data($this->plugin_tag);
+                       
+                        if(isset($plugins[$plugin_slug])){
+                            $url=$plugins[$plugin_slug]['download_link'];
+                            return  $downloader->install( filter_var($url, FILTER_SANITIZE_URL), 'install' );
+                        
+                        }
+                else{
+                    wp_send_json_error( 'Sorry, You are installing a wrong plugin.' );
+                    wp_die();
                 }
-                die();
+            }else{
+                wp_send_json_error( 'Plugin slug is missing.' );
+                wp_die();  
+            }
+            }else{
+                wp_send_json_error( 'You have no permission to do this action.' );
+                wp_die();  
+            }
             }
 
 
@@ -105,6 +150,7 @@ if ( !class_exists('cool_plugins_events_addons')) {
                 $tag = $this->plugin_tag;
                 $plugins = $this->request_wp_plugins_data( $tag );
                 $this->request_pro_plugins_data( $tag );
+				$this->ect_disable_free_plugins();
                 if( !empty( $plugins ) && count( $plugins ) > 0 ){
 
                     // merge free & pro plugins into one array
@@ -121,7 +167,8 @@ if ( !class_exists('cool_plugins_events_addons')) {
 
                         $plugin_name = $plugin['name'];
                         $plugin_desc = $plugin['desc'];
-                        $plugin_logo = $plugin['logo'];
+                        // var_dump($plugin['slug']);
+                        $plugin_logo =$this->event_addon_plugins_logo($plugin['slug']);
                         $plugin_url = $plugin['download_link'];
                         $plugin_slug = $plugin['slug'];
                         $plugin_version = $plugin['version'];
@@ -141,7 +188,7 @@ if ( !class_exists('cool_plugins_events_addons')) {
                         }
                         $plugin_name = $plugin['name'];
                         $plugin_desc = $plugin['desc'];
-                        $plugin_logo = $plugin['logo'];
+                        $plugin_logo =$this->event_addon_plugins_logo($plugin['slug']);
                         $plugin_url = $plugin['download_link'];
                         $plugin_slug = $plugin['slug'];
                         $plugin_version = $plugin['version'];
@@ -158,10 +205,9 @@ if ( !class_exists('cool_plugins_events_addons')) {
                          */
                     echo "<div class='plugins-list pro-addons' data-empty-message='No more Pro plugins available at the moment'><h3>Pro Addons</h3>";
                         foreach($this->pro_plugins as $plugin ){
-
-                            $plugin_name = $plugin['name'];
+                             $plugin_name = $plugin['name'];
                             $plugin_desc = $plugin['desc'];
-                            $plugin_logo = $plugin['logo'];
+                            $plugin_logo =$this->event_addon_plugins_logo($plugin['slug']);
                             $plugin_pro_url = $plugin['buyLink'];
                             $plugin_url = null;
                             $plugin_version = null;
@@ -189,8 +235,8 @@ if ( !class_exists('cool_plugins_events_addons')) {
             function enqueue_required_scripts(){
                 // A common CSS file will be enqueued for admin panel
                 wp_enqueue_style('cool-plugins-events-addon', plugin_dir_url(__FILE__) .'assets/css/styles.css', null, null, 'all');
-
-                if( isset( $_GET['page'] ) && $_GET['page'] == $this->main_menu_slug ){
+                $current_page =  isset( $_GET['page'])?sanitize_text_field($_GET['page']):'';
+                if($current_page == $this->main_menu_slug ){
                     wp_enqueue_script( 'cool-plugins-events-addon', plugin_dir_url(__FILE__) .'assets/js/script.js', array('jquery'), null, true);
                     wp_localize_script( 'cool-plugins-events-addon', 'cp_events', array('ajax_url'=> admin_url('admin-ajax.php')));
                 }
@@ -205,17 +251,18 @@ if ( !class_exists('cool_plugins_events_addons')) {
                 $trans_name = $this->main_menu_slug . '_pro_api_cache' . $this->plugin_tag;
                 $option_name = $this->main_menu_slug .'-'.$this->plugin_tag .'-pro';
                 if( get_transient( $trans_name ) != false ){
-                    return get_option( $option_name  , false);
+                   
+                    return $this->pro_plugins = get_option( $option_name  , false);
                 }
-                
-                    $pro_api = 'https://coolplugins.net/plugins-data/api/premium/all';                
+              
+                    $pro_api = esc_url('https://coolplugins.net/plugins-data/api/premium/all');                
                     $response = wp_remote_get( $pro_api, array('timeout'=>300) );
                 
                     if( is_wp_error($response)){
                         return;
                     }
                     $plugin_info = (array) json_decode( $response['body'] );
-                    $all_plugins = array();
+                    
                     
                     foreach( $plugin_info as $plugin){
                         
@@ -239,10 +286,10 @@ if ( !class_exists('cool_plugins_events_addons')) {
 
                     }
     
-                    if( !empty( $all_plugins ) && is_array( $all_plugins ) && count( $all_plugins ) ){
-                        set_transient( $trans_name , $all_plugins, DAY_IN_SECONDS );
-                        update_option( $option_name , $all_plugins );
-                        return $all_plugins;
+                    if( !empty( $this->pro_plugins ) && is_array( $this->pro_plugins ) && count( $this->pro_plugins ) ){
+                        set_transient( $trans_name , $this->pro_plugins, DAY_IN_SECONDS );
+                        update_option( $option_name , $this->pro_plugins );
+                        return $this->pro_plugins;
                     }else if( get_option( $option_name , false ) !=false ){
                         return get_option( $option_name );
                     }
@@ -258,10 +305,10 @@ if ( !class_exists('cool_plugins_events_addons')) {
                 return get_option( $this->main_menu_slug .'-'.$this->plugin_tag , false);        
             }
             
-                $url = 'https://api.wordpress.org/plugins/info/1.2/?action=query_plugins&request[author]=coolplugins&request[fields]=-description';
+                $url = esc_url('https://coolplugins.net/plugins-data/api/free/all');
             
                 $response = wp_remote_get( $url, array('timeout'=>300) );
-            
+           
                 if( is_wp_error($response)){
                     return;
                 }
@@ -294,7 +341,34 @@ if ( !class_exists('cool_plugins_events_addons')) {
                 }
 
             }
+   
+    function event_addon_plugins_logo($slug){
+        $logos_arr=[
+            'events-block-for-the-events-calendar'=>'events-block-for-the-events-calendar.png',
+            'events-widgets-for-elementor-and-the-events-calendar'=>'events-widgets-for-elementor-and-the-events-calendar.png',
+            'the-events-calendar-templates-and-shortcode'=>'the-events-calendar-templates-and-shortcode.png',
+            'countdown-for-the-events-calendar'=>'countdown-for-the-events-calendar.png',
+            'event-page-templates-addon-for-the-events-calendar'=>'event-page-templates-addon-for-the-events-calendar.png',
+            'events-search-addon-for-the-events-calendar'=>'events-search-addon-for-the-events-calendar.png'
+            
+        ];
+        if(isset($logos_arr[$slug])){
+            return $logo_url= plugin_dir_url( __FILE__ ).'assets/images/'.$logos_arr[$slug];
+        }else{
+            return $logo_url= plugin_dir_url( __FILE__ ).'assets/images/ect-icon.png';
+        }
+        
     }
+	function ect_disable_free_plugins() {
+		if ( isset( $this->pro_plugins ) ) {
+			foreach ( $this->pro_plugins as  $plugin ) {
+				if ( isset( $plugin['incompatible'] ) && $plugin['incompatible'] != null ) {
+					$this->disable_plugins[ $plugin['incompatible'] ] = array( 'pro' => $plugin['slug'] );
+				}
+			}
+		}
+	}
+}
 
     /**
      * 

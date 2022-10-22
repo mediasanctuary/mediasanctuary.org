@@ -108,7 +108,35 @@ add_action( 'plugins_loaded', function () {
 					'socialshare'=> array(
 						'type'	=> 'string',
 						'default' =>'no',
-					)
+					),
+					'datetxt'=>array(
+						'type'=> 'string',
+						'default'=> 'Date'
+					),
+					'timetxt'=>array(
+						'type'=> 'string',
+						'default'=> 'Duration'
+					),
+					'desctxt'=>array(
+						'type'=> 'string',
+						'default'=> 'Description'
+					),
+					'evttitle'=>array(
+						'type'=> 'string',
+						'default'=> 'Event Name'
+					),
+					'eventVenueTittle'=>array(
+						'type'=> 'string',
+						'default'=> 'Location'
+					),
+					'viewMoreTittle'=>array(
+						'type'=> 'string',
+						'default'=> 'View More'
+					),
+					'cateTitle'=>array(
+						'type'=> 'string',
+						'default'=> 'Category'
+					),
 				),
 			)
 		);
@@ -129,10 +157,11 @@ function ect_pro_block_callback( $attr ) {
 		time="%s"  columns="%s" 
 		autoplay="%s" featured-only="%s"
 		show-description="%s"
-		 tags="%s" venues="%s" organizers="%s" socialshare="%s"]';
+		 tags="%s" venues="%s" organizers="%s" socialshare="%s" date-lbl="%s" time-lbl="%s" event-lbl="%s" desc-lbl="%s" category-lbl="%s" location-lbl="%s" vm-lbl="%s"]';
 		$shortcode=  sprintf( $shortcode_string, $template, $style, 
 		$category,$dateformat,$startDate,$endDate,$limit,
-		$order,$hideVenue,$time,$columns,$autoplay,$featuredonly,$showdescription,$tags,$venues,$organizers,$socialshare);
+		$order,$hideVenue,$time,$columns,$autoplay,$featuredonly,$showdescription,$tags,$venues,$organizers,$socialshare,
+	$datetxt,$timetxt,$evttitle,$desctxt,$cateTitle,$eventVenueTittle,$viewMoreTittle);
 		return $shortcode;
 	}
 }

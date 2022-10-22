@@ -43,8 +43,8 @@ if ( ! class_exists( 'ECTCSF_Field_date' ) ) {
       } elseif (! empty( $this->field['custom_from_to'] ) ) {        
 
         $args = wp_parse_args( $this->field, array(
-          'text_from' => esc_html__( 'From', 'csf' ),
-          'text_to'   => esc_html__( 'To', 'csf' ),
+          'text_from' => esc_html__( 'From', 'ectcsf' ),
+          'text_to'   => esc_html__( 'To', 'ectcsf' ),
         ) );
 
         $value = wp_parse_args( $this->value, array(
@@ -52,11 +52,11 @@ if ( ! class_exists( 'ECTCSF_Field_date' ) ) {
           'end_date'   => '',
         ) );
 
-        echo '<label class="csf--from">'. esc_attr( $args['text_from'] ) .' <input type="text" name="'. esc_attr( $this->field_name( '[start_date]' ) ) .'" value="'. esc_attr( $value['start_date'] ) .'"'. $this->field_attributes() .'/></label>';
-        echo '<label class="csf--to">'. esc_attr( $args['text_to'] ) .' <input type="text" name="'. esc_attr( $this->field_name( '[end_date]' ) ) .'" value="'. esc_attr( $value['end_date'] ) .'"'. $this->field_attributes() .'/></label>';
+        echo '<label class="ectcsf--from">'. esc_attr( $args['text_from'] ) .' <input type="text" name="'. esc_attr( $this->field_name( '[start_date]' ) ) .'" value="'. esc_attr( $value['start_date'] ) .'"'. $this->field_attributes() .'/></label>';
+        echo '<label class="ectcsf--to">'. esc_attr( $args['text_to'] ) .' <input type="text" name="'. esc_attr( $this->field_name( '[end_date]' ) ) .'" value="'. esc_attr( $value['end_date'] ) .'"'. $this->field_attributes() .'/></label>';
 
       
-      }else {
+      } else {
 
         echo '<input type="text" name="'. esc_attr( $this->field_name() ) .'" value="'. esc_attr( $this->value ) .'"'. $this->field_attributes() .'/>';
 

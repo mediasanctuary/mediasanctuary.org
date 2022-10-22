@@ -4,7 +4,7 @@ class EventsShortcodePro
 {
     /**
      * @var array
-     */
+    */
     private $options;
     /**
      * Constructor.
@@ -27,17 +27,27 @@ class EventsShortcodePro
 		require_once(ECT_PRO_PLUGIN_DIR.'includes/ect-functions.php');
         require_once(ECT_PRO_PLUGIN_DIR.'includes/ect-assets-manager.php');
         require_once(ECT_PRO_PLUGIN_DIR.'includes/ect-pro-styles.php');
+        require_once(ECT_PRO_PLUGIN_DIR.'templates/week-view/ect-weekly-temaplate.php');
+        $weekView = new ect_weekly_temaplate();
         $thisPlugin = $this;
      	/*** ECT main shortcode */
 	    add_shortcode('events-calendar-templates', array(  $thisPlugin,'ect_shortcodes'));
-      	// load more events for masonry layout
+        add_shortcode('ect-weekly-layout', array( $weekView, 'ect_weekly_shortcode' ) );
+        // load more events for masonry layout
         add_action( 'wp_ajax_ect_common_load_more', array($thisPlugin, 'ect_common_loadmore_handler'));
         add_action( 'wp_ajax_nopriv_ect_common_load_more', array($thisPlugin, 'ect_common_loadmore_handler'));
         add_action( 'wp_ajax_ect_catfilters_load_more', array(  $thisPlugin, 'ect_catfilters_load_more'));
         add_action( 'wp_ajax_nopriv_ect_catfilters_load_more', array( $thisPlugin, 'ect_catfilters_load_more'));
+       
+        add_action('wp_ajax_ect_get_prev_nxt_data',array($this,'ect_weekly_button'));
+		add_action('wp_ajax_nopriv_ect_get_prev_nxt_data',array($this,'ect_weekly_button'));
+        
         require_once(ECT_PRO_PLUGIN_DIR.'/templates/calendar/calendar.php');
+        
+
         $ect_assets=new Ect_Assets_Manager();
         $ect_styles=new EctProStyles();
+       
     }
     /*** ECT main shortcode */
     public function ect_shortcodes($atts) {
@@ -72,13 +82,31 @@ class EventsShortcodePro
         'tags'=> '',
         'venues'=> '',
         'organizers'=> '',
+        'date-lbl'=>'',
+        'time-lbl'=>'',
+        'event-lbl'=>'',
+        'desc-lbl'=>'',
+        'category-lbl'=>'',
+        'location-lbl'=>'',
+        'vm-lbl'=>'',
         'socialshare'=>'no'
         ), $atts ), $atts);
+       
         $selected_cat=$attribute['category'];
+        $selected_tag = $attribute['tags'];
         $show_description = !empty($attribute['show-description'])?$attribute['show-description']:'';
         $count =0;
         $no_events='';
         $template=isset($attribute['template'])?$attribute['template']:'default';
+        $dateTittle      = !empty($attribute['date-lbl'])?$attribute['date-lbl']:'Date';
+        
+        $timerangeTittle = !empty($attribute['time-lbl'])?$attribute['time-lbl']:'Duration';
+        $evTittle= !empty($attribute['event-lbl'])?$attribute['event-lbl']:'Event Name';
+        $eventDescTittle = !empty($attribute['desc-lbl'])?$attribute['desc-lbl']:'Description';
+        $categoryTittle = !empty($attribute['category-lbl'])?$attribute['category-lbl']:'Category';
+        $eventVenueTittle= !empty($attribute['location-lbl'])?$attribute['location-lbl']:'Location';
+        $viewMoreTittle= !empty($attribute['vm-lbl'])?$attribute['vm-lbl']:'View More';
+        
         $date_format=$attribute['date_format'];
         $tabs_menu_html=''; $tabs_cont_html='';	$ev_cost=''; $car_sl_styles='';
         $activetb=1;
@@ -102,12 +130,15 @@ class EventsShortcodePro
         // load assets according to the type and layout
         Ect_Assets_Manager::ect_load_requried_assets($template,$style,$slider_pp_id,$autoplay, $carousel_slide_show);
             if($socialshare == "yes"){
-                wp_enqueue_script('ect-sharebutton');
-                wp_enqueue_style('ect-sharebutton-css');
+                wp_enqueue_script('ect-sharebutton',ECT_PRO_PLUGIN_URL .'assets/js/ect-sharebutton.js',array('jquery'),ECT_VERSION,true);
+                wp_enqueue_style('ect-sharebutton-css',ECT_PRO_PLUGIN_URL .'assets/css/ect-sharebutton.css',null, ECT_VERSION,'all');
             }
         /* 
         Build ECT query
         */
+        $category_array = array();
+        $tags_array = array();
+
         $prev_event_month='';
         $prev_event_year='';
         $meta_date_compare = '>=';
@@ -168,23 +199,36 @@ class EventsShortcodePro
                 $ect_args['organizer']=$attribute['organizers'];
             }
         }
-        if($attribute['category']!="all") {
-                if ( $attribute['category'] ) {
-                    if ( strpos( $attribute['category'], "," ) !== false ) {
-                        $attribute['category'] = explode( ",", $attribute['category'] );
-                        $attribute['category'] = array_map( 'trim',$attribute['category'] );
-                    }
-                    else {
-                        $attribute['category'] = $attribute['category'];
-                    }
-                    $ect_args['tax_query'] = array(
-                    array(
-                        'taxonomy' => 'tribe_events_cat',
-                        'field' => 'slug',
-                        'terms' =>$attribute['category'],
-                    ));
-                }
-        }
+        // var_dump($attribute['category']);
+        // if($attribute['category']!="all") {
+        //         if ( $attribute['category'] ) {
+        //             if ( strpos( $attribute['category'], "," ) !== false ) {
+        //                 $attribute['category'] = explode( ",", $attribute['category'] );
+        //                 $attribute['category'] = array_map( 'trim',$attribute['category'] );
+        //             }
+        //             else {
+        //                 $attribute['category'] = $attribute['category'];
+        //             }
+        //             $ect_args['tax_query'] = array(
+        //             array(
+        //                 'taxonomy' => 'tribe_events_cat',
+        //                 'field' => 'slug',
+        //                 'terms' =>$attribute['category'],
+        //             ));
+        //         }
+        // }
+        if (!empty($attribute['category'])) {
+            $category_array = explode(",",$attribute['category']);
+ 
+            if(!in_array('all',$category_array)){
+                $ect_args['tax_query'] = [
+                     [
+                         'taxonomy' => 'tribe_events_cat', 'field' => 'slug',
+                         'terms'    => $category_array
+                     ],
+                 ];
+            }
+        } 
         if (!empty($attribute['start_date'])) {
             $ect_args['start_date'] =$attribute['start_date'];
         }
@@ -212,19 +256,21 @@ class EventsShortcodePro
         $display_year='';
         $last_year='';
         if ( $all_events ) {
-            foreach( $all_events as $post ):setup_postdata( $post );
+            foreach( $all_events as $sr_no => $post):setup_postdata( $post );
                 $event_description='';$event_cost='';$event_title='';$event_schedule='';$event_venue='';$event_img='';$event_content='';$events_date_header='';$no_events='';$event_day='';$event_address='';
                 $event_id=$post->ID;
                 $excludePosts[]=$event_id;
+                $tittle = $post->post_title;
+                //$tittle_link = $post->guid;
                 $show_headers = apply_filters( 'tribe_events_list_show_date_headers', true );
                 if ( $show_headers ) {
                 $event_year= tribe_get_start_date($event_id, false, 'Y' );
                 $event_month= tribe_get_start_date($event_id, false, 'm' );
                 $month_year_format= tribe_get_date_option( 'monthAndYearFormat', 'M Y' );
                 if ($prev_event_month != $event_month || ( $prev_event_month == $event_month && $prev_event_year != $event_year ) ) {		
-                    $prev_event_month=$event_month;
-                    $prev_event_year= $event_year;
-                    $date_header= sprintf( "<span class='month-year-box'><span>%s</span></span>", tribe_get_start_date( $post, false,'M Y') );
+                    $prev_event_month=esc_attr($event_month);
+                    $prev_event_year= esc_attr($event_year);
+                    $date_header= sprintf( "<span class='month-year-box'><span>%s</span></span>", esc_attr(tribe_get_start_date( $post, false,'M Y') ));
                     $events_date_header.='<!-- Month / Year Headers -->';
                     $events_date_header.=$date_header;	
                 }
@@ -296,6 +342,12 @@ class EventsShortcodePro
             endif;
             $event_schedule=ect_event_schedule($event_id,$date_format,$template);
             $ev_time=ect_tribe_event_time($event_id,false);
+            $evt_type='single-day';
+            if ( tribe_event_is_multiday( $event_id ) ) {
+	            $evt_type = 'multiday';
+            }elseif ( tribe_event_is_all_day( $event_id ) ){
+	            $evt_type = 'all-day';
+            }
             // Organizer
             $organizer = tribe_get_organizer();
             if ( tribe_get_cost() ) : 
@@ -305,13 +357,13 @@ class EventsShortcodePro
                 </div>';
             endif;
             if($template=="classic-list" || $template=="default" && $style=='style-3'){
-                $event_title='<a itemprop="name" class="ect-event-url" href="'.esc_url( tribe_get_event_link()).'" rel="bookmark"><i class="ect-icon-bell-alt"></i>'. get_the_title().'</a>';
+                $event_title='<a class="ect-event-url" href="'.esc_url( tribe_get_event_link($event_id)).'" rel="bookmark"><i class="ect-icon-bell-alt"></i>'. get_the_title($event_id).'</a>';
             }
             elseif( $template=="accordion-view"){
                 $event_title='<h3 class="ect-accordion-title">'. get_the_title($event_id).'</h3>';
             }
             else {
-                $event_title='<a itemprop="name" class="ect-event-url" href="'.esc_url( tribe_get_event_link()).'" rel="bookmark">'. get_the_title().'</a>';
+                $event_title='<a class="ect-event-url" href="'.esc_url( tribe_get_event_link($event_id)).'" rel="bookmark">'. get_the_title($event_id).'</a>';
             }
             /**
              * Event Description without Find out More
@@ -323,7 +375,7 @@ class EventsShortcodePro
             }
             $event_content='<!-- Event Content --><div class="ect-event-content" itemprop="description" content="'.esc_attr(wp_strip_all_tags( tribe_events_get_the_excerpt($event_id), true )).'">';
             $event_content.=tribe_events_get_the_excerpt($event_id, wp_kses_allowed_html( 'post' ) );
-                $event_content.='<a href="'.esc_url( tribe_get_event_link($event_id) ).'" class="ect-events-read-more" rel="bookmark">'.esc_html__( 'Find out more', 'the-events-calendar' ).' &raquo;</a></div>';
+                $event_content.='<a href="'.esc_url( tribe_get_event_link($event_id) ).'" class="ect-events-read-more" rel="bookmark">'.esc_html__( 'Find out more', 'ect' ).' &raquo;</a></div>';
             //event day
             $event_day='<span class="event-day">'.tribe_get_start_date($event_id, true, 'l').'</span>';
             //Address
@@ -361,6 +413,14 @@ class EventsShortcodePro
             }
             else if($template=="minimal-list"){
                 include(ECT_PRO_PLUGIN_DIR.'/templates/minimal-list/minimal-list.php');	
+            }
+            else if($template=="advance-list"){
+                $category_array[0] = empty($category_array) ? "all":"all";
+                $showimage = 'no';
+                $advance_list_id = rand(1,10000);/** Unique Id **/
+                $date_order = strtotime(tribe_get_start_date($event_id,true,'M d Y h:i:s A'));
+                $event_type = tribe( 'tec.featured_events' )->is_featured( $event_id ) ? 'ect-featured-event' : 'ect-simple-event';
+                include(ECT_PRO_PLUGIN_DIR.'/templates/advance-list/advance-list.php');
             }
             $ev_cost='';
             endforeach;
@@ -537,8 +597,7 @@ class EventsShortcodePro
                 "socialshare"=>$socialshare,
                 "template"=>$template,
                 "style"=>$style,
-                "show_description"=>$show_description
-                
+                "show_description"=>$show_description 
             );
                 $output .='<div class="ect-load-more '.$style.'">
                 <a href="#" class="ect-load-more-btn">
@@ -551,6 +610,63 @@ class EventsShortcodePro
                 }	
             }
             $output.='</div>';	
+        }
+        else if($template == "advance-list"){
+            $advance_list_id = rand(1,10000);
+            $showimage = 'no';
+            $ect_cate_sett = ect_get_option('ect_display_categoery' );
+            $category_hide_seek = '';
+            if($ect_cate_sett=='ect_disable_cat'){
+                $category_hide_seek = 'ect-cattag-hide';
+            }
+            $output .='<!=========Advance List Template '.ECT_VERSION.'=========>';
+            if(!empty($events_html)){
+            $output .= '<table data-id="'. esc_attr($advance_list_id).'" id="ect-table-List'.esc_attr($advance_list_id).'" class="ect-advance-list display">';
+            /** Table Content*/
+            $output.= '<div class="ect-static-value">
+                  <span class="ect-adl-nxt'. esc_attr($advance_list_id).'">'. __('NEXT','ect'). '</span>
+                  <span class="ect-adl-prev'. esc_attr($advance_list_id).'">'. __('PREV','ect'). '</span>
+                  <span class="ect-adl-text'. esc_attr($advance_list_id).'">'. __('Events','ect'). '</span>
+                  <span class="ect-adl-intottal'. esc_attr($advance_list_id).'">' .__('in Total','ect'). '</span>
+                  <span class="ect-adl-search'. esc_attr($advance_list_id).'">' .__('Search...','ect'). '</span>
+                  <span class="ect-adl-uid" ></span>
+                </div>';
+            $output .='<div class="ect-category-filter" id="ect-category-filter'.$advance_list_id.'" >';
+            /** Category Select Box*/ 
+            $output .= '<select id="ect-cat-filter'.$advance_list_id.'" class="ect-cat-filter">
+            <option value="" hidden>'.__('Select By Category','ect').'</option>';
+            $output .=ect_category_select_box_list($selected_cat);
+            /*** Tags Select Box***/ 
+            $output .= '</select>';  
+            $output .= ' <select id="ect-tagFilter'. $advance_list_id.'" class="ect-tagFilter">
+              <option value="" hidden>'.__('Select By Tag','ect').'</option>';
+            $output .= ect_tags_select_box_list($attribute['tags']);
+            $output .= '</select>';
+            $output .='<div id="ect-refresh'.esc_attr($advance_list_id).'" class="ect-advance-list-refresh"><span class=reload>&#x21bb;</span></div></div>';
+            $output .='<thead  class ="ect-advance-list-head" data-postperpage="'.esc_attr($attribute['limit']).'" ><tr>';
+            $output .='<th  class="ect-advance-list-mobi-serial ect-adv-date" >'.esc_html($dateTittle).'</th>';
+            $output .='<th  class="ect-adv-time">'.esc_html($timerangeTittle).'</th>';
+            if( $showimage == 'yes' )
+            {
+              $output .='<th  class="ect-img ect-adv-img">'.__('Image','ect').'</th>';
+            }
+            $output .='<th class="ect-adv-ev" >'.esc_html($evTittle).'</th>';
+            if( $show_description == 'yes' )
+            {
+              $output .= '<th class="ect-adv-desc">'.esc_html($eventDescTittle ).'</th>';
+            }
+            //  if($ect_cate_sett=='ect_enable_cat'){
+            $output .= '<th class="'.$category_hide_seek.'" data-catfilter="Category">' . esc_html($categoryTittle) . '</th>';
+            //  }
+            $output .= '<th class="ect-cattag-hide tag-column">' . __('Tags', 'ect') . '</th>';
+            if($hide_venue!='yes'){
+                $output .= '<th class="ect-adv-venue">'.esc_html($eventVenueTittle ).'</th>';
+            }
+            $output .= '<th class="ect-view-more ect-adv-vm"></th>';
+            $output .= '</tr></thead><tbody>';
+                $output .=$events_html;
+            $output.='</tbody></table>';	
+        }
         }
         else {	
             $output .='<!=========list Template '.ECT_VERSION.'=========>';
@@ -645,10 +761,90 @@ function ect_catfilters_load_more(){
             'terms' =>$cat,
         ));
     }
-    unset($ect_args['featured']);
+    // unset($ect_args['featured']);
     //	unset($ect_args['posts_per_page']);
     include(ECT_PRO_PLUGIN_DIR.'/includes/ect-masonry-loop.php' );
     echo json_encode($response);
     wp_die();
+}
+// Week View Next Prev Button
+public function ect_weekly_button(){
+    $prev_category =""; 
+    $start_prev_week_date = $_POST['weekly_date'];
+    $prev_category = $start_prev_week_date['Category'];
+    $prev_category = $prev_category =='all' ?null: $prev_category;
+    $tags = $start_prev_week_date['tags'];
+    $venue = $start_prev_week_date['venue'];
+    $limit = $start_prev_week_date['limit'];
+    $organizers = $start_prev_week_date['organizers'];
+    $featured_only = $start_prev_week_date['featured'];
+    $event_start_date= $start_prev_week_date['event_start_date'];
+    if($featured_only =='all'){
+         $featured_only='';
+    }
+    elseif($featured_only=="true"){
+        $featured_only=true;
+    }
+    elseif($featured_only=="false"){
+        $featured_only=false;
+    }
+    if($start_prev_week_date['click'] == 'next'){
+         $mondays = $start_prev_week_date['next_week_day'];
+    }else{
+         $mondays = $start_prev_week_date['start_prev_week'];
+    }
+    $month_name = date( 'M', strtotime($mondays));
+    $year = date( 'Y', strtotime($mondays));
+    $j = 6;
+    $year_next = date( 'Y', strtotime($mondays.'+'.$j.'day'));
+    $selected_friday = date( 'd', strtotime($mondays.'+'.$j.'day'));
+    $get_month = date( 'M', strtotime($mondays.'+'.$j.'day'));
+    $get_day = date( 'd', strtotime($mondays));
+    $display_monday = $get_day .' '. $month_name .' '. $year;
+    $Start_date = $year.'-'.$month_name.'-'. $get_day;
+    $friday = $selected_friday .' '. $month_name .' '. $year;
+    $last_day = $selected_friday .' '. $get_month .' '. $year_next;
+    $end_date = $year_next.'-'.$get_month.'-'. $selected_friday;
+    $current_week = date( 'd', strtotime( 'monday this week+1day' ) );
+    $dateTime = new DateTime($mondays);
+    $dateTime->modify('-7 day');
+    $friday_for_events =  date( 'Y-m-d', strtotime($mondays.'+'.$j.'day'));
+    //Print out the date in a YYYY-MM-DD format.
+    $start_prev_date =  $dateTime->format("Y-m-d");
+    /**
+     * prev week
+    */
+    $dateTime = new DateTime($mondays);
+    $dateTime->modify('+7 day');
+    //Print out the date in a YYYY-MM-DD format.
+    $start_next_dates = $dateTime->format("Y-m-d");
+    $settings=array("event_start_date"=>$event_start_date,"start_prev_week"=>$start_prev_date,"next_week_day"=>$start_next_dates,"Category"=>$prev_category,'tags'=>$tags,'venue'=>$venue, 'organizers'=>$organizers,"limit"=>$limit,'featured'=>$featured_only);  
+    $all_events = tribe_get_events( array( 'start_date' =>$Start_date.'00:01','end_date'=>$end_date.'23:59', 'tag'=>$tags,'featured'=>$featured_only, 'category'=>$prev_category,'venue'=>$venue, 'organizer'=>$organizers, 'posts_per_page'=>$limit,'featured'=>$featured_only));
+    $output ='';
+    $events_html='';
+    $output .='<div class="ect-week-nav">
+               <button class="ect-prev"><i class="ect-icon-left-double"></i></button>
+               <h2 class="ect-week">'.$display_monday.' '.'-'.' '.$last_day.'</h2>
+               <button class="ect-next"><i class="ect-icon-right-double"></i></button>
+            </div>';
+            if( is_array($all_events) && count($all_events)>0){
+       $output .= '<div class="ect-week-days-wrapper">';
+           include_once(ECT_PRO_PLUGIN_DIR.'/templates/week-view/weekly-view.php');
+       $output.= $events_html;
+       $output.= '</div>';
+    }else{
+        $no_event_found_text =ect_get_option( 'events_not_found' );
+		if(!empty($no_event_found_text)){
+			$output.='<div class="ect-no-events"><p>'.filter_var($no_event_found_text,FILTER_SANITIZE_STRING).'</p></div>';
+		}else{
+                 $output.='<div class="ect-no-events"><p>'.__('There are no upcoming events at this time.','ect').'</p></div>';
+		}
+         $output.='</div>';
+    }
+       $output.='<script type="application/json" id="ect-query-arg">'.json_encode($settings).'</script>';
+       $output.='<div class="ect_calendar_events_spinner"><div class="ect_spinner_img"><img src="'.ECT_PRO_PLUGIN_URL .'assets/images/ect-preloader.gif"><br/>Loading events...</div></div>';
+       $output.='</div>';
+       echo $output;
+       die();
 }
 }

@@ -1,7 +1,15 @@
 jQuery(document).ready(
     function($){
         let PREFIX = "ect";
-
+        var name = PREFIX+'_license_registration['+PREFIX+'-purchase-code]';
+        var val = $("input[name='"+name+"']").val();
+        var val_length =val.length;
+        if(val_length!=0){
+            var subStr = val.toString().substr(0, 9);
+            var test = val.toString().substr(-9);
+            var results = subStr+'-XXXXXXXX-XXXXXXXX-'+test;
+             $("input[name='"+name+"']").attr('value',results);
+        }
             $(".required [name='"+PREFIX+"_license_registration["+PREFIX+"-purchase-code]']").attr('required','required');
             $(".required [name='"+PREFIX+"_license_registration["+PREFIX+"-purchase-code]']").attr('oninvalid','this.setCustomValidity("Purchase code can not be empty!")');
             $(".required [name='"+PREFIX+"_license_registration["+PREFIX+"-purchase-code]']").attr('oninput','this.setCustomValidity("")');

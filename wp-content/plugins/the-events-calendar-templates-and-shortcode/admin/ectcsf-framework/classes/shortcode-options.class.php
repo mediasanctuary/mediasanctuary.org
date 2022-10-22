@@ -50,7 +50,9 @@ if ( ! class_exists( 'ECTCSF_Shortcoder' ) ) {
 
       if ( ! empty( $this->args['show_in_editor'] ) ) {
 
-        ECTCSF::$shortcode_instances[$this->unique] = wp_parse_args( array( 'hash' => md5( $key ), 'modal_id' => $this->unique ), $this->args );
+        $name = str_replace( '_', '-', sanitize_title( $this->unique ) );
+
+        ECTCSF::$shortcode_instances[] = wp_parse_args( array( 'name' => 'ectcsf/'. $name, 'modal_id' => $this->unique ), $this->args );
 
         // elementor editor support
         if ( ECTCSF::is_active_plugin( 'elementor/elementor.php' ) ) {
@@ -322,9 +324,9 @@ if ( ! class_exists( 'ECTCSF_Shortcoder' ) ) {
 
       wp_localize_script( 'ectcsf-gutenberg-block', 'ectcsf_gutenberg_blocks', ECTCSF::$shortcode_instances );
 
-      foreach ( ECTCSF::$shortcode_instances as $value ) {
+      foreach ( ECTCSF::$shortcode_instances as $block ) {
 
-        register_block_type( 'ectcsf-gutenberg-block/block-'. $value['hash'], array(
+        register_block_type( $block['name'], array(
           'editor_script' => 'ectcsf-gutenberg-block',
         ) );
 

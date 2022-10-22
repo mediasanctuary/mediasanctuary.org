@@ -27,14 +27,14 @@ Check Plugin Demo | Read Documentation | Changelog
 
 ### The Events Calendar Shortcode and Templates Plugin Demo
 
-* [Events List Demo](https://eventscalendartemplates.com/list-demo/)
-* [Events Timeline Demo](https://eventscalendartemplates.com/timeline-demo/)
+* [Events List Demo](https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-list/?utm_source=ect_plugin&utm_medium=plugin_link&utm_campaign=ect_plugin_page)
+* [Events Timeline Demo](https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-timeline/?utm_source=ect_plugin&utm_medium=plugin_link&utm_campaign=ect_plugin_page)
 
 = Premium Version Demo =
 
-* [Events Grid Demo](https://eventscalendartemplates.com/events-grid-demo/)
-* [Events Carousel Demo](https://eventscalendartemplates.com/events-carousel-demo/)
-* [Events Slider Demo](https://eventscalendartemplates.com/events-slider-demo/)
+* [Events Grid Demo](https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-grid/?utm_source=ect_plugin&utm_medium=plugin_link&utm_campaign=ect_plugin_page)
+* [Events Carousel Demo](https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-carousel/?utm_source=ect_plugin&utm_medium=plugin_link&utm_campaign=ect_plugin_page)
+* [Events Slider Demo](https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-slider/?utm_source=ect_plugin&utm_medium=plugin_link&utm_campaign=ect_plugin_page)
 
 > [Buy The Events Calendar Shortcode and Templates Pro](https://1.envato.market/c/1258464/275988/4415?u=https%3A%2F%2Fcodecanyon.net%2Fitem%2Fthe-events-calendar-templates-and-shortcode-wordpress-plugin%2F20143286)
 
