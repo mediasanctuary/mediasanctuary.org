@@ -73,17 +73,19 @@
       */ ?>
       <h1><?php the_title();?></h1>
       <?php if ($post->post_type == 'post' && has_category('Stories')) {
-        $byline = get_field('byline'); ?>
-        <span class="byline">By <?php foreach ($byline as $index => $person) {
-          if ($index == 1 && count($byline) == 2) {
-            echo ' and ';
-          } else if ($index > 0 && $index == count($byline) - 1) {
-            echo ', and ';
-          } else if ($index > 0) {
-            echo ', ';
-          }
-          echo '<a href="' . get_permalink($person) . '">' . esc_html($person->post_title) . "</a>";
-        } ?></span>
+        $byline = get_field('byline');
+        if (! empty($byline)) { ?>
+          <span class="byline">By <?php foreach ($byline as $index => $person) {
+            if ($index == 1 && count($byline) == 2) {
+              echo ' and ';
+            } else if ($index > 0 && $index == count($byline) - 1) {
+              echo ', and ';
+            } else if ($index > 0) {
+              echo ', ';
+            }
+            echo '<a href="' . get_permalink($person) . '">' . esc_html($person->post_title) . "</a>";
+          } ?></span>
+        <?php } ?>
       <?php } ?>
       <div class="content">
         <?php
