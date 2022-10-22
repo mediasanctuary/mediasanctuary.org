@@ -35,10 +35,38 @@
         <a href="/peoplepower">&laquo; People Power</a>
       </div>
       <h1><?php the_title();?></h1>
+      <?php
+
+      $types = get_the_terms($post, 'person-type');
+      if (! empty($types)) { ?>
+        <div class="person-type">
+          <?php foreach ($types as $index => $type) {
+            if ($index > 0) {
+              echo ', ';
+            }
+            echo esc_html($type->name);
+          } ?>
+        </div>
+      <?php } ?>
       <div class="content">
         <?php
           echo $thumb;
-          echo '<div class="copy">'; the_content(); echo '</div">';
+          echo '<div class="copy">'; the_content();
+
+          $initiatives = get_field('initiatives');
+          if (! empty($initiatives)) {
+            echo '<p>Involved with: ';
+            foreach ($initiatives as $index => $initiative) {
+              if ($index > 0) {
+                echo ', ';
+              }
+              echo '<a href="/initiatives/' . esc_attr($initiative->slug) . '/">';
+              echo esc_html($initiative->name) . '</a>';
+            }
+            echo "</p>\n";
+          }
+
+          echo '</div">';
         ?>
       </div>
 
@@ -47,7 +75,7 @@
     <?php
       /*
         Maybe Include Stories of Author?
-        
+
         if (function_exists('get_field') && ! empty($parent)) {
 
       $categories = get_field('featured_categories', 'options');
@@ -60,7 +88,7 @@
 
         </ul>
       </aside>
-      */ 
+      */
       ?>
     </article>
 
@@ -72,18 +100,18 @@
 <section id="projects" class="p40">
   <div class="container">
     <h2>Projects</h2>
-    <div class="three-col">  
-      <?php 
-        while ( have_rows('person_projects') ) : the_row();    
-          $post_object = get_sub_field('project'); 
+    <div class="three-col">
+      <?php
+        while ( have_rows('person_projects') ) : the_row();
+          $post_object = get_sub_field('project');
           if( $post_object ) {
             $post = $post_object;
             setup_postdata( $post );
             get_template_part( 'partials/post', 'none' );
-            wp_reset_postdata(); 
+            wp_reset_postdata();
           }
         endwhile;
-      ?>  
+      ?>
     </div>
   </div>
 </section>

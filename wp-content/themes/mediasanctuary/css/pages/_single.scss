@@ -292,7 +292,7 @@
   }
 }
 
-.byline {
+.byline, .person-type {
   display: block;
   font-size: 16px;
   line-height: normal;
@@ -308,6 +308,11 @@
       color: $c-teal-duck;
     }
   }
+}
+
+.person-type {
+  margin-top: -15px;
+  margin-bottom: 15px;
 }
 
 .categories {
