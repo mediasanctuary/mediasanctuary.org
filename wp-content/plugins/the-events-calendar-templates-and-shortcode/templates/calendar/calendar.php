@@ -1,4 +1,12 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) {
+	header( 'Status: 403 Forbidden' );
+	header( 'HTTP/1.1 403 Forbidden' );
+	exit();
+}
+/**
+ * This file is used only for calendar layouts.
+ */
 /**
  * This file is responsible for creating calendar layout for events
  */
@@ -9,10 +17,8 @@ class ect_calendar_template{
 		add_action( 'tribe_events_cat_add_form_fields', array( $this, 'event_category_add_style'), 100, 1 );
 		add_action( 'tribe_events_cat_edit_form_fields', array( $this, 'event_category_add_style'), 100, 1 );
 		add_action( 'admin_print_scripts', array($this, 'event_cat_colorpicker_init'), 100 );
-
 		add_action( 'created_tribe_events_cat', array($this, 'event_save_category_style') );  // Variable Hook Name
 		add_action( 'edited_tribe_events_cat',  array($this,  'event_save_category_style') );  // Variable Hook Name
-
 		add_action('wp_enqueue_scripts', array( $this, 'ect_register_script'));
 		add_shortcode('ect-calendar-layout', array( $this, 'ect_calendar_shortcode' ) );
 		add_filter( 'tribe_rest_event_data', array( $this, 'ect_filter_events_rest_data'), 10,2 );
@@ -27,7 +33,7 @@ class ect_calendar_template{
 	function ect_register_script(){
 	
 		wp_register_script('ect-moment', ECT_PRO_PLUGIN_URL.'assets/js/moment.min.js',null,ECT_VERSION,false);
-
+		wp_register_script( 'ect-moment-local-js', ECT_PRO_PLUGIN_URL . 'assets/js/ect-moment-local.min.js', array( 'jquery' ), ECT_VERSION, true );
 		wp_register_script('ect-calendar', ECT_PRO_PLUGIN_URL.'assets/js/calendar-main.min.js' ,array('jquery'),ECT_VERSION,true);
 		wp_register_script('ect-select2', ECT_PRO_PLUGIN_URL.'assets/js/select2.min.js' ,array('jquery'),ECT_VERSION,true);
 		wp_register_script('ect-calendar-lang', ECT_PRO_PLUGIN_URL.'assets/js/calendar-locales-all.min.js' ,array('jquery'),ECT_VERSION,true);
@@ -65,8 +71,9 @@ class ect_calendar_template{
 				'limit'=>100
 				//'time-format'=>'hh:mm A',
 		), $attr, 'ect_CAL');
-		
+			
 			wp_enqueue_script( 'ect-moment' );
+			wp_enqueue_script( 'ect-moment-local-js' );
 		//	wp_enqueue_script( 'ect-code-snippet' );
 			wp_enqueue_style( 'ect_calendar-style' );
 			wp_enqueue_script( 'ect-calendar' );

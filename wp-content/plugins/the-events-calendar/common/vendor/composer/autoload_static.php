@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitbdacef9734b332e220fd89a7ce275183
+class ComposerStaticInitd859b498033b0033d130b8bfa9e109cb
 {
     public static $prefixLengthsPsr4 = array (
         'T' => 
@@ -68,8 +68,11 @@ class ComposerStaticInitbdacef9734b332e220fd89a7ce275183
 
     public static $classMap = array (
         'Firebase\\JWT\\BeforeValidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/BeforeValidException.php',
+        'Firebase\\JWT\\CachedKeySet' => __DIR__ . '/..' . '/firebase/php-jwt/src/CachedKeySet.php',
         'Firebase\\JWT\\ExpiredException' => __DIR__ . '/..' . '/firebase/php-jwt/src/ExpiredException.php',
+        'Firebase\\JWT\\JWK' => __DIR__ . '/..' . '/firebase/php-jwt/src/JWK.php',
         'Firebase\\JWT\\JWT' => __DIR__ . '/..' . '/firebase/php-jwt/src/JWT.php',
+        'Firebase\\JWT\\Key' => __DIR__ . '/..' . '/firebase/php-jwt/src/Key.php',
         'Firebase\\JWT\\SignatureInvalidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/SignatureInvalidException.php',
         'Monolog\\ErrorHandler' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/ErrorHandler.php',
         'Monolog\\Formatter\\ChromePHPFormatter' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Formatter/ChromePHPFormatter.php',
@@ -187,6 +190,7 @@ class ComposerStaticInitbdacef9734b332e220fd89a7ce275183
         'Tribe\\Admin\\Notice\\Service_Provider' => __DIR__ . '/../..' . '/src/Tribe/Admin/Notice/Service_Provider.php',
         'Tribe\\Admin\\Notice\\WP_Version' => __DIR__ . '/../..' . '/src/Tribe/Admin/Notice/WP_Version.php',
         'Tribe\\Admin\\Pages' => __DIR__ . '/../..' . '/src/Tribe/Admin/Pages.php',
+        'Tribe\\Admin\\Settings' => __DIR__ . '/../..' . '/src/Tribe/Admin/Settings.php',
         'Tribe\\Admin\\Troubleshooting' => __DIR__ . '/../..' . '/src/Tribe/Admin/Troubleshooting.php',
         'Tribe\\Admin\\Upsell_Notice\\Main' => __DIR__ . '/../..' . '/src/Tribe/Admin/Upsell_Notice/Main.php',
         'Tribe\\Customizer\\Control' => __DIR__ . '/../..' . '/src/Tribe/Customizer/Control.php',
@@ -269,10 +273,10 @@ class ComposerStaticInitbdacef9734b332e220fd89a7ce275183
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitbdacef9734b332e220fd89a7ce275183::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitbdacef9734b332e220fd89a7ce275183::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitbdacef9734b332e220fd89a7ce275183::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitbdacef9734b332e220fd89a7ce275183::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd859b498033b0033d130b8bfa9e109cb::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd859b498033b0033d130b8bfa9e109cb::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitd859b498033b0033d130b8bfa9e109cb::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitd859b498033b0033d130b8bfa9e109cb::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -95,7 +95,7 @@ class EctCalendarElementorWidget extends Widget_Base {
 	 *
 	 * @access protected
 	 */
-	protected function _register_controls() {
+	protected function register_controls() {
        
 		 
 		//  var_dump($ect_venue_details);
@@ -186,7 +186,7 @@ class EctCalendarElementorWidget extends Widget_Base {
 	echo'<div class="ect-elementor-shortcode ect-free-addon">';
 	
 		
-     echo ($shortcode);
+     echo wp_kses_post($shortcode);
      echo'</div>';
 	}
 }

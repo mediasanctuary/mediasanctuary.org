@@ -82,7 +82,13 @@ if ( $all_events ) {
 				$ev_cost='<div class="ect-rate-area" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 				<span class="ect-rate-icon"><i class="ect-icon-ticket" aria-hidden="true"></i></span>
 				<span class="ect-rate" itemprop="price" content="'.tribe_get_cost($event_id, false ).'">'.tribe_get_cost($event_id, true ).'</span>
-				<meta itemprop="priceCurrency" content="'.tribe_get_event_meta( $event_id, '_EventCurrencySymbol', true ).'" /></div>';
+				<meta itemprop="priceCurrency" content="'.tribe_get_event_meta( $event_id, '_EventCurrencySymbol', true ).'" />';
+				if( class_exists('Tribe__Tickets__Main') ){
+                    $ev_cost.='<span class="ect-ticket-info">';	
+                    $ev_cost.=ect_tribe_tickets_buy_button(false,$event_id);
+                    $ev_cost.='</span>';
+                }
+				$ev_cost.='</div>';
 		endif;
 		$event_schedule=ect_event_schedule($event_id,$date_format,$template);
 		// Organizer

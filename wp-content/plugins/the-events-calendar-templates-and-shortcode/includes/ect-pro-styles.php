@@ -19,7 +19,7 @@ class EctProStyles
     {
         $thisPlugin =$this;
         /*** Enqueued script and styles */
-        add_action('wp_enqueue_scripts', array($thisPlugin, 'ect_styles'));	
+        // add_action('wp_enqueue_scripts', array($thisPlugin, 'ect_styles'));	
         $thisPlugin->load_files();
 
     }
@@ -29,9 +29,22 @@ class EctProStyles
         wp_register_style('ect-timeline-styles', ECT_PRO_PLUGIN_URL . 'assets/css/ect-timeline.min.css',null, ECT_VERSION,'all' );
         wp_register_style('ect-list-styles', ECT_PRO_PLUGIN_URL . 'assets/css/ect-list-view.min.css',null, ECT_VERSION,'all' );
         wp_register_style('ect-minimal-list-styles', ECT_PRO_PLUGIN_URL . 'assets/css/ect-minimal-list-view.css',null, ECT_VERSION,'all' );
+        //Advance List
+        wp_register_style('ect-advance-list-datatable-css', ECT_PRO_PLUGIN_URL . 'assets/css/ect-datatable.css',null, ECT_VERSION,'all');
+        wp_register_style('ect-datatable-responsive', ECT_PRO_PLUGIN_URL . 'assets/css/ect-datatable-responsive.css',null, ECT_VERSION,'all' );
+        wp_register_style( 'ect-advance-list-css', ECT_PRO_PLUGIN_URL . 'assets/css/ect-advance-list.css',null, ECT_VERSION,'all');
+        
         // scripts 
         wp_register_script('ect-sharebutton',ECT_PRO_PLUGIN_URL .'assets/js/ect-sharebutton.js',array('jquery'),ECT_VERSION,true);
         wp_register_style('ect-sharebutton-css',ECT_PRO_PLUGIN_URL .'assets/css/ect-sharebutton.css',null, ECT_VERSION,'all');
+        //Advance list
+        wp_register_script('ect-advance-list-datatable-js', ECT_PRO_PLUGIN_URL . 'assets/js/ect-datatable.min.js',array('jquery'),null,true);
+        wp_register_script('ect-advance-list-dt-res', ECT_PRO_PLUGIN_URL . 'assets/js/ect-datatable-responsive.js',array('jquery','ect-advance-list-datatable-js'),null,true);
+        wp_register_script('ect-advance-list-js', ECT_PRO_PLUGIN_URL . 'assets/js/ect-advance-list.js',array('jquery','ect-advance-list-datatable-js'),null,true);
+        
+        // Week View
+        wp_register_script('ect-weekly-view-js', ECT_PRO_PLUGIN_URL.'assets/js/ect-weekly-view.js' ,array('jquery'),ECT_VERSION,true);
+		wp_register_style('ect-weekly-view-css', ECT_PRO_PLUGIN_URL. 'assets/css/ect-weekly-view.css', array(), ECT_VERSION, 'all');
     }
     public  function load_files(){
         // Inside ect-Ecttinycolor folder exists darken,lighten color.
@@ -56,6 +69,7 @@ class EctProStyles
 			wp_enqueue_style('ect-minimal-list-styles');
             wp_add_inline_style('ect-minimal-list-styles',$custom_style );
 		}
+      
 		else{
 			wp_add_inline_style('ect-list-styles',$custom_style );
 			wp_enqueue_style('ect-list-styles');
@@ -116,7 +130,7 @@ class EctProStyles
         } elseif ( strlen( $color ) == 3 ) {
             $hex = array( $color[0] . $color[0], $color[1] . $color[1], $color[2] . $color[2] );
         } else {
-            return $default;
+            return $color;
         }
         //Convert hexadec to rgb
         $rgb =  array_map('hexdec', $hex);
@@ -164,6 +178,7 @@ class EctProStyles
         // Fetch Date Typography
         $ect_date_styles = !empty( $options['ect_dates_styles'] ) ? $options['ect_dates_styles'] : '' ;
         $ect_date_font_family = !empty( $ect_date_styles['font-family'] ) ? $ect_date_styles['font-family'] : 'Monda' ;
+        $ect_date_font_size = !empty( $ect_date_styles['font-size'] ) ? $ect_date_styles['font-size'] : '20px' ;
         $ect_date_color = !empty( $ect_date_styles['color'] ) ? $ect_date_styles['color'] : '#00445e' ; 
         $ect_date_font_weight = !empty( $ect_date_styles['font-weight'] ) ? $ect_date_styles['font-weight'] : 'bold' ;
         $ect_date_font_style = !empty( $ect_date_styles['font-style'] ) ? $ect_date_styles['font-style'] : '' ;
@@ -172,6 +187,8 @@ class EctProStyles
         $all_saved_ff['venue_family'] = str_replace(" ","+",$ect_venue_font_famiily);
         $all_saved_ff['title_family'] = str_replace(" ","+",$ect_title_font_famiily);
         $all_saved_ff['desc_family'] = str_replace(" ","+",$ect_desc_font_famiily);
+
+        if( $template != "advance-list" || $template != "week-view"){
         $ect_output_css .='.ect-load-more a.ect-load-more-btn {
                  background-color: '.$main_skin_color.';
                  background-image: radial-gradient('.Ecttinycolor($main_skin_color)->lighten(5)->toString().', '.Ecttinycolor($main_skin_color)->lighten(0)->toString().');
@@ -213,19 +230,22 @@ class EctProStyles
                 color: '.$main_skin_alternate_color.';
 			}
             ';
+        }
             $safe_fonts= array('Arial', 'Arial+Black', 'Helvetica','Times+New+Roman',
             'Courier+New','Tahoma', 'Verdana','Impact','Trebuchet+MS','Comic+Sans+MS', 'Lucida+Console',
             'Lucida+Sans+Unicode','Georgia','Palatino+Linotype'
                 );
                 $build_url = 'https://fonts.googleapis.com/css?family=';
-               $ff_names[]='';
-            foreach($all_saved_ff as $key=>$val){
-                if(!in_array($val,$safe_fonts)){
-                    $ff_names[]=$val;
+               $ff_names=array();
+                foreach($all_saved_ff as $key=>$val){
+                    if(!in_array($val,$safe_fonts)){
+                        $ff_names[]=$val;
+                    }
                 }
-            }
-            $build_url.=implode("|",array_filter($ff_names));
-             wp_enqueue_style('ect-google-font',"$build_url", array(), null, null, 'all');
+                if(!empty($ff_names)){
+                    $build_url.=implode("|",array_filter($ff_names));
+                    wp_enqueue_style('ect-google-font',"$build_url", array(), null, null, 'all');
+                }
             if(in_array($template,array("timeline","classic-timeline",'timeline-view'))) {
                 require(ECT_PRO_PLUGIN_DIR."templates/timeline/timeline-css.php" );
             }
@@ -249,6 +269,12 @@ class EctProStyles
             }
             elseif($template == "carousel-view"){
                 require(ECT_PRO_PLUGIN_DIR."templates/carousel/carousel-css.php" );
+            }
+            elseif($template == "advance-list"){
+                require(ECT_PRO_PLUGIN_DIR."templates/advance-list/advance-list-css.php" );
+            }
+            elseif($template == "week-view"){
+                require(ECT_PRO_PLUGIN_DIR."templates/week-view/week-view-css.php" );
             }
             else{
                 require(ECT_PRO_PLUGIN_DIR."templates/list/list-css.php" );

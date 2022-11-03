@@ -36,7 +36,8 @@
                 * Fetch events for calendar
                 */
                function render_new_month() {
-
+                var current_page_lang = document.documentElement.lang;
+                moment.locale(current_page_lang);
                    allCategories = [];
                    $(wrapperClass + ' .' + El_category).html('');
                    var dateStart = moment(calendar.view.activeStart).subtract(30, 'days').format("YYYY-MM-DD");
@@ -196,12 +197,13 @@
                    let barColor = info.event.extendedProps.bgColor;
                    barColor = barColor == '' ? '#3788d8' : barColor;
                    let eventDate = startDate;
-                   if (!info.event.allDay && endDate != null) {
-                       eventDate = startDate != endDate ? startDate + ' - ' + endDate : startDate;
-                   }
+                   let eventDates = startDate;
+                //    if (!info.event.allDay && endDate != null) {
+                //        eventDate = startDate != endDate ? startDate + ' - ' + endDate : startDate;
+                //    }
 
                    const Title = "<div class='ect-calendar-header' style='border-left:4px solid " + barColor + ";'> <span class='tui-full-calendar-schedule-title'><a class='ect-title-link' href='" + info.event.url + "' target='_new'><h2>" + info.event.title + "</h2></a></span>";
-                   var datetime = "<span class='tui-full-calendar-popup-detail-date tui-full-calendar-content'>" + eventDate + "</span></div>";
+                   var datetime = "<span class='tui-full-calendar-popup-detail-date tui-full-calendar-content'>" + eventDates + "</span></div>";
                    var closeButton = "<span class='ect-close-button'>X</span>";
                    const Header = "<div class='tui-full-calendar-popup tui-full-calendar-popup-detail'>" + closeButton + "<div class = 'tui-full-calendar-popup-container'>" + Title + datetime;
                    //const Title = "<div class='tui-full-calendar-popup-section tui-full-calendar-section-header'><span class='tui-full-calendar-schedule-private tui-full-calendar-icon tui-full-calendar-ic-private'></span><span class='tui-full-calendar-schedule-title'><a class='ect-title-link' href='" + info.event.url + "' target='_new'><h2>" + info.event.title + "</h2></a></span><span class='tui-full-calendar-popup-detail-date tui-full-calendar-content'><i></>" + eventDate + "</span></div>";

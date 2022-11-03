@@ -85,15 +85,19 @@
     right: 6px;
     left: auto;
 }
-.ect-accordion-date span.ev-day,
+.ect-date-area.accordion-view-schedule{
+    display: flex;
+    flex-direction: column;
+}
+ .ect-accordion-date span.ev-day,
 .ect-accordion-date span.ev-mo,
 .ect-accordion-date span.ev-yr,
 .ect-accordion-date span.ev-time,
 .ect-accordion-date span.ev-weekday {
     clear: both;
     width: 100%;
-    display: inline-block;
-}
+    /* display: inline-block; */
+} 
 .ect-accordion-date span.ev-day {
     font-size:1em;
 }
@@ -103,9 +107,10 @@
 .ect-accordion-date span.ev-weekday {
     font-size:0.55em;
     font-weight:normal;
-    position: relative;
-    top: -10px;
+    position: relative; 
+    top: -10px; 
 }
+
 .ect-accordion-venue span.ect-icon {
     display: inline-block;
     font-size: 1.2em;

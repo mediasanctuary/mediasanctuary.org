@@ -75,7 +75,7 @@ if (!class_exists('EctVCAddon')) {
         
                 if (!empty($terms) || !is_wp_error($terms)) {
                     foreach ($terms as $term) {
-                        $ect_categories[$term->slug] =$term->name ;
+                        $ect_categories[$term->name] =$term->slug ;
                     }
                 }
                 $tags =  get_terms(array(
@@ -123,7 +123,8 @@ if (!class_exists('EctVCAddon')) {
                                 __( 'Masonry Layout(Categories Filters)', 'ect2' )=>"masonry-view",
                                 __( 'Toggle List(accordion-view)', 'ect2' )=>"accordion-view",
                                 __(  'Minimal List','ect2') => 'minimal-list',
-                                __('Cover View') => 'cover-view'
+                                __(  'Advance List','ect2') => 'advance-list',
+                                // __('Cover View') => 'cover-view'
                                
                             );
                             $styles=  array(

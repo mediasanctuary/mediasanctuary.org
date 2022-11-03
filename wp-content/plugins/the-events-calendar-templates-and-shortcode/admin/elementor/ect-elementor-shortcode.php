@@ -68,7 +68,7 @@ class EctElementorWidget extends Widget_Base {
 	 * @return array Widget categories.
 	 */
 	public function get_categories() {
-		return [ 'The Events Calendar Shortcode and Templates Addon' ];
+		return ['the-events-calendar-shortcode-and-templates-addon'];
 	}
 
 	/**
@@ -95,7 +95,7 @@ class EctElementorWidget extends Widget_Base {
 	 *
 	 * @access protected
 	 */
-	protected function _register_controls() {
+	protected function register_controls() {
         $terms = get_terms(array(
 			'taxonomy' => 'tribe_events_cat',
 			'hide_empty' => false,
@@ -202,10 +202,9 @@ class EctElementorWidget extends Widget_Base {
 					'masonry-view' => __( 'Masonry Layout(Categories Filters)', 'cool-timeline' ),
 					'accordion-view' => __( 'Toggle List(accordion-view)', 'cool-timeline' ),
 					'minimal-list'=>__('Minimal List','cool-timeline' ),
-					'cover-view'=>__('Cover View')
-				
-				]
-				
+					'advance-list'=>__('Advance List','cool-timeline' )
+					// 'cover-view'=>__('Cover View'),
+				]	
 			]
         );
         $this->add_control(
@@ -214,6 +213,7 @@ class EctElementorWidget extends Widget_Base {
 				'label' => __( 'Template Style', 'cool-timeline' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'style-1',
+				'condition'=>['template!'=>'advance-list'],
 				'options' => [
 					'style-1' => __( 'Style 1', 'cool-timeline' ),
                     'style-2' => __( 'Style 2', 'cool-timeline' ),
@@ -269,6 +269,7 @@ class EctElementorWidget extends Widget_Base {
                 [
                     'label' => __( 'Events Order', 'cool-timeline' ),
                     'type' => Controls_Manager::SELECT,
+				'condition'=>['template!'=>'advance-list'],
                     'default' => 'ASC',
                     'options' => [
                         'ASC' => __( 'ASC', 'cool-timeline' ),
@@ -276,6 +277,33 @@ class EctElementorWidget extends Widget_Base {
                 ]
                 ]
             ); 
+			
+			$this->add_control(
+                'hidedesc',
+                [
+                    'label' => __( 'Shows Description', 'cool-timeline' ),
+                    'type' => Controls_Manager::SELECT,
+                    'default' => 'yes',
+                    'options' => [
+                        'no' => __( 'NO', 'cool-timeline' ),
+                        'yes' => __( 'Yes', 'cool-timeline' ),
+					],
+					'condition'=>['template!'=>'advance-list']
+                ]
+			);
+			$this->add_control(
+                'hidedescal',
+                [
+                    'label' => __( 'Shows Description', 'cool-timeline' ),
+                    'type' => Controls_Manager::SELECT,
+                    'default' => 'no',
+                    'options' => [
+                        'no' => __( 'NO', 'cool-timeline' ),
+                        'yes' => __( 'Yes', 'cool-timeline' ),
+					],
+					'condition'=>['template'=>'advance-list']
+                ]
+			);
             $this->add_control(
                 'hidevenue',
                 [
@@ -288,18 +316,6 @@ class EctElementorWidget extends Widget_Base {
                     ]
                 ]
 			);
-			// $this->add_control(
-            //     'venue',
-            //     [
-            //         'label' => __( 'Hide Venue', 'cool-timeline' ),
-            //         'type' => Controls_Manager::SELECT,
-            //         'default' => 'no',
-            //         'options' => [
-            //             'no' => __( 'NO', 'cool-timeline' ),
-            //             'yes' => __( 'Yes', 'cool-timeline' ),
-            //         ]
-            //     ]
-			// );
 			$this->add_control(
                 'featured-only',
                 [
@@ -348,6 +364,7 @@ class EctElementorWidget extends Widget_Base {
                     'label' => __( 'Columns', 'cool-timeline' ),
                     'type' => Controls_Manager::SELECT,
                     'default' => '2',
+				'condition'=>['template!'=>'advance-list'],
                     'options' => [
                         '2' => __( '2', 'cool-timeline' ),
 						'3' => __( '3', 'cool-timeline' ),
@@ -360,7 +377,7 @@ class EctElementorWidget extends Widget_Base {
 							'masonry-view',
 							'carousel-view'
 					],
-					]
+				]
                 ]
             );
 			$this->add_control(
@@ -379,15 +396,31 @@ class EctElementorWidget extends Widget_Base {
 							'slider-view',
 							'carousel-view'
 					],
-					]
+				]
                 ]
             );
+		//   $this->add_control(
+		// 	'show_image',
+		// 	[
+		// 	    'label' => __( 'Display Image', 'cool-timeline' ),
+		// 	    'type' => Controls_Manager::SELECT,
+		// 	    'condition' => [
+		// 		  'template' => 'advance-list'
+		// 	     ],
+		// 	    'default' => 'no',
+		// 	    'options' => [
+		// 		   'no' => __( 'NO', 'cool-timeline' ),
+		// 		   'yes' => __( 'Yes', 'cool-timeline' ),
+		// 	    ]
+		// 	]
+		//  );
 			$this->add_control(
                 'sharebutton',
                 [
                     'label' => __( 'Enable Social Share Buttons?', 'cool-timeline' ),
                     'type' => Controls_Manager::SELECT,
                     'default' => 'no',
+				'condition'=>['template!'=>'advance-list'],
                     'options' => [
                         'no' => __( 'NO', 'cool-timeline' ),
                         'yes' => __( 'Yes', 'cool-timeline' ),
@@ -400,9 +433,16 @@ class EctElementorWidget extends Widget_Base {
 				'label' => __( 'Limit the events', 'cool-timeline' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '10',
-				
 			]
-        );
+            );
+		$this->add_control(
+			'limital',
+			[
+				'label' => __( 'Limit the events', 'cool-timeline' ),
+				'type' => Controls_Manager::TEXT,
+				'default' => '25',
+			]
+		);
         $this->add_control(
 			'start_date',
 			[
@@ -434,19 +474,21 @@ class EctElementorWidget extends Widget_Base {
 	 * @access protected
 	 */
 	protected function render() {
-		$settings = $this->get_settings();
-		
-		$layout=isset($settings['template'])?$settings['template']:"default";
+	   $settings = $this->get_settings();
+	   $layout=isset($settings['template'])?$settings['template']:"default";
         $style = isset($settings['style'])?$settings['style']:'style-1';
         $date_format=isset($settings['date_formats'])?$settings['date_formats']:"default";
         $start_date = isset( $settings['start_date'] )? $settings['start_date']: '';
         $end_date = isset( $settings['end_date'] )? $settings['end_date']: '';
-        $venue=isset($settings['hidevenue'])?$settings['hidevenue']:"no";
-        $sharebutton=isset($settings['sharebutton'])?$settings['sharebutton']:"no";
+        $venue=isset($settings['hidevenue'])?$settings['hidevenue']:"";
+        $Description=isset($settings['hidedesc'])?$settings['hidedesc']:"yes";
+        $DescriptionAl=isset($settings['hidedescal'])?$settings['hidedescal']:"no";
+	   $sharebutton=isset($settings['sharebutton'])?$settings['sharebutton']:"no";
         $number_of_events=isset($settings['limit'])?$settings['limit']:"10";
+		$advancelist_limit=isset($settings['limital'])?$settings['limital']:"25";
         $order=isset($settings['order'])?$settings['order']:"ASC";
-		$time=isset($settings['time'])?$settings['time']:"future";
-		$columns=isset($settings['columns'])?$settings['columns']:"2";
+	   $time=isset($settings['time'])?$settings['time']:"future";
+	   $columns=isset($settings['columns'])?$settings['columns']:"2";
         $venues=isset($settings['venues'])?$settings['venues']:"";
 		$organizers=isset($settings['organizers'])?$settings['organizers']:"";
 		$autoplay = isset($settings['autoplay'])?$settings['autoplay']:"false";
@@ -454,12 +496,14 @@ class EctElementorWidget extends Widget_Base {
 		$featured= isset($settings['featured-only'])?$settings['featured-only']:"";
 		$ect_categories = isset($settings['event_categories'])?$settings['event_categories']:"all";
 		$slider_pp_id='ect-'.$layout.'-'.$style.rand(1,10);
-		 
 		//  ect_load_assets($layout,$style,$slider_pp_id,$autoplay, $columns);
-		$shortcode = '[events-calendar-templates category="'.$ect_categories.'" template="'.$layout.'" style="'.$style.'" date_format="'.$date_format.'" start_date="'.$start_date.'" end_date="'.$end_date.'" limit="'.$number_of_events.'" order="'.$order.'" hide-venue="'.$venue.'" socialshare="'.$sharebutton.'" time="'.$time.'" columns="'.$columns.'" venues="'.$venues.'" organizers="'.$organizers.'" autoplay="'.$autoplay.'" tags="'.$tag.'" featured-only="'.$featured.'"]';
+		if($layout=='advance-list'){
+			$shortcode = '[events-calendar-templates category="'.$ect_categories.'" template="'.$layout.'" date_format="'.$date_format.'" start_date="'.$start_date.'" end_date="'.$end_date.'" limit="'.$advancelist_limit.'" order="'.$order.'" hide-venue="'.$venue.'" time="'.$time.'" venues="'.$venues.'" organizers="'.$organizers.'" tags="'.$tag.'" featured-only="'.$featured.'"show-description="'.$DescriptionAl.'"]';
+		}else{
+			$shortcode = '[events-calendar-templates category="'.$ect_categories.'" template="'.$layout.'" style="'.$style.'" date_format="'.$date_format.'" start_date="'.$start_date.'" end_date="'.$end_date.'" limit="'.$number_of_events.'" order="'.$order.'" hide-venue="'.$venue.'" socialshare="'.$sharebutton.'" time="'.$time.'" columns="'.$columns.'" venues="'.$venues.'" organizers="'.$organizers.'" autoplay="'.$autoplay.'" tags="'.$tag.'" featured-only="'.$featured.'" show-description="'.$Description.'"]';
+		}
 		echo'<div class="ect-elementor-shortcode ect-free-addon">';
-		
-        echo $shortcode;
+		echo $shortcode;
         echo'</div>';
 	}
 }

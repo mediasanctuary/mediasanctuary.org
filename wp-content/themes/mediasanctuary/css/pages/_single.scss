@@ -292,6 +292,29 @@
   }
 }
 
+.byline, .person-type {
+  display: block;
+  font-size: 16px;
+  line-height: normal;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  font-weight: normal;
+  color: $c-slate;
+
+  a {
+    color: $c-slate;
+
+    &:hover {
+      color: $c-teal-duck;
+    }
+  }
+}
+
+.person-type {
+  margin-top: -15px;
+  margin-bottom: 15px;
+}
+
 .categories {
 	margin-bottom: 10px;
 	font-size: 16px;

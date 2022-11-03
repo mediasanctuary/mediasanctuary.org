@@ -145,7 +145,7 @@ span.plugin-update-available {
 }
 
 .wp-submenu a[href*="page=tribe-events-shortcode-template-settings"] strong,
-.wp-submenu a[href*="page=tribe-events-shortcode-template-settings"] strong,
+.wp-submenu a[href*="page=tribe_events-events-template-settings"] strong,
 .wp-submenu a[href*="edit.php?post_type=epta"] strong,
 .wp-submenu a[href*="page=countdown_for_the_events_calendar"] strong,
 .wp-submenu a[href*="page=event_notification_bar"] strong {

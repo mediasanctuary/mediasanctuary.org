@@ -2,6 +2,7 @@
 
 function setup_post_types() {
 	initiatives_taxonomy();
+	person_type_taxonomy();
 	project_post_type();
 	peoplepower_post_type();
 }
@@ -69,7 +70,7 @@ function peoplepower_post_type() {
 			'has_archive'   => true,
 			'show_in_rest'  => true,
 			'supports'      => ['title', 'editor', 'thumbnail', 'revisions', 'page-attributes'],
-			'taxonomies'    => [],
+			'taxonomies'    => ['person-type'],
 		)
 	);
 }
@@ -97,7 +98,7 @@ function initiatives_taxonomy() {
 		'items_list'                 => 'Initiatives list',
 		'items_list_navigation'      => 'Initiatives list navigation',
 	];
-	register_taxonomy('initiatives', ['project'], [
+	register_taxonomy('initiatives', ['project', 'person'], [
 		'labels'             => $labels,
 		'hierarchical'       => true,
 		'public'             => true,
@@ -109,5 +110,41 @@ function initiatives_taxonomy() {
 		'show_in_rest'       => true,
 		'show_tagcloud'      => false,
 		'rewrite'            => array( 'slug' => 'projects' )
+	]);
+}
+
+function person_type_taxonomy() {
+	$labels = [
+		'name'                       => 'Type',
+		'singular_name'              => 'Type',
+		'menu_name'                  => 'Types',
+		'all_items'                  => 'All Types',
+		'new_item_name'              => 'New Type',
+		'add_new_item'               => 'Add New Type',
+		'edit_item'                  => 'Edit Type',
+		'update_item'                => 'Update Type',
+		'view_item'                  => 'View Type',
+		'separate_items_with_commas' => 'Separate Types with commas',
+		'add_or_remove_items'        => 'Add or remove Types',
+		'choose_from_most_used'      => 'Choose from the most used',
+		'popular_items'              => 'Popular Types',
+		'search_items'               => 'Search Types',
+		'not_found'                  => 'Not Found',
+		'no_terms'                   => 'No Types',
+		'items_list'                 => 'Types list',
+		'items_list_navigation'      => 'Types list navigation',
+	];
+	register_taxonomy('person-type', ['person'], [
+		'labels'             => $labels,
+		'hierarchical'       => false,
+		'public'             => true,
+		'show_ui'            => true,
+		'show_in_quick_edit' => true,
+		'meta_box_cb'        => true,
+		'show_admin_column'  => true,
+		'show_in_nav_menus'  => true,
+		'show_in_rest'       => true,
+		'show_tagcloud'      => false,
+		'rewrite'            => array( 'slug' => 'people' )
 	]);
 }
