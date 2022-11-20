@@ -125,8 +125,8 @@ END;
 
 add_action('admin_enqueue_scripts', function() {
 	$dir = get_template_directory();
-	$css_src = get_template_directory_uri() . '/css/admin/admin.css';
-	$css_version = filemtime("$dir/css/admin/admin.css");
+	$css_src = get_template_directory_uri() . '/dist/admin.css';
+	$css_version = filemtime("$dir/dist/admin.css");
 	wp_enqueue_style('custom-admin', $css_src, [], $css_version);
 
 	$js_src = get_template_directory_uri() . '/js/admin.js';
@@ -307,4 +307,26 @@ function is_story_post($post) {
 		}
 	}
 	return false;
+}
+
+function upload_init() {
+	$url = parse_url($_SERVER['REQUEST_URI']);
+	if (!session_id() && ($url['path'] == '/upload' || $url['path'] == '/upload/')) {
+		session_start();
+	}
+}
+add_action('init', 'upload_init');
+
+function upload_person_by_email($email) {
+	$posts = get_posts([
+		'post_type' => 'peoplepower',
+		'meta_key' => 'email',
+		'meta_value' => $email
+	]);
+	if (empty($posts)) {
+		return false;
+	} else {
+		$person = $posts[0];
+		return $person;
+	}
 }

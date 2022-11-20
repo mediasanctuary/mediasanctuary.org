@@ -72,7 +72,8 @@ function soundcloud_podcast_token() {
 add_action('rest_api_init', function() {
 	register_rest_route('soundcloud-podcast/v1', '/stream/(?P<id>\d+)', [
 		'methods' => 'GET',
-		'callback' => 'soundcloud_podcast_stream'
+		'callback' => 'soundcloud_podcast_stream',
+		'permission_callback' => '__return_true'
 	]);
 });
 

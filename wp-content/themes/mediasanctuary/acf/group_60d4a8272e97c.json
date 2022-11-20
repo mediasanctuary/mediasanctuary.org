@@ -3,6 +3,25 @@
     "title": "People Power",
     "fields": [
         {
+            "key": "field_637a5db95d2f4",
+            "label": "Email address",
+            "name": "email",
+            "aria-label": "",
+            "type": "email",
+            "instructions": "This is used for uploading stories to Hudson Mohawk Magazine.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_60d4a83358363",
             "label": "Title",
             "name": "person_title",
@@ -131,5 +150,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1666460628
+    "modified": 1668963828
 }
