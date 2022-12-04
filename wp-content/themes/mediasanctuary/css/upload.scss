@@ -1,39 +1,45 @@
-@import 'global/global';
+body.upload {
+	background-color: #F1F3F4;
 
-#upload {
-	margin: 0 auto;
-	max-width: 700px;
-	padding: 30px;
-	background: #fff;
-
-	h1 {
-		font-size: $s-md;
-		margin-bottom: 20px;
+	#wpadminbar {
+		display: none;
 	}
 
-	input[type="text"],
-	input[type="email"] {
-		display: block;
-		font-family: $f-system;
-		font-size: $s-sm;
-		padding: 5px 10px;
-	}
+	.upload-form {
+		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		font-size: 16px;
+		line-height: 24px;
+		padding: 15px;
+		margin: 0 auto 200px auto;
+		max-width: 600px;
 
-	input[type="submit"] {
-		margin-top: 20px;
-		display: block;
-		font-family: $f-system;
-		font-size: $s-sm;
-		color: #fff;
-		background: $c-ladybug;
-		border: none;
-		border-radius: 3px;
-		padding: 10px 15px;
-		cursor: pointer;
-		transition: 0.1s all linear;
+		a {
+			color: #BC3A2E;
+		}
 
-		&:hover {
-			background: $c-red-oxide;
+		p {
+			padding: 0;
+		}
+
+		input, textarea {
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		}
+
+		.acf-required {
+			display: none;
+		}
+
+		.acf-field {
+			background-color: #fff;
+			border-bottom: 1px solid transparent;
+		}
+
+		.acf-form-submit {
+			margin-top: 15px;
+		}
+
+		.acf-button {
+			font-size: 16px;
 		}
 	}
 }

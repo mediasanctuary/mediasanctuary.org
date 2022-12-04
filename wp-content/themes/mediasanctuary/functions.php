@@ -317,7 +317,7 @@ function upload_init() {
 }
 add_action('init', 'upload_init');
 
-function upload_person_by_email($email) {
+function get_person_by_email($email) {
 	$posts = get_posts([
 		'post_type' => 'peoplepower',
 		'meta_key' => 'email',
