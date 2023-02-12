@@ -46,7 +46,7 @@ class ECT_Settings {
 						'class'         => $this->PREFIX . '-settings-field required',
 						'label'         => 'Enter License Key',
 						// 'desc'  => $this->save_purchase_code(),
-						  'placeholder' => __( 'Your Envato Purchase Code', 'cmb2' ),
+						  'placeholder' => __( 'Your Purchase /License Code', 'cmb2' ),
 						'type'          => 'text',
 						'default'       => '',
 					),
@@ -104,7 +104,7 @@ class ECT_Settings {
 		<br/>
 		or you can find license key inside your purchase order email or /my-account section in the website from where you purchased the plugin.</p>
 
-		<h4 class="cool-license-q">Q2) How to use single site license on another domain.</h4>
+		<h4 class="cool-license-q">Q2) Can I use single site license on another domain?</h4>
 		<p class="cool-license-a">You need to deactivate license from current active site to use it on another domain. Remember to deactivate license before moving your site to another domain or server.</p>
 
 		<h4 class="cool-license-q">Q3) Having trouble in license activation?</h4>

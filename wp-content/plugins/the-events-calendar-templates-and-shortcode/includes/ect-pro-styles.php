@@ -231,6 +231,8 @@ class EctProStyles
 			}
             ';
         }
+        $load_google_font = !empty($options['ect_load_google_font'])?$options['ect_load_google_font']:'yes';
+        if($load_google_font=='yes'){
             $safe_fonts= array('Arial', 'Arial+Black', 'Helvetica','Times+New+Roman',
             'Courier+New','Tahoma', 'Verdana','Impact','Trebuchet+MS','Comic+Sans+MS', 'Lucida+Console',
             'Lucida+Sans+Unicode','Georgia','Palatino+Linotype'
@@ -246,6 +248,7 @@ class EctProStyles
                     $build_url.=implode("|",array_filter($ff_names));
                     wp_enqueue_style('ect-google-font',"$build_url", array(), null, null, 'all');
                 }
+            }
             if(in_array($template,array("timeline","classic-timeline",'timeline-view'))) {
                 require(ECT_PRO_PLUGIN_DIR."templates/timeline/timeline-css.php" );
             }

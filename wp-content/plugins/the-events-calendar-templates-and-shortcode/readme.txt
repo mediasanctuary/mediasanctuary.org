@@ -80,6 +80,26 @@ It is a third party **addon for The Events Calendar** that extends the design an
 9. The Events Calendar Gutenberg Block
 
 == Changelog ==
+Version 2.9.5 || 06/Dec/2022
+Added: Update Find Out More Settings
+Added: Load Google Font Settings
+Fixed: Cost Issue with Divi theme
+Fixed: Masonry Template width issue with twenty twenty three theme
+Fixed: Fetching events based on Multiple category using shortcode
+Fixed: Undefined variable error
+Version 2.9.4 || 26 Sep 2022
+Fixed: Title issue with Divi theme
+Fixed: All Day issue
+Fixed: Google font style issue
+Fixed: Event Status Bug
+Updated: New site link in readme file
+Tested: The Events Calendar 6.0.1 version
+Version 2.9 | 04/03/ 2022
+Added: Integrated new layout ( Advance list )
+Improved: Minor code improvements
+Fixed: Category filter active class added
+Version 2.7.3 || 21/10/2021
+Fixed: Wrong Shortcode attribute issues
 Version 2.7 || 27/Sep/2021
 Improvements:- Shortcode generator
 Removed: Tinymce shortcode generator

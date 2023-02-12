@@ -84,7 +84,7 @@ $events_html.='<div id="event-'.esc_attr($event_id) .'"'.$cat_colors_attr.' clas
 						$events_html.='<span class="ect-google-map">'.esc_url(tribe_get_map_link_html($event_id)).'</span>';
 					}
                     $events_html .='<div class="ect-google-cale"><a href='.$google_cale.'target="_blank" title="Add to Google Calendar">+ Google Calendar</a></div>';
-                    $events_html.= '<div class="ect-cover-readmore"><a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.__('Find out more','ect').'</a></div>';
+                    $events_html.= '<div class="ect-cover-readmore"><a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.$events_more_info_text.'</a></div>';
                     if($socialshare=="yes") {
                         $events_html.= '<div class="ect-cover-sharebtn">'.ect_pro_share_button($event_id).'</div>';
                     }

@@ -60,7 +60,7 @@ if(($style=="style-3" && $template=="default") || $template=="classic-list") {
 			
 <div class="ect-list-cost">'.$ev_cost.'</div>
 		</div><div class="ect-clslist-event-details">
-			<a href="'.esc_url( tribe_get_event_link($event_id)).'" class="tribe-events-read-more" rel="bookmark" '.$cat_bg_styles.'>'.esc_html__( 'Find out more', 'ect' ).'<i class="ect-icon-right-double"></i></a>
+			<a href="'.esc_url( tribe_get_event_link($event_id)).'" class="tribe-events-read-more" rel="bookmark" '.$cat_bg_styles.'>'.$events_more_info_text.'<i class="ect-icon-right-double"></i></a>
 		</div>
 	</div>';
 }
@@ -115,7 +115,7 @@ else if (($style=="style-2" && $template=="default" || $style=="style-4" && $tem
 						}
 						else{
 							$events_html.= '<div class="ect-event-content">
-				<a href="'.esc_url( tribe_get_event_link($event_id)).'" class="tribe-events-read-more" rel="bookmark" '.$cat_bg_styles.'>'.esc_html__( 'Find out more', 'ect' ).'<i class="ect-icon-right-double"></i></a>
+				<a href="'.esc_url( tribe_get_event_link($event_id)).'" class="tribe-events-read-more" rel="bookmark" '.$cat_bg_styles.'>'.$events_more_info_text.'<i class="ect-icon-right-double"></i></a>
 			</div>';
 					}
 					//$events_html.=$event_content;
@@ -168,7 +168,7 @@ else{
 						}
 						else{
 							$events_html.= '<div class="ect-event-content ">
-				<a href="'.esc_url( tribe_get_event_link($event_id)).'" class="ect-events-read-more" rel="bookmark" '.$cat_bg_styles.'>'.esc_html__( 'Find out more', 'ect' ).'<i class="ect-icon-right-double"></i></a>
+				<a href="'.esc_url( tribe_get_event_link($event_id)).'" class="ect-events-read-more" rel="bookmark" '.$cat_bg_styles.'>'.$events_more_info_text.'<i class="ect-icon-right-double"></i></a>
 			</div>';
 					}
 					
