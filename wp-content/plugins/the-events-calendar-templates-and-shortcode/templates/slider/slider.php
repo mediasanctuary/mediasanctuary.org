@@ -55,12 +55,12 @@ if($style=="style-3"){
     if ( tribe_get_cost($event_id, true ) ) {
         $events_html.= '<div class="ect-slider-cost">'.$ev_cost.'</div>
                         <div class="ect-slider-readmore">
-                        <a href="'.tribe_get_event_link($event_id).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.__('Find out more','ect').'</a>
+                        <a href="'.tribe_get_event_link($event_id).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.$events_more_info_text.'</a>
                         </div></div>';
     }
     else {
         $events_html.= '<div class="ect-slider-readmore full-view">
-                        <a href="'.tribe_get_event_link($event_id).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.__('Find out more','ect').'</a>
+                        <a href="'.tribe_get_event_link($event_id).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.$events_more_info_text.'</a>
                         </div></div>';
     }
 
@@ -108,12 +108,12 @@ else if($style=='style-4'){
             if ( tribe_get_cost($event_id, true ) ) {
                 $events_html.= '<div class="ect-slider-cost">'.$ev_cost.'</div>
                             <div class="ect-slider-readmore">
-                            <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.__('Find out more','ect').'</a>
+                            <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.$events_more_info_text.'</a>
                             </div>';
             }
             else {
                 $events_html.= '<div class="ect-slider-readmore full-view">
-                            <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.__('Find out more','ect').'</a>
+                            <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.$events_more_info_text.'</a>
                             </div>';
             }
 
@@ -162,12 +162,12 @@ else{
     if ( tribe_get_cost($event_id, true ) ) {
         $events_html.= '<div class="ect-slider-cost">'.$ev_cost.'</div>
                         <div class="ect-slider-readmore">
-                        <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.__('Find out more','ect').'</a>
+                        <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.$events_more_info_text.'</a>
                         </div></div>';
     }
     else {
         $events_html.= '<div class="ect-slider-readmore full-view">
-                        <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.__('Find out more','ect').'</a>
+                        <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.$events_more_info_text.'</a>
                         </div></div>';
     }
    

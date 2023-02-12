@@ -7,6 +7,8 @@ $ev_cost='';
 $all_events = tribe_get_events($ect_args);
 $i = 0;
 if ( $all_events ) {
+	$events_more_info_btn       = ect_get_option( 'events_more_info' );
+	$events_more_info_text =  ! empty( $events_more_info_btn ) ? sanitize_text_field( $events_more_info_btn ) : esc_html__( 'Find out more' , 'ect' );
 	foreach( $all_events as $post ):setup_postdata( $post );
 		$event_cost='';$event_title='';$event_schedule='';$event_venue='';$event_img='';$event_content='';$events_date_header='';$event_day='';$event_address='';
 		$event_id=$post->ID;
@@ -107,7 +109,7 @@ if ( $all_events ) {
 		}
 		$event_content='<!-- Event Content --><div class="ect-event-content" itemprop="description">';
 		$event_content.=tribe_events_get_the_excerpt($event_id, wp_kses_allowed_html( 'post' ) );
- 		$event_content.='<a href="'.esc_url( tribe_get_event_link($event_id) ).'" class="ect-events-read-more" rel="bookmark">'.esc_html__( 'Find out more', 'the-events-calendar' ).' &raquo;</a></div>';
+ 		$event_content.='<a href="'.esc_url( tribe_get_event_link($event_id) ).'" class="ect-events-read-more" rel="bookmark">'.$events_more_info_text.' &raquo;</a></div>';
  		//event day
 		$event_day='<span class="event-day">'.tribe_get_start_date($event_id, true, 'l').'</span>';
 		//Address

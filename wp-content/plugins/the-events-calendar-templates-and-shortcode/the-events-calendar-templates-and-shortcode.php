@@ -3,9 +3,9 @@
  Plugin Name:Events Shortcodes (Pro) - The Events Calendar Addon
  Plugin URI:https://eventscalendaraddons.com/
  Description:The Events Calendar Shortcode And Templates Pro addon provides events list design templates and shortcode generator functionality for The Events Calendar plugin. It is an unofficial third party addon for <a href="http://wordpress.org/plugins/the-events-calendar/">The Events Calendar (by Modern Tribe)</a> that extends its design limitations.
- Version:2.9.4
+ Version:2.9.5
  Requires at least: 4.5
- Tested up to:5.8.2
+ Tested up to:6.1.1
  Requires PHP:5.6
  Stable tag:trunk
  License:GPL2
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit();
 }
 if ( ! defined( 'ECT_VERSION' ) ) {
-	define( 'ECT_VERSION', '2.9.4' );
+	define( 'ECT_VERSION', '2.9.5' );
 }
 /*** Defined constent for later use */
 if ( ! defined( 'ECT_PRO_FILE' ) ) {

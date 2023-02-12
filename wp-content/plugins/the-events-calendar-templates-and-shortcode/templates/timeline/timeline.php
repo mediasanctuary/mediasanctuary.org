@@ -64,7 +64,7 @@ if($timeline_style=="style-1" || $timeline_style=="style-4")
 		}
 		else{
 			$events_html.= '<div class="ect-lslist-event-detail">
-<a href="'.esc_url( tribe_get_event_link($event_id)).'" class="ect-events-read-more" rel="bookmark" '.$cat_bg_styles.'>'.esc_html__( 'Find out more', 'ect' ).'<i class="ect-icon-right-double"></i></a>
+<a href="'.esc_url( tribe_get_event_link($event_id)).'" class="ect-events-read-more" rel="bookmark" '.$cat_bg_styles.'>'.$events_more_info_text.'<i class="ect-icon-right-double"></i></a>
 </div>';
 	}
 	//$events_html .= $event_content;
@@ -106,7 +106,7 @@ elseif($timeline_style=="style-2")
 		}
 		else{
 			$events_html.= '<div class="ect-lslist-event-detail">
-<a href="'.esc_url( tribe_get_event_link($event_id)).'" class="ect-events-read-more" rel="bookmark" '.$cat_bg_styles.'>'.esc_html__( 'Find out more', 'ect' ).'<i class="ect-icon-right-double"></i></a>
+<a href="'.esc_url( tribe_get_event_link($event_id)).'" class="ect-events-read-more" rel="bookmark" '.$cat_bg_styles.'>'.$events_more_info_text.'<i class="ect-icon-right-double"></i></a>
 </div>';
 	}
 	if(!empty($ect_cate)){
@@ -144,7 +144,7 @@ else {
 		$events_html.=$event_content;
 		}
 		else{
-	$events_html .= '<a href="'.esc_url( tribe_get_event_link($event_id) ).'" class="ect-events-read-more" rel="bookmark">'.esc_html__( 'Find out more', 'ect' ).' &raquo;</a>';
+	$events_html .= '<a href="'.esc_url( tribe_get_event_link($event_id) ).'" class="ect-events-read-more" rel="bookmark">'.$events_more_info_text.' &raquo;</a>';
 		}
 	$events_html .= '</div>';
 	$events_html .= '</div>';

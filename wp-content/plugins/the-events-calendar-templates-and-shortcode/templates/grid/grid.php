@@ -63,12 +63,12 @@ if($style=='style-1'){
  if ( tribe_get_cost($event_id, true ) ) {
     $events_html.= '<div class="ect-grid-cost">'.wp_kses_post($ev_cost).'</div>
                   <div class="ect-grid-readmore">
-                  <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.__('Find out more','ect').'</a>
+                  <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.$events_more_info_text.'</a>
                   </div>';
   }
   else {
     $events_html.= '<div class="ect-grid-readmore full-view">
-                  <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.__('Find out more','ect').'</a>
+                  <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.$events_more_info_text.'</a>
                   </div>';
   }
   $events_html.='</div></div>';
@@ -112,13 +112,13 @@ else if($style=='style-2'){
     $events_html.= '<div class="ect-grid-border"></div>
                   <div class="ect-grid-cost">'.$ev_cost.'</div>
                   <div class="ect-grid-readmore">
-                  <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.__('Find out more','ect').'</a>
+                  <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.$events_more_info_text.'</a>
                   </div>';
   }
   else {
     $events_html.= '<div class="ect-grid-border"></div>
                   <div class="ect-grid-readmore full-view">
-                  <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.__('Find out more','ect').'</a>
+                  <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.$events_more_info_text.'</a>
                   </div>';
   }
 
@@ -176,12 +176,12 @@ $events_html.= '</div>';
   if ( tribe_get_cost($event_id, true ) ) {
     $events_html.= '<div class="ect-grid-cost">'.$ev_cost.'</div>
                   <div class="ect-grid-readmore">
-                  <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.__('Find out more','ect').'</a>
+                  <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.$events_more_info_text.'</a>
                   </div>';
   }
   else {
     $events_html.= '<div class="ect-grid-readmore full-view">
-                  <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.__('Find out more','ect').'</a>
+                  <a href="'.esc_url(tribe_get_event_link($event_id)).'" title="'.get_the_title($event_id) .'" rel="bookmark">'.$events_more_info_text.'</a>
                   </div>';
   }
 

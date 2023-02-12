@@ -60,7 +60,7 @@ if($list_style=="style-1"){
                     else{
                         $events_html.='<div class="ect-events-title">'.wp_kses_post($event_title).'</div>'; 
                     }
-                    $events_html.='<div class="ect-'.$style.'-more"><a href="'.esc_url( tribe_get_event_link($event_id) ).'" class="ect-events-read-more" rel="bookmark">'.esc_html__( 'Find out more', 'ect' ).' &raquo;</a></div>';
+                    $events_html.='<div class="ect-'.$style.'-more"><a href="'.esc_url( tribe_get_event_link($event_id) ).'" class="ect-events-read-more" rel="bookmark">'.$events_more_info_text.' &raquo;</a></div>';
 	$events_html.='</div></div>';
 }
 else if($list_style=="style-2"){
@@ -95,7 +95,7 @@ else if($list_style=="style-2"){
             else{
                 $events_html.='<div class="ect-events-title">'.wp_kses_post($event_title).'</div>'; 
             }
-        $events_html.='<div class="ect-'.$style.'-more"><a href="'.esc_url( tribe_get_event_link($event_id) ).'" class="ect-events-read-more" rel="bookmark">'.esc_html__( 'Find out more', 'ect' ).' &raquo;</a></div>';
+        $events_html.='<div class="ect-'.$style.'-more"><a href="'.esc_url( tribe_get_event_link($event_id) ).'" class="ect-events-read-more" rel="bookmark">'.$events_more_info_text.' &raquo;</a></div>';
 	    $events_html.='</div></div>';
 }
 else{
@@ -129,7 +129,7 @@ else{
                    
         $events_html.='<div class="ect-event-details"><span class="ect-minimal-list-time"><i class="ect-icon-clock"></i>
                     <span class="ect-minimal-list-time">'.wp_kses_post($ev_time).'</span></span></div>';
-    $events_html.='<div class="ect-'.$style.'-more"><a href="'.esc_url( tribe_get_event_link($event_id) ).'" class="ect-events-read-more" rel="bookmark">'.esc_html__( 'Find out more', 'ect' ).' &raquo;</a></div>';
+    $events_html.='<div class="ect-'.$style.'-more"><a href="'.esc_url( tribe_get_event_link($event_id) ).'" class="ect-events-read-more" rel="bookmark">'.$events_more_info_text.' &raquo;</a></div>';
     $events_html .='</div>';
     $events_html.='</div>';
 }

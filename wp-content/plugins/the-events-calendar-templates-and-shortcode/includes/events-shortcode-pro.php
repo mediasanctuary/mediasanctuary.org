@@ -222,8 +222,10 @@ class EventsShortcodePro
  
             if(!in_array('all',$category_array)){
                 $ect_args['tax_query'] = [
+                    'relation' => 'OR',
                      [
-                         'taxonomy' => 'tribe_events_cat', 'field' => 'slug',
+                         'taxonomy' => 'tribe_events_cat', 
+                         'field' => 'slug',
                          'terms'    => $category_array
                      ],
                  ];
@@ -256,6 +258,9 @@ class EventsShortcodePro
         $display_year='';
         $last_year='';
         if ( $all_events ) {
+            $events_more_info_btn       = ect_get_option( 'events_more_info' );
+			$events_more_info_text =  ! empty( $events_more_info_btn ) ? sanitize_text_field( $events_more_info_btn ) : esc_html__( 'Find out more' , 'ect' );
+            //var_dump($events_more_info_text);
             foreach( $all_events as $sr_no => $post):setup_postdata( $post );
                 $event_description='';$event_cost='';$event_title='';$event_schedule='';$event_venue='';$event_img='';$event_content='';$events_date_header='';$no_events='';$event_day='';$event_address='';
                 $event_id=$post->ID;
@@ -328,10 +333,10 @@ class EventsShortcodePro
                 endif ;
                 $venue_details_html.='</div>';
             }
-            if ( tribe_get_cost() ) : 
+            if ( tribe_get_cost($event_id) ) : 
                 $ev_cost='<div class="ect-rate-area" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                 <span class="ect-icon"><i class="ect-icon-ticket" aria-hidden="true"></i></span>
-                <span class="ect-rate" itemprop="price" content="'.tribe_get_cost(null, false ).'">'.tribe_get_cost(null, true ).'</span>
+                <span class="ect-rate" itemprop="price" content="'.tribe_get_cost($event_id, false ).'">'.tribe_get_cost($event_id, true ).'</span>
                 <meta itemprop="priceCurrency" content="'.tribe_get_event_meta( $event_id, '_EventCurrencySymbol', true ).'" />';
                 if( class_exists('Tribe__Tickets__Main') ){
                     $ev_cost.='<span class="ect-ticket-info">';	
@@ -375,7 +380,7 @@ class EventsShortcodePro
             }
             $event_content='<!-- Event Content --><div class="ect-event-content" itemprop="description" content="'.esc_attr(wp_strip_all_tags( tribe_events_get_the_excerpt($event_id), true )).'">';
             $event_content.=tribe_events_get_the_excerpt($event_id, wp_kses_allowed_html( 'post' ) );
-                $event_content.='<a href="'.esc_url( tribe_get_event_link($event_id) ).'" class="ect-events-read-more" rel="bookmark">'.esc_html__( 'Find out more', 'ect' ).' &raquo;</a></div>';
+                $event_content.='<a href="'.esc_url( tribe_get_event_link($event_id) ).'" class="ect-events-read-more" rel="bookmark">'.$events_more_info_text.' &raquo;</a></div>';
             //event day
             $event_day='<span class="event-day">'.tribe_get_start_date($event_id, true, 'l').'</span>';
             //Address
