@@ -3,6 +3,7 @@
 function setup_roles() {
 	add_sanctuarian_role();
 	add_superadmin_role();
+	add_upload_role();
 	//assign_roles();
 	remove_extra_roles();
 }
@@ -123,6 +124,38 @@ function assign_roles() {
 		if (! empty($user)) {
 			$user->set_role($role);
 		}
+	}
+}
+
+// Create a new 'Upload' role that is a step below a built-in Author -
+// they only have access to the posts and not pages, and events.
+// https://wordpress.org/support/article/roles-and-capabilities/
+function add_upload_role() {
+
+	$role = get_role('upload');
+
+	if (empty($role)) {
+		$role = add_role('upload', 'Upload', [
+			'delete_posts',
+			'delete_published_posts',
+			'edit_posts',
+			'edit_others_posts',
+			'edit_published_posts',
+			'publish_posts',
+			'read',
+			'upload_files',
+		]);
+	} else {
+		$role->add_cap('level_0');
+		$role->add_cap('level_1');
+		$role->add_cap('level_2');
+		$role->add_cap('level_3');
+		$role->add_cap('level_4');
+		$role->add_cap('level_5');
+		$role->add_cap('level_6');
+		$role->add_cap('level_7');
+		$role->add_cap('unfiltered_html');
+		$role->add_cap('edit_others_posts');
 	}
 }
 

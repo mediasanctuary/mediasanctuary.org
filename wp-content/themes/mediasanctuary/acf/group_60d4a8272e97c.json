@@ -8,7 +8,7 @@
             "name": "email",
             "aria-label": "",
             "type": "email",
-            "instructions": "This is used for uploading stories to Hudson Mohawk Magazine.",
+            "instructions": "Used for contributing stories to Hudson Mohawk Magazine.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -20,6 +20,26 @@
             "placeholder": "",
             "prepend": "",
             "append": ""
+        },
+        {
+            "key": "field_63e4f0b25e94c",
+            "label": "Has accepted Code of Conduct",
+            "name": "accepted_coc",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Used for contributing to the Hudson Mohawk Magazine.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
         },
         {
             "key": "field_60d4a83358363",
@@ -150,5 +170,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1668963828
+    "modified": 1675948263
 }

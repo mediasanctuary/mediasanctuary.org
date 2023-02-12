@@ -1,11 +1,93 @@
 {
     "key": "group_638c0fdd04b1e",
-    "title": "Upload Form Settings",
+    "title": "Contribute Form Settings",
     "fields": [
         {
-            "key": "field_638c0fdd34ef3",
-            "label": "Upload login",
-            "name": "upload_login",
+            "key": "field_638cd3eb51dcb",
+            "label": "Admin email contact",
+            "name": "contribute_admin_email",
+            "aria-label": "",
+            "type": "email",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_638cd4cd8bcd8",
+            "label": "Handbook URL",
+            "name": "contribute_handbook_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Link to the handbook URL",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_638cd42451dcc",
+            "label": "Code of Conduct",
+            "name": "contribute_coc",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Sequence of introductory slides, explaining the code of conduct.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add Row",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_638cd44251dcd",
+                    "label": "Slide",
+                    "name": "slide",
+                    "aria-label": "",
+                    "type": "wysiwyg",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "tabs": "all",
+                    "toolbar": "basic",
+                    "media_upload": 0,
+                    "delay": 0,
+                    "parent_repeater": "field_638cd42451dcc"
+                }
+            ]
+        },
+        {
+            "key": "field_63e6963aa224f",
+            "label": "Contribute Login",
+            "name": "contribute_login",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -23,9 +105,9 @@
             "append": ""
         },
         {
-            "key": "field_638c0ffd34ef4",
-            "label": "Upload password",
-            "name": "upload_password",
+            "key": "field_63e69649a2250",
+            "label": "Contribute Password",
+            "name": "contribute_password",
             "aria-label": "",
             "type": "password",
             "instructions": "",
@@ -59,5 +141,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1670123756
+    "modified": 1676056178
 }

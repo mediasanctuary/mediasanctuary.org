@@ -308,25 +308,3 @@ function is_story_post($post) {
 	}
 	return false;
 }
-
-function upload_init() {
-	$url = parse_url($_SERVER['REQUEST_URI']);
-	if (!session_id() && ($url['path'] == '/upload' || $url['path'] == '/upload/')) {
-		session_start();
-	}
-}
-add_action('init', 'upload_init');
-
-function get_person_by_email($email) {
-	$posts = get_posts([
-		'post_type' => 'peoplepower',
-		'meta_key' => 'email',
-		'meta_value' => $email
-	]);
-	if (empty($posts)) {
-		return false;
-	} else {
-		$person = $posts[0];
-		return $person;
-	}
-}
