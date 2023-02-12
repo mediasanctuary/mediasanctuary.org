@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Tribe\Utils\Body_Classes as Body_Classes_Object;
+use Tribe\Events\Views\V2\Template_Bootstrap;
 use \Tribe\Events\Filterbar\Compatibility\Divi\Service_Provider as Divi_Service_Provider;
 
 if ( ! class_exists( 'Tribe__Events__Filterbar__View' ) ) {
@@ -50,7 +51,7 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__View' ) ) {
 		 */
 		protected static $defaultMuFilters;
 
-		const VERSION = '5.4.0';
+		const VERSION = '5.4.2';
 
 		/**
 		 * The Events Calendar Required Version
@@ -276,7 +277,7 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__View' ) ) {
 		 * @return boolean Should Filter Bar assets be loaded?
 		 */
 		public function should_enqueue_assets() {
-			return tribe_is_event_query() || tribe_is_event_organizer() || tribe_is_event_venue();
+			return ! tribe( Template_Bootstrap::class )->should_load() && ( tribe_is_event_query() || tribe_is_event_organizer() || tribe_is_event_venue() );
 		}
 
 		/**

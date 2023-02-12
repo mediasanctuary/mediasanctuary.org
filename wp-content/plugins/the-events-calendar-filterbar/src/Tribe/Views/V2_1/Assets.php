@@ -388,6 +388,10 @@ class Assets extends \tad_DI52_ServiceProvider {
 
 		$should_enqueue = tribe( Template_Bootstrap::class )->should_load();
 
+		if ( tribe( Template_Bootstrap::class )->is_single_event() ) {
+			$should_enqueue = false;
+		}
+
 		/**
 		 * Allow filtering of where the base Frontend Assets will be loaded
 		 *

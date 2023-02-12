@@ -38,12 +38,11 @@ class Url extends Abstract_Url {
 	 *
 	 * @since 1.13.0
 	 * @since 1.13.2 - Remove API dependency to prevent maximum function nesting level.
+	 * @since 1.13.3 - Remove OAuth dependency to prevent maximum function nesting level.
 	 *
-	 * @param OAuth   $oauth   An instance of the Zoom API handler.
 	 * @param Actions $actions An instance of the Zoom Actions handler.
 	 */
-	public function __construct( OAuth $oauth, Actions $actions ) {
-		$this->oauth         = $oauth;
+	public function __construct( Actions $actions ) {
 		self::$api_id        = Zoom_Event_Meta::$key_source_id;
 		self::$authorize_url = 'https://whodat.theeventscalendar.com/oauth/zoom/v2/authorize';
 		self::$refresh_url   = 'https://whodat.theeventscalendar.com/oauth/zoom/v2/token';
@@ -84,6 +83,7 @@ class Url extends Abstract_Url {
 	 * Returns the full OAuth URL to authorize the application.
 	 *
 	 * @since 1.13.2
+	 * @since 1.13.5 Changed the `state` var name.
 	 *
 	 * @return string The full OAuth URL to authorize the application.
 	 */

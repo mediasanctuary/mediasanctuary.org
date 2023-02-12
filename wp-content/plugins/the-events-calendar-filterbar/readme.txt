@@ -3,9 +3,9 @@
 Contributors: theeventscalendar, borkweb, bordoni, brianjessee, aguseo, camwynsp, GeoffBel, geoffgraham, jentheo, leahkoerper, lucatume, neillmcshea, paulskim, vicskf, zbtirrell, juanfra
 Tags: events, calendar, event, venue, organizer, dates, date, google maps, conference, workshop, concert, meeting, seminar, summit, class, the events calendar, widget, pro, filters, categories, sort, tags, taxonomy, find, search
 Donate link: http://evnt.is/29
-Requires at least: 5.8.4
-Stable tag: 5.4.0
-Tested up to: 6.0.2
+Requires at least: 5.8.6
+Stable tag: 5.4.2
+Tested up to: 6.1.1
 Requires PHP: 7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -194,6 +194,16 @@ Our Premium Plugins:
 * <a href="http://evnt.is/18h9" target="_blank">The Events Calendar: iCal Importer</a>
 
 == Changelog ==
+
+= [5.4.2] 2023-02-09 =
+
+* Fix - Updating some button styles to be more compatible with global button styles, such as Elementor global styling. [TEC-4653]
+
+= [5.4.1] 2022-12-14 =
+
+* Fix - Don't load assets on event single. [FBAR-279]
+* Fix - Correct some styles that broke with the settings updates. [FBAR-290]
+* Language - 0 new strings added, 25 updated, 0 fuzzied, and 0 obsoleted
 
 = [5.4.0] 2022-09-06 =
 

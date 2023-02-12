@@ -40,6 +40,8 @@ class Widget {
 		 */
 		$should_enqueue = apply_filters( 'tribe-events-virtual-widgets-v2-should-enqueue-assets', $should_enqueue, $context, $view );
 
+		$view_slug = $view::get_view_slug();
+
 		/**
 		 * Allows filtering of Whether assets (virtual icon styles) should be enqueued or not, per widget slug.
 		 *
@@ -49,7 +51,7 @@ class Widget {
 		 * @param \Tribe__Context $context        Context we are using to build the view.
 		 * @param View_Interface  $view           Which view we are using the template on.
 		 */
-		$should_enqueue = apply_filters( "tribe-events-virtual-widgets-v2-{$view->get_slug()}-should-enqueue-assets", $should_enqueue, $context, $view );
+		$should_enqueue = apply_filters( "tribe-events-virtual-widgets-v2-{$view_slug}-should-enqueue-assets", $should_enqueue, $context, $view );
 
 		if ( ! $should_enqueue ) {
 			return;

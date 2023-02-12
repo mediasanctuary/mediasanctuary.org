@@ -141,9 +141,9 @@ class Tribe__Events__Filterbar__Filters__Time_Of_Day extends Tribe__Events__Filt
 		}
 
 		if ( in_array( 'allday', $values ) ) {
-			$clauses[] = "({$this->alias}.meta_value = 'yes')";
+			$clauses[] = "( {$this->alias}.meta_value = 'yes' OR {$this->alias}.meta_value = '1' )";
 		} else {
-			$this->whereClause .= " AND ( {$this->alias}.meta_id IS NULL OR {$this->alias}.meta_value != 'yes' ) ";
+			$this->whereClause .= " AND ( {$this->alias}.meta_id IS NULL OR {$this->alias}.meta_value != 'yes' OR {$this->alias}.meta_value != '1' ) ";
 		}
 
 		$this->whereClause .= ' AND (' . implode( ' OR ', $clauses ) . ')';

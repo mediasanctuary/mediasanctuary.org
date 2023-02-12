@@ -56,7 +56,7 @@ class Event_Export extends Abstract_Export {
 			return $fields;
 		}
 
-		if ( $this->str_contains( $fields['details'], $event->webex_password ) ) {
+		if ( $this->str_contains( (string) $fields['details'], (string) $event->webex_password ) ) {
 			return $fields;
 		}
 
@@ -93,7 +93,7 @@ class Event_Export extends Abstract_Export {
 			return $fields;
 		}
 
-		if ( $this->str_contains( $fields['DESCRIPTION'], $event->webex_password ) ) {
+		if ( $this->str_contains( (string) $fields['DESCRIPTION'], (string) $event->webex_password ) ) {
 			return $fields;
 		}
 
@@ -127,7 +127,7 @@ class Event_Export extends Abstract_Export {
 			return $url;
 		}
 
-		if ( $this->str_contains( $params['body'], $event->webex_password ) ) {
+		if ( $this->str_contains( (string) $params['body'], (string) $event->webex_password ) ) {
 			return $url;
 		}
 

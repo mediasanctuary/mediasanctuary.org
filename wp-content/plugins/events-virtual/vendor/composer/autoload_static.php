@@ -4,8 +4,12 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit637e4eeeee6276f87db05c5c67808da1
+class ComposerStaticInite138cda51755a39592bb91648662c931
 {
+    public static $files = array (
+        'db020e36c90dae2855434958b09ed49e' => __DIR__ . '/../..' . '/src/functions/load.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'T' => 
         array (
@@ -48,6 +52,8 @@ class ComposerStaticInit637e4eeeee6276f87db05c5c67808da1
         'Defuse\\Crypto\\KeyOrPassword' => __DIR__ . '/..' . '/defuse/php-encryption/src/KeyOrPassword.php',
         'Defuse\\Crypto\\KeyProtectedByPassword' => __DIR__ . '/..' . '/defuse/php-encryption/src/KeyProtectedByPassword.php',
         'Defuse\\Crypto\\RuntimeTests' => __DIR__ . '/..' . '/defuse/php-encryption/src/RuntimeTests.php',
+        'TEC\\Events_Virtual\\Compatibility\\Event_Automator\\Zapier\\Maps\\Event' => __DIR__ . '/../..' . '/src/Events_Virtual/Compatibility/Event_Automator/Zapier/Maps/Event.php',
+        'TEC\\Events_Virtual\\Compatibility\\Event_Automator\\Zapier\\Zapier_Provider' => __DIR__ . '/../..' . '/src/Events_Virtual/Compatibility/Event_Automator/Zapier/Zapier_Provider.php',
         'TEC\\Events_Virtual\\Custom_Tables\\V1\\Provider' => __DIR__ . '/../..' . '/src/Events_Virtual/Custom_Tables/V1/Provider.php',
         'TEC\\Events_Virtual\\Custom_Tables\\V1\\Views\\V2\\Assets' => __DIR__ . '/../..' . '/src/Events_Virtual/Custom_Tables/V1/Views/V2/Assets.php',
         'Tribe\\Events\\Virtual\\Admin_Template' => __DIR__ . '/../..' . '/src/Tribe/Admin_Template.php',
@@ -207,9 +213,9 @@ class ComposerStaticInit637e4eeeee6276f87db05c5c67808da1
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit637e4eeeee6276f87db05c5c67808da1::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit637e4eeeee6276f87db05c5c67808da1::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit637e4eeeee6276f87db05c5c67808da1::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite138cda51755a39592bb91648662c931::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite138cda51755a39592bb91648662c931::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInite138cda51755a39592bb91648662c931::$classMap;
 
         }, null, ClassLoader::class);
     }
