@@ -63,7 +63,7 @@ function peoplepower_post_type() {
 		array(
 			'labels'        => $labels,
 			'public'        => true,
-			'hierarchical'  => true,
+			// 'hierarchical'  => true,
 			'show_ui'       => true,
 			'menu_position' => 4,
 			'menu_icon'     => 'dashicons-groups',

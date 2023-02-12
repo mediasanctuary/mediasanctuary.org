@@ -125,8 +125,8 @@ END;
 
 add_action('admin_enqueue_scripts', function() {
 	$dir = get_template_directory();
-	$css_src = get_template_directory_uri() . '/css/admin/admin.css';
-	$css_version = filemtime("$dir/css/admin/admin.css");
+	$css_src = get_template_directory_uri() . '/dist/admin.css';
+	$css_version = filemtime("$dir/dist/admin.css");
 	wp_enqueue_style('custom-admin', $css_src, [], $css_version);
 
 	$js_src = get_template_directory_uri() . '/js/admin.js';

@@ -1,13 +1,12 @@
 {
   "name": "mediasanctuary",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "WordPress theme for mediasanctuary.org",
   "main": "index.php",
   "scripts": {
-    "build-task:compile": "node-sass-chokidar --source-map true css/main.scss -o dist",
+    "build-task:build": "sass css/main.scss:dist/main.css contribute/contribute.scss:dist/contribute.css css/admin/admin.scss:dist/admin.css",
     "build-task:autoprefixer": "postcss dist/*.css --use autoprefixer -d dist",
-    "build-task:admin": "node-sass-chokidar --source-map true css/admin/admin.scss -o css/admin",
-    "sass:build": "npm-run-all -p build-task:*",
+    "sass:build": "npm-run-all build-task:*",
     "sass:watch": "chokidar \"**/*.scss\" -c \"npm run sass:build\"",
     "sass:admin": "chokidar \"admin/**/*.scss\" -c \"npm run build-task:admin\"",
     "start": "npm-run-all -p sass:*",
@@ -26,7 +25,6 @@
   "dependencies": {
     "autoprefixer": "^10.2.6",
     "chokidar-cli": "^2.1.0",
-    "node-sass-chokidar": "^1.5.0",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.3.5",
     "postcss-cli": "^8.3.1",

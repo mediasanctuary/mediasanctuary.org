@@ -50,7 +50,9 @@
       <?php } ?>
       <div class="content">
         <?php
-          echo $thumb;
+          if (! empty($thumb)) {
+            echo $thumb;
+          }
           echo '<div class="copy">'; the_content();
 
           $initiatives = get_field('initiatives');
