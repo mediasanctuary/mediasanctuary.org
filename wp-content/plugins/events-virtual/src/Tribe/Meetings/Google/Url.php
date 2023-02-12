@@ -26,12 +26,11 @@ class Url extends Abstract_Url {
 	 * Url constructor.
 	 *
 	 * @since 1.13.0
+	 * @since 1.13.3 - Remove API dependency to prevent maximum function nesting level.
 	 *
-	 * @param Api     $api     An instance of the Google API handler.
 	 * @param Actions $actions An instance of the Google Actions handler.
 	 */
-	public function __construct( Api $api, Actions $actions ) {
-		$this->api           = $api;
+	public function __construct( Actions $actions ) {
 		self::$api_id        = Google_Event_Meta::$key_source_id;
 		self::$authorize_url = 'https://whodat.theeventscalendar.com/oauth/google/v1/authorize';
 		self::$refresh_url   = 'https://whodat.theeventscalendar.com/oauth/google/v1/refresh';

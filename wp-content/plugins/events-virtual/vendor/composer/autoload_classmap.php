@@ -20,6 +20,8 @@ return array(
     'Defuse\\Crypto\\KeyOrPassword' => $vendorDir . '/defuse/php-encryption/src/KeyOrPassword.php',
     'Defuse\\Crypto\\KeyProtectedByPassword' => $vendorDir . '/defuse/php-encryption/src/KeyProtectedByPassword.php',
     'Defuse\\Crypto\\RuntimeTests' => $vendorDir . '/defuse/php-encryption/src/RuntimeTests.php',
+    'TEC\\Events_Virtual\\Compatibility\\Event_Automator\\Zapier\\Maps\\Event' => $baseDir . '/src/Events_Virtual/Compatibility/Event_Automator/Zapier/Maps/Event.php',
+    'TEC\\Events_Virtual\\Compatibility\\Event_Automator\\Zapier\\Zapier_Provider' => $baseDir . '/src/Events_Virtual/Compatibility/Event_Automator/Zapier/Zapier_Provider.php',
     'TEC\\Events_Virtual\\Custom_Tables\\V1\\Provider' => $baseDir . '/src/Events_Virtual/Custom_Tables/V1/Provider.php',
     'TEC\\Events_Virtual\\Custom_Tables\\V1\\Views\\V2\\Assets' => $baseDir . '/src/Events_Virtual/Custom_Tables/V1/Views/V2/Assets.php',
     'Tribe\\Events\\Virtual\\Admin_Template' => $baseDir . '/src/Tribe/Admin_Template.php',

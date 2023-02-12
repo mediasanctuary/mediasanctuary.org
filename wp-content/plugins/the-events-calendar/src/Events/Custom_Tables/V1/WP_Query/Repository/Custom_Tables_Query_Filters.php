@@ -348,41 +348,6 @@ class Custom_Tables_Query_Filters extends Query_Filters {
 	}
 
 	/**
-	 * Overrides the base method to handle requests based on the post parent, usually coming from PRO.
-	 *
-	 * @since 6.0.0
-	 *
-	 * @param string      $where_clause The original WHERE clause the repository is adding to the query.
-	 * @param string|null $id           An optional unique identifier for the query.
-	 * @param bool        $override     Whether to override a pre-existing WHERE clause with this one, if present, or
-	 *                                  not. This will only apply if the `$id` is provided.
-	 */
-	public function where( $where_clause, $id = null, $override = false ) {
-		global $wpdb;
-
-		// @see Tribe__Events__Pro__Repositories__Event::filter_by_in_series for the origin of this statement.
-		$is_in_series_where = preg_match(
-			'/^' . preg_quote( "{$wpdb->posts}.post_parent", '/' ) . '\\s?=\\s?(?<id>\\d+)/',
-			$where_clause,
-			$m );
-
-		// TODO: Move into PRO?
-		if ( $is_in_series_where && isset( $m['id'] ) ) {
-			$occurrences   = Occurrences::table_name( true );
-			$occurrence_id = Occurrence::normalize_id( absint( $m['id'] ) );
-			$occurrence    = Occurrence::find( $occurrence_id, 'occurrence_id' );
-
-			if ( ! $occurrence instanceof Occurrence ) {
-				return;
-			}
-
-			$where_clause = (string) $wpdb->prepare( "{$occurrences}.post_id = %d", $occurrence->post_id );
-		}
-
-		parent::where( $where_clause, $id, $override );
-	}
-
-	/**
 	 * Sets the mask value for a query var, or a list of query vars, that should be applied at filtering time.
 	 *
 	 * The mask will NOT change the value and content of each query var, it will just prevent the `filter_` methods
@@ -459,8 +424,14 @@ class Custom_Tables_Query_Filters extends Query_Filters {
 			if ( ! in_array( $join_what, $b_join_whats, true ) ) {
 				continue;
 			}
+
 			// Remove the JOIN clause from the query JOIN: it should be overridden by the filter's JOIN.
 			unset( $query_join_couples[ array_search( $join_what, $b_join_whats, true ) ] );
+		}
+
+		// Removed all queries
+		if ( empty( $query_join_couples ) ) {
+			return '';
 		}
 
 		// Re-assemble the JOIN clause, minus the JOIN clauses removed as already handled by this filter.

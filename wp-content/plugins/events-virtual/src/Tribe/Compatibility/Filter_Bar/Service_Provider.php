@@ -32,6 +32,9 @@ class Service_Provider extends \tad_DI52_ServiceProvider {
 			return;
 		}
 
+		// Add to the admin list.
+		add_action( 'tribe_events_filters_create_filters', [ $this, 'create_filter' ] );
+
 		// Make it work in v2.
 		add_filter( 'tribe_context_locations', [ $this, 'filter_context_locations' ], 15 );
 		add_filter( 'tribe_events_filter_bar_context_to_filter_map', [ $this, 'filter_context_to_filter_map' ] );

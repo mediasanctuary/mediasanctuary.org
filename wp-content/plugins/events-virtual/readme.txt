@@ -3,9 +3,9 @@
 Contributors: theeventscalendar, aguseo, borkweb, bordoni, brianjessee, Camwyn, juanfra, leahkoerper, lirianojoel, lucatume, neillmcshea, rafsuntaskin, zbtirrell
 Tags: virtual events, events, calendar, event, venue, organizer, dates, date, schema, conference, online events, concert, meeting, seminar, summit, class, the events calendar, tec, zoom, livestream
 Donate link: https://evnt.is/29
-Requires at least: 5.8.5
-Tested up to: 6.0.3
-Stable tag: 1.13.2
+Requires at least: 5.8.6
+Tested up to: 6.1.1
+Stable tag: 1.13.5
 Requires PHP: 7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -120,6 +120,29 @@ Our premium products:
 * <a href="https://evnt.is/1ako" target="_blank">Image Widget Plus</a>
 
 == Changelog ==
+
+= [1.13.5] 2023-02-09 =
+
+* Feature - Add Virtual Event Fields to the Event Automator event details sent to Zapier when active. [EVA-35]
+* Fix - Fixed a fatal error do to a plugin using the same query var as the Zoom oauth `state` var. [VE-559]
+* Tweak - Added filters: `tec_virtual_automator_map_event_details`
+* Language - 1 new strings added, 21 updated, 0 fuzzied, and 0 obsoleted
+
+= [1.13.4] 2023-01-18 =
+
+* Version - Virtual Events 1.13.4 is only compatible with The Events Calendar 6.0.7 and higher
+* Fix - Numerous issues related to the translation of Views rewrite slugs. [TEC-3733]
+* Tweak - Adapt to the change in how we handle view slugs. [TEC-4586]
+* Tweak - Added filters: `tribe-events-virtual-widgets-v2-{$view_slug}-should-enqueue-assets`
+* Tweak - Removed filters: `tribe-events-virtual-widgets-v2-{$view->get_slug()}-should-enqueue-assets`
+
+= [1.13.3] 2022-11-29 =
+
+* Tweak - Modify the information text around the embed feature to represent all the support integrations. [VE-557]
+* Fix - Prevent fatal errors with Webex and the password usage. [VE-570]
+* Fix - Add back Virtual Events filter to the Filter Bar. [FBAR-282]
+* Fix - Change how the Zoom, Google Meet, Microsoft, and Webex automatic access token refresh gets the url to prevent it from being empty causing numerous error log entries. [VE-565]
+* Language - 10 new strings added, 35 updated, 1 fuzzied, and 16 obsoleted.
 
 = [1.13.2] 2022-10-20 =
 

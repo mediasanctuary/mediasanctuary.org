@@ -23,7 +23,7 @@
 ?>
 <tr class="tribe-events-virtual-video-source">
 	<td class="tribe-table-field-label tribe-events-virtual-video-source__label">
-		<?php esc_html_e( 'Add Video:', 'events-virtual' ); ?>
+		<?php esc_html_e( 'Add Video or Meeting Link:', 'events-virtual' ); ?>
 	</td>
 	<td class="tribe-events-virtual-video-source__content">
 		<div

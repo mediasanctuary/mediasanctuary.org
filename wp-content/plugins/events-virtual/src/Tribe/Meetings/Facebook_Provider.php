@@ -134,6 +134,7 @@ class Facebook_Provider extends Meeting_Provider {
 
 		// Filter the ticket email virtual url.
 		add_filter( 'tribe_events_virtual_ticket_email_url', [ $this, 'filter_ticket_email_url' ], 15, 2 );
+		add_action( 'tec_virtual_automator_map_event_details', [ $this, 'add_event_automator_properties' ], 10, 2 );
 	}
 
 	/**
@@ -152,6 +153,24 @@ class Facebook_Provider extends Meeting_Provider {
 		}
 
 		return $this->container->make( Facebook_Meta::class )->add_event_properties( $event );
+	}
+
+	/**
+	 * Filters the array returned for the event details map in the Event Automator integration.
+	 *
+	 * @since 1.13.5
+	 *
+	 * @param array<string|mixed> $next_event An array of event details.
+	 * @param WP_Post             $event      An instance of the event WP_Post object.
+	 *
+	 * @return array<string|mixed> An array of event details.
+	 */
+	public function add_event_automator_properties( array $next_event, WP_Post $event ) {
+		if ( ! $event instanceof WP_Post ) {
+			return $next_event;
+		}
+
+		return $this->container->make( Facebook_Meta::class )->add_event_automator_properties( $next_event, $event );
 	}
 
 	/**

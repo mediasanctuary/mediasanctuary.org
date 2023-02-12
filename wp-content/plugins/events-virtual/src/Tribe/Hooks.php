@@ -30,6 +30,7 @@ use Tribe\Events\Virtual\Meetings\Google_Provider;
 use Tribe\Events\Virtual\Meetings\Microsoft_Provider;
 use Tribe\Events\Virtual\Meetings\Webex_Provider;
 use Tribe\Events\Virtual\Meetings\YouTube_Provider;
+use Tribe\Events\Virtual\Meetings\Zoom\Url;
 use Tribe\Events\Virtual\Meetings\Zoom_Provider;
 use Tribe\Events\Virtual\Views\V2\Widgets\Widget;
 use Tribe\Events\Views\V2\Template_Bootstrap;
@@ -873,6 +874,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * Add, to the Context, the locations used by the plugin.
 	 *
 	 * @since 1.0.0
+	 * @since 1.13.5 Changed the `state` var name.
 	 *
 	 * @param array<string,array> $context_locations The current Context locations.
 	 *
@@ -885,6 +887,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 			],
 		];
 
+		// 'state' is sent from whodat with nonce for Microsoft, Google, and Webex.
 		$context_locations['events_virtual_request'] = [
 			'read' => [
 				Context::REQUEST_VAR => [ Plugin::$request_slug, 'state' ],
@@ -1023,7 +1026,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	public function add_video_source( $video_sources, $post ) {
 
 		$video_sources[] = [
-			'text'     => _x( 'Search for video by URL', 'The label of the video source option.', 'events-virtual' ),
+			'text'     => _x( 'Search for video or meeting link', 'The label of the video source option.', 'events-virtual' ),
 			'id'       => Event_Meta::$key_video_source_id,
 			'value'    => Event_Meta::$key_video_source_id,
 			'selected' => Event_Meta::$key_video_source_id === $post->virtual_video_source,
@@ -1129,7 +1132,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		if ( empty( $post ) ) {
 			return false;
 		}
-		
+
 		// This is required to ensure virtual event details are embedded properly in the Elementor Event widget
 		$is_single_event = tribe( Template_Bootstrap::class )->is_single_event();
 

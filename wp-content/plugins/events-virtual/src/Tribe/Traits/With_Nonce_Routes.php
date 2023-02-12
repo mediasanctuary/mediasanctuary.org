@@ -48,7 +48,7 @@ trait With_Nonce_Routes {
 
 		$nonce = tribe_context()->get( 'events_virtual_request' );
 
-		if ( empty( $nonce ) || ! is_admin() || ! current_user_can( ...$caps ) ) {
+		if ( ! is_string( $nonce ) || empty( $nonce ) || ! is_admin() || ! current_user_can( ...$caps ) ) {
 			return false;
 		}
 
@@ -77,12 +77,11 @@ trait With_Nonce_Routes {
 
 		$nonce = tribe_context()->get( 'events_virtual_request' );
 
-		if ( empty( $nonce ) ) {
+		if ( empty( $nonce ) || ! is_string( $nonce ) ) {
 			return false;
 		}
 
 		return $this->route_by_nonce( $routes, $nonce );
-
 	}
 
 	/**

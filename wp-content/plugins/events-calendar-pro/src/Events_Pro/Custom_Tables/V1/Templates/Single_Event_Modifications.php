@@ -285,6 +285,10 @@ class Single_Event_Modifications {
 	 */
 	public function include_series_meta_details() {
 		$post = get_post();
+		if ( ! $post instanceof WP_Post ) {
+			return;
+		}
+
 		// The actual ID of the event is a fake one, make sure to use the real post ID.
 		if ( isset( $post->_tec_occurrence ) && $post->_tec_occurrence instanceof Occurrence ) {
 			$event_id = $post->_tec_occurrence->post_id;
@@ -348,8 +352,8 @@ class Single_Event_Modifications {
 	}
 
 	/**
-	 * When a call to `get_terms` is made, make sure to redirect all the IDs from a provisional post instead are
-	 * redirected to the real post ID in order to make sure the right terms are retrieved.
+	 * When a call to `get_terms` is made, make sure to redirect the terms request from the provisional ID to the
+	 * original post ID.
 	 *
 	 * @since 6.0.0
 	 *

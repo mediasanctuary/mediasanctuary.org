@@ -24,6 +24,11 @@ use WP_Post;
 class Event_Meta {
 
 	/**
+	 * {@inheritDoc}
+	 */
+	public static $key_source_id = 'youtube';
+
+	/**
 	 * The array of YouTube fields.
 	 *
 	 * @since 1.6.0
@@ -359,5 +364,36 @@ class Event_Meta {
 		$connection = tribe( Connection::class );
 
 		return $connection->get_url_with_id( $event->youtube_channel_id );
+	}
+
+	/**
+	 * Adds related properties to an Event Automator event details map.
+	 *
+	 * @since 1.13.5
+	 *
+	 * @param array<string|mixed> $next_event An array of event details.
+	 * @param WP_Post             $event      An instance of the event WP_Post object.
+	 *
+	 * @return array<string|mixed> An array of event details.
+	 */
+	public static function add_event_automator_properties( array $next_event, WP_Post $event ) {
+		if ( $event->virtual_video_source !== static::$key_source_id ) {
+			return $next_event;
+		}
+
+		$next_event['virtual_url']              = $event->virtual_meeting_url;
+		$next_event['virtual_provider_details'] = [
+			'youtube_channel_id'      => $event->youtube_channel_id,
+			'youtube_url'             => $event->virtual_meeting_url,
+			'youtube_is_live'         => $event->virtual_meeting_is_live,
+			'youtube_autoplay'        => $event->youtube_autoplay,
+			'youtube_live_chat'       => $event->youtube_live_chat,
+			'youtube_mute_video'      => $event->youtube_mute_video,
+			'youtube_modest_branding' => $event->youtube_modest_branding,
+			'youtube_related_videos'  => $event->youtube_related_videos,
+			'youtube_hide_controls'   => $event->youtube_hide_controls,
+		];
+
+		return $next_event;
 	}
 }
