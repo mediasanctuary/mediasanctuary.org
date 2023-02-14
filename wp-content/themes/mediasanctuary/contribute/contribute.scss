@@ -1,3 +1,5 @@
+$ff-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
 body.contribute {
 	background-color: #F1F3F4;
 
@@ -10,7 +12,7 @@ body.contribute {
 	}
 
 	form.contribute {
-		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		font-family: $ff-system;
 		font-size: 18px;
 		line-height: 24px;
 		padding: 15px;
@@ -36,7 +38,7 @@ body.contribute {
 		}
 
 		input, textarea {
-			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+			font-family: $ff-system;
 		}
 
 		.acf-required {
@@ -144,7 +146,20 @@ body.contribute {
 	}
 
 	.select2-results__options,
-	.acf-js-tooltip {
-		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	.acf-tooltip,
+	.acf-popup-box {
+		font-family: $ff-system;
+	}
+
+	.attachment-details > .setting {
+		display: none;
+	}
+
+	.acf-taxonomy-field {
+		.acf-actions.-hover {
+			display: block;
+			top: 4px;
+			right: 4px;
+		}
 	}
 }

@@ -23,30 +23,30 @@ if (! empty($_GET['id'])) {
 	</head>
 	<body class="contribute">
 		<?php while (have_posts()) { the_post(); ?>
-		<form action="<?php the_permalink(); ?>" method="post" enctype="multipart/form-data" class="contribute">
-			<h1><?php the_title(); ?></h1>
-			<?php if (! empty($feedback)) { ?>
-				<section>
-					<p><?php echo $feedback; ?></p>
-				</section>
-			<?php
+			<form action="<?php the_permalink(); ?>" method="post" enctype="multipart/form-data" class="contribute">
+				<h1><?php the_title(); ?></h1>
+				<?php if (! empty($feedback)) { ?>
+					<section>
+						<p><?php echo $feedback; ?></p>
+					</section>
+				<?php
 
-			}
+				}
 
-			echo '<section>';
-			if ($person->post_status == 'publish') {
-				acf_form([
-					'post_id'      => $post_id,
-					'form'         => true,
-					'return'       => '?id=%post_id%',
-					'field_groups' => ['group_637a88d633bb4'],
-					'html_submit_button' => '<input type="submit" value="' . $button_label . '" class="contribute-button">'
-				]);
-			}
-			echo '</section>';
+				echo '<section>';
+				if ($person->post_status == 'publish') {
+					acf_form([
+						'post_id'      => $post_id,
+						'form'         => true,
+						'return'       => '?id=%post_id%',
+						'field_groups' => ['group_637a88d633bb4'],
+						'html_submit_button' => '<input type="submit" value="' . $button_label . '" class="contribute-button">'
+					]);
+				}
+				echo '</section>';
 
-			?>
-		</form>
+				?>
+			</form>
 		<?php } ?>
 		<?php wp_footer(); ?>
 	</body>

@@ -32,5 +32,6 @@ if (! empty($_POST['email'])) {
 				<input type="submit" value="Continue" class="contribute-button">
 			</section>
 		</form>
+		<?php wp_footer(); ?>
 	</body>
 </html>

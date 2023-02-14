@@ -14,6 +14,10 @@ function contribute_pre_save_post($post_id) {
 	return $post_id;
 }
 
+function contribute_enqueue_scripts() {
+	wp_enqueue_script('contribute-js', get_asset_url('contribute/contribute.js'), ['media-upload'], false, true);
+}
+
 function contribute_submission($data) {
 	$submission = [];
 	foreach ($data as $key => $value) {
