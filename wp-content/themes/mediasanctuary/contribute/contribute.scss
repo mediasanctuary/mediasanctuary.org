@@ -7,6 +7,21 @@ body.contribute {
 		display: none;
 	}
 
+	h1, form.menu {
+		font-family: $ff-system;
+		font-size: 24px;
+		max-width: 600px;
+		margin: 0 auto;
+		padding: 5px 15px;
+		box-sizing: border-box;
+	}
+
+	form.menu select {
+		font-family: $ff-system;
+		font-size: 18px;
+		max-width: 570px;
+	}
+
 	form.contribute, form.contribute * {
 		box-sizing: border-box;
 	}
@@ -160,6 +175,16 @@ body.contribute {
 			display: block;
 			top: 4px;
 			right: 4px;
+		}
+	}
+
+	.contribute-stories {
+		float: right;
+		margin-right: -225px;
+		width: 200px;
+
+		ul {
+			padding: 0;
 		}
 	}
 }

@@ -209,34 +209,35 @@ END);
 	return $person;
 }
 
-function contribute_story($data) {
-	global $feedback;
-	if (!is_user_logged_in()) {
-		$_SESSION['upload_email'] = null;
-		$feedback = 'Sorry, something went wrong with your story upload. Please try again.';
-		return;
-	}
-	$email = $_SESSION['upload_email'];
-	$post_id = wp_insert_post([
-		'post_status'  => 'draft',
-		'post_title'   => $data['title'],
-		'post_content' => $data['description'],
-		// 'post_tags'    => $data['tags']
+function contribute_stories($person) {
+	global $post;
+
+	echo '<form action="' . get_permalink($post) . '" class="menu">';
+	echo '<select name="id">';
+	echo '<option value="">Add a New Story</option>';
+
+	$stories = new WP_Query([
+		'post_type' => 'post',
+		'category_name' => 'stories',
+		'post_status' => ['draft', 'future', 'publish'],
+		'meta_query' => [
+			[
+				'key' => 'byline',
+				'value' => '"' . $person->ID . '"',
+				'compare' => 'LIKE'
+			]
+		],
+		'posts_per_page' => 100
 	]);
-	$admin_email = get_field('upload_admin_email', 'options');
-	$edit_url = "https://www.mediasanctuary.org/wp-admin/post.php?post=$post_id&action=edit";
-	$email_sent = wp_mail($admin_email, "New upload: {$data['title']}", <<<END
-Hello,
 
-A new story has been uploaded.
+	while ($stories->have_posts()) {
+		$stories->the_post();
+		$selected = (! empty($_GET['id']) && $_GET['id'] == $post->ID) ?
+			' selected="selected"' : '';
+		echo '<option value="' . $post->ID . '"' . $selected . '>Edit ' . get_the_title() . '</option>';
+	}
 
-Title: {$data['title']}
-Description: {$data['description']}
+	wp_reset_postdata();
 
-You can edit the details here:
-$edit_url
-
-Thank you!
-END);
-	\dbug("story email sent: $edit_url");
+	echo '</select></form>';
 }
