@@ -227,7 +227,7 @@ function contribute_stories($person) {
 				'compare' => 'LIKE'
 			]
 		],
-		'posts_per_page' => 100
+		'posts_per_page' => -1
 	]);
 
 	while ($stories->have_posts()) {
