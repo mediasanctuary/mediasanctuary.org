@@ -46,43 +46,43 @@ if (! empty($_POST['acf'])) {
 	</head>
 	<body class="contribute">
 		<?php while (have_posts()) { the_post(); ?>
-		<form action="<?php the_permalink(); ?>" method="post" enctype="multipart/form-data" class="contribute">
-			<h1><?php the_title(); ?></h1>
-			<section class="<?php echo $feedback_class; ?>">
-				<p><?php echo implode('</p><p>', $feedback); ?></p>
-			</section>
-			<h2>1. Review the Code of Conduct</h2>
-			<?php foreach (get_field('contribute_coc', 'options') as $slide) { ?>
-				<section>
-					<?php echo $slide['slide']; ?>
+			<form action="<?php the_permalink(); ?>" method="post" enctype="multipart/form-data" class="contribute">
+				<h1><?php the_title(); ?></h1>
+				<section class="<?php echo $feedback_class; ?>">
+					<p><?php echo implode('</p><p>', $feedback); ?></p>
 				</section>
-			<?php } ?>
-			<h2>2. Sign up below</h2>
-			<section>
-				<?php
+				<h2>1. Review the Code of Conduct</h2>
+				<?php foreach (get_field('contribute_coc', 'options') as $slide) { ?>
+					<section>
+						<?php echo $slide['slide']; ?>
+					</section>
+				<?php } ?>
+				<h2>2. Sign up below</h2>
+				<section>
+					<?php
 
-				$post_id = 'new_post';
-				\dbug($person);
-				if (! empty($person)) {
-					$post_id = $person->ID;
-					if (empty(get_field('contribute_name', $post_id))) {
-						update_field('contribute_name', $person->post_title, $post_id);
+					$post_id = 'new_post';
+					\dbug($person);
+					if (! empty($person)) {
+						$post_id = $person->ID;
+						if (empty(get_field('contribute_name', $post_id))) {
+							update_field('contribute_name', $person->post_title, $post_id);
+						}
+						// if (empty(get_field('contribute_bio', $post_id))) {
+							update_field('contribute_bio', wp_strip_all_tags(preg_replace('/<!-- \/?wp:[^>]+ -->\n/', '', $person->post_content)), $post_id);
+						// }
 					}
-					// if (empty(get_field('contribute_bio', $post_id))) {
-						update_field('contribute_bio', wp_strip_all_tags(preg_replace('/<!-- \/?wp:[^>]+ -->\n/', '', $person->post_content)), $post_id);
-					// }
-				}
 
-				acf_form([
-					'post_id'            => $post_id,
-					'form'               => true,
-					'field_groups'       => ['group_63cd5f8d425dc'],
-					'html_submit_button' => '<input type="submit" value="Continue" class="contribute-button">'
-				]);
+					acf_form([
+						'post_id'            => $post_id,
+						'form'               => true,
+						'field_groups'       => ['group_63cd5f8d425dc'],
+						'html_submit_button' => '<input type="submit" value="Continue" class="contribute-button">'
+					]);
 
-				?>
-			</section>
-		</form>
+					?>
+				</section>
+			</form>
 		<?php } ?>
 		<?php wp_footer(); ?>
 	</body>

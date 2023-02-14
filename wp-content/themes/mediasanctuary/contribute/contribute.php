@@ -13,6 +13,7 @@ if (! session_id()) {
 }
 
 add_filter('acf/pre_save_post', 'contribute_pre_save_post');
+add_action('wp_enqueue_scripts', 'contribute_enqueue_scripts');
 
 if (! empty($_GET['signup'])) {
 	$base_url = get_bloginfo('url');
