@@ -21,17 +21,19 @@ if (! empty($_POST['email'])) {
 		<?php wp_head(); ?>
 	</head>
 	<body class="contribute">
-		<form action="<?php the_permalink(); ?>" method="post" enctype="multipart/form-data" class="contribute">
+		<?php while (have_posts()) { the_post(); ?>
 			<h1><?php the_title(); ?></h1>
-			<section>
-				<?php echo $feedback; ?>
-			</section>
-			<section>
-				<label for="contribute-email">Your email address</label>
-				<input name="email" id="contribute-email" type="email" placeholder="name@example.com" value="<?php echo @esc_attr($_REQUEST['email']); ?>">
-				<input type="submit" value="Continue" class="contribute-button">
-			</section>
-		</form>
+			<form action="<?php the_permalink(); ?>" method="post" enctype="multipart/form-data" class="contribute">
+				<section>
+					<?php echo $feedback; ?>
+				</section>
+				<section>
+					<label for="contribute-email">Your email address</label>
+					<input name="email" id="contribute-email" type="email" placeholder="name@example.com" value="<?php echo @esc_attr($_REQUEST['email']); ?>">
+					<input type="submit" value="Continue" class="contribute-button">
+				</section>
+			</form>
+		<?php } ?>
 		<?php wp_footer(); ?>
 	</body>
 </html>

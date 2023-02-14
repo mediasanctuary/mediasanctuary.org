@@ -4,4 +4,11 @@ window.addEventListener('DOMContentLoaded', function () {
 			wp.media.frame.content.mode('upload');
 		});
 	}
+	let menu = document.querySelector('select[name="id"]');
+	if (menu) {
+		menu.addEventListener('change', e => {
+			let form = menu.closest('form');
+			form.submit();
+		});
+	}
 });

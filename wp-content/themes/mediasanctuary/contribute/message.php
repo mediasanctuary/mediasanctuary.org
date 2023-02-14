@@ -8,8 +8,8 @@
 	</head>
 	<body class="contribute">
 		<?php while (have_posts()) { the_post(); ?>
+			<h1><?php the_title(); ?></h1>
 			<form action="<?php the_permalink(); ?>" method="post" enctype="multipart/form-data" class="contribute">
-				<h1><?php the_title(); ?></h1>
 				<?php if (! empty($feedback)) { ?>
 					<section>
 						<p><?php echo $feedback; ?></p>
