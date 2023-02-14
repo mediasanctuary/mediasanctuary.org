@@ -9,7 +9,7 @@
             "aria-label": "",
             "type": "file",
             "instructions": "",
-            "required": 0,
+            "required": 1,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -157,5 +157,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1676048295
+    "modified": 1676408010
 }
