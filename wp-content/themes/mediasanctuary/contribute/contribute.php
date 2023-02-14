@@ -6,7 +6,10 @@ Template Name: Contribute
 require_once __DIR__ . '/functions.php';
 
 if (! session_id()) {
+	// Remember the session cookie for one year
+	$lifetime = 60 * 60 * 24 * 365;
 	session_start();
+	setcookie(session_name(), session_id(), time() + $lifetime);
 }
 
 add_filter('acf/pre_save_post', 'contribute_pre_save_post');
