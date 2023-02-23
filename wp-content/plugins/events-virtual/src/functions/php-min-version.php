@@ -34,7 +34,7 @@ if ( ! function_exists( 'tribe_get_php_min_version' ) ) :
 	 * @return string Which version of PHP we minimally require.
 	 */
 	function tribe_get_php_min_version() {
-		return '7.3';
+		return '7.4';
 	}
 
 	/**

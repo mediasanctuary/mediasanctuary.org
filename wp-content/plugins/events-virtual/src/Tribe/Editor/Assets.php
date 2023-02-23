@@ -21,59 +21,14 @@ class Assets extends \tad_DI52_ServiceProvider {
 
 		tribe_asset(
 			$plugin,
-			'tribe-virtual-gutenberg-data',
-			'app/data.js',
-			[
-				'react',
-				'react-dom',
-				'wp-components',
-				'wp-api',
-				'wp-api-request',
-				'wp-blocks',
-				'wp-i18n',
-				'wp-element',
-				'wp-editor',
-				'tribe-common-gutenberg-data',
-				'tribe-common-gutenberg-utils',
-				'tribe-common-gutenberg-store',
-				'tribe-common-gutenberg-hoc',
-			],
+			'tribe-virtual-gutenberg-main',
+			'app/main.js',
+			[ 'tribe-the-events-calendar-main' ],
 			'enqueue_block_editor_assets',
 			[
 				'in_footer' => false,
 				'localize'  => [],
 				'priority'  => 200,
-				'conditionals' => tribe_callback(  'events.editor', 'is_events_post_type' ),
-			]
-		);
-
-		tribe_asset(
-			$plugin,
-			'tribe-virtual-gutenberg-blocks',
-			'app/blocks.js',
-			[
-				'react',
-				'react-dom',
-				'wp-components',
-				'wp-api',
-				'wp-api-request',
-				'wp-blocks',
-				'wp-i18n',
-				'wp-element',
-				'wp-editor',
-				'tribe-common-gutenberg-data',
-				'tribe-common-gutenberg-utils',
-				'tribe-common-gutenberg-store',
-				'tribe-common-gutenberg-icons',
-				'tribe-common-gutenberg-hoc',
-				'tribe-common-gutenberg-elements',
-				'tribe-common-gutenberg-components',
-			],
-			'enqueue_block_editor_assets',
-			[
-				'in_footer' => false,
-				'localize'  => [],
-				'priority'  => 201,
 				'conditionals' => tribe_callback(  'events.editor', 'is_events_post_type' ),
 				'translations' => [
 					'domain' => 'events-virtual',

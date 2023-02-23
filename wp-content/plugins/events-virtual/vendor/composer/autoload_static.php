@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInite138cda51755a39592bb91648662c931
+class ComposerStaticInit877958451c5c18d4bbdf1fff2ac3c539
 {
     public static $files = array (
         'db020e36c90dae2855434958b09ed49e' => __DIR__ . '/../..' . '/src/functions/load.php',
@@ -38,6 +38,7 @@ class ComposerStaticInite138cda51755a39592bb91648662c931
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Defuse\\Crypto\\Core' => __DIR__ . '/..' . '/defuse/php-encryption/src/Core.php',
         'Defuse\\Crypto\\Crypto' => __DIR__ . '/..' . '/defuse/php-encryption/src/Crypto.php',
         'Defuse\\Crypto\\DerivedKeys' => __DIR__ . '/..' . '/defuse/php-encryption/src/DerivedKeys.php',
@@ -213,9 +214,9 @@ class ComposerStaticInite138cda51755a39592bb91648662c931
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInite138cda51755a39592bb91648662c931::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInite138cda51755a39592bb91648662c931::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInite138cda51755a39592bb91648662c931::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit877958451c5c18d4bbdf1fff2ac3c539::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit877958451c5c18d4bbdf1fff2ac3c539::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit877958451c5c18d4bbdf1fff2ac3c539::$classMap;
 
         }, null, ClassLoader::class);
     }
