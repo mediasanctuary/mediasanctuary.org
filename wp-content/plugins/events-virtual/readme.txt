@@ -5,8 +5,8 @@ Tags: virtual events, events, calendar, event, venue, organizer, dates, date, sc
 Donate link: https://evnt.is/29
 Requires at least: 5.8.6
 Tested up to: 6.1.1
-Stable tag: 1.13.5
-Requires PHP: 7.3
+Stable tag: 1.13.6
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,15 @@ Our premium products:
 * <a href="https://evnt.is/1ako" target="_blank">Image Widget Plus</a>
 
 == Changelog ==
+
+= [1.13.6] 2023-02-22 =
+
+* Version - Virtual Events 1.13.6 is only compatible with The Events Calendar 6.0.10 and higher
+* Tweak - PHP version compatibility bumped to PHP 7.4
+* Tweak - Version Composer updated to 2
+* Tweak - Version Node updated to 18.13.0
+* Tweak - Version NPM update to 8.19.3
+* Tweak - Reduce JavaScript bundle sizes for Blocks editor
 
 = [1.13.5] 2023-02-09 =
 
