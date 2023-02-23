@@ -274,7 +274,7 @@ class Duplicate {
 
 			$series = Series_Relationship::where( 'event_post_id', '=', $post->ID )
 										 ->get();
-			if ( $series ) {
+			if ( $series && $event instanceof Event ) {
 				$series_ids = array_map( static function ( Series_Relationship $series_relationship ) {
 					return $series_relationship->series_post_id;
 				}, $series );
@@ -384,6 +384,15 @@ class Duplicate {
 
 		foreach ( $taxonomies as $taxonomy ) {
 			$post_terms = wp_get_object_terms( $event->ID, $taxonomy, [ 'fields' => 'slugs' ] );
+
+			if ( ! is_array( $post_terms ) ) {
+				continue;
+			}
+
+			$post_terms = array_values( array_filter( $post_terms, static function ( $term ) {
+				return is_string( $term ) && $term !== '';
+			} ) );
+
 			wp_set_object_terms( $duplicated->ID, $post_terms, $taxonomy, false );
 		}
 	}

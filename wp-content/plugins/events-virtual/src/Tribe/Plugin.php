@@ -27,7 +27,7 @@ class Plugin extends \tad_DI52_ServiceProvider {
 	 *
 	 * @var string
 	 */
-	const VERSION = '1.13.2';
+	const VERSION = '1.13.6';
 
 	/**
 	 * Stores the base slug for the plugin.
@@ -126,6 +126,9 @@ class Plugin extends \tad_DI52_ServiceProvider {
 
 		if ( class_exists( '\\TEC\\Events_Virtual\\Custom_Tables\\V1\\Provider' ) ) {
 			tribe_register_provider( '\\TEC\\Events_Virtual\\Custom_Tables\\V1\\Provider' );
+		}
+		if ( class_exists( '\\TEC\\Events_Virtual\\Compatibility\\Event_Automator\\Zapier\\Zapier_Provider' ) ) {
+			tribe_register_provider( '\\TEC\\Events_Virtual\\Compatibility\\Event_Automator\\Zapier\\Zapier_Provider' );
 		}
 	}
 

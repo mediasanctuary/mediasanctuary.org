@@ -43,10 +43,10 @@ class Rewrite_Provider extends \tad_DI52_ServiceProvider {
 	 * @since 1.0.1
 	 */
 	protected function add_filters() {
-
 		add_action( 'tribe_events_pre_rewrite', [ $this, 'filter_add_routes' ], 5 );
 		add_filter( 'tribe_events_rewrite_base_slugs', [ $this, 'filter_add_base_slugs' ], 12 );
 		add_filter( 'tribe_events_rewrite_matchers_to_query_vars_map', [ $this, 'filter_add_matchers_to_query_vars_map' ], 11, 2 );
+		add_filter( 'tribe_events_rewrite_i18n_domains', [ $this, 'add_virtual_text_domain' ], 10 );
 	}
 
 	/**
@@ -160,7 +160,7 @@ class Rewrite_Provider extends \tad_DI52_ServiceProvider {
 					'eventDisplay' => 'day',
 					'eventDate'    => '%1'
 				] )
-				->archive( [ '(\d{4}-\d{2}-\d{2})', 'ical', 'virtual' ], [
+				->archive( [ '(\d{4}-\d{2}-\d{2})', 'ical', '{{ virtual }}' ], [
 					'ical'         => 1,
 					'eventDisplay' => 'day',
 					'eventDate'    => '%1',
@@ -211,38 +211,38 @@ class Rewrite_Provider extends \tad_DI52_ServiceProvider {
 
 		// Week
 		$rewrite->archive( [ '{{ week }}', '{{ virtual }}' ], [ 'eventDisplay' => 'week', 'virtual' => true ] )
-				->archive( [ '{{ week }}', '(\d{2})', '{{ virtual }}' ], [
-					'eventDisplay' => 'week',
-					'eventDate'    => '%1',
-					'virtual'      => true
-				] )
-				->archive( [ '{{ week }}', '(\d{4}-\d{2}-\d{2})', '{{ virtual }}' ], [
-					'eventDisplay' => 'week',
-					'eventDate'    => '%1',
-					'virtual'      => true
-				] )
-				->tax( [ '{{ week }}', '{{ virtual }}' ], [ 'eventDisplay' => 'week', 'virtual' => true ] )
-				->tax( [ '{{ week }}', '(\d{4}-\d{2}-\d{2})', '{{ virtual }}' ], [
-					'eventDisplay' => 'week',
-					'eventDate'    => '%2',
-					'virtual'      => true
-				] )
-				->tag( [ '{{ week }}', '{{ virtual }}' ], [ 'eventDisplay' => 'week', 'virtual' => true ] )
-				->tag( [ '{{ week }}', '(\d{4}-\d{2}-\d{2})', '{{ virtual }}' ], [
-					'eventDisplay' => 'week',
-					'eventDate'    => '%2',
-					'virtual'      => true
-				] )
+		        ->archive( [ '{{ week }}', '(\d{4}-\d{2}-\d{2})', '{{ virtual }}' ], [
+			        'eventDisplay' => 'week',
+			        'eventDate'    => '%1',
+			        'virtual'      => true
+		        ] )
+		        ->archive( [ '{{ week }}', '(\d{2})', '{{ virtual }}' ], [
+			        'eventDisplay' => 'week',
+			        'eventDate'    => '%1',
+			        'virtual'      => true
+		        ] )
+		        ->tax( [ '{{ week }}', '{{ virtual }}' ], [ 'eventDisplay' => 'week', 'virtual' => true ] )
+		        ->tax( [ '{{ week }}', '(\d{4}-\d{2}-\d{2})', '{{ virtual }}' ], [
+			        'eventDisplay' => 'week',
+			        'eventDate'    => '%2',
+			        'virtual'      => true
+		        ] )
+		        ->tag( [ '{{ week }}', '{{ virtual }}' ], [ 'eventDisplay' => 'week', 'virtual' => true ] )
+		        ->tag( [ '{{ week }}', '(\d{4}-\d{2}-\d{2})', '{{ virtual }}' ], [
+			        'eventDisplay' => 'week',
+			        'eventDate'    => '%2',
+			        'virtual'      => true
+		        ] )
 
 				// Photo
-				->archive( [ '{{ photo }}', '{{ virtual }}' ], [ 'eventDisplay' => 'photo', 'virtual' => true ] )
-				->archive( [ '{{ photo }}', '(\d{4}-\d{2}-\d{2})', '{{ virtual }}' ], [
-					'eventDisplay' => 'photo',
-					'eventDate'    => '%1',
-					'virtual'      => true
-				] )
-				->tax( [ '{{ photo }}', '{{ virtual }}' ], [ 'eventDisplay' => 'photo', 'virtual' => true ] )
-				->tag( [ '{{ photo }}', '{{ virtual }}' ], [ 'eventDisplay' => 'photo', 'virtual' => true ] );
+			    ->archive( [ '{{ photo }}', '{{ virtual }}' ], [ 'eventDisplay' => 'photo', 'virtual' => true ] )
+		        ->archive( [ '{{ photo }}', '(\d{4}-\d{2}-\d{2})', '{{ virtual }}' ], [
+			        'eventDisplay' => 'photo',
+			        'eventDate'    => '%1',
+			        'virtual'      => true
+		        ] )
+		        ->tax( [ '{{ photo }}', '{{ virtual }}' ], [ 'eventDisplay' => 'photo', 'virtual' => true ] )
+		        ->tag( [ '{{ photo }}', '{{ virtual }}' ], [ 'eventDisplay' => 'photo', 'virtual' => true ] );
 	}
 
 	/**
@@ -255,9 +255,8 @@ class Rewrite_Provider extends \tad_DI52_ServiceProvider {
 	 * @return array         The modified version of the array of bases
 	 */
 	public function filter_add_base_slugs( $bases = [] ) {
-
 		// Support original and translated versions.
-		$bases['virtual'] = [ 'virtual', $this->virtual_slug ];
+		$bases['virtual'] = [ 'virtual', sanitize_title( tribe_get_virtual_label_lowercase() ) ];
 
 		return $bases;
 	}
@@ -276,5 +275,24 @@ class Rewrite_Provider extends \tad_DI52_ServiceProvider {
 		$matchers['virtual'] = 'virtual';
 
 		return $matchers;
+	}
+
+	/**
+	 * Adds the plugin text domain to the list of domains that should be used to generate rewrite
+	 * rules.
+	 *
+	 * @since 1.13.4
+	 *
+	 * @param array<string,string> $domains A map of domains to the directories containing the translations.
+	 *
+	 * @return array<string,string>  The modified map of domains.
+	 */
+	public function add_virtual_text_domain( $domains ) {
+		if ( is_array( $domains ) ) {
+			$plugin_base_dir = dirname( plugin_basename( EVENTS_VIRTUAL_FILE ) );
+			$domains['events-virtual'] = $plugin_base_dir . DIRECTORY_SEPARATOR . 'lang';
+		}
+
+		return $domains;
 	}
 }

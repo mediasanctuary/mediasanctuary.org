@@ -3,10 +3,10 @@
 Contributors: theeventscalendar, borkweb, bordoni, brianjessee, aguseo, camwynsp, GeoffBel, jentheo, leahkoerper, lucatume, neillmcshea, vicskf, zbtirrell, juanfra
 Tags: events, calendar, event, venue, organizer, dates, date, google maps, conference, workshop, concert, meeting, seminar, summit, class, the events calendar, widget, pro
 Donate link: https://evnt.is/29
-Requires at least: 5.8.5
-Stable tag: 6.0.2
-Tested up to: 6.0.3
-Requires PHP: 7.3
+Requires at least: 5.8.6
+Stable tag: 6.0.9
+Tested up to: 6.1.1
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -213,6 +213,111 @@ Previous versions of Events Calendar PRO are not cross-compatible with 6.X add-o
 Remember to always make a backup of your database and files before updating!
 
 == Changelog ==
+
+= [6.0.9] 2023-02-22 =
+
+* Version - Events Calendar PRO 6.0.9 is only compatible with The Events Calendar 6.0.10 and higher.
+* Tweak - PHP version compatibility bumped to PHP 7.4
+* Tweak - Version Composer updated to 2
+* Tweak - Version Node updated to 18.13.0
+* Tweak - Version NPM update to 8.19.3
+* Tweak - Reduce JavaScript bundle sizes for Blocks editor
+* Deprecation - `TEC\Events_Pro\Custom_Tables\V1\Editors\Block\Provider::enqueue_block_editor_duplicate_assets()`.
+
+= [6.0.8] 2023-02-09 =
+
+* Fix - Weekly recurrence message fatal on PHP 8.0+ resolved, also resolves translations that were not applying. [ECP-1451]
+* Fix - On classic editor, when editing a single occurrence that has a recurring rule, the start time for the single occurrence is displayed in the description of the recurring rule. [ECP-1295]
+* Fix - Fix issue where splitting the first occurrence in a recurring event that has a limit by a count, will generate an additional occurrence at the end of the range. [ECP-1344]
+* Fix - Ensure the zoom level set under `Events → Settings → Display → Google Maps default zoom level` is applied to the venue meta page. [TEC-4634]
+* Fix - Change the type of the date-related custom tables date fields to VARCHAR to avoid warnings on stricter SQL modes. [TEC-4536]
+* Fix - Ensure the code will work correctly when the Events' category taxonomy is unregistered. [TEC-4664]
+* Fix - Ensure the `Navigation Style` setting in the `Elementor Event Widget` doesn't appear to be blank when the corresponding `Navigation Option` is disabled in the `Content tab`. [ECP-1204]
+* Tweak - Update the Event Series tooltip label on hover. [ECP-1428]
+* Tweak - Ensure all Google Map iframes have a title attribute to improve accessibility. [TEC-4243]
+* Tweak - Replace the `elementor/widgets/widgets_registered` hook with `elementor/widgets/register` since it was deprecated since Elementor version 3.5.0. [ECP-1449]
+* Tweak - Replace the `Elementor\Widgets_Manager::register_widget_type` method with `Elementor\Widgets_Manager::register` since it was deprecated since Elementor version 3.5.0. [ECP-1449]
+* Tweak - Display the `Recurring Event` label in the classic editor when an event has a ticket. [ECP-1234]
+* Tweak - Fix the template path in the src/views/v2/photo/event/date-tag.php docblock [ECP-1448]
+* Tweak - Added actions: `tribe_log`
+* Tweak - Changed views: `v2/map/map/google-maps/default`, `v2/photo/event/date-tag`, `v2/venue/meta/map`
+* Language - 3 new strings added, 79 updated, 55 fuzzied, and 0 obsoleted
+
+= [6.0.7] 2023-01-26 =
+
+* Fix - Modifications to custom tables registration to ensure all sites get the new 6.0 table schema, preventing 404 and other related issues. [TEC-4631]
+* Language - 0 new strings added, 217 updated, 1 fuzzied, and 0 obsoleted
+
+= [6.0.6] 2023-01-18 =
+
+* Version - Events Calendar PRO 6.0.6 is only compatible with The Events Calendar 6.0.7 and higher
+* Fix - When trashing a single, or "RDATE", occurrence from a recurring event, retain the recurring occurrences and don't apply any exclusions. [ECP-1332]
+* Fix - Avoid user locale overriding the site locale during rewrite rules generation. [TEC-3733]
+* Fix - Numerous issues related to the translation of Views rewrite slugs. [TEC-3733]
+* Fix - Handle the case where rewrite rules map to arrays avoiding fatal errors. [TEC-4567]
+* Fix - Correct logic for tribe_is_view functions to account for default view. [TEC-4586]
+* Fix - Handle problems related to Time Format not using 24h breaking the Date update on Classic Editor [ECP-1441]
+* Fix - Resolve the issue of the Map view URL not being translatable. [ECP-1406]
+* Tweak - Change conditional in Assets that handles Elementor.
+* Tweak - Prevent loading the more-events template when the view is not defined. [TEC-4586]
+* Tweak - Ensure Featured Venue Widget uses the same slug as the View class so it does not load the default view. [TEC-4586]
+* Tweak - Convert all uses of (view)->get_slug() to (view)::get_view_slug(). [TEC-4586]
+* Tweak - Reorganize Event settings a bit. [TEC-4627]
+* Tweak - Added filters: `tribe_all_occurrences_link`, `tec_is_venue_view`, `tec_is_organizer_view`
+* Tweak - Removed filters: `tec_events_pro_custom_tables_v1_series_default_view`, `tribe_all_occurences_link`
+* Tweak - Changed views: `v2/widgets/shortcodes/components/view-more`
+
+= [6.0.5.1] 2022-12-14 =
+
+* Fix - Avoid fatal when `tribe_get_global_query_object` is called too early. [BTRIA-1556]
+
+= [6.0.5] 2022-12-14 =
+
+* Fix - Fix for recursion error in `Provisional_Post_Cache`, looping on the `ID_Generator::current()` call. [ECP-1432]
+* Fix - Fixes `Fatal error: Uncaught TypeError: Cannot increment WP_Post in ...Series/Autogenerated_Series.php on line 359` when unintentionally incrementing WP_Post object in PHP 8. [ECP-1427]
+* Fix - Adds support for `series` repository arguments in Tribe__Events__Pro__Repositories__Event. [ECP-1417]
+* Fix - Prevent problems with international date formats for the timepicker causing Events to be saved with the incorrect Start and End date. [ECP-1352]
+* Fix - Prevent fatals when using Widgets in a Shortcode [ECP-1434]
+* Fix - Correct the override template pathing for the series templates. [ECP-1400]
+* Tweak - Add aria label to Google Maps iFrame embed to improve accessibility. [TEC-4404]
+* Tweak - Update the recurrence deletion notice copy to help users make clear and informed decisions about removing recurrences. [ECP-1413]
+* Tweak - Add some context for abbreviated day translations. [ECP-1430]
+* Tweak - Changed views: `custom-tables-v1/components/icons/series`, `custom-tables-v1/components/series-relationship-icon-link-pill`, `custom-tables-v1/components/series-relationship-icon-link`, `custom-tables-v1/components/series-relationship-icon`, `custom-tables-v1/components/series-relationship-marker-link`, `custom-tables-v1/recurrence/hide-recurring`, `custom-tables-v1/single/series-relationship-marker`, `v2/map/map/google-maps/default`, `v2/venue/meta/map`, `v2/widgets/shortcodes/components/after`, `v2/widgets/shortcodes/components/before`, `v2/widgets/shortcodes/components/title`
+* Language - 10 new strings added, 3 updated, 0 fuzzied, and 6 obsoleted
+
+= [6.0.4] 2022-11-29 =
+
+* Version - Events Calendar PRO 6.0.4 is only compatible with The Events Calendar 6.0.5 and higher
+* Feature - Reorganization of Event Settings. [TCMN-149]
+* Fix - Prevent events from outside a series from showing on the series summary page. [ECP-1372]
+* Fix - Fix a query issue where getting Event taxonomy terms would compromise the following query results. [ECP-1416]
+* Fix - Avoid array access errors when adding a date exclusions to recurrence rules. [ECP-1419]
+* Deprecation - `Tribe__Events__Pro__Main::filter_settings_tab_fields()`.
+* Language - 78 new strings added, 231 updated, 3 fuzzied, and 22 obsoleted.
+
+= [6.0.3] 2022-11-15 =
+
+* Version - Events Calendar PRO 6.0.3 is only compatible with The Events Calendar 6.0.4 and higher
+* Fix - Prevent broken view related `tribe_is_*()` methods to be broken when using with WordPress 6.1 [TEC-4552]
+* Fix - Fix for migrating offset RRULE with different time > The RRULE shows as being the same time as the first occurrence. [ECP-1269]
+* Fix - Fix for fatal when saving an empty recurrence date in classic editor. [ECP-1363]
+* Fix - Refactor Custom Tables v1 post-decorating code to avoid serialization/unserialization issues. [TEC-4379]
+* Fix - Fixed issue where "Event will not occur" option doesn't work unless events begin at the top of the hour (:00). [ECP-1355]
+* Fix - Fixed fatal error with queueing of the migration telemetry report. [ECP-1403]
+* Fix - Avoid fatal errors when hydrating Occurrences cache on incoherent database or cache state. [ECP-1402]
+* Fix - Ensure view labels are translated appropriately. [TEC-4485]
+* Fix - Prevent `E_ERROR` when using third-party plugins with blocks editor around `tec_event_series()` method [ECP-1409]
+* Fix - Avoid type errors in the `tec_events_pro_blocks_recurrence_meta` filter. [TEC-4559]
+* Fix - Ensure tribe() singletons are bound before attempting to use them. [ECP-1396]
+* Fix - Avoid duplicated queries by including a memoization for Occurrence data. [TBD]
+* Fix - Prevent errors when adding exclusion dates to recurring events using the Custom Tables implementation. [ECP-1401]
+* Fix - Mitigated PHP errors related Occurrence and Provisional Post objects. [ECP-1402]
+* Language - 6 new strings added, 113 updated, 0 fuzzied, and 0 obsoleted.
+
+= [6.0.2.1] 2022-11-03 =
+
+* Fix - Fixed an issue where migrated Recurring Event Occurrences would not be displayed on the frontend. [ECP-1398]
+* Fix - Refactor Custom Tables v1 post-decorating code to avoid serialization/unserialization issues. [TEC-4379]
 
 = [6.0.2] 2022-10-20 =
 

@@ -79,11 +79,13 @@ class Api extends Account_API {
 	 * @param Encryption             $encryption             An instance of the Encryption handler.
 	 * @param Template_Modifications $template_modifications An instance of the Template_Modifications handler.
 	 * @param Actions                $actions                An instance of the Actions name handler.
+	 * @param URL                    $url                    An instance of the URL handler.
 	 */
-	public function __construct( Encryption $encryption, Template_Modifications $template_modifications, Actions $actions ) {
+	public function __construct( Encryption $encryption, Template_Modifications $template_modifications, Actions $actions, Url $url ) {
 		$this->encryption             = ( ! empty( $encryption ) ? $encryption : tribe( Encryption::class ) );
 		$this->template_modifications = $template_modifications;
 		$this->actions                = $actions;
+		$this->url                    = $url;
 
 		// Attempt to load an account.
 		$this->load_account();
@@ -96,7 +98,7 @@ class Api extends Account_API {
 		$refreshed = false;
 
 		$this->post(
-			Url::to_refresh(),
+			$this->url::to_refresh(),
 			[
 				'body'    => [
 					'grant_type'    => 'refresh_token',

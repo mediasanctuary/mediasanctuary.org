@@ -72,7 +72,7 @@ if ( $style == 'style-1' || $style == 'style-2' || $style == 'style-3' ) {
                 </div>';
 		} else {
 			$events_html .= '<div class="ect-accordion-content">
-				<a href="' . esc_url( tribe_get_event_link( $event_id ) ) . '" class="ect-events-read-more" rel="bookmark" ' . $cat_bg_styles . '>' . esc_html__( 'Find out more', 'ect' ) . '<i class="ect-icon-right-double"></i></a>
+				<a href="' . esc_url( tribe_get_event_link( $event_id ) ) . '" class="ect-events-read-more" rel="bookmark" ' . $cat_bg_styles . '>' . $events_more_info_text . '<i class="ect-icon-right-double"></i></a>
 			</div>';
 		}
 	} elseif ( tribe_has_venue( $event_id ) && ! $ev_post_img ) {
@@ -96,7 +96,7 @@ if ( $style == 'style-1' || $style == 'style-2' || $style == 'style-3' ) {
                         </div>';
 		} else {
 				   $events_html .= '<div class="ect-accordion-content">
-                        <a href="' . esc_url( tribe_get_event_link( $event_id ) ) . '" class="ect-events-read-more" rel="bookmark" ' . $cat_bg_styles . '>' . esc_html__( 'Find out more', 'ect' ) . '<i class="ect-icon-right-double"></i></a>
+                        <a href="' . esc_url( tribe_get_event_link( $event_id ) ) . '" class="ect-events-read-more" rel="bookmark" ' . $cat_bg_styles . '>' . $events_more_info_text . '<i class="ect-icon-right-double"></i></a>
                     </div>';
 		}
 								$events_html .= '</div>';
@@ -124,7 +124,7 @@ if ( $style == 'style-1' || $style == 'style-2' || $style == 'style-3' ) {
                     </div>';
 		} else {
 			$events_html .= '<div class="ect-accordion-content half-area">
-                    <a href="' . esc_url( tribe_get_event_link( $event_id ) ) . '" class="ect-events-read-more" rel="bookmark" ' . $cat_bg_styles . '>' . esc_html__( 'Find out more', 'ect' ) . '<i class="ect-icon-right-double"></i></a>
+                    <a href="' . esc_url( tribe_get_event_link( $event_id ) ) . '" class="ect-events-read-more" rel="bookmark" ' . $cat_bg_styles . '>' . $events_more_info_text . '<i class="ect-icon-right-double"></i></a>
                 </div>';
 		}
 	} else {
@@ -144,7 +144,7 @@ if ( $style == 'style-1' || $style == 'style-2' || $style == 'style-3' ) {
                     </div>';
 		} else {
 			  $events_html .= '<div class="ect-accordion-content">
-                    <a href="' . esc_url( tribe_get_event_link( $event_id ) ) . '" class="ect-events-read-more" rel="bookmark" ' . $cat_bg_styles . '>' . esc_html__( 'Find out more', 'ect' ) . '<i class="ect-icon-right-double"></i></a>
+                    <a href="' . esc_url( tribe_get_event_link( $event_id ) ) . '" class="ect-events-read-more" rel="bookmark" ' . $cat_bg_styles . '>' . $events_more_info_text . '<i class="ect-icon-right-double"></i></a>
                 </div>';
 		}
 	}
@@ -268,7 +268,7 @@ else {
                     </div>';
 		} else {
 			$events_html .= '<div class="ect-accordion-content">
-                    <a href="' . esc_url( tribe_get_event_link( $event_id ) ) . '" class="ect-events-read-more" rel="bookmark" ' . $cat_bg_styles . '>' . esc_html__( 'Find out more', 'ect' ) . '<i class="ect-icon-right-double"></i></a>
+                    <a href="' . esc_url( tribe_get_event_link( $event_id ) ) . '" class="ect-events-read-more" rel="bookmark" ' . $cat_bg_styles . '>' . $events_more_info_text . '<i class="ect-icon-right-double"></i></a>
                 </div>';
 		}
 	} elseif ( tribe_has_venue( $event_id ) && ! $ev_post_img ) {
@@ -293,7 +293,7 @@ else {
                         </div>';
 		} else {
 				   $events_html .= '<div class="ect-accordion-content">
-                        <a href="' . esc_url( tribe_get_event_link( $event_id ) ) . '" class="ect-events-read-more" rel="bookmark" ' . $cat_bg_styles . '>' . esc_html__( 'Find out more', 'ect' ) . '<i class="ect-icon-right-double"></i></a>
+                        <a href="' . esc_url( tribe_get_event_link( $event_id ) ) . '" class="ect-events-read-more" rel="bookmark" ' . $cat_bg_styles . '>' . $events_more_info_text . '<i class="ect-icon-right-double"></i></a>
                     </div>';
 		}
 								$events_html .= '</div>';
@@ -321,7 +321,7 @@ else {
                     </div>';
 		} else {
 			$events_html .= '<div class="ect-accordion-content half-area">
-                    <a href="' . esc_url( tribe_get_event_link( $event_id ) ) . '" class="ect-events-read-more" rel="bookmark" ' . $cat_bg_styles . '>' . esc_html__( 'Find out more', 'ect' ) . '<i class="ect-icon-right-double"></i></a>
+                    <a href="' . esc_url( tribe_get_event_link( $event_id ) ) . '" class="ect-events-read-more" rel="bookmark" ' . $cat_bg_styles . '>' . $events_more_info_text . '<i class="ect-icon-right-double"></i></a>
                 </div>';
 		}
 
@@ -343,7 +343,7 @@ else {
                     </div>';
 		} else {
 			  $events_html .= '<div class="ect-accordion-content">
-                    <a href="' . esc_url( tribe_get_event_link( $event_id ) ) . '" class="ect-events-read-more" rel="bookmark" ' . $cat_bg_styles . '>' . esc_html__( 'Find out more', 'ect' ) . '<i class="ect-icon-right-double"></i></a>
+                    <a href="' . esc_url( tribe_get_event_link( $event_id ) ) . '" class="ect-events-read-more" rel="bookmark" ' . $cat_bg_styles . '>' . $events_more_info_text . '<i class="ect-icon-right-double"></i></a>
                 </div>';
 		}
 	}

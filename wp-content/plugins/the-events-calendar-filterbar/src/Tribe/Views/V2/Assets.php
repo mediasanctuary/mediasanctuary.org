@@ -14,6 +14,8 @@ namespace Tribe\Events\Filterbar\Views\V2;
 use Tribe__Events__Filterbar__View as Plugin;
 use Tribe\Events\Views\V2\Template_Bootstrap;
 use Tribe\Events\Views\V2\Assets as TEC_Assets;
+use Tribe__Events__Main;
+
 /**
  * Register the Assets for Events Filterbar View V2.
  *
@@ -104,7 +106,7 @@ class Assets extends \tad_DI52_ServiceProvider {
 	 * @return void
 	 */
 	public function disable_v1() {
-		// Dont disable V1 on Single Event page
+		// Don't disable V1 on Single Event page
 		if ( tribe( Template_Bootstrap::class )->is_single_event() ) {
 			return;
 		}
@@ -122,6 +124,10 @@ class Assets extends \tad_DI52_ServiceProvider {
 	public function should_enqueue_frontend() {
 
 		$should_enqueue = tribe( Template_Bootstrap::class )->should_load();
+
+		if ( tribe( Template_Bootstrap::class )->is_single_event() ) {
+			$should_enqueue = false;
+		}
 
 		/**
 		 * Allow filtering of where the base Frontend Assets will be loaded

@@ -136,6 +136,15 @@ abstract class Abstract_Account_Api extends Request_Api {
 	protected $actions;
 
 	/**
+	 * The URL handler.
+	 *
+	 * @since 1.13.3
+	 *
+	 * @var Abstract_Url
+	 */
+	protected $url;
+
+	/**
 	 * Checks whether the current API is ready to use.
 	 *
 	 * @since 1.9.0

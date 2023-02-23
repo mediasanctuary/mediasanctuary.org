@@ -432,3 +432,10 @@ div#ect-cat-load-more {
  
   left: 10px;
 }
+
+/* masonry template max width*/
+
+.ect-masonry-template-cont{
+  max-width: 100%!important;
+}
+

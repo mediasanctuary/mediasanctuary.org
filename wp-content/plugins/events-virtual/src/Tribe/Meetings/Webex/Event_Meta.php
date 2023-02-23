@@ -142,4 +142,32 @@ class Event_Meta extends Abstract_Event_Meta {
 
 		return Arr::get( $all_webex_details, 'password', null );
 	}
+
+	/**
+	 * Adds related properties to an Event Automator event details map.
+	 *
+	 * @since 1.13.5
+	 *
+	 * @param array<string|mixed> $next_event An array of event details.
+	 * @param WP_Post             $event      An instance of the event WP_Post object.
+	 *
+	 * @return array<string|mixed> An array of event details.
+	 */
+	public static function add_event_automator_properties( array $next_event, WP_Post $event ) {
+		if ( $event->virtual_video_source !== static::$key_source_id ) {
+			return $next_event;
+		}
+
+		$next_event['virtual_url']              = $event->virtual_meeting_url;
+		$next_event['virtual_provider_details'] = [
+			'webex_meeting_type'            => $event->webex_meeting_type,
+			'webex_meeting_id'              => $event->webex_meeting_id,
+			'webex_join_url'                => $event->webex_join_url,
+			'webex_meeting_display_details' => $event->virtual_meeting_display_details,
+			'webex_host_email'              => $event->webex_host_email,
+			'webex_password'                => $event->webex_password,
+		];
+
+		return $next_event;
+	}
 }

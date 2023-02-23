@@ -168,6 +168,7 @@ if (!class_exists('ect_admin_notices')):
             </script>';
             $nonce = wp_create_nonce( $id . '_notice_nonce' );
             $img_path= ( isset( $message['logo'] ) && !empty($message['logo'] ) ) ? esc_url($message['logo']) : null;
+            $url='';
             if( $img_path != null ){
                 $image_html ='<div class="logo_container"><a href="'.esc_url($url).'"><img src="'.esc_url($img_path).'" style="max-width:70px;"></a></div>';
             }

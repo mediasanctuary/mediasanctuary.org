@@ -94,7 +94,7 @@ class Tribe__Events__Filterbar__Settings {
 
 	public function render_active_filters_box() {
 		$filters = Tribe__Events__Filterbar__View::instance()->get_registered_filters();
-		$sorted_filters = array();
+		$sorted_filters = [];
 		foreach ( Tribe__Events__Filterbar__View::instance()->get_active_filters() as $slug ) {
 			if ( isset( $filters[ $slug ] ) ) {
 				$sorted_filters[ $slug ] = $filters[ $slug ];
@@ -110,13 +110,13 @@ class Tribe__Events__Filterbar__Settings {
 	 * @return void
 	 */
 	public function save_settings_tab() {
-		$active_filters = array();
-		$active_filter_slugs = (array) ( isset( $_POST['tribe_active_filters'] ) ? $_POST['tribe_active_filters'] : array() );
+		$active_filters = [];
+		$active_filter_slugs = (array) ( isset( $_POST['tribe_active_filters'] ) ? $_POST['tribe_active_filters'] : [] );
 		foreach ( $active_filter_slugs as $filter_slug ) {
-			$filter_options = (array) ( isset( $_POST['tribe_filter_options'][ $filter_slug ] ) ? $_POST['tribe_filter_options'][ $filter_slug ] : array() );
+			$filter_options = (array) ( isset( $_POST['tribe_filter_options'][ $filter_slug ] ) ? $_POST['tribe_filter_options'][ $filter_slug ] : [] );
 			$active_filters[ $filter_slug ] = $filter_options;
 		}
-		uasort( $active_filters, array( $this, 'compare_filters_by_priority' ) );
+		uasort( $active_filters, [ $this, 'compare_filters_by_priority' ] );
 		update_option( self::OPTION_ACTIVE_FILTERS, $active_filters );
 	}
 
@@ -128,48 +128,56 @@ class Tribe__Events__Filterbar__Settings {
 	}
 
 	private function get_field_definitions() {
-		$fields = array(
-			'events_filters_section_title' => array(
+		$fields = [
+			'events_filters_section_title' => [
 				'type' => 'html',
 				'html' => '<h3>' . __( 'Filters', 'tribe-events-filter-view' ) . '</h3>',
-			),
-			'events_filters_section_description' => array(
+			],
+			'events_filters_section_description' => [
 				'type' => 'html',
 				'html' => '<p class="description">' .  sprintf(
 					esc_html__( 'The settings below allow you to enable or disable front-end %s filters. Uncheck the box to hide the filter. Drag and drop active filters to re-arrange them.', 'tribe-events-filter-view' ),
 					tribe_get_event_label_singular()
 				) . '</p>
 						   <p class="description">' . __( 'Expand an active filter to edit the label and choose from a subset of input types (dropdown, select, range slider, checkbox and radio).', 'tribe-events-filter-view' ) . '</p>',
-			),
-			'events_filters_available_filters' => array(
+			],
+			'events_filters-form-content-start' => array(
 				'type' => 'html',
-				'display_callback' => array( $this, 'render_available_filters_box' ),
+				'html' => '<div class="tribe-settings-form-wrap">',
 			),
-			'events_filters_active_filters' => array(
+			'events_filters_available_filters' => [
 				'type' => 'html',
-				'display_callback' => array( $this, 'render_active_filters_box' ),
-			),
-			'events_filters_layout' => array(
+				'display_callback' => [ $this, 'render_available_filters_box' ],
+			],
+			'events_filters_active_filters' => [
+				'type' => 'html',
+				'display_callback' => [ $this, 'render_active_filters_box' ],
+			],
+			'events_filters_layout' => [
 				'type' => 'radio',
 				'label'           => __( 'Filters Layout', 'tribe-events-filter-view' ),
 				'default'         => 'vertical',
-				'options' => array(
+				'options' => [
 					'vertical' => __( 'Vertical', 'tribe-events-filter-view' ),
 					'horizontal' => __( 'Horizontal', 'tribe-events-filter-view' ),
-				),
+				],
 				'validation_type' => 'options',
-			),
-			'events_filters_default_state' => array(
+			],
+			'events_filters_default_state' => [
 				'type' => 'radio',
 				'label'           => __( 'Filter Bar default state', 'tribe-events-filter-view' ),
 				'default'         => 'closed',
-				'options' => array(
+				'options' => [
 					'closed' => __( 'Stay collapsed until visitors open it', 'tribe-events-filter-view' ),
 					'open' => __( 'Show on initial page load', 'tribe-events-filter-view' ),
-				),
+				],
 				'validation_type' => 'options',
+			],
+			'events_filters-form-content-end' => array(
+				'type' => 'html',
+				'html' => '</div>',
 			),
-		);
+		];
 		$fields = apply_filters( 'tribe-event-filters-settings-fields', $fields );
 		return $fields;
 	}
@@ -184,12 +192,12 @@ class Tribe__Events__Filterbar__Settings {
 
 		if ( ! current_user_can( 'manage_options' ) || null === $wp_admin_bar->get_node( $parent ) ) return;
 
-		$wp_admin_bar->add_menu( array(
+		$wp_admin_bar->add_menu( [
 			'id' => 'tribe-events-filter-settings',
 			'parent' => $parent,
 			'href' => $link,
 			'title' => __( 'Filter Bar', 'tribe-events-filter-view' ),
-		) );
+		] );
 	}
 
 	/**

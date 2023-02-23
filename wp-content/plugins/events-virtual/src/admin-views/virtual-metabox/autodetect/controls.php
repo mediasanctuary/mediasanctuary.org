@@ -34,7 +34,7 @@
 		class="tec-events-virtual-meetings-video-source__inner tribe-events-virtual-video-source-autodetect__inner-controls"
 	>
 		<div class="tribe-events-virtual-meetings-video-source__title tribe-events-virtual-video-source-autodetect__title">
-			<?php echo esc_html( _x( 'Video URL', 'Title for video source.', 'events-virtual' ) ); ?>
+			<?php echo esc_html( _x( 'Video or Meeting Link URL', 'Title for video source.', 'events-virtual' ) ); ?>
 		</div>
 
 		<div

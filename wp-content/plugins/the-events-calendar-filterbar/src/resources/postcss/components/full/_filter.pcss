@@ -11,8 +11,23 @@
 	}
 
 	.tribe-filter-bar-c-filter__toggle,
-	.tribe-filter-bar-c-filter--accordion .tribe-filter-bar-c-filter__toggle {
+	.tribe-filter-bar-c-filter--accordion .tribe-filter-bar-c-filter__toggle,
+	button.tribe-filter-bar-c-filter__toggle,
+	.tribe-filter-bar-c-filter--accordion button.tribe-filter-bar-c-filter__toggle {
+		background-color: transparent;
+		background-image: none;
+		border: none;
+		color: var(--tec-color-text-primary);
 		font-weight: var(--tec-font-weight-bold);
+		outline: none;
+		transition: var(--tec-transition-opacity);
+
+		&:hover,
+		&:focus {
+			border: none;
+			opacity: var(--tec-opacity-icon-hover);
+			outline: none;
+		}
 	}
 
 	.tribe-filter-bar-c-filter__toggle-minus-icon,
@@ -27,7 +42,8 @@
 	.tribe-common--breakpoint-medium & .tribe-filter-bar-c-filter--pill {
 		border-top: none;
 
-		.tribe-filter-bar-c-filter__toggle {
+		.tribe-filter-bar-c-filter__toggle,
+		button.tribe-filter-bar-c-filter__toggle {
 			@mixin desktop-body-3-sup;
 
 			background-color: var(--tec-color-background);
@@ -47,7 +63,8 @@
 			}
 		}
 
-		&.tribe-filter-bar-c-filter--has-selections .tribe-filter-bar-c-filter__toggle {
+		&.tribe-filter-bar-c-filter--has-selections .tribe-filter-bar-c-filter__toggle,
+		&.tribe-filter-bar-c-filter--has-selections button.tribe-filter-bar-c-filter__toggle {
 			background-color: var(--tec-color-background-secondary);
 			border: 1px solid var(--tec-color-icon-primary);
 			font-weight: var(--tec-font-weight-bold);

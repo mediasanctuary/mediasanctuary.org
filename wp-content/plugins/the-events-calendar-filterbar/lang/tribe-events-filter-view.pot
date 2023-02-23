@@ -1,16 +1,44 @@
-# Copyright (C) 2022 Modern Tribe
-# This file is distributed under the same license as the The Events Calendar: Filter Bar package.
+# Copyright (C) 2022 The Events Calendar
+# This file is distributed under the GPLv2.
 msgid ""
 msgstr ""
-"Project-Id-Version: The Events Calendar: Filter Bar 5.4.0\n"
-"Report-Msgid-Bugs-To: http://m.tri.be/191x\n"
-"POT-Creation-Date: 2022-08-25 17:54:57+00:00\n"
+"Project-Id-Version: The Events Calendar: Filter Bar 5.4.1\n"
+"Report-Msgid-Bugs-To: https://evnt.is/191x\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2022-08-25 17:54\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"POT-Creation-Date: 2022-12-12T22:24:14-08:00\n"
+"PO-Revision-Date: 2022-12-13 06:24\n"
+"X-Generator: WP-CLI 2.7.1\n"
+"X-Domain: tribe-events-filter-view\n"
+
+#. Plugin Name of the plugin
+msgid "The Events Calendar: Filter Bar"
+msgstr ""
+
+#. Description of the plugin
+msgid "Creates an advanced filter panel on the frontend of your events list views."
+msgstr ""
+
+#. Author of the plugin
+#: the-events-calendar-filter-view.php:181
+#: the-events-calendar-filter-view.php:182
+msgid "The Events Calendar"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "http://evnt.is/25"
+msgstr ""
+
+#: src/admin-views/settings-field-active-filters.php:8
+msgid "Active Filters"
+msgstr ""
+
+#: src/admin-views/settings-field-available-filters.php:8
+msgid "Available Filters"
+msgstr ""
 
 #: src/Filter_Bar/Custom_Tables/V1/Provider.php:148
 msgctxt "The name of the Series Filter Bar Filter."
@@ -22,7 +50,32 @@ msgctxt "The default Filter Bar Series filter title."
 msgid "Series"
 msgstr ""
 
-#: src/Tribe/Filter.php:357 src/views/v2_1/components/dropdown.php:38
+#: src/functions/php-min-version.php:51
+msgctxt "Plugin A \"and\" Plugin B"
+msgid " and "
+msgstr ""
+
+#: src/functions/php-min-version.php:52
+msgctxt "Plugin A\",\" Plugin B"
+msgid ", "
+msgstr ""
+
+#: src/functions/php-min-version.php:64
+msgid "<b>%1$s</b> requires <b>PHP %2$s</b> or higher."
+msgid_plural "<b>%1$s</b> require <b>PHP %2$s</b> or higher."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/functions/php-min-version.php:74
+msgid "To allow better control over dates, advanced security improvements and performance gain."
+msgstr ""
+
+#: src/functions/php-min-version.php:76
+msgid "Contact your Host or your system administrator and ask to upgrade to the latest version of PHP."
+msgstr ""
+
+#: src/Tribe/Filter.php:357
+#: src/views/v2_1/components/dropdown.php:38
 msgid "Select"
 msgstr ""
 
@@ -47,7 +100,8 @@ msgstr ""
 msgid "Dropdown"
 msgstr ""
 
-#: src/Tribe/Filter.php:705 src/Tribe/Filters/Cost.php:71
+#: src/Tribe/Filter.php:705
+#: src/Tribe/Filters/Cost.php:71
 msgid "Checkboxes"
 msgstr ""
 
@@ -159,106 +213,109 @@ msgstr ""
 msgid "Night"
 msgstr ""
 
-#: src/Tribe/Settings.php:77 src/Tribe/Settings.php:134
+#: src/Tribe/Settings.php:77
+#: src/Tribe/Settings.php:134
 #: src/views/v2_1/filter-bar.php:58
 msgid "Filters"
 msgstr ""
 
 #: src/Tribe/Settings.php:139
-msgid ""
-"The settings below allow you to enable or disable front-end %s filters. "
-"Uncheck the box to hide the filter. Drag and drop active filters to re-"
-"arrange them."
+msgid "The settings below allow you to enable or disable front-end %s filters. Uncheck the box to hide the filter. Drag and drop active filters to re-arrange them."
 msgstr ""
 
 #: src/Tribe/Settings.php:142
-msgid ""
-"Expand an active filter to edit the label and choose from a subset of input "
-"types (dropdown, select, range slider, checkbox and radio)."
-msgstr ""
-
-#: src/Tribe/Settings.php:154
-msgid "Filters Layout"
-msgstr ""
-
-#: src/Tribe/Settings.php:157
-msgid "Vertical"
+msgid "Expand an active filter to edit the label and choose from a subset of input types (dropdown, select, range slider, checkbox and radio)."
 msgstr ""
 
 #: src/Tribe/Settings.php:158
+msgid "Filters Layout"
+msgstr ""
+
+#: src/Tribe/Settings.php:161
+msgid "Vertical"
+msgstr ""
+
+#: src/Tribe/Settings.php:162
 msgid "Horizontal"
 msgstr ""
 
-#: src/Tribe/Settings.php:164
+#: src/Tribe/Settings.php:168
 msgid "Filter Bar default state"
 msgstr ""
 
-#: src/Tribe/Settings.php:167
+#: src/Tribe/Settings.php:171
 msgid "Stay collapsed until visitors open it"
 msgstr ""
 
-#: src/Tribe/Settings.php:168
+#: src/Tribe/Settings.php:172
 msgid "Show on initial page load"
 msgstr ""
 
-#: src/Tribe/Settings.php:191
+#: src/Tribe/Settings.php:199
 msgid "Filter Bar"
 msgstr ""
 
-#: src/Tribe/Settings.php:205
-msgid ""
-"Enabled: datepicker and filter selections automatically update calendar views"
+#: src/Tribe/Settings.php:213
+msgid "Enabled: datepicker and filter selections automatically update calendar views"
 msgstr ""
 
-#: src/Tribe/Settings.php:218
+#: src/Tribe/Settings.php:226
 msgid "Disabled: users must manually submit date search and Filter Bar"
 msgstr ""
 
-#: src/Tribe/Settings.php:234
+#: src/Tribe/Settings.php:242
 msgid "Settings"
 msgstr ""
 
-#: src/Tribe/View.php:516 src/Tribe/Views/V2/Filters/Context_Filter.php:234
+#: src/Tribe/View.php:517
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:234
 msgid "%s Category"
 msgstr ""
 
-#: src/Tribe/View.php:522
+#: src/Tribe/View.php:523
 msgid "Cost (%s)"
 msgstr ""
 
-#: src/Tribe/View.php:529 src/Tribe/Views/V2/Filters/Context_Filter.php:246
+#: src/Tribe/View.php:530
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:246
 msgid "Tags"
 msgstr ""
 
-#: src/Tribe/View.php:543 src/Tribe/Views/V2/Filters/Context_Filter.php:239
+#: src/Tribe/View.php:544
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:239
 msgid "Day"
 msgstr ""
 
-#: src/Tribe/View.php:547 src/Tribe/Views/V2/Filters/Context_Filter.php:247
+#: src/Tribe/View.php:548
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:247
 msgid "Time"
 msgstr ""
 
-#: src/Tribe/View.php:552 src/Tribe/Views/V2/Filters/Context_Filter.php:238
+#: src/Tribe/View.php:553
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:238
 msgid "Country"
 msgstr ""
 
-#: src/Tribe/View.php:557 src/Tribe/Views/V2/Filters/Context_Filter.php:236
+#: src/Tribe/View.php:558
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:236
 msgid "City"
 msgstr ""
 
-#: src/Tribe/View.php:562 src/Tribe/Views/V2/Filters/Context_Filter.php:244
+#: src/Tribe/View.php:563
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:244
 msgid "State/Province"
 msgstr ""
 
-#: src/Tribe/View.php:568 src/Tribe/Views/V2/Filters/Context_Filter.php:241
+#: src/Tribe/View.php:569
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:241
 msgid "Featured %s"
 msgstr ""
 
-#: src/Tribe/View.php:719
+#: src/Tribe/View.php:720
 msgid "Accessibility Form Notice"
 msgstr ""
 
-#: src/Tribe/View.php:720
+#: src/Tribe/View.php:721
 msgid "Notice: Utilizing the form controls will dynamically update the content"
 msgstr ""
 
@@ -290,59 +347,27 @@ msgctxt "Cost range for when currency symbol comes after cost."
 msgid "%1$s%2$s - %3$s%2$s"
 msgstr ""
 
-#: src/admin-views/settings-field-active-filters.php:8
-msgid "Active Filters"
-msgstr ""
-
-#: src/admin-views/settings-field-available-filters.php:8
-msgid "Available Filters"
-msgstr ""
-
-#: src/functions/php-min-version.php:51
-msgctxt "Plugin A \"and\" Plugin B"
-msgid " and "
-msgstr ""
-
-#: src/functions/php-min-version.php:52
-msgctxt "Plugin A\",\" Plugin B"
-msgid ", "
-msgstr ""
-
-#: src/functions/php-min-version.php:64
-msgid "<b>%1$s</b> requires <b>PHP %2$s</b> or higher."
-msgid_plural "<b>%1$s</b> require <b>PHP %2$s</b> or higher."
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/functions/php-min-version.php:74
-msgid ""
-"To allow better control over dates, advanced security improvements and "
-"performance gain."
-msgstr ""
-
-#: src/functions/php-min-version.php:76
-msgid ""
-"Contact your Host or your system administrator and ask to upgrade to the "
-"latest version of PHP."
-msgstr ""
-
 #: src/views/v2/filter-bar.php:25
 msgid "Narrow Your Results"
 msgstr ""
 
-#: src/views/v2/filter-bar.php:28 src/views/v2/filter-bar.php:52
+#: src/views/v2/filter-bar.php:28
+#: src/views/v2/filter-bar.php:52
 msgid "Show Filters"
 msgstr ""
 
-#: src/views/v2/filter-bar.php:30 src/views/v2/filter-bar.php:50
+#: src/views/v2/filter-bar.php:30
+#: src/views/v2/filter-bar.php:50
 msgid "Show Advanced Filters"
 msgstr ""
 
-#: src/views/v2/filter-bar.php:30 src/views/v2/filter-bar.php:50
+#: src/views/v2/filter-bar.php:30
+#: src/views/v2/filter-bar.php:50
 msgid "Collapse Filters"
 msgstr ""
 
-#: src/views/v2/filter-bar.php:31 src/views/v2/filter-bar.php:46
+#: src/views/v2/filter-bar.php:31
+#: src/views/v2/filter-bar.php:46
 #: src/views/v2/filter-bar.php:54
 msgid "Reset Filters"
 msgstr ""
@@ -370,6 +395,10 @@ msgstr ""
 msgid "Remove filters"
 msgstr ""
 
+#: src/views/v2_1/filter-bar.php:65
+msgid "Changing any of the form inputs will cause the list of events to refresh with the filtered results."
+msgstr ""
+
 #: src/views/v2_1/filter-bar/actions.php:28
 msgid "Done"
 msgstr ""
@@ -378,38 +407,10 @@ msgstr ""
 msgid "Your selections"
 msgstr ""
 
-#: src/views/v2_1/filter-bar.php:65
-msgid ""
-"Changing any of the form inputs will cause the list of events to refresh "
-"with the filtered results."
-msgstr ""
-
 #: the-events-calendar-filter-view.php:55
 msgid "Events Filter Bar"
 msgstr ""
 
 #: the-events-calendar-filter-view.php:179
-msgid ""
-"To begin using The Events Calendar: Filter Bar, please install the latest "
-"version of"
-msgstr ""
-
-#. #-#-#-#-#  tribe-events-filter-view.pot (The Events Calendar: Filter Bar 5.4.0)  #-#-#-#-#
-#. Author of the plugin/theme
-#: the-events-calendar-filter-view.php:181
-#: the-events-calendar-filter-view.php:182
-msgid "The Events Calendar"
-msgstr ""
-
-#. Plugin Name of the plugin/theme
-msgid "The Events Calendar: Filter Bar"
-msgstr ""
-
-#. Description of the plugin/theme
-msgid ""
-"Creates an advanced filter panel on the frontend of your events list views."
-msgstr ""
-
-#. Author URI of the plugin/theme
-msgid "http://evnt.is/25"
+msgid "To begin using The Events Calendar: Filter Bar, please install the latest version of"
 msgstr ""

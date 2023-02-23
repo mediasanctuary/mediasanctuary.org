@@ -143,6 +143,24 @@ class Zoom_Provider extends Meeting_Provider {
 	}
 
 	/**
+	 * Filters the array returned for the event details map in the Event Automator integration.
+	 *
+	 * @since 1.13.5
+	 *
+	 * @param array<string|mixed> $next_event An array of event details.
+	 * @param WP_Post             $event      An instance of the event WP_Post object.
+	 *
+	 * @return array<string|mixed> An array of event details.
+	 */
+	public function add_event_automator_properties( array $next_event, WP_Post $event ) {
+		if ( ! $event instanceof WP_Post ) {
+			return $next_event;
+		}
+
+		return $this->container->make( Zoom_Meta::class )->add_event_automator_properties( $next_event, $event );
+	}
+
+	/**
 	 * Check Zoom Meeting in the admin.
 	 *
 	 * @since 1.0.4
@@ -476,7 +494,7 @@ class Zoom_Provider extends Meeting_Provider {
 	public function add_video_source( $video_sources, $post ) {
 
 		$video_sources[] = [
-			'text'     => _x( 'Zoom Account', 'The name of the video source.', 'events-virtual' ),
+			'text'     => _x( 'Zoom', 'The name of the video source.', 'events-virtual' ),
 			'id'       => Zoom_Meta::$key_source_id,
 			'value'    => Zoom_Meta::$key_source_id,
 			'selected' => Zoom_Meta::$key_source_id === $post->virtual_video_source,
@@ -649,6 +667,7 @@ class Zoom_Provider extends Meeting_Provider {
 		add_action( 'save_post_tribe_events', [ $this, 'on_post_save' ], 100, 3 );
 		add_action( 'admin_init', [ $this, 'render_migration_notice' ] );
 		add_action( 'tec_events_virtual_before_update_api_accounts', [ $this, 'update_original_account' ], 10, 3 );
+		add_action( 'tec_virtual_automator_map_event_details', [ $this, 'add_event_automator_properties' ], 10, 2 );
 	}
 
 	/**
