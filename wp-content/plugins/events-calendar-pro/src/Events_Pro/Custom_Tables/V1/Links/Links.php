@@ -4,16 +4,15 @@
  *
  * @since   6.0.0
  *
- * @package TEC\Events_Pro\Custom_Tables\V1\Admin
+ * @package TEC\Events_Pro\Custom_Tables\V1\Links
  */
 
-namespace TEC\Events_Pro\Custom_Tables\V1\Admin;
+namespace TEC\Events_Pro\Custom_Tables\V1\Links;
 
 use DateTimeZone;
 use Exception;
 use TEC\Events\Custom_Tables\V1\Models\Event;
 use TEC\Events\Custom_Tables\V1\Models\Occurrence;
-use TEC\Events_Pro\Custom_Tables\V1\Models\Provisional_Post_Cache;
 use Tribe__Date_Utils as Dates;
 use Tribe__Events__Main as TEC;
 use WP_Post;
@@ -23,7 +22,7 @@ use WP_Post;
  *
  * @since   6.0.0
  *
- * @package TEC\Events_Pro\Custom_Tables\V1\Admin
+ * @package TEC\Events_Pro\Custom_Tables\V1\Links
  */
 class Links {
 	/**
@@ -66,7 +65,7 @@ class Links {
 		$provisional_id = apply_filters( 'tec_events_pro_custom_tables_v1_redirect_id', null );
 
 		if ( null === $provisional_id ) {
-			$occurrence = $this->get_next_occurrence( $event );
+			$occurrence     = $this->get_next_occurrence( $event );
 			$provisional_id = $occurrence ? $occurrence->provisional_id : null;
 		}
 
@@ -90,10 +89,10 @@ class Links {
 	private function get_next_occurrence( Event $event ): ?Occurrence {
 		try {
 			$current_date = Dates::immutable( 'now', new DateTimeZone( 'UTC' ) );
-			$upcoming = Occurrence::where( 'event_id', $event->event_id )
-				->where( 'end_date_utc', '>', $current_date )
-				->order_by( 'start_date' )
-				->first();
+			$upcoming     = Occurrence::where( 'event_id', $event->event_id )
+			                          ->where( 'end_date_utc', '>', $current_date )
+			                          ->order_by( 'start_date' )
+			                          ->first();
 
 			if ( $upcoming instanceof Occurrence ) {
 				return $upcoming;
@@ -112,9 +111,9 @@ class Links {
 			return null;
 		} catch ( Exception $exception ) {
 			do_action( 'tribe_log', 'error', __CLASS__, [
-				'message'    => 'Error while getting next Occurrence.',
-				'error' => $e->getMessage(),
-				'post_id'    => $event->post_id,
+				'message' => 'Error while getting next Occurrence.',
+				'error'   => $e->getMessage(),
+				'post_id' => $event->post_id,
 			] );
 
 			return null;
@@ -189,9 +188,9 @@ class Links {
 			$date       = $start_date->format( 'Y-m-d' );
 		} catch ( Exception $exception ) {
 			do_action( 'tribe_log', 'error', __CLASS__, [
-				'message'    => 'Error while building Occurrence start date.',
-				'error' => $e->getMessage(),
-				'post_id'    => $event->post_id,
+				'message' => 'Error while building Occurrence start date.',
+				'error'   => $e->getMessage(),
+				'post_id' => $event->post_id,
 			] );
 
 			return $post_link;
