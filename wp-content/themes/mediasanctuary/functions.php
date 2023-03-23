@@ -308,3 +308,16 @@ function is_story_post($post) {
 	}
 	return false;
 }
+
+add_action('pre_get_posts', function($query) {
+	if ($query->is_main_query() && $query->get('post_type') == 'peoplepower') {
+		if (empty($_GET['sort']) || $_GET['sort'] == 'recent') {
+			$query->set('orderby', 'post_modified');
+			$query->set('order', 'DESC');
+		} else if ($_GET['sort'] == 'name') {
+			$query->set('orderby', 'post_title');
+			$query->set('order', 'ASC');
+		}
+	}
+	return $query;
+});

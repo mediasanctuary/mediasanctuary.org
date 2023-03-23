@@ -13,8 +13,12 @@ get_header();
 				$term = get_queried_object();
 				echo '<div class="intro">';
 				the_field('category_description', "category_$term->term_id" );
-				echo '</div>';				
+				echo '</div>';
 			}
+		}
+
+		if ($wp_query->get('post_type') == 'peoplepower') {
+			get_template_part( 'partials/peoplepower', 'controls' );
 		}
 
 		?>

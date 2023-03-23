@@ -4,25 +4,25 @@
 		e.preventDefault();
 		$(document.body).addClass('show-mobile-menu');
 	});
-	
+
 	$('.top-nav .close-menu').click(function(e) {
 		$(document.body).removeClass('show-mobile-menu');
 	});
-	
-	
+
+
 	// Accordions
 	$('.accordion-heading').click(function(e) {
 		e.preventDefault();
 		var tab = $(this).attr('href');
 		if($(tab).hasClass('active')){
 	  	$(tab).removeClass('active');
-	  	$(tab).find('.tab-container').slideUp();    	
+	  	$(tab).find('.tab-container').slideUp();
 		} else {
   		$(tab).addClass('active');
-	  	$(tab).find('.tab-container').slideDown();    	  			
+	  	$(tab).find('.tab-container').slideDown();
 	  }
-	});	
-	
+	});
+
 	// Tabs
 	$('.tab-heading').click(function(e) {
 		e.preventDefault();
@@ -30,18 +30,22 @@
 		if(!$(this).hasClass('active')){
   		$('.tab-heading').removeClass('active');
 	  	$('.tab-heading[href="'+tab+'"]').addClass('active');
-  		$('.tab-container').slideUp(); 
-	  	$(tab).slideDown();    	  			
+  		$('.tab-container').slideUp();
+	  	$(tab).slideDown();
 	  }
-	});		
+	});
+
+	$('#people-power-controls select').change(e => {
+		$('#people-power-controls').submit();
+	});
 
 })(jQuery);
 
 
 
-/* ======================================================= 
+/* =======================================================
 	Gallery Slider
-======================================================= */		
+======================================================= */
 
 jQuery('.thumbs li').removeClass('active');
 jQuery('.thumbs li.s0').addClass('active');
@@ -51,15 +55,15 @@ jQuery('.slider').each(function() {
   var sliderIdName = jQuery(this).attr('id');
   var sliderId = '#' + sliderIdName;
   var sliderIdThumbs = '#thumbs-' + sliderIdName;
-  
+
   jQuery(sliderId).on('init', function(event, slick){
     console.log("initialized");
     if(jQuery('#caption').length > 0){
       var caption = jQuery(sliderIdThumbs +' li.active span img').data('caption');
       jQuery('#caption').html(caption);
     }
-  });    
-    
+  });
+
   jQuery(sliderId).slick({
     dots: false,
     infinite: true,
@@ -67,13 +71,13 @@ jQuery('.slider').each(function() {
     slidesToShow: 1,
     adaptiveHeight: false
   });
-  
+
   jQuery(sliderId).on('beforeChange', function (event, slick, currentSlide, nextSlide) {
    	var mySlideNumber = nextSlide.toString();
    	console.log(mySlideNumber);
    	jQuery(sliderIdThumbs +' li').removeClass('active');
     jQuery(sliderIdThumbs +' li.s'+mySlideNumber).addClass('active');
-    
+
     if(jQuery('#caption').length > 0){
       var caption = jQuery(sliderIdThumbs +' li.s'+mySlideNumber + ' span img').data('caption');
       console.log(caption);
@@ -87,30 +91,30 @@ jQuery('.slider').each(function() {
      console.log(slideno);
      jQuery(sliderId).slick('slickGoTo', slideno);
   });
-  
+
   jQuery(sliderId).on('setPosition', function () {
     jQuery(this).find('.slick-slide').height('auto');
     var slickTrack = jQuery(this).find('.slick-track');
     var slickTrackHeight = jQuery(slickTrack).height();
     jQuery(this).find('.slick-slide').css('height', slickTrackHeight + 'px');
-  });  
-  
+  });
+
 
 });
 
 
-/* ======================================================= 
+/* =======================================================
 	Testimonials Slider
-======================================================= */		
+======================================================= */
 
 jQuery('.testimonials-slider').each(function() {
 
   var sliderIdName = jQuery(this).attr('id');
-  var sliderId = '#' + sliderIdName;   
-    
+  var sliderId = '#' + sliderIdName;
+
   jQuery(sliderId).slick({
     dots: true,
-    arrows: true,    
+    arrows: true,
     infinite: true,
     speed: 300,
     slidesToShow: 2,
@@ -118,7 +122,7 @@ jQuery('.testimonials-slider').each(function() {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 5000,
-    
+
     responsive: [
       {
         breakpoint: 768,
@@ -127,19 +131,19 @@ jQuery('.testimonials-slider').each(function() {
           slidesToShow: 1
         }
       }
-    ]    
+    ]
   });
-  
+
 });
 
 
-/* ======================================================= 
+/* =======================================================
 	Progress
-======================================================= */		
+======================================================= */
 jQuery('.progressBar').each(function() {
   var progress = jQuery(this).data('progress');
   var goal = jQuery(this).data('goal');
-  var percentage = progress / goal * 100; 
+  var percentage = progress / goal * 100;
   var width = percentage > 100 ? '100%' : percentage + '%';
   jQuery(this).width(width);
 
@@ -147,12 +151,11 @@ jQuery('.progressBar').each(function() {
 
 
 
-/* ======================================================= 
+/* =======================================================
 	OnLoad
-======================================================= */		
+======================================================= */
 jQuery(window).load(function(){
   if(jQuery('.tab-nav').length > 0) {
     jQuery('.tab-nav li:first a').trigger('click');
-  } 
+  }
 })
-
