@@ -199,7 +199,7 @@ if ( ! function_exists( 'ect_tribe_tickets_buy_button' ) ) {
 	 *
 	 * @return string
 	 */
-	function ect_tribe_tickets_buy_button( $echo = true,$event_id ) {
+	function ect_tribe_tickets_buy_button( $event_id,$echo = true ) {
 		//$event_id = get_the_ID();
 
 		// check if there are any tickets on sale

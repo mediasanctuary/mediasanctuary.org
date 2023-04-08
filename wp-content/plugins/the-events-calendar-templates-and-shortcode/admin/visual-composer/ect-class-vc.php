@@ -141,7 +141,7 @@ if (!class_exists('EctVCAddon')) {
                     "base" => "events-calendar-templates",
                     "class" => "",
                     "controls" => "full",
-                     "icon" => plugins_url('../../assets/images/ect-icon.png', __FILE__), // or css class name which you can reffer in your css file later. Example: "ect2_my_class"
+                     "icon" => plugins_url('../../assets/images/ect-icon.svg', __FILE__), // or css class name which you can reffer in your css file later. Example: "ect2_my_class"
                     "category" => __('The Events Calendar Shortcode', 'ect2'),
                     //'admin_enqueue_js' => array(plugins_url('assets/ect2.js', __FILE__)), // This will load js file in the VC backend editor
                     //'admin_enqueue_css' => array(plugins_url('assets/ect2_admin.css', __FILE__)), // This will load css file in the VC backend editor
@@ -345,7 +345,7 @@ if (!class_exists('EctVCAddon')) {
                   "base" => "ect-calendar-layout",
                   "class" => "",
                   "controls" => "full",
-                   "icon" => plugins_url('../../assets/images/ect-icon.png', __FILE__), // or css class name which you can reffer in your css file later. Example: "ect2_my_class"
+                   "icon" => plugins_url('../../assets/images/ect-icon.svg', __FILE__), // or css class name which you can reffer in your css file later. Example: "ect2_my_class"
                   "category" => __('The Events Calendar Shortcode', 'ect2'),
                   //'admin_enqueue_js' => array(plugins_url('assets/ect2.js', __FILE__)), // This will load js file in the VC backend editor
                   //'admin_enqueue_css' => array(plugins_url('assets/ect2_admin.css', __FILE__)), // This will load css file in the VC backend editor
