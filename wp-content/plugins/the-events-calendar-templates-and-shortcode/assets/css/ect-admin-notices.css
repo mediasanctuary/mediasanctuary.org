@@ -8,7 +8,7 @@
     border-radius: 5px;
     border: 2px solid #b7bfc7;
     box-sizing: border-box;
-    /* margin: 5px; */
+ 
 }
 
 .ect-feedback-notice-wrapper .logo_container,
@@ -46,19 +46,6 @@
     vertical-align: middle;
     margin-left: 3px;
 }
-
-.ect-feedback-notice-wrapper ul li .button-primary {
-    background: #f12945;
-    box-shadow: none;
-    border: 1px solid #a50b21;
-    text-shadow: none;
-}
-
-.ect-feedback-notice-wrapper ul li .button-primary:hover {
-    background: #02c5be;
-    border: 1px solid #017571;
-}
-
 .ctp-notice-red.uninstall {
     max-width: 700px;
     display: block;

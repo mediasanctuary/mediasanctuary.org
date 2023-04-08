@@ -1,9 +1,9 @@
 <?php
 /*
- Plugin Name:Events Shortcodes (Pro) - The Events Calendar Addon
- Plugin URI:https://eventscalendaraddons.com/
- Description:The Events Calendar Shortcode And Templates Pro addon provides events list design templates and shortcode generator functionality for The Events Calendar plugin. It is an unofficial third party addon for <a href="http://wordpress.org/plugins/the-events-calendar/">The Events Calendar (by Modern Tribe)</a> that extends its design limitations.
- Version:2.9.5
+ Plugin Name:Events Shortcodes Pro
+ Plugin URI:https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
+ Description:<a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Use shortcodes to display a list of events from The Events Calendar plugin in premium layouts, including grid, masonry, carousel, and slider, on any page or post.
+ Version:2.9.6
  Requires at least: 4.5
  Tested up to:6.1.1
  Requires PHP:5.6
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit();
 }
 if ( ! defined( 'ECT_VERSION' ) ) {
-	define( 'ECT_VERSION', '2.9.5' );
+	define( 'ECT_VERSION', '2.9.6' );
 }
 /*** Defined constent for later use */
 if ( ! defined( 'ECT_PRO_FILE' ) ) {
@@ -72,6 +72,24 @@ if ( ! class_exists( 'EventsCalendarTemplatesPro' ) ) {
 			$events_shortcode = new EventsShortcodePro();
 			/*** Include Gutenberg Block */
 			require_once ECT_PRO_PLUGIN_DIR . 'admin/gutenberg-block/ect-block.php';
+			add_action( 'plugin_row_meta', array($thisPlugin, 'ect_pro_addMeta_Links' ), 10, 2 );
+		}
+		/**
+		 * Add meta links to the Plugins list page.
+		 *
+		 * @param array  $links The current action links.
+		 * @param string $file  The plugin to see if we are on Event Single Page.
+		 *
+		 * @return array The modified action links array.
+		 */
+		public function ect_pro_addMeta_Links( $links, $file){
+			if ( strpos( $file, basename(__FILE__) )) {
+				$ectanchor   = esc_html__( 'Video Tutorials', 'ect' );
+				$ectvideourl = 'https://eventscalendaraddons.com/docs/events-shortcodes-pro/video-tutorials/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=video_tutorial&utm_content=plugins_list';
+				$links[] = '<a href="' . esc_url( $ectvideourl ) . '" target="_blank">' . $ectanchor . '</a>';
+			}
+
+			return $links;
 		}
 		// register admin all hooks
 		public function register_admin() {
@@ -137,7 +155,7 @@ if ( ! class_exists( 'EventsCalendarTemplatesPro' ) ) {
 						)
 					);
 			}
-			if ( did_action( 'elementor/loaded' ) && ! class_exists( 'Events_Calendar_Addon' ) ) {
+			if ( did_action( 'elementor/loaded' ) && ! class_exists( 'Events_Calendar_Addon' ) || ! class_exists( 'Events_Calendar_Addon_Pro' )) {
 				ect_pro_create_admin_notice(
 					array(
 						'id'              => 'ect-elementor-addon-notice',
@@ -150,7 +168,7 @@ if ( ! class_exists( 'EventsCalendarTemplatesPro' ) ) {
 							)
 						),
 						'review_interval' => 3,
-						'logo'            => ECT_PRO_PLUGIN_URL . 'assets/images/events-widgets-elementor-logo.png',
+						'logo'            => ECT_PRO_PLUGIN_URL . 'assets/images/events-widgets-elementor-logo.svg',
 					)
 				);
 			}
@@ -162,7 +180,7 @@ if ( ! class_exists( 'EventsCalendarTemplatesPro' ) ) {
 						'review'          => true,     // required and set to be true for review box
 						'review_url'      => esc_url( 'https://codecanyon.net/item/the-events-calendar-templates-and-shortcode-wordpress-plugin/reviews/20143286/#new-post' ), // required
 						'plugin_name'     => 'Events Shortcodes Pro  Addon',    // required
-						'logo'            => ECT_PRO_PLUGIN_URL . 'assets/images/ect-icon.png',    // optional: it will display logo
+						'logo'            => ECT_PRO_PLUGIN_URL . 'assets/images/ect-icon.svg',    // optional: it will display logo
 						'review_interval' => 3,                    // optional: this will display review notice
 																// after 5 days from the installation_time
 																// default is 3

@@ -340,7 +340,7 @@ class EventsShortcodePro
                 <meta itemprop="priceCurrency" content="'.tribe_get_event_meta( $event_id, '_EventCurrencySymbol', true ).'" />';
                 if( class_exists('Tribe__Tickets__Main') ){
                     $ev_cost.='<span class="ect-ticket-info">';	
-                    $ev_cost.=ect_tribe_tickets_buy_button(false,$event_id);
+                    $ev_cost.=ect_tribe_tickets_buy_button($event_id,false);
                     $ev_cost.='</span>';
                 }
                 $ev_cost.='</div>';

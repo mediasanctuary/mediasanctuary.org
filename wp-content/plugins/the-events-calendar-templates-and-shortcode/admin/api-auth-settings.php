@@ -293,11 +293,15 @@ class ECT_Settings {
 		}
 		$current_user = wp_get_current_user();
 		$user_name    = $current_user->display_name;
+		$currnt_scren = get_current_screen();
+		$parent_base = isset($currnt_scren->parent_base)?$currnt_scren->parent_base:'';
+		if ($parent_base=='cool-plugins-events-addon') {
 		?>
 				<div class="license-warning notice notice-error is-dismissible">
 					<p>Hi, <strong><?php echo ucwords( $user_name ); ?></strong>! Please <strong><a href="<?php echo esc_url( get_admin_url( null, 'admin.php?page=cool-events-registration' ) ); ?>">enter and activate</a></strong> your license key for <strong><?php echo $this->PLUGIN_NAME; ?></strong> plugin for unrestricted and full access of all premium features.</p>
 				</div>
 			<?php
+		}
 	}
 
 	/*
