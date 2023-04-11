@@ -4,7 +4,7 @@ Contributors: theeventscalendar, borkweb, bordoni, brianjessee, aguseo, camwynsp
 Tags: events, calendar, event, venue, organizer, dates, date, google maps, conference, workshop, concert, meeting, seminar, summit, class, the events calendar, widget, pro, filters, categories, sort, tags, taxonomy, find, search
 Donate link: http://evnt.is/29
 Requires at least: 5.8.6
-Stable tag: 5.4.3
+Stable tag: 5.4.4
 Tested up to: 6.1.1
 Requires PHP: 7.4
 License: GPLv2 or later
@@ -194,6 +194,10 @@ Our Premium Plugins:
 * <a href="http://evnt.is/18h9" target="_blank">The Events Calendar: iCal Importer</a>
 
 == Changelog ==
+
+= [5.4.4] 2023-3-20 =
+
+* Fix - Some themes caused conflicts in the order of asset loading for the events widget, resulting in javascript errors, rendering issues with the filter bar, and breaking the events list functionality. [FBAR-293]
 
 = [5.4.3] 2023-02-22 =
 

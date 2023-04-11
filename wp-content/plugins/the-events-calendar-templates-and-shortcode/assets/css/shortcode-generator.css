@@ -20,7 +20,7 @@ i.mce-i-icon {
 
 i.ect-own-icon {
 
-    background-image: url('ect-icon.png');
+    background-image: url('ect-icon.svg');
 
 }
 
@@ -48,3 +48,12 @@ i.ect-own-icon {
     background: #ddd;
 	top:0;
 		}
+        tr[data-slug="events-shortcodes-pro-the-events-calendar-addon"] .plugin-description a[href*="plugins/the-events-calendar"]{
+            background: rgb(0, 0, 0, 0.2);
+            padding: 2px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 12px;
+            color: #222;
+            text-decoration: none !IMPORTANT;
+        }

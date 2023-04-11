@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit5ab02c27916c12bb3dbac66e7dbb69f9
+class ComposerStaticInitf569053f55d56c6c10b61f98beb57640
 {
     public static $prefixLengthsPsr4 = array (
         'T' => 
@@ -40,9 +40,13 @@ class ComposerStaticInit5ab02c27916c12bb3dbac66e7dbb69f9
         'RRule\\RSet' => __DIR__ . '/..' . '/rlanvin/php-rrule/src/RSet.php',
         'RRule\\RfcParser' => __DIR__ . '/..' . '/rlanvin/php-rrule/src/RfcParser.php',
         'TEC\\Events_Pro\\Base\\Query_Filters' => __DIR__ . '/../..' . '/src/Events_Pro/Base/Query_Filters.php',
+        'TEC\\Events_Pro\\Compatibility\\Event_Automator\\Zapier\\Maps\\Event' => __DIR__ . '/../..' . '/src/Events_Pro/Compatibility/Event_Automator/Zapier/Maps/Event.php',
+        'TEC\\Events_Pro\\Compatibility\\Event_Automator\\Zapier\\Recurrence\\Provider' => __DIR__ . '/../..' . '/src/Events_Pro/Compatibility/Event_Automator/Zapier/Recurrence/Provider.php',
+        'TEC\\Events_Pro\\Compatibility\\Event_Automator\\Zapier\\Zapier_Provider' => __DIR__ . '/../..' . '/src/Events_Pro/Compatibility/Event_Automator/Zapier/Zapier_Provider.php',
         'TEC\\Events_Pro\\Custom_Tables\\V1\\Activation' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Activation.php',
         'TEC\\Events_Pro\\Custom_Tables\\V1\\Adapters\\Recurrence_Meta_Builder' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Adapters/Recurrence_Meta_Builder.php',
-        'TEC\\Events_Pro\\Custom_Tables\\V1\\Admin\\Links' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Admin/Links.php',
+        'TEC\\Events_Pro\\Custom_Tables\\V1\\Admin\\Lists\\Caches' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Admin/Lists/Caches.php',
+        'TEC\\Events_Pro\\Custom_Tables\\V1\\Admin\\Lists\\Columns' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Admin/Lists/Columns.php',
         'TEC\\Events_Pro\\Custom_Tables\\V1\\Admin\\Lists\\Provider' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Admin/Lists/Provider.php',
         'TEC\\Events_Pro\\Custom_Tables\\V1\\Admin\\Notices\\Occurrence_Notices' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Admin/Notices/Occurrence_Notices.php',
         'TEC\\Events_Pro\\Custom_Tables\\V1\\Admin\\Notices\\Provider' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Admin/Notices/Provider.php',
@@ -82,9 +86,14 @@ class ComposerStaticInit5ab02c27916c12bb3dbac66e7dbb69f9
         'TEC\\Events_Pro\\Custom_Tables\\V1\\Events_Manager\\Provider' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Events_Manager/Provider.php',
         'TEC\\Events_Pro\\Custom_Tables\\V1\\Full_Activation_Provider' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Full_Activation_Provider.php',
         'TEC\\Events_Pro\\Custom_Tables\\V1\\Gettext' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Gettext.php',
+        'TEC\\Events_Pro\\Custom_Tables\\V1\\Integrations\\APM\\APM_Integration' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Integrations/APM/APM_Integration.php',
         'TEC\\Events_Pro\\Custom_Tables\\V1\\Integrations\\Filter_Bar\\Series_Filter' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Integrations/Filter_Bar/Series_Filter.php',
         'TEC\\Events_Pro\\Custom_Tables\\V1\\Integrations\\Provider' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Integrations/Provider.php',
+        'TEC\\Events_Pro\\Custom_Tables\\V1\\Integrations\\WPML\\WPML_Integration' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Integrations/WPML/WPML_Integration.php',
         'TEC\\Events_Pro\\Custom_Tables\\V1\\Legacy_Compat\\Provider' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Legacy_Compat/Provider.php',
+        'TEC\\Events_Pro\\Custom_Tables\\V1\\Links\\Event_Links' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Links/Event_Links.php',
+        'TEC\\Events_Pro\\Custom_Tables\\V1\\Links\\Links' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Links/Links.php',
+        'TEC\\Events_Pro\\Custom_Tables\\V1\\Links\\Provider' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Links/Provider.php',
         'TEC\\Events_Pro\\Custom_Tables\\V1\\Migration\\Patchers\\Event_Recurrence_Meta_Patcher' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Migration/Patchers/Event_Recurrence_Meta_Patcher.php',
         'TEC\\Events_Pro\\Custom_Tables\\V1\\Migration\\Process_Worker_Service' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Migration/Process_Worker_Service.php',
         'TEC\\Events_Pro\\Custom_Tables\\V1\\Migration\\Provider' => __DIR__ . '/../..' . '/src/Events_Pro/Custom_Tables/V1/Migration/Provider.php',
@@ -272,9 +281,9 @@ class ComposerStaticInit5ab02c27916c12bb3dbac66e7dbb69f9
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit5ab02c27916c12bb3dbac66e7dbb69f9::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit5ab02c27916c12bb3dbac66e7dbb69f9::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit5ab02c27916c12bb3dbac66e7dbb69f9::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitf569053f55d56c6c10b61f98beb57640::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitf569053f55d56c6c10b61f98beb57640::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitf569053f55d56c6c10b61f98beb57640::$classMap;
 
         }, null, ClassLoader::class);
     }

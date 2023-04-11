@@ -40,7 +40,7 @@ if ( ! class_exists( 'ECT_codestar_shortcode' ) ) {
 		public function ect_custom_shortcode_style() {
 			echo '<style>span.dashicon.dashicons.dashicons-ect-custom-icon:before {
         content:"";
-        background: url(' . ECT_PLUGIN_URL . 'assets/images/ect-icon.png);
+        background: url(' . ECT_PLUGIN_URL . 'assets/images/ect-icon.svg);
         background-size: contain;
         background-repeat: no-repeat;
         height: 20px;
@@ -49,7 +49,7 @@ if ( ! class_exists( 'ECT_codestar_shortcode' ) ) {
 
          #wp-content-wrap a[data-modal-id="ect_shotcode_generator"]:before {
         content: "";
-        background: url(' . ECT_PLUGIN_URL . 'assets/images/ect-icon.png);
+        background: url(' . ECT_PLUGIN_URL . 'assets/images/ect-icon.svg);
         background-size: contain;
         background-repeat: no-repeat;
         height: 17px;

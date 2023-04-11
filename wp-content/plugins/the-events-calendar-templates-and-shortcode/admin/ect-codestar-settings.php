@@ -41,7 +41,7 @@ if ( ! class_exists( 'ECTProSettings' ) ) {
 						'menu_slug'          => 'tribe-events-shortcode-template-settings',
 						'menu_type'          => 'submenu',
 						'menu_parent'        => 'cool-plugins-events-addon',
-						'menu_icon'          => ECT_PRO_PLUGIN_URL . 'assets/css/ect-icon.png',
+						'menu_icon'          => ECT_PRO_PLUGIN_URL . 'assets/css/ect-icon.svg',
 						'nav'                => 'inline',
 						'show_bar_menu'      => false,
 						'show_reset_section' => false,

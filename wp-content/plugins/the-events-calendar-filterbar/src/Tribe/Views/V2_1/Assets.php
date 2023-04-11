@@ -117,7 +117,6 @@ class Assets extends \tad_DI52_ServiceProvider {
 				'conditionals' => [ $this, 'should_enqueue_frontend' ],
 				'groups'       => [ static::$group_key ],
 				'in_footer'    => false,
-				'print'        => true,
 				'localize'     => [
 					'name' => 'tribe_events_filter_bar_js_config',
 					'data' => [ $this->container->make( Configuration::class ), 'localize' ],
