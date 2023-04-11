@@ -34,7 +34,8 @@ h5 {
 	font-weight: bold;
 }
 
-.content {
+.content,
+.single > .container {
 	ul {
 		list-style: disc;
 		padding: 0 0 30px 30px;
