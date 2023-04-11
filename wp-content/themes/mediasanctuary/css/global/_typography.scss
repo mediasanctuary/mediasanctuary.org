@@ -33,3 +33,21 @@ h5 {
 	font-size: 1.2em;
 	font-weight: bold;
 }
+
+.content {
+	ul {
+		list-style: disc;
+		padding: 0 0 30px 30px;
+		> li {
+			padding: 0 0 15px;
+		}
+	}
+
+	ol {
+		list-style: decimal;
+		padding: 0 0 30px 30px;
+		> li {
+			padding: 0 0 15px;
+		}
+	}
+}
