@@ -45,23 +45,7 @@
   overflow-x: hidden;
 }
 
-.single {
-  ul {
-    list-style: disc;
-    padding: 0 0 30px 30px;
-    li {
-      padding: 0 0 15px;
-    }
-  }
-
-  ol {
-    list-style: decimal;
-    padding: 0 0 30px 30px;
-    li {
-      padding: 0 0 15px;
-    }
-  }
-
+.post--single, .single {
   .wp-block-image figcaption {
     font-size: 13px;
     color: #999;
