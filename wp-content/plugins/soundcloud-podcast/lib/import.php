@@ -355,8 +355,8 @@ function soundcloud_podcast_track_tags($track) {
 
 function soundcloud_podcast_track_category_name($track) {
 	$category = 'Stories';
-	if (preg_match('/^HMM\s+\d+\s*-\s*\d+\s*-\s*\d+\s*$/i', $track['title'])) {
-		$category = 'Hudson Mohawk Magazine';
+	if (preg_match('/^HMM\s+\d+\s*-\s*\d+\s*-\s*\d+\s*/i', $track['title'])) {
+		$category = 'Hudson Mohawk Magazine Episodes';
 	}
 	return $category;
 }
