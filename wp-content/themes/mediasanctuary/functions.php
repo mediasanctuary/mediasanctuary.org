@@ -6,6 +6,15 @@ require_once 'lib/roles.php';
 require_once 'lib/dbug.php';
 require_once 'db/migrate.php';
 
+add_filter('wp_nav_menu_items', function($items) {
+	$items .= <<<END
+		<li class="menu-item nav-link--mobile"><a href="http://stream.woocfm.org:8000/wooc">Sanctuary Radio</a></li>
+		<li class="menu-item nav-link--mobile"><a href="/initiatives/sanctuary-tv/">Sanctuary TV</a></li>
+		<li class="menu-item nav-link--mobile"><a href="/get-involved/donate/">Donate</a></li>
+END;
+	return $items;
+});
+
 add_filter('acf/prepare_field/name=category_soundcloud_playlist', function($field) {
 	if (function_exists('soundcloud_podcast_playlists')) {
 		$playlists = soundcloud_podcast_playlists();
