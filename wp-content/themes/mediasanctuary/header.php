@@ -32,7 +32,7 @@
 		</nav>
 
 
-		<div class="header<?php echo is_front_page() ? ' home' : ''; echo (is_page_template( 'page-templates/initiatives.php') || is_page_template( 'page-templates/initiatives-landing.php') || is_singular('project')) ? ' initiative' : '';  echo $headerBGImage ? ' full-bg' : ''?>" <?php echo $headerBGImage; ?>;>
+		<div class="header<?php echo is_front_page() ? ' home' : ''; echo (is_page_template( 'page-templates/initiatives.php') || is_page_template( 'page-templates/initiatives-landing.php') || is_singular('project')) ? ' initiative' : '';  echo $headerBGImage ? ' full-bg' : ''?>" <?php echo $headerBGImage; ?>>
 			<div class="container">
 
 				<!-- Static -->

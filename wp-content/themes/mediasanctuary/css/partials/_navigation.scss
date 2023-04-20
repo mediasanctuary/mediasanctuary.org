@@ -23,6 +23,11 @@
     width: 190px;
   }
 
+  @media only screen and (max-width: 380px) {
+	  margin-top: 7px;
+	  width: 50%;
+}
+
 }
 
 .mobile {
@@ -262,17 +267,21 @@
     	}
   	}
 
-    .nav-links {
+    .menu-main-navigation-container {
       position: fixed;
       z-index: 100;
       top: 0;
       left: 100vw;
-      width: 100vw;
-      height: 100vh;
-      background: $c-raisin;
       transition: 0.3s left ease-out;
-      padding: 50px 30px;
-      display: block;
+
+	  .nav-links {
+		  overflow: auto;
+		  display: block;
+		  background: $c-raisin;
+		  width: 100vw;
+	      height: calc(100vh - 166px);
+		  padding: 30px;
+	  }
 
       .active, .current-menu-item, .current_page_parent {
         a:after {
@@ -343,12 +352,26 @@
 
 }
 
+@media only screen and (max-width: 380px) {
+	.top-nav .nav-link {
+		font-size: 14px;
+	}
+
+	.top-nav .nav-link--menu {
+		padding-right: 0;
+	}
+
+	.top-nav .nav-link.nav-link--donate {
+		margin-right: 4px;
+	}
+}
+
 
 /* Show and Hide Mobile Navigation and Mobile Search
 ---------------------------------------------------- */
 .show-mobile-menu {
   overflow: hidden;
-	.nav-links {
+	.menu-main-navigation-container {
 		left: 0;
 	}
 
