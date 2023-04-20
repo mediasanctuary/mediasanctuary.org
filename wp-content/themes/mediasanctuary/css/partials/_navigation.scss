@@ -181,6 +181,20 @@
     padding: 4px 12px;
     white-space: nowrap;
 
+		&.nav-link--donate {
+			background-color: $c-eggplant;
+			outline: 2px solid $c-lilac;
+			padding-bottom: 3px;
+			padding-top: 5px;
+
+			@media (hover: hover) {
+				&:hover {
+					color: $c-raisin;
+					background-color: $c-lilac;
+				}
+			}
+		}
+
 	}
 
 
