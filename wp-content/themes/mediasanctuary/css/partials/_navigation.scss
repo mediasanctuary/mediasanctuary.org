@@ -165,6 +165,10 @@
 
 	}
 
+	.nav-link--mobile {
+		display: none;
+	}
+
 	.nav-link--menu {
 		display: none;
     padding-left: 32px !important;
@@ -186,6 +190,7 @@
 			outline: 2px solid $c-lilac;
 			padding-bottom: 3px;
 			padding-top: 5px;
+			margin-right: 10px;
 
 			@media (hover: hover) {
 				&:hover {
@@ -194,11 +199,14 @@
 				}
 			}
 		}
-
 	}
 
 
 	@media only screen and (max-width: 860px) {
+	.nav-link--mobile {
+		display: block;
+	}
+
   	.nav-link--menu {
   		display: block;
   	}
