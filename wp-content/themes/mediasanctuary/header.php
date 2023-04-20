@@ -1,5 +1,5 @@
 <?php
-  $events = (tribe_is_month() || tribe_is_event() || tribe_is_event_category() || tribe_is_in_main_loop() || tec_is_view() || 'tribe_events' == get_post_type() || is_singular( 'tribe_events' )) ? true : false; 
+  $events = (tribe_is_month() || tribe_is_event() || tribe_is_event_category() || tribe_is_in_main_loop() || tec_is_view() || 'tribe_events' == get_post_type() || is_singular( 'tribe_events' )) ? true : false;
   $headerBG = get_field('header_background');
   $headerBGImage = $headerBG ? 'style="background-image: url('.esc_url($headerBG['url']).')"' : false;
 ?>
@@ -25,7 +25,7 @@
 
 					<a href="http://stream.woocfm.org:8000/wooc" class="mobile icon wooc">WOOC 105.3 FM <span>Listen</span></a>
 					<a href="/initiatives/sanctuary-tv/" class="mobile icon tv">Sanctuary TV <span>Live</span></a>
-					<a href="/get-involved/donate/" class="nav-link desktop nav-link--donate<?php echo (is_page('donate')) ? ' active' : '';?>">Donate</a>
+					<a href="/get-involved/donate/" class="nav-link nav-link--donate<?php echo (is_page('donate')) ? ' active' : '';?>">Donate</a>
 					<a href="#" class="nav-link nav-link--menu">Menu</a>
 				</div>
 			</div>
