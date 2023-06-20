@@ -13,7 +13,8 @@ use Tribe\Events\Virtual\Compatibility\Event_Tickets\Template_Modifications;
 use Tribe\Events\Virtual\Compatibility\Event_Tickets\Email as Email;
 use Tribe\Events\Virtual\Compatibility\Event_Tickets\Event_Meta as Ticket_Meta;
 use Tribe__Tickets__Tickets;
-use Tribe__Utils__Array as Arr;
+use TEC\Common\Contracts\Service_Provider as Provider_Contract;
+
 
 /**
  * Class Service_Provider
@@ -22,7 +23,7 @@ use Tribe__Utils__Array as Arr;
  *
  * @package Tribe\Events\Virtual\Compatibility\Event_Tickets
  */
-class Service_Provider extends \tad_DI52_ServiceProvider {
+class Service_Provider extends Provider_Contract {
 	/**
 	 * Register the bindings and filters required to ensure compatibility w/Event Tickets.
 	 *

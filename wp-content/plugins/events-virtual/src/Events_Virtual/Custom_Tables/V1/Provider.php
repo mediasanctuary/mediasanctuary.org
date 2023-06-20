@@ -11,7 +11,7 @@
 namespace TEC\Events_Virtual\Custom_Tables\V1;
 
 use Exception;
-use tad_DI52_ServiceProvider as Service_Provider;
+use TEC\Common\Contracts\Service_Provider;
 use TEC\Events\Custom_Tables\V1\Provider as TEC_Provider;
 use Throwable;
 

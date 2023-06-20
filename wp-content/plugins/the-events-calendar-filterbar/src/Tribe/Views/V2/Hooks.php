@@ -17,6 +17,7 @@
 
 namespace Tribe\Events\Filterbar\Views\V2;
 
+use TEC\Common\Contracts\Service_Provider;
 use Tribe\Events\Views\V2\View_Interface;
 use Tribe__Context as Context;
 use Tribe__Template;
@@ -28,7 +29,7 @@ use Tribe__Template;
  *
  * @package Tribe\Events\Filterbar\Views\V2
  */
-class Hooks extends \tad_DI52_ServiceProvider {
+class Hooks extends Service_Provider {
 	use Doing_Filterbar;
 
 	/**

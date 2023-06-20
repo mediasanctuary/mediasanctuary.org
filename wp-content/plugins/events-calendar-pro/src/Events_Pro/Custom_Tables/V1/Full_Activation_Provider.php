@@ -13,12 +13,12 @@
 namespace TEC\Events_Pro\Custom_Tables\V1;
 
 use Exception;
-use tad_DI52_ServiceProvider as Service_Provider;
 use TEC\Events_Pro\Custom_Tables\V1\Admin\Notices\Occurrence_Notices;
 use Throwable;
 use Tribe__Admin__Notices;
 use Tribe__Events__Admin_List as TEC_Admin_List;
 use Tribe__Events__Main as TEC;
+use \TEC\Common\Contracts\Service_Provider;
 
 /**
  * Class Full_Activation_Provider
@@ -61,6 +61,7 @@ class Full_Activation_Provider extends Service_Provider {
 			$this->container->register( Links\Provider::class );
 			$this->container->register( Models\Provider::class );
 			$this->container->register( Admin\Lists\Provider::class );
+			$this->container->register( Admin\Settings_Controller::class );
 			$this->container->register( Series\Provider::class );
 			$this->container->register( Templates\Provider::class );
 			$this->container->register( Updates\Provider::class );
@@ -74,6 +75,7 @@ class Full_Activation_Provider extends Service_Provider {
 			$this->container->register( Admin\Notices\Provider::class );
 			$this->container->register( Events_Manager\Provider::class );
 			$this->container->register( Links\Provider::class );
+			$this->container->register( Events\Event_Cleaner\Provider::class );
 			$this->container->singleton( Gettext::class, Gettext::class );
 
 			/*

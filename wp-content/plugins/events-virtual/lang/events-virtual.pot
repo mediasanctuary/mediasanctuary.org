@@ -2,15 +2,15 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: The Events Calendar: Virtual Events 1.13.4\n"
+"Project-Id-Version: The Events Calendar: Virtual Events 1.15.0\n"
 "Report-Msgid-Bugs-To: https://evnt.is/191x\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-02-07T07:12:55-08:00\n"
-"PO-Revision-Date: 2023-02-07 15:12\n"
+"POT-Creation-Date: 2023-06-15T09:17:20-07:00\n"
+"PO-Revision-Date: 2023-06-15 16:17\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: events-virtual\n"
 
@@ -23,7 +23,7 @@ msgid "Virtual Events is an add-on to The Events Calendar suite of products that
 msgstr ""
 
 #. Author of the plugin
-#: src/functions/load.php:31
+#: src/functions/load.php:35
 msgid "The Events Calendar"
 msgstr ""
 
@@ -31,7 +31,7 @@ msgstr ""
 msgid "http://evnt.is/20"
 msgstr ""
 
-#: events-virtual.php:55
+#: events-virtual.php:52
 msgid "Events Virtual"
 msgstr ""
 
@@ -617,8 +617,12 @@ msgctxt "Settings link text for multiple Zoom accounts."
 msgid "Read more about adding and managing Zoom Accounts."
 msgstr ""
 
-#: src/functions/load.php:26
+#: src/functions/load.php:30
 msgid "To begin using Virtual Events, please install the latest version of"
+msgstr ""
+
+#: src/functions/load.php:138
+msgid "The Virtual Events plugin is already loaded. Please check your site for conflicting plugins."
 msgstr ""
 
 #: src/functions/template-tags/general.php:20
@@ -661,7 +665,7 @@ msgctxt "Capitalized \"hybrid\" term, capitalized singular event term."
 msgid "%1$s %2$s"
 msgstr ""
 
-#: src/Tribe/Assets.php:483
+#: src/Tribe/Assets.php:484
 msgctxt "The block editor message to display to confirm a user would like to delete the virtual settings."
 msgid ""
 "Are you sure you want to delete the virtual settings? \n"
@@ -670,7 +674,7 @@ msgid ""
 "This operation cannot be undone."
 msgstr ""
 
-#: src/Tribe/Assets.php:490
+#: src/Tribe/Assets.php:491
 msgctxt "The classic editor message to display to confirm a user would like to delete the virtual settings."
 msgid ""
 "Are you sure you want to delete the virtual settings? \n"
@@ -777,12 +781,12 @@ msgctxt "Moved Online event status label"
 msgid "Moved Online"
 msgstr ""
 
-#: src/Tribe/Hooks.php:1029
+#: src/Tribe/Hooks.php:1030
 msgctxt "The label of the video source option."
 msgid "Search for video or meeting link"
 msgstr ""
 
-#: src/Tribe/Hooks.php:1066
+#: src/Tribe/Hooks.php:1067
 msgctxt "The name of the autodetect source."
 msgid "OEmbed"
 msgstr ""
@@ -1229,47 +1233,47 @@ msgctxt "Facebook video valid success message."
 msgid "Success! Save your event to add this video."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:247
+#: src/Tribe/Meetings/Facebook_Provider.php:248
 msgctxt "The name of the video source."
 msgid "Facebook Live"
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:307
+#: src/Tribe/Meetings/Facebook_Provider.php:308
 msgctxt "The name of the autodetect source."
 msgid "Facebook Video"
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:467
+#: src/Tribe/Meetings/Facebook_Provider.php:468
 msgctxt "The message to display if no local id is found when trying to authorize a facebook page."
 msgid "The local id for the Facebook is not set."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:482
+#: src/Tribe/Meetings/Facebook_Provider.php:483
 msgctxt "The message to display if no Facebook page wrap found."
 msgid "No Facebook Page data found."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:497
+#: src/Tribe/Meetings/Facebook_Provider.php:498
 msgctxt "The message to display if no connection is established to the Facebook sdk."
 msgid "The Facebook Page could not be connected to your site, please try again."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:512
+#: src/Tribe/Meetings/Facebook_Provider.php:513
 msgctxt "The message to display if a Facebook user could not obtain an extended access token."
 msgid "The attempt to get an extended Facebook user access token failed with error"
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:527
+#: src/Tribe/Meetings/Facebook_Provider.php:528
 msgctxt "The message to display if a Facebook Page could not obtain an access token."
 msgid "Unable to capture the Facebook page’s access token. Please verify your Facebook app credentials. The attempt failed with error"
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:542
+#: src/Tribe/Meetings/Facebook_Provider.php:543
 msgctxt "The message to display to confirm when deleting a Facebook Page."
 msgid "Are you sure you want to delete the Facebook Page? Deleting it will disconnect any upcoming virtual events using this Facebook Page."
 msgstr ""
 
-#: src/Tribe/Meetings/Facebook_Provider.php:557
+#: src/Tribe/Meetings/Facebook_Provider.php:558
 msgctxt "The message to display to confirm clear Facebook Page's access token."
 msgid "Are you sure you want to clear the access token? Clearing it will disconnect any upcoming virtual events using this Facebook Page until you authorize the page again."
 msgstr ""
@@ -1802,12 +1806,12 @@ msgctxt "YouTube offline message"
 msgid "The Live Stream is Offline."
 msgstr ""
 
-#: src/Tribe/Meetings/YouTube_Provider.php:147
+#: src/Tribe/Meetings/YouTube_Provider.php:148
 msgctxt "The name of the video source."
 msgid "YouTube Live"
 msgstr ""
 
-#: src/Tribe/Meetings/YouTube_Provider.php:290
+#: src/Tribe/Meetings/YouTube_Provider.php:291
 msgctxt "The message to display to confirm a user would like to delete a YouTube channel ID."
 msgid "Are you sure you want to delete your default YouTube channel ID?"
 msgstr ""
@@ -2069,6 +2073,11 @@ msgstr ""
 
 #: src/views/google/email/details/join-header.php:18
 msgid "Join Google Video"
+msgstr ""
+
+#: src/views/integrations/event-tickets/emails/template-parts/body/virtual-event/link.php:38
+msgctxt "Link to Virtual Event on the Ticket Email"
+msgid "Virtual Event"
 msgstr ""
 
 #. translators: %1$s: Microsoft Meet ID.

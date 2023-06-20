@@ -9,6 +9,7 @@
 namespace TEC\Events_Virtual\Compatibility\Event_Automator\Zapier;
 
 use TEC\Events_Virtual\Compatibility\Event_Automator\Zapier\Maps\Event;
+use TEC\Common\Contracts\Service_Provider;
 use WP_Post;
 
 /**
@@ -18,7 +19,7 @@ use WP_Post;
  *
  * @package TEC\Events_Virtual\Compatibility\Event_Automator\Zapier
  */
-class Zapier_Provider extends \tad_DI52_ServiceProvider {
+class Zapier_Provider extends Service_Provider {
 
 	/**
 	 * Binds and sets up implementations.

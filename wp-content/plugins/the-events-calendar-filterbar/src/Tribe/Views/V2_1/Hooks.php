@@ -27,6 +27,7 @@ use Tribe__Context as Context;
 use Tribe__Events__Filterbar__View as Main;
 use Tribe__Utils__Array as Arr;
 use Tribe__Customizer__Section as Customizer_Section;
+use TEC\Common\Contracts\Service_Provider;
 
 /**
  * Class Hooks.
@@ -35,7 +36,7 @@ use Tribe__Customizer__Section as Customizer_Section;
  *
  * @package Tribe\Events\Filterbar\Views\V2_1
  */
-class Hooks extends \tad_DI52_ServiceProvider {
+class Hooks extends Service_Provider {
 	use Doing_Filterbar;
 
 	/**

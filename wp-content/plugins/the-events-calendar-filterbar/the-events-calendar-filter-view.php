@@ -2,7 +2,7 @@
 /*
 Plugin Name: The Events Calendar: Filter Bar
 Description: Creates an advanced filter panel on the frontend of your events list views.
-Version: 5.4.4
+Version: 5.5.0
 Author: The Events Calendar
 Author URI: http://evnt.is/25
 Text Domain: tribe-events-filter-view
@@ -32,9 +32,6 @@ define( 'TRIBE_EVENTS_FILTERBAR_FILE', __FILE__ );
 
 // Load the required php min version functions
 require_once dirname( TRIBE_EVENTS_FILTERBAR_FILE ) . '/src/functions/php-min-version.php';
-
-// Load Composer autoload file only if we've not included this file already.
-require_once TRIBE_EVENTS_FILTERBAR_DIR . '/vendor/autoload.php';
 
 /**
  * Verifies if we need to warn the user about min PHP version and bail to avoid fatals
@@ -107,10 +104,11 @@ function tribe_events_filterbar_init() {
 
 	tribe_init_filterbar_autoloading();
 
-	$classes_exist = class_exists( 'Tribe__Events__Main' ) && class_exists( 'Tribe__Events__Filterbar__View' );
 	$plugins_check = function_exists( 'tribe_check_plugin' ) ?
 		tribe_check_plugin( 'Tribe__Events__Filterbar__View' )
 		: false;
+
+	$classes_exist = class_exists( 'Tribe__Events__Main', false ) && class_exists( 'Tribe__Events__Filterbar__View', false );
 	$version_ok    = $classes_exist && $plugins_check;
 
 	if ( class_exists( 'Tribe__Main' ) && ! is_admin() && ! file_exists( __DIR__ . '/src/Tribe/PUE/Helper.php' ) ) {
@@ -193,6 +191,10 @@ function tribe_init_filterbar_autoloading() {
 		return;
 	}
 
+	// Load Composer autoload file only if we've not included this file already.
+	require_once TRIBE_EVENTS_FILTERBAR_DIR . '/vendor/autoload.php';
+
+
 	$autoloader = Tribe__Autoloader::instance();
 
 	$autoloader->register_prefix( 'Tribe__Events__Filterbar__', TRIBE_EVENTS_FILTERBAR_DIR . '/src/Tribe', 'tribe-filterbar' );
@@ -215,8 +217,8 @@ function tribe_init_filterbar_autoloading() {
  * @author PaulHughes01
  * @return void
  */
- function TribeEventsFilterViewsLoad() {
-	 _deprecated_function( __FUNCTION__, '4.6', '' );
+function TribeEventsFilterViewsLoad() {
+	_deprecated_function( __FUNCTION__, '4.6', '' );
 
     return;
- }
+}

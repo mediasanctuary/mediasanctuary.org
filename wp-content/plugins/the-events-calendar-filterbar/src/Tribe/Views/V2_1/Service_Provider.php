@@ -1,13 +1,15 @@
 <?php
 namespace Tribe\Events\Filterbar\Views\V2_1;
 
+use TEC\Common\Contracts\Service_Provider as Provider_Contract;
+
 /**
  * The main service provider for Filterbar support and additions to the Views V2_1 functions.
  *
  * @since   5.0.0
  * @package Tribe\Events\Filterbar\Views\V2_1
  */
-class Service_Provider extends \tad_DI52_ServiceProvider {
+class Service_Provider extends Provider_Contract {
 
 	/**
 	 * Binds and sets up implementations.

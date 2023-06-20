@@ -2,13 +2,14 @@
 namespace Tribe\Events\Virtual\Editor;
 
 use Tribe\Events\Virtual\Plugin;
+use TEC\Common\Contracts\Service_Provider;
 
 /**
  * Events Virtual Gutenberg Assets.
  *
  * @since 1.7.1
  */
-class Assets extends \tad_DI52_ServiceProvider {
+class Assets extends Service_Provider {
 	/**
 	 * Registers and Enqueues the assets.
 	 *
@@ -23,7 +24,7 @@ class Assets extends \tad_DI52_ServiceProvider {
 			$plugin,
 			'tribe-virtual-gutenberg-main',
 			'app/main.js',
-			[ 'tribe-the-events-calendar-main' ],
+			[ 'tribe-common-gutenberg-main' ],
 			'enqueue_block_editor_assets',
 			[
 				'in_footer' => false,

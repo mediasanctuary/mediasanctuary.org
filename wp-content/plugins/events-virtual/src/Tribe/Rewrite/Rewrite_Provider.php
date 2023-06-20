@@ -8,13 +8,15 @@
 
 namespace Tribe\Events\Virtual\Rewrite;
 
+use TEC\Common\Contracts\Service_Provider;
+
 /**
  * Class Rewrite_Provider
  *
  * @since   1.0.1
  * @package Tribe\Events\Virtual\Rewrite
  */
-class Rewrite_Provider extends \tad_DI52_ServiceProvider {
+class Rewrite_Provider extends Service_Provider {
 
 	/**
 	 * Used when forming recurring events /all/ view permalinks.

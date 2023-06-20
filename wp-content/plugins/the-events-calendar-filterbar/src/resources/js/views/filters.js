@@ -45,6 +45,34 @@ tribe.filterBar.filters = {};
 		filterBarVertical: '.tribe-events--filter-bar-vertical',
 	};
 
+	/** eslint-disable
+	 *
+	 *
+	 * URL-decodes the string. We need to specially handle '+'s because the javascript
+	 * library doesn't convert them to spaces.
+	 *
+	 * @since 5.4.5
+	 *
+	 * eslint-disable-next-line max-len
+	 * @see https://chromium.googlesource.com/chromium/src.git/+/62.0.3178.1/third_party/google_input_tools/third_party/closure_library/closure/goog/string/string.js?autodive=0%2F%2F%2F%2F#486
+	 *
+	 * @param {string} val The value to decodeURIComponent, as well as + space url encodings
+	 *
+	 * @returns {string} Decoded string.
+	 */
+	obj.decodeURIComponent = function ( val ) {
+		var valueToDecode = val;
+		try {
+			valueToDecode = val.replace( /\+/g, ' ' );
+			// eslint-disable-next-line no-empty
+		} catch ( e ) { }
+		try {
+			return decodeURIComponent( valueToDecode );
+		} catch ( e ) {
+			return valueToDecode;
+		}
+	};
+
 	/**
 	 * Remove one set of square brackets and numbers inside from string from the end.
 	 *
@@ -87,14 +115,14 @@ tribe.filterBar.filters = {};
 			// Filter out value from query string pieces.
 			.filter( function( queryStringPiece ) {
 				var queryVal = queryStringPiece.split( '=' )[ 1 ];
-				return queryVal !== value;
+				return obj.decodeURIComponent( queryVal ) !== value;
 			} )
 			// Rebuild array numbering for query key.
 			.map( function( queryStringPiece, index ) {
 				var queryStringPieces = queryStringPiece.split( '=' );
 				var queryKey = queryStringPieces[ 0 ];
 				var queryVal = queryStringPieces[ 1 ];
-				var baseQueryKey = obj.removeSquareBracketsFromEnd( decodeURIComponent( queryKey ) );
+				var baseQueryKey = obj.removeSquareBracketsFromEnd( obj.decodeURIComponent( queryKey ) );
 				var newQueryKey = encodeURIComponent( baseQueryKey + '[' + index + ']' );
 				return [ newQueryKey, queryVal ].join( '=' );
 			} );
@@ -117,6 +145,7 @@ tribe.filterBar.filters = {};
 		var baseKey = key;
 		var keyIsArray = obj.hasSquareBracketsAtEnd( key );
 		if ( keyIsArray ) {
+
 			baseKey = obj.removeSquareBracketsFromEnd( baseKey );
 		}
 
@@ -130,7 +159,7 @@ tribe.filterBar.filters = {};
 			var baseQueryKey;
 
 			try {
-				baseQueryKey = obj.removeSquareBracketsFromEnd( decodeURIComponent( queryKey ) );
+				baseQueryKey = obj.removeSquareBracketsFromEnd( obj.decodeURIComponent( queryKey ) );
 			} catch ( error ) {
 				// Skip if queryKey cannot be decoded properly.
 				continue;
@@ -158,7 +187,10 @@ tribe.filterBar.filters = {};
 		if ( keyIsArray ) {
 			// Filter out query string piece with value.
 			baseKeyQueryStringPieces = obj
-				.removeValueFromBaseKeyQueryStringPieces( baseKeyQueryStringPieces, value );
+				.removeValueFromBaseKeyQueryStringPieces(
+					baseKeyQueryStringPieces,
+					obj.decodeURIComponent(value)
+				);
 		}
 
 		// Add back base key query string pieces to modified query string pieces.

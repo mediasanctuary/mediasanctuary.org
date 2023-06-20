@@ -9,6 +9,7 @@
 
 namespace Tribe\Events\Virtual\Integrations;
 
+use Tribe\Events\Virtual\Context\Context_Provider;
 use Tribe\Events\Virtual\Plugin;
 
 /**
@@ -79,6 +80,7 @@ abstract class Abstract_Url {
 	 * Returns the URL to authorize the use of an API.
 	 *
 	 * @since 1.13.0
+	 * @since 1.14.0 - Use a constant for 'state' query variable.
 	 *
 	 * @return string The request URL.
 	 */
@@ -91,8 +93,8 @@ abstract class Abstract_Url {
 		}
 
 		$real_url = add_query_arg( [
-			'redirect_uri' => esc_url( admin_url() ),
-			'state'        => wp_create_nonce( $this->actions::$authorize_nonce_action ),
+			'redirect_uri'                         => esc_url( admin_url() ),
+			Context_Provider::AUTH_STATE_QUERY_VAR => wp_create_nonce( $this->actions::$authorize_nonce_action ),
 		], $authorize_url );
 
 		return $real_url;

@@ -581,12 +581,16 @@ class Abstract_Meetings {
 		];
 
 		$meeting_data = $this->encryption->decrypt( get_post_meta( $event->ID, Virtual_Events_Meta::$prefix . 'zoom_meeting_data', true ), true );
+		if ( ! is_array( $meeting_data ) || empty( $meeting_data ) ) {
+			return;
+		}
+
 		$meeting_body = [
-			'topic'             => $meeting_data['topic'],
-			'start_time'        => $meeting_data['start_time'],
-			'timezone'          => $meeting_data['timezone'],
-			'duration'          => $meeting_data['duration'],
-			'alternative_hosts' => $meeting_data['settings']['alternative_hosts'],
+			'topic'             => $meeting_data['topic'] ?? null,
+			'start_time'        => $meeting_data['start_time'] ?? null,
+			'timezone'          => $meeting_data['timezone'] ?? null,
+			'duration'          => $meeting_data['duration'] ?? null,
+			'alternative_hosts' => $meeting_data['settings']['alternative_hosts'] ?? null,
 		];
 
 		$diff = array_diff_assoc( $event_body, $meeting_body );

@@ -10,6 +10,7 @@
 namespace Tribe\Events\Virtual\Compatibility\Online_Event_Extension;
 
 use Tribe__Extension__Virtual__Event__Ticket as Extension;
+use TEC\Common\Contracts\Service_Provider as Provider_Contract;
 
 /**
  * Class Service_Provider
@@ -18,7 +19,7 @@ use Tribe__Extension__Virtual__Event__Ticket as Extension;
  *
  * @package Tribe\Events\Virtual\Compatibility\Online_Event_Extension
  */
-class Service_Provider extends \tad_DI52_ServiceProvider {
+class Service_Provider extends Provider_Contract {
 
 	/**
 	 * Register the bindings and filters required to ensure compatibility w/ the extension.

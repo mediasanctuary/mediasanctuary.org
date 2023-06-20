@@ -4,8 +4,8 @@ Contributors: theeventscalendar, borkweb, bordoni, brianjessee, aguseo, camwynsp
 Tags: events, calendar, event, venue, organizer, dates, date, google maps, conference, workshop, concert, meeting, seminar, summit, class, the events calendar, widget, pro, filters, categories, sort, tags, taxonomy, find, search
 Donate link: http://evnt.is/29
 Requires at least: 5.8.6
-Stable tag: 5.4.4
-Tested up to: 6.1.1
+Stable tag: 5.5.0
+Tested up to: 6.2.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -195,7 +195,13 @@ Our Premium Plugins:
 
 == Changelog ==
 
-= [5.4.4] 2023-3-20 =
+= [5.5.0] 2023-06-14 =
+
+* Version - Filter Bar 5.5.0 is only compatible with The Events Calendar 6.1.0 and higher
+* Fix - There was an issue with checkbox custom fields that had spaces in their name, which would fail to be removed from the search filter when attempting to unselect them. [FBAR-246]
+* Language - 0 new strings added, 2 updated, 0 fuzzied, and 0 obsoleted
+
+= [5.4.4] 2023-03-20 =
 
 * Fix - Some themes caused conflicts in the order of asset loading for the events widget, resulting in javascript errors, rendering issues with the filter bar, and breaking the events list functionality. [FBAR-293]
 

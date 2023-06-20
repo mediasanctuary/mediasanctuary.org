@@ -9,6 +9,8 @@
 
 namespace Tribe\Events\Virtual\Meetings;
 
+use TEC\Common\Contracts\Service_Provider;
+
 /**
  * Class Meeting_Provider
  *
@@ -16,7 +18,7 @@ namespace Tribe\Events\Virtual\Meetings;
  *
  * @package Tribe\Events\Virtual\Meetings
  */
-abstract class Meeting_Provider extends \tad_DI52_ServiceProvider {
+abstract class Meeting_Provider extends Service_Provider {
 
 	/**
 	 * Returns whether the provider is enable or not via filters.

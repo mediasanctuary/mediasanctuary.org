@@ -14,6 +14,7 @@ namespace Tribe\Events\Filterbar\Views\V2_1;
 use Tribe__Events__Filterbar__View as Plugin;
 use Tribe\Events\Views\V2\Template_Bootstrap;
 use Tribe\Events\Views\V2\Assets as TEC_Assets;
+use TEC\Common\Contracts\Service_Provider;
 /**
  * Register the Assets for Events Filterbar View v2-1.
  *
@@ -21,7 +22,7 @@ use Tribe\Events\Views\V2\Assets as TEC_Assets;
  *
  * @package Tribe\Events\Filterbar\Views\v2-1
  */
-class Assets extends \tad_DI52_ServiceProvider {
+class Assets extends Service_Provider {
 
 	/**
 	 * Key for this group of assets.

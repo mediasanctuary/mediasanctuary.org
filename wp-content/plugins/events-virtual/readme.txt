@@ -4,8 +4,8 @@ Contributors: theeventscalendar, aguseo, borkweb, bordoni, brianjessee, Camwyn, 
 Tags: virtual events, events, calendar, event, venue, organizer, dates, date, schema, conference, online events, concert, meeting, seminar, summit, class, the events calendar, tec, zoom, livestream
 Donate link: https://evnt.is/29
 Requires at least: 5.8.6
-Tested up to: 6.1.1
-Stable tag: 1.13.6
+Tested up to: 6.2.2
+Stable tag: 1.15.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -120,6 +120,21 @@ Our premium products:
 * <a href="https://evnt.is/1ako" target="_blank">Image Widget Plus</a>
 
 == Changelog ==
+
+= [1.15.0] 2023-06-15 =
+
+* Feature - Include Virtual Events compatibility for the new Tickets Emails feature.
+* Tweak - Added filters: `tec_events_virtual_ticket_email_url`
+* Tweak - Changed views: `integrations/event-tickets/emails/template-parts/body/virtual-event/link`, `integrations/event-tickets/emails/template-parts/header/head/ve-styles`
+* Language - 2 new strings added, 14 updated, 0 fuzzied, and 0 obsoleted
+
+= [1.14.0] 2023-06-14 =
+
+* Version - Virtual Events 1.14.0 is only compatible with The Events Calendar 6.1.0 and higher
+* Fix - During quick edit of a virtual event, it would cause a fatal error `PHP Fatal error:  Uncaught TypeError: Cannot access offset of type string on string in .../events-virtual/src/Tribe/Meetings/Zoom/Abstract_Meetings.php:585`. [VE-577]
+* Fix - Ensure the Virtual Events block is properly loaded in the Block Editor as expected. [VE-576]
+* Tweak - Use a constant for the 'state' query variable to prevent unwanted changes. [VE-578]
+* Language - 0 new strings added, 4 updated, 0 fuzzied, and 0 obsoleted
 
 = [1.13.6] 2023-02-22 =
 

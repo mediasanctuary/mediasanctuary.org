@@ -8,13 +8,15 @@
 
 namespace Tribe\Events\Virtual\Export;
 
+use TEC\Common\Contracts\Service_Provider;
+
 /**
  * Class Export_Provider
  *
  * @since   1.0.4
  * @package Tribe\Events\Virtual\Export;
  */
-class Export_Provider extends \tad_DI52_ServiceProvider {
+class Export_Provider extends Service_Provider {
 
 	/**
 	 * Binds and sets up implementations and registers the required filters.

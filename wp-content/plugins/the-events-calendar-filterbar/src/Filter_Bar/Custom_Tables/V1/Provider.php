@@ -19,6 +19,7 @@ use Tribe__Context as Context;
 use Tribe__Dependency;
 use Tribe__Events__Filterbar__Filter as Filter;
 use Tribe__Utils__Array as Arr;
+use TEC\Common\Contracts\Service_Provider;
 use WP_Query;
 
 /**
@@ -28,7 +29,7 @@ use WP_Query;
  *
  * @package TEC\Filter_Bar\Custom_Tables\V1
  */
-class Provider extends \tad_DI52_ServiceProvider {
+class Provider extends Service_Provider {
 
 	/**
 	 * A flag property indicating whether the Service Provider did register or not.

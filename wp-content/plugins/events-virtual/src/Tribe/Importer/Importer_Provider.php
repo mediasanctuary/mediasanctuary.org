@@ -10,6 +10,7 @@
 namespace Tribe\Events\Virtual\Importer;
 
 use Tribe__Events__Importer__File_Importer_Events as CSV_Event_Importer;
+use TEC\Common\Contracts\Service_Provider;
 
 /**
  * Class Importer_Provider
@@ -18,7 +19,7 @@ use Tribe__Events__Importer__File_Importer_Events as CSV_Event_Importer;
  *
  * @package Tribe\Events\Virtual\Importer
  */
-class Importer_Provider extends \tad_DI52_ServiceProvider {
+class Importer_Provider extends Service_Provider {
 
 	/**
 	 * Registers the bindings, actions and filters required by the Importer provider to work.
