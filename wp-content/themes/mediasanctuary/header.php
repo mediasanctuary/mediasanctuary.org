@@ -14,7 +14,7 @@
 		<link rel="shortcut icon" href="<?php asset_url('img/favicon.ico'); ?>">
 		<?php wp_head(); ?>
 	</head>
-	<body class="<?php echo is_single() ? 'story' : '';  echo (is_page_template( 'page-templates/initiatives.php')) ? ' initiative' : '';?>">
+  <body <?php body_class(); ?>>
 		<nav class="top-nav">
 			<div class="container">
 				<div class="logo"><a href="/"><img src="<?php asset_url('img/logo-720.png'); ?>" alt="The Sanctuary For Independent Media"></a></div>

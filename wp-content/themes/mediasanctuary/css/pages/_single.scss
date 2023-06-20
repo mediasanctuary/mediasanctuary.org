@@ -41,11 +41,12 @@
   }
 }
 
-#content {
+body.single #content {
   overflow-x: hidden;
 
 	ul, ol {
 		padding-left: 1.2em;
+		margin-bottom: 1.2em;
 	}
 
 	ul > li {
@@ -66,7 +67,7 @@
   }
 }
 
-.story {
+.single-post {
   background:#FFF;
 }
 
