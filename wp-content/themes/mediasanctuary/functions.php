@@ -3,6 +3,7 @@
 require_once 'lib/post-types.php';
 require_once 'lib/redirects.php';
 require_once 'lib/roles.php';
+require_once 'lib/qrcode.php';
 require_once 'lib/dbug.php';
 require_once 'db/migrate.php';
 
@@ -137,6 +138,10 @@ add_action('admin_enqueue_scripts', function() {
 	$css_src = get_template_directory_uri() . '/dist/admin.css';
 	$css_version = filemtime("$dir/dist/admin.css");
 	wp_enqueue_style('custom-admin', $css_src, [], $css_version);
+
+	$js_src = get_template_directory_uri() . '/js/qrcode.js';
+	$js_version = filemtime("$dir/js/qrcode.js");
+	wp_enqueue_script('admin', $js_src, [], $js_version);
 
 	$js_src = get_template_directory_uri() . '/js/admin.js';
 	$js_version = filemtime("$dir/js/admin.js");

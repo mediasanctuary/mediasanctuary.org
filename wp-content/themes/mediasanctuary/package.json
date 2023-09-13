@@ -4,13 +4,14 @@
   "description": "WordPress theme for mediasanctuary.org",
   "main": "index.php",
   "scripts": {
+    "qrcode": "qrcode --width 980",
     "build-task:build": "sass css/main.scss:dist/main.css contribute/contribute.scss:dist/contribute.css css/admin/admin.scss:dist/admin.css",
     "build-task:autoprefixer": "postcss dist/*.css --use autoprefixer -d dist",
     "sass:build": "npm-run-all build-task:*",
     "sass:watch": "chokidar \"**/*.scss\" -c \"npm run sass:build\"",
     "sass:admin": "chokidar \"admin/**/*.scss\" -c \"npm run build-task:admin\"",
-    "start": "npm-run-all -p sass:*",
-    "build": "npm-run-all -p sass:build"
+    "start": "npm-run-all -p sass:* rollup:*",
+    "build": "npm-run-all -p sass:build rollup:*"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "npm-run-all": "^4.1.5",
     "postcss": "^8.3.5",
     "postcss-cli": "^8.3.1",
+    "qrcode": "^1.5.3",
     "sass": "^1.35.1"
   }
 }
