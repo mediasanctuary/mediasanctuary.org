@@ -12,7 +12,8 @@
 
 namespace TEC\Events\Custom_Tables\V1;
 
-use tad_DI52_ServiceProvider as Service_Provider;
+use TEC\Common\Contracts\Service_Provider;
+
 use TEC\Events\Custom_Tables\V1\Events\Occurrences\Max_Recurrence_Provider;
 use TEC\Events\Custom_Tables\V1\Schema_Builder\Schema_Builder;
 use WP_CLI;
@@ -63,6 +64,7 @@ class Full_Activation_Provider extends Service_Provider {
 			$this->container->register( Updates\Provider::class );
 			$this->container->register( Repository\Provider::class );
 			$this->container->register( Views\V2\Provider::class );
+			$this->container->register( Events\Event_Cleaner\Provider::class );
 
 			// This default variable is defined in TEC, so we register it here, even though it relates to ECP.
 			$this->container->register( Max_Recurrence_Provider::class );
@@ -100,7 +102,7 @@ class Full_Activation_Provider extends Service_Provider {
 		/**
 		 * Fires an action when the Custom Tables v1 implementation is fully activated.
 		 *
-		 * @since TBD
+		 * @since 6.0.13
 		 */
 		do_action( 'tec_events_custom_tables_v1_fully_activated' );
 

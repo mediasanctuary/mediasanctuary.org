@@ -21,6 +21,7 @@ use Tribe\Events\Views\V2\Template_Bootstrap;
 use Tribe__Events__Templates;
 use Tribe__Events__Main as TEC;
 use Tribe__Admin__Helpers as Admin_Helpers;
+use TEC\Common\Contracts\Service_Provider;
 
 /**
  * Register Assets.
@@ -29,7 +30,7 @@ use Tribe__Admin__Helpers as Admin_Helpers;
  *
  * @package Tribe\Events\Virtual
  */
-class Assets extends \tad_DI52_ServiceProvider {
+class Assets extends Service_Provider {
 	/**
 	 * Key for this group of assets.
 	 *

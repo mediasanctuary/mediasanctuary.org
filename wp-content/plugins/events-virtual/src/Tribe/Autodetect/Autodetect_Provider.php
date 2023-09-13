@@ -18,6 +18,7 @@ use Tribe\Events\Virtual\Meetings\Webex\Meetings as Webex_Meetings;
 use Tribe\Events\Virtual\Meetings\Google\Meetings as Google_Meet;
 use Tribe\Events\Virtual\Meetings\Microsoft\Meetings as Microsoft_Teams;
 use Tribe\Events\Virtual\Traits\With_Nonce_Routes;
+use TEC\Common\Contracts\Service_Provider;
 use WP_Post;
 
 /**
@@ -27,7 +28,7 @@ use WP_Post;
  *
  * @package Tribe\Events\Virtual\Autodetect
  */
-class Autodetect_Provider extends \tad_DI52_ServiceProvider {
+class Autodetect_Provider extends Service_Provider {
 
 	use With_Nonce_Routes;
 

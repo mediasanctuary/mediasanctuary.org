@@ -4,9 +4,13 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitbeb5a86669a1943c16b7303e8cfb66ec
+class ComposerStaticInitf837c41ac27fe6992859bbba70641680
 {
     public static $prefixLengthsPsr4 = array (
+        'l' => 
+        array (
+            'lucatume\\DI52\\' => 14,
+        ),
         'T' => 
         array (
             'Tribe\\' => 6,
@@ -14,6 +18,9 @@ class ComposerStaticInitbeb5a86669a1943c16b7303e8cfb66ec
         ),
         'S' => 
         array (
+            'StellarWP\\Telemetry\\Views_Dir\\' => 30,
+            'StellarWP\\Telemetry\\Assets_Dir\\' => 31,
+            'StellarWP\\Telemetry\\' => 20,
             'StellarWP\\Installer\\Assets_JS\\' => 30,
             'StellarWP\\Installer\\Admin_Views\\' => 32,
             'StellarWP\\Installer\\' => 20,
@@ -23,6 +30,7 @@ class ComposerStaticInitbeb5a86669a1943c16b7303e8cfb66ec
         'P' => 
         array (
             'Psr\\Log\\' => 8,
+            'Psr\\Container\\' => 14,
         ),
         'M' => 
         array (
@@ -35,6 +43,10 @@ class ComposerStaticInitbeb5a86669a1943c16b7303e8cfb66ec
     );
 
     public static $prefixDirsPsr4 = array (
+        'lucatume\\DI52\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/lucatume/di52/src',
+        ),
         'Tribe\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/Tribe',
@@ -42,6 +54,18 @@ class ComposerStaticInitbeb5a86669a1943c16b7303e8cfb66ec
         'TEC\\Common\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/Common',
+        ),
+        'StellarWP\\Telemetry\\Views_Dir\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stellarwp/telemetry/src/views',
+        ),
+        'StellarWP\\Telemetry\\Assets_Dir\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stellarwp/telemetry/src/resources',
+        ),
+        'StellarWP\\Telemetry\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stellarwp/telemetry/src/Telemetry',
         ),
         'StellarWP\\Installer\\Assets_JS\\' => 
         array (
@@ -67,6 +91,10 @@ class ComposerStaticInitbeb5a86669a1943c16b7303e8cfb66ec
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
@@ -77,37 +105,33 @@ class ComposerStaticInitbeb5a86669a1943c16b7303e8cfb66ec
         ),
     );
 
-    public static $prefixesPsr0 = array (
-        'x' => 
-        array (
-            'xrstf\\Composer52' => 
-            array (
-                0 => __DIR__ . '/..' . '/xrstf/composer-php52/lib',
-            ),
-        ),
-        't' => 
-        array (
-            'tad_DI52_' => 
-            array (
-                0 => __DIR__ . '/..' . '/lucatume/di52/src',
-            ),
-        ),
-    );
-
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Firebase\\JWT\\BeforeValidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/BeforeValidException.php',
-        'Firebase\\JWT\\CachedKeySet' => __DIR__ . '/..' . '/firebase/php-jwt/src/CachedKeySet.php',
-        'Firebase\\JWT\\ExpiredException' => __DIR__ . '/..' . '/firebase/php-jwt/src/ExpiredException.php',
-        'Firebase\\JWT\\JWK' => __DIR__ . '/..' . '/firebase/php-jwt/src/JWK.php',
-        'Firebase\\JWT\\JWT' => __DIR__ . '/..' . '/firebase/php-jwt/src/JWT.php',
-        'Firebase\\JWT\\Key' => __DIR__ . '/..' . '/firebase/php-jwt/src/Key.php',
-        'Firebase\\JWT\\SignatureInvalidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/SignatureInvalidException.php',
         'TEC\\Common\\Context\\Post_Request_Type' => __DIR__ . '/../..' . '/src/Common/Context/Post_Request_Type.php',
+        'TEC\\Common\\Contracts\\Container' => __DIR__ . '/../..' . '/src/Common/Contracts/Container.php',
+        'TEC\\Common\\Contracts\\Provider\\Controller' => __DIR__ . '/../..' . '/src/Common/Contracts/Provider/Controller.php',
+        'TEC\\Common\\Contracts\\Service_Provider' => __DIR__ . '/../..' . '/src/Common/Contracts/Service_Provider.php',
         'TEC\\Common\\Editor\\Full_Site\\Template_Utils' => __DIR__ . '/../..' . '/src/Common/Editor/Full_Site/Template_Utils.php',
+        'TEC\\Common\\Integrations\\Integration_Abstract' => __DIR__ . '/../..' . '/src/Common/Integrations/Integration_Abstract.php',
+        'TEC\\Common\\Integrations\\Provider' => __DIR__ . '/../..' . '/src/Common/Integrations/Provider.php',
+        'TEC\\Common\\Integrations\\Traits\\Module_Integration' => __DIR__ . '/../..' . '/src/Common/Integrations/Traits/Module_Integration.php',
+        'TEC\\Common\\Integrations\\Traits\\Plugin_Integration' => __DIR__ . '/../..' . '/src/Common/Integrations/Traits/Plugin_Integration.php',
+        'TEC\\Common\\Integrations\\Traits\\Server_Integration' => __DIR__ . '/../..' . '/src/Common/Integrations/Traits/Server_Integration.php',
+        'TEC\\Common\\Integrations\\Traits\\Theme_Integration' => __DIR__ . '/../..' . '/src/Common/Integrations/Traits/Theme_Integration.php',
         'TEC\\Common\\Libraries\\Installer\\Provider' => __DIR__ . '/../..' . '/src/Common/Libraries/Installer/Provider.php',
         'TEC\\Common\\Libraries\\Provider' => __DIR__ . '/../..' . '/src/Common/Libraries/Provider.php',
+        'TEC\\Common\\Site_Health\\Factory' => __DIR__ . '/../..' . '/src/Common/Site_Health/Factory.php',
+        'TEC\\Common\\Site_Health\\Fields\\Generic_Info_Field' => __DIR__ . '/../..' . '/src/Common/Site_Health/Fields/Generic_Info_Field.php',
+        'TEC\\Common\\Site_Health\\Fields\\Post_Status_Count_Field' => __DIR__ . '/../..' . '/src/Common/Site_Health/Fields/Post_Status_Count_Field.php',
+        'TEC\\Common\\Site_Health\\Info_Field_Abstract' => __DIR__ . '/../..' . '/src/Common/Site_Health/Info_Field_Abstract.php',
+        'TEC\\Common\\Site_Health\\Info_Field_Interface' => __DIR__ . '/../..' . '/src/Common/Site_Health/Info_Field_Interface.php',
+        'TEC\\Common\\Site_Health\\Info_Section_Abstract' => __DIR__ . '/../..' . '/src/Common/Site_Health/Info_Section_Abstract.php',
+        'TEC\\Common\\Site_Health\\Info_Section_Interface' => __DIR__ . '/../..' . '/src/Common/Site_Health/Info_Section_Interface.php',
+        'TEC\\Common\\Site_Health\\Provider' => __DIR__ . '/../..' . '/src/Common/Site_Health/Provider.php',
         'TEC\\Common\\Storage\\Timed_Option' => __DIR__ . '/../..' . '/src/Common/Storage/Timed_Option.php',
+        'TEC\\Common\\Telemetry\\Migration' => __DIR__ . '/../..' . '/src/Common/Telemetry/Migration.php',
+        'TEC\\Common\\Telemetry\\Provider' => __DIR__ . '/../..' . '/src/Common/Telemetry/Provider.php',
+        'TEC\\Common\\Telemetry\\Telemetry' => __DIR__ . '/../..' . '/src/Common/Telemetry/Telemetry.php',
         'TEC\\Common\\Translations_Loader' => __DIR__ . '/../..' . '/src/Common/Translations_Loader.php',
         'Tribe\\Admin\\Conditional_Content\\Black_Friday' => __DIR__ . '/../..' . '/src/Tribe/Admin/Conditional_Content/Black_Friday.php',
         'Tribe\\Admin\\Conditional_Content\\Datetime_Conditional_Abstract' => __DIR__ . '/../..' . '/src/Tribe/Admin/Conditional_Content/Datetime_Conditional_Abstract.php',
@@ -192,22 +216,14 @@ class ComposerStaticInitbeb5a86669a1943c16b7303e8cfb66ec
         'Tribe\\Widget\\Manager' => __DIR__ . '/../..' . '/src/Tribe/Widget/Manager.php',
         'Tribe\\Widget\\Widget_Abstract' => __DIR__ . '/../..' . '/src/Tribe/Widget/Widget_Abstract.php',
         'Tribe\\Widget\\Widget_Interface' => __DIR__ . '/../..' . '/src/Tribe/Widget/Widget_Interface.php',
-        'tad_DI52_Container' => __DIR__ . '/..' . '/lucatume/di52/src/tad/DI52/Container.php',
-        'tad_DI52_ContainerInterface' => __DIR__ . '/..' . '/lucatume/di52/src/tad/DI52/ContainerInterface.php',
-        'tad_DI52_ProtectedValue' => __DIR__ . '/..' . '/lucatume/di52/src/tad/DI52/ProtectedValue.php',
-        'tad_DI52_ServiceProvider' => __DIR__ . '/..' . '/lucatume/di52/src/tad/DI52/ServiceProvider.php',
-        'tad_DI52_ServiceProviderInterface' => __DIR__ . '/..' . '/lucatume/di52/src/tad/DI52/ServiceProviderInterface.php',
-        'xrstf\\Composer52\\AutoloadGenerator' => __DIR__ . '/..' . '/xrstf/composer-php52/lib/xrstf/Composer52/AutoloadGenerator.php',
-        'xrstf\\Composer52\\Generator' => __DIR__ . '/..' . '/xrstf/composer-php52/lib/xrstf/Composer52/Generator.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitbeb5a86669a1943c16b7303e8cfb66ec::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitbeb5a86669a1943c16b7303e8cfb66ec::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitbeb5a86669a1943c16b7303e8cfb66ec::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitbeb5a86669a1943c16b7303e8cfb66ec::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitf837c41ac27fe6992859bbba70641680::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitf837c41ac27fe6992859bbba70641680::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitf837c41ac27fe6992859bbba70641680::$classMap;
 
         }, null, ClassLoader::class);
     }

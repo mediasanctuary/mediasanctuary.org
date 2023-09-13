@@ -10,7 +10,7 @@
 namespace Tribe\Events\Virtual\Compatibility\Events_Control_Extension;
 
 use Tribe\Extensions\EventsControl\Hooks as Events_Control_Extension_Hooks;
-
+use TEC\Common\Contracts\Service_Provider as Provider_Contract;
 /**
  * Class Service_Provider
  *
@@ -18,7 +18,7 @@ use Tribe\Extensions\EventsControl\Hooks as Events_Control_Extension_Hooks;
  *
  * @package Tribe\Extensions\Events_Control_Extension
  */
-class Service_Provider extends \tad_DI52_ServiceProvider {
+class Service_Provider extends Provider_Contract {
 
 	/**
 	 * Registers the bindings and filters used to ensure compatibility with the Events Control extension.

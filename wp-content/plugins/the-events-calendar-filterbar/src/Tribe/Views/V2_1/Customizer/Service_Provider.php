@@ -10,6 +10,7 @@ namespace Tribe\Events\Filterbar\Views\V2_1\Customizer;
 
 use Tribe\Events\Filterbar\Views\V2_1\Customizer\Section\Events_Bar;
 use Tribe\Events\Filterbar\Views\V2_1\Customizer\Section\Global_Elements;
+use TEC\Common\Contracts\Service_Provider as Provider_Contract;
 
 /**
  * Class Service_Provider
@@ -18,7 +19,7 @@ use Tribe\Events\Filterbar\Views\V2_1\Customizer\Section\Global_Elements;
  *
  * @package Tribe\Events\Filterbar\Views\V2_1\Customizer
  */
-class Service_Provider extends \tad_DI52_ServiceProvider {
+class Service_Provider extends Provider_Contract {
 	/**
 	 * Binds and sets up implementations.
 	 *

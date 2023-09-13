@@ -10,6 +10,7 @@
 namespace Tribe\Events\Virtual\ORM;
 
 use Tribe\Events\Virtual\Repositories\Event;
+use TEC\Common\Contracts\Service_Provider;
 
 /**
  * Class ORM
@@ -17,7 +18,7 @@ use Tribe\Events\Virtual\Repositories\Event;
  * @since 1.0.1
  * @package Tribe\Events\Virtual\ORM;
  */
-class ORM_Provider extends \tad_DI52_ServiceProvider {
+class ORM_Provider extends Service_Provider {
 
 	/**
 	 * Binds and sets up implementations and registers the required filters.

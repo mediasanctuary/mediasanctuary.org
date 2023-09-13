@@ -10,6 +10,7 @@
 namespace Tribe\Events\Virtual\Editor;
 
 use \Tribe__Events__Main as TEC;
+use TEC\Common\Contracts\Service_Provider;
 
 /**
  * Class Provider
@@ -20,7 +21,7 @@ use \Tribe__Events__Main as TEC;
  *
  * @package Tribe\Events\Virtual\Editor
  */
-class Provider extends \tad_DI52_ServiceProvider {
+class Provider extends Service_Provider {
 
 	/**
 	 * Binds and sets up implementations.

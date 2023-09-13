@@ -4,12 +4,8 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit877958451c5c18d4bbdf1fff2ac3c539
+class ComposerStaticInite79d1f7e2cce3bbb0d2366f4bff020a7
 {
-    public static $files = array (
-        'db020e36c90dae2855434958b09ed49e' => __DIR__ . '/../..' . '/src/functions/load.php',
-    );
-
     public static $prefixLengthsPsr4 = array (
         'T' => 
         array (
@@ -57,6 +53,14 @@ class ComposerStaticInit877958451c5c18d4bbdf1fff2ac3c539
         'TEC\\Events_Virtual\\Compatibility\\Event_Automator\\Zapier\\Zapier_Provider' => __DIR__ . '/../..' . '/src/Events_Virtual/Compatibility/Event_Automator/Zapier/Zapier_Provider.php',
         'TEC\\Events_Virtual\\Custom_Tables\\V1\\Provider' => __DIR__ . '/../..' . '/src/Events_Virtual/Custom_Tables/V1/Provider.php',
         'TEC\\Events_Virtual\\Custom_Tables\\V1\\Views\\V2\\Assets' => __DIR__ . '/../..' . '/src/Events_Virtual/Custom_Tables/V1/Views/V2/Assets.php',
+        'TEC\\Events_Virtual\\Integrations\\Integration_Abstract' => __DIR__ . '/../..' . '/src/Events_Virtual/Integrations/Integration_Abstract.php',
+        'TEC\\Events_Virtual\\Integrations\\Plugins\\Event_Tickets\\Emails\\Email\\RSVP' => __DIR__ . '/../..' . '/src/Events_Virtual/Integrations/Plugins/Event_Tickets/Emails/Email/RSVP.php',
+        'TEC\\Events_Virtual\\Integrations\\Plugins\\Event_Tickets\\Emails\\Email\\Ticket' => __DIR__ . '/../..' . '/src/Events_Virtual/Integrations/Plugins/Event_Tickets/Emails/Email/Ticket.php',
+        'TEC\\Events_Virtual\\Integrations\\Plugins\\Event_Tickets\\Emails\\Hooks' => __DIR__ . '/../..' . '/src/Events_Virtual/Integrations/Plugins/Event_Tickets/Emails/Hooks.php',
+        'TEC\\Events_Virtual\\Integrations\\Plugins\\Event_Tickets\\Emails\\Provider' => __DIR__ . '/../..' . '/src/Events_Virtual/Integrations/Plugins/Event_Tickets/Emails/Provider.php',
+        'TEC\\Events_Virtual\\Integrations\\Plugins\\Event_Tickets\\Emails\\Template' => __DIR__ . '/../..' . '/src/Events_Virtual/Integrations/Plugins/Event_Tickets/Emails/Template.php',
+        'TEC\\Events_Virtual\\Integrations\\Plugins\\Event_Tickets\\Provider' => __DIR__ . '/../..' . '/src/Events_Virtual/Integrations/Plugins/Event_Tickets/Provider.php',
+        'TEC\\Events_Virtual\\Integrations\\Provider' => __DIR__ . '/../..' . '/src/Events_Virtual/Integrations/Provider.php',
         'Tribe\\Events\\Virtual\\Admin_Template' => __DIR__ . '/../..' . '/src/Tribe/Admin_Template.php',
         'Tribe\\Events\\Virtual\\Assets' => __DIR__ . '/../..' . '/src/Tribe/Assets.php',
         'Tribe\\Events\\Virtual\\Autodetect\\AJAX' => __DIR__ . '/../..' . '/src/Tribe/Autodetect/AJAX.php',
@@ -214,9 +218,9 @@ class ComposerStaticInit877958451c5c18d4bbdf1fff2ac3c539
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit877958451c5c18d4bbdf1fff2ac3c539::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit877958451c5c18d4bbdf1fff2ac3c539::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit877958451c5c18d4bbdf1fff2ac3c539::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite79d1f7e2cce3bbb0d2366f4bff020a7::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite79d1f7e2cce3bbb0d2366f4bff020a7::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInite79d1f7e2cce3bbb0d2366f4bff020a7::$classMap;
 
         }, null, ClassLoader::class);
     }

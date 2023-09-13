@@ -264,15 +264,19 @@ class Tribe__Events__iCal {
 	/**
 	 * Generates the iCal file
 	 *
-	 * @param int|null $post If you want the ical file for a single event
+	 * @param int|null|array $post If you want the ical file for a single event
 	 * @param boolean  $echo Whether the content should be echoed or returned
 	 *
 	 * @return string
 	 */
 	public function generate_ical_feed( $post = null, $echo = true ) {
-		$this->post = $post;
+		if ( is_numeric( $post ) ) {
+			$post = get_post( (int) $post );
+		}
+
+		$this->post   = $post;
 		$this->events = $this->get_event_posts();
-		$content = $this->get_content();
+		$content      = $this->get_content();
 
 		if ( $echo ) {
 			$this->set_headers();
@@ -327,6 +331,14 @@ class Tribe__Events__iCal {
 		if ( $list_view_slug === $args['eventDisplay'] ) {
 			// Whe producing a List view iCal feed the `eventDate` is misleading.
 			unset( $args['eventDate'] );
+
+			// If passed a date, only observe it if it's in the future.
+			if ( isset( $args['tribe-bar-date'] ) ) {
+				$set_date = Dates::build_date_object( $args['tribe-bar-date'] );
+				if ( $set_date < Dates::build_date_object() ) {
+					unset( $args['tribe-bar-date'] );
+				}
+			}
 		}
 
 		return $this->get_events_list( $args, $wp_query );
@@ -408,9 +420,9 @@ class Tribe__Events__iCal {
 	 */
 	protected function get_file_name() {
 		$event_ids = wp_list_pluck( $this->events, 'ID' );
-		$site = sanitize_title( get_bloginfo( 'name' ) );
-		$hash = substr( md5( $this->type . implode( $event_ids ) ), 0, 11 );
-		$filename = sprintf( '%s-%s.ics', $site, $hash );
+		$site      = sanitize_title( get_bloginfo( 'name' ) );
+		$hash      = substr( md5( $this->type . implode( $event_ids ) ), 0, 11 );
+		$filename  = sprintf( '%s-%s.ics', $site, $hash );
 
 		/**
 		 * Modifies the filename provided in the Content-Disposition header for iCal feeds.

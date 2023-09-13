@@ -22,6 +22,7 @@
 namespace Tribe\Events\Virtual;
 
 use Tribe\Events\Virtual\Autodetect\Autodetect_Provider;
+use Tribe\Events\Virtual\Context\Context_Provider;
 use Tribe\Events\Virtual\Importer\Importer_Provider;
 use Tribe\Events\Virtual\Event_Status\Compatibility\Filter_Bar\Service_Provider as Event_Status_Filter_Bar_Provider;
 use Tribe\Events\Virtual\Event_Status\Status_Labels;
@@ -37,6 +38,7 @@ use Tribe\Events\Views\V2\Template_Bootstrap;
 use Tribe__Context as Context;
 use Tribe__Events__Main as Events_Plugin;
 use Tribe__Template as Template;
+use TEC\Common\Contracts\Service_Provider;
 use WP_Post;
 
 /**
@@ -46,7 +48,7 @@ use WP_Post;
  *
  * @package Tribe\Events\Virtual;
  */
-class Hooks extends \tad_DI52_ServiceProvider {
+class Hooks extends Service_Provider {
 
 	/**
 	 * Binds and sets up implementations.
@@ -874,7 +876,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * Add, to the Context, the locations used by the plugin.
 	 *
 	 * @since 1.0.0
-	 * @since 1.13.5 Changed the `state` var name.
+	 * @since 1.14.0 - Use a constant for 'state' query variable.
 	 *
 	 * @param array<string,array> $context_locations The current Context locations.
 	 *
@@ -887,10 +889,9 @@ class Hooks extends \tad_DI52_ServiceProvider {
 			],
 		];
 
-		// 'state' is sent from whodat with nonce for Microsoft, Google, and Webex.
 		$context_locations['events_virtual_request'] = [
 			'read' => [
-				Context::REQUEST_VAR => [ Plugin::$request_slug, 'state' ],
+				Context::REQUEST_VAR => [ Plugin::$request_slug, Context_Provider::AUTH_STATE_QUERY_VAR ],
 			],
 		];
 

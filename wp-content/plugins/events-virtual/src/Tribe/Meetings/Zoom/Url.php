@@ -9,6 +9,7 @@
 
 namespace Tribe\Events\Virtual\Meetings\Zoom;
 
+use Tribe\Events\Virtual\Context\Context_Provider;
 use Tribe\Events\Virtual\Integrations\Abstract_Url;
 use Tribe\Events\Virtual\Plugin;
 use Tribe\Events\Virtual\Meetings\Zoom\Event_Meta as Zoom_Event_Meta;
@@ -83,7 +84,7 @@ class Url extends Abstract_Url {
 	 * Returns the full OAuth URL to authorize the application.
 	 *
 	 * @since 1.13.2
-	 * @since 1.13.5 Changed the `state` var name.
+	 * @since 1.14.0 - Use a constant for 'state' query variable.
 	 *
 	 * @return string The full OAuth URL to authorize the application.
 	 */
@@ -91,7 +92,7 @@ class Url extends Abstract_Url {
 		// Use the `state` query arg as described in Zoom API documentation.
 		$authorize_url = add_query_arg(
 			[
-				'state' => wp_create_nonce( $this->actions::$authorize_nonce_action ),
+				Context_Provider::AUTH_STATE_QUERY_VAR => wp_create_nonce( $this->actions::$authorize_nonce_action ),
 			],
 			admin_url()
 		);

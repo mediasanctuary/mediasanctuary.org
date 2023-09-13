@@ -9,6 +9,8 @@
 
 namespace Tribe\Events\Filterbar\Compatibility\Divi;
 
+use TEC\Common\Contracts\Service_Provider as Provider_Contract;
+
 /**
  * Class Service_Provider
  *
@@ -16,7 +18,7 @@ namespace Tribe\Events\Filterbar\Compatibility\Divi;
  *
  * @package Tribe\Events\Filterbar\Compatibility\Divi
  */
-class Service_Provider extends \tad_DI52_ServiceProvider {
+class Service_Provider extends Provider_Contract {
 	/**
 	 * Register the bindings and filters required to ensure compatibility Divi theme.
 	 *

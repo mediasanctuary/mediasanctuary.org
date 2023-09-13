@@ -9,9 +9,19 @@
 namespace Tribe\Events\Virtual\Context;
 
 use Tribe__Context;
+use TEC\Common\Contracts\Service_Provider;
 
+class Context_Provider extends Service_Provider {
 
-class Context_Provider extends \tad_DI52_ServiceProvider {
+	/**
+	 * Stores the query variable used by Whodat for meeting provider authorization and for internal AJAX.
+	 * 'state' is sent from whodat with nonce for Microsoft, Google, and Webex.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @var string
+	 */
+	const AUTH_STATE_QUERY_VAR = 'state';
 
 	/**
 	 * Binds and sets up implementations.

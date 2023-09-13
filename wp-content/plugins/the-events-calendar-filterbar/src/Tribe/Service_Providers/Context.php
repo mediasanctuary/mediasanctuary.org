@@ -9,6 +9,9 @@
 
 namespace Tribe\Events\Filterbar\Service_Providers;
 
+use TEC\Common\Contracts\Service_Provider;
+
+
 /**
  * Class Context
  *
@@ -16,7 +19,7 @@ namespace Tribe\Events\Filterbar\Service_Providers;
  *
  * @package Tribe\Events\Filterbar\Service_Providers
  */
-class Context extends \tad_DI52_ServiceProvider {
+class Context extends Service_Provider {
 
 	/**
 	 * Binds and sets up implementations.

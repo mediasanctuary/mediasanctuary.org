@@ -9,6 +9,8 @@
 
 namespace Tribe\Events\Virtual;
 
+use TEC\Common\Contracts\Service_Provider;
+
 /**
  * Class Compatibility
  *
@@ -16,7 +18,7 @@ namespace Tribe\Events\Virtual;
  *
  * @package Tribe\Events\Virtual
  */
-class Compatibility extends \tad_DI52_ServiceProvider {
+class Compatibility extends Service_Provider {
 
 	/**
 	 * Conditionally registers the Service Providers that handle the compatibility and integrations w/ other plugins.

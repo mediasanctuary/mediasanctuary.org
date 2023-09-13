@@ -12,7 +12,7 @@ namespace TEC\Events_Virtual\Custom_Tables\V1\Views\V2;
 use Tribe\Events\Views\V2\Assets as Event_Assets;
 use Tribe\Events\Views\V2\Template_Bootstrap;
 use Tribe\Events\Virtual\Plugin;
-use tad_DI52_ServiceProvider as Service_Provider;
+use TEC\Common\Contracts\Service_Provider;
 
 /**
  * Register Assets.

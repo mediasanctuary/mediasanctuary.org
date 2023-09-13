@@ -2,7 +2,7 @@
 /*
 Plugin Name: The Events Calendar: Virtual Events
 Description: Virtual Events is an add-on to The Events Calendar suite of products that optimizes your calendar, tickets, and email notifications for virtual events.
-Version: 1.13.6
+Version: 1.15.0
 Author: The Events Calendar
 Author URI: http://evnt.is/20
 Text Domain: events-virtual
@@ -32,9 +32,6 @@ define( 'EVENTS_VIRTUAL_FILE', __FILE__ );
 
 // Load the required php min version functions.
 require_once dirname( EVENTS_VIRTUAL_FILE ) . '/src/functions/php-min-version.php';
-
-// Load Composer autoload file only if we've not included this file already.
-require_once dirname( EVENTS_VIRTUAL_FILE ) . '/vendor/autoload.php';
 
 /**
  * Verifies if we need to warn the user about min PHP version and bail to avoid fatal errors.
@@ -68,8 +65,11 @@ if ( tribe_is_not_min_php_version() ) {
 // Include the file that defines the functions handling the plugin load operations.
 require_once __DIR__ . '/src/functions/load.php';
 
+// Tries to initially load on common loaded, but if common is not loaded, we need to load on plugins loaded.
+add_action( 'tribe_common_loaded', 'tribe_events_virtual_preload', 15 );
+
 // Add a second action to handle the case where Common is not loaded, we still want to let the user know what is happening.
-add_action( 'plugins_loaded', 'tribe_events_virtual_preload', 50 );
+add_action( 'plugins_loaded', 'tribe_events_virtual_preload', 25 );
 
 // Loads after common is already properly loaded.
-add_action( 'tribe_common_loaded', 'tribe_events_virtual_load' );
+add_action( 'tribe_common_loaded', 'tribe_events_virtual_load', 50 );

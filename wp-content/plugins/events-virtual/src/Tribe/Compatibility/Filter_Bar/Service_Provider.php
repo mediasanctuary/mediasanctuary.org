@@ -8,6 +8,7 @@
  */
 
 namespace Tribe\Events\Virtual\Compatibility\Filter_Bar;
+use TEC\Common\Contracts\Service_Provider as Provider_Contract;
 
 /**
  * Class Service_Provider
@@ -16,7 +17,7 @@ namespace Tribe\Events\Virtual\Compatibility\Filter_Bar;
  *
  * @package Tribe\Events\Virtual\Compatibility\Filter_Bar
  */
-class Service_Provider extends \tad_DI52_ServiceProvider {
+class Service_Provider extends Provider_Contract {
 
 	/**
 	 * Register the bindings and filters required to ensure compatibility w/Filter Bar.

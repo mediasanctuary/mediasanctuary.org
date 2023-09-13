@@ -12,6 +12,7 @@ use Tribe\Events\Views\V2\Kitchen_Sink;
 use Tribe\Events\Views\V2\View;
 use Tribe\Events\Views\V2\View_Interface;
 use Tribe__Context as Context;
+use TEC\Common\Contracts\Service_Provider;
 
 /**
  * Class Views_Provider
@@ -19,7 +20,7 @@ use Tribe__Context as Context;
  * @since   1.0.1
  * @package Tribe\Events\Virtual\Views\V2
  */
-class Views_Provider extends \tad_DI52_ServiceProvider {
+class Views_Provider extends Service_Provider {
 
 	/**
 	 * Binds and sets up implementations.

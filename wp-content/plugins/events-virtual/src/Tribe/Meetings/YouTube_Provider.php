@@ -92,6 +92,7 @@ class YouTube_Provider extends Meeting_Provider {
 
 		// Filter the ticket email virtual url.
 		add_filter( 'tribe_events_virtual_ticket_email_url', [ $this, 'filter_ticket_email_url' ], 15, 2 );
+		add_filter( 'tec_events_virtual_ticket_email_url', [ $this, 'filter_ticket_email_url' ], 15, 2 );
 		add_action( 'tec_virtual_automator_map_event_details', [ $this, 'add_event_automator_properties' ], 10, 2 );
 	}
 
