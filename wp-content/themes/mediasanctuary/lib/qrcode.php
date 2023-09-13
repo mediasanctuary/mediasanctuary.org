@@ -84,7 +84,7 @@ function qr_code_url($id) {
 	// Okay, let's make a QR Code!
 	$dir = dirname(__DIR__);
 	$filename = tempnam('/tmp', 'qrcode');
-	exec("cd $dir && npm run qrcode -- --output $filename $permalink", $output, $return_code);
+	exec("$dir/node_modules/qrcode/bin/qrcode --width 980 --output $filename $permalink", $output, $return_code);
 
 	// Something went wrong generating the QR Code
 	if ($return_code !== 0) {

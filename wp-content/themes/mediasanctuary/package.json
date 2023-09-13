@@ -4,7 +4,6 @@
   "description": "WordPress theme for mediasanctuary.org",
   "main": "index.php",
   "scripts": {
-    "qrcode": "qrcode --width 980",
     "build-task:build": "sass css/main.scss:dist/main.css contribute/contribute.scss:dist/contribute.css css/admin/admin.scss:dist/admin.css",
     "build-task:autoprefixer": "postcss dist/*.css --use autoprefixer -d dist",
     "sass:build": "npm-run-all build-task:*",
