@@ -10,8 +10,8 @@
     "sass:build": "npm-run-all build-task:*",
     "sass:watch": "chokidar \"**/*.scss\" -c \"npm run sass:build\"",
     "sass:admin": "chokidar \"admin/**/*.scss\" -c \"npm run build-task:admin\"",
-    "start": "npm-run-all -p sass:* rollup:*",
-    "build": "npm-run-all -p sass:build rollup:*"
+    "start": "npm-run-all -p sass:*",
+    "build": "npm-run-all -p sass:build"
   },
   "repository": {
     "type": "git",
