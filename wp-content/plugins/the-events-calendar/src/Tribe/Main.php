@@ -41,7 +41,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		const VENUE_POST_TYPE     = 'tribe_venue';
 		const ORGANIZER_POST_TYPE = 'tribe_organizer';
 
-		const VERSION             = '6.1.1';
+		const VERSION             = '6.2.2';
 
 		/**
 		 * Min Pro Addon
@@ -78,7 +78,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		 *
 		 * @since 4.8
 		 */
-		protected $min_et_version = '5.5.2-dev';
+		protected $min_et_version = '5.6.5-dev';
 
 		/**
 		 * Maybe display data wrapper
@@ -600,6 +600,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 			tribe_register_provider( 'Tribe__Events__Aggregator__Processes__Service_Provider' );
 			tribe_register_provider( Tribe\Events\Taxonomy\Taxonomy_Provider::class );
 			tribe_register_provider( 'Tribe__Events__Editor__Provider' );
+			tribe_register_provider( TEC\Events\Configuration\Provider::class );
 
 			// @todo After version 6.0.0 this needs to move to the Events folder provider.
 			tribe_register_provider( TEC\Events\Legacy\Views\V1\Provider::class );
@@ -2958,33 +2959,30 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 				//get venue and organizer and publish them
 				$pm = get_post_custom( $post->ID );
 
-				do_action( 'log', 'publishing an event with a venue', 'tribe-events', $post );
+				$linked_post_prefixes = [
+					'venue'     => '_EventVenue',
+					'organizer' => '_EventOrganizer',
+				];
 
-				// save venue on first setup
-				if ( ! empty( $pm['_EventVenueID'] ) ) {
-					$venue_id = is_array( $pm['_EventVenueID'] ) ? current( $pm['_EventVenueID'] ) : $pm['_EventVenueID'];
-					if ( $venue_id ) {
-						do_action( 'log', 'event has a venue', 'tribe-events', $venue_id );
-						$venue_post = get_post( $venue_id );
-						if ( ! empty( $venue_post ) && $venue_post->post_status != 'publish' ) {
-							do_action( 'log', 'venue post found', 'tribe-events', $venue_post );
-							$venue_post->post_status = 'publish';
-							wp_update_post( $venue_post );
-							$did_save = true;
-						}
+				foreach ( $linked_post_prefixes as $type => $linked_post_prefix ) {
+					$id_index = "{$linked_post_prefix}ID";
+
+					if ( empty( $pm[ $id_index ] ) ) {
+						continue;
 					}
-				}
 
-				// save organizer on first setup
-				if ( ! empty( $pm['_EventOrganizerID'] ) ) {
-					$org_id = is_array( $pm['_EventOrganizerID'] ) ? current( $pm['_EventOrganizerID'] ) : $pm['_EventOrganizerID'];
-					if ( $org_id ) {
-						$org_post = get_post( $org_id );
-						if ( ! empty( $org_post ) && $org_post->post_status != 'publish' ) {
-							$org_post->post_status = 'publish';
-							wp_update_post( $org_post );
-							$did_save = true;
+					$linked_post_ids = is_array( $pm[ $id_index ] ) ? $pm[ $id_index ] : [ $pm[ $id_index ] ];
+
+					foreach ( $linked_post_ids as $linked_post_id ) {
+						if ( ! $linked_post_id ) {
+							continue;
 						}
+
+						if ( in_array( get_post_status( $linked_post_id ), [ 'publish', 'private' ], true ) ) {
+							continue;
+						}
+
+						wp_publish_post( $linked_post_id );
 					}
 				}
 			}
