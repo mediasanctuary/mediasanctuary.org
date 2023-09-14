@@ -946,10 +946,20 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__Filter' ) ) {
 					'value' => $value,
 				];
 			}
+			$var = $this->currentValue;
+
+			// urldecode needs a string
+			if ( is_array( $var ) ) {
+				$var = implode( ',', $var );
+			}
+
+			if ( is_string( $var ) ) {
+				$var = urldecode( $var );
+			}
 
 			return [
 				'type'    => 'select' === $this->type ? 'dropdown' : $this->type,
-				'value'   => urldecode( is_array( $this->currentValue ) ? implode( ',', $this->currentValue ) : $this->currentValue ),
+				'value'   => $var,
 				'id'      => $this->get_formatted_id_from_name( $this->slug ),
 				'name'    => $this->get_name_field(),
 				'options' => $options,

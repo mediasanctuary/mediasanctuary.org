@@ -41,13 +41,13 @@ trait With_Event_Recurrence {
 	 * @return float|int The approximate number of exclusion dates the rule would generate.
 	 */
 	private function guess_rule_count( array $rule ) {
-		$type = isset( $rule['custom']['type'] ) ? $rule['custom']['type'] : 'n/a';
+		$type     = isset( $rule['custom']['type'] ) ? $rule['custom']['type'] : 'n/a';
 		$end_type = isset( $rule['end-type'] ) ? $rule['end-type'] : 'Never';
 
-		$count = null;
-		$end_timestamp = null;
-		$now_timestamp = time();
-		$interval = isset( $rule['custom']['interval'] ) ? $rule['custom']['interval'] : 1;
+		$count           = null;
+		$end_timestamp   = null;
+		$start_timestamp = isset( $rule['EventStartDate'] ) ? Dates::immutable( $rule['EventStartDate'] )->getTimestamp() : time();
+		$interval        = isset( $rule['custom']['interval'] ) ? $rule['custom']['interval'] : 1;
 
 		switch ( $end_type ) {
 			case 'After':
@@ -66,24 +66,24 @@ trait With_Event_Recurrence {
 			case 'Date':
 				return 1;
 			case 'Daily':
-				return $count ?: (int) ( ( $end_timestamp - $now_timestamp ) / DAY_IN_SECONDS / $interval );
+				return $count ?: (int) ( ( $end_timestamp - $start_timestamp ) / DAY_IN_SECONDS / $interval );
 			case 'Weekly':
 				// "Weekly 4 days a week" will generate more dates than "Weekly, 2 days a week".
 				$days = isset( $rule['custom']['week']['day'] ) ?
 					count( (array) $rule['custom']['week']['day'] )
 					: 1;
 
-				return $count ?: (int) ( ( $end_timestamp - $now_timestamp ) / DAY_IN_SECONDS / 7 / $interval * $days );
+				return $count ?: (int) ( ( $end_timestamp - $start_timestamp ) / DAY_IN_SECONDS / 7 / $interval * $days );
 			case 'Monthly':
 
-				return $count ?: (int) ( ( $end_timestamp - $now_timestamp ) / DAY_IN_SECONDS / 30 / $interval );
+				return $count ?: (int) ( ( $end_timestamp - $start_timestamp ) / DAY_IN_SECONDS / 30 / $interval );
 			case 'Yearly':
 				// "Yearly, 4 months each year" will generate more dates than "Yearly, 2 months a year".
 				$months = isset( $rule['custom']['year']['month'] ) ?
 					count( (array) $rule['custom']['year']['month'] )
 					: 1;
 
-				return $count ?: (int) ( ( $end_timestamp - $now_timestamp ) / DAY_IN_SECONDS / 365 / $interval * $months );
+				return $count ?: (int) ( ( $end_timestamp - $start_timestamp ) / DAY_IN_SECONDS / 365 / $interval * $months );
 			default:
 				return 0;
 		}
@@ -419,10 +419,10 @@ trait With_Event_Recurrence {
 	 * @param bool                      $reset   Whether to reset the flag or respect the one
 	 *                                           already set, if found.
 	 *
-	 * @return array<string,array> The updated recurrence rule, in the format used by the
-	 *                             `_EventRecurrence` meta.
+	 * @return array<string,array>|mixed The updated recurrence rule, in the format used by the
+	 *                                   `_EventRecurrence` meta, or what was passed in if unable to identify.
 	 */
-	private function add_off_pattern_flag_to_rule( $rule, int $post_id = null, bool $reset = false ): array {
+	private function add_off_pattern_flag_to_rule( $rule, int $post_id = null, bool $reset = false ) {
 		if ( ! (
 			is_array( $rule )
 			&& ( isset( $rule['custom']['type'] ) || isset( $rule['type'] ) ) )

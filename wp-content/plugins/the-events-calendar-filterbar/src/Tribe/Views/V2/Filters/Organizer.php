@@ -25,6 +25,11 @@ class Organizer extends \Tribe__Events__Filterbar__Filters__Organizer {
 	 * @return array An array of Organizer IDs.
 	 */
 	protected function parse_value( $raw_value ) {
+		// Short circuit on empty values.
+		if ( empty( $raw_value ) ) {
+			return [];
+		}
+
 		$values = is_array( $raw_value ) ? $raw_value : explode( ',', $raw_value );
 		$values = array_map( 'absint', $values );
 

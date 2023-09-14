@@ -28,6 +28,11 @@ trait Concatenated_Value_Handling {
 	 * @return array An array of Venue IDs.
 	 */
 	protected function parse_value( $raw_value ) {
+		// Short circuit on empty values.
+		if ( empty( $raw_value ) ) {
+			return [];
+		}
+
 		$values = is_array( $raw_value ) ? $raw_value : explode( ',', $raw_value );
 
 		foreach ( $values as &$value ) {

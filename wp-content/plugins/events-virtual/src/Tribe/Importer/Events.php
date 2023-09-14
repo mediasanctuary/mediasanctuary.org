@@ -64,6 +64,7 @@ class Events {
 		$virtual_column_names = [
 			'virtual'              => esc_html(
 				sprintf(
+					/* Translators: %1$s: Virtual Events label, %2$s: Events label singular */
 					_x(
 						'Configure %1$s %2$s',
 						'Column name for importer of virtual events.',

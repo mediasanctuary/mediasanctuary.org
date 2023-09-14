@@ -45,15 +45,12 @@ tribe.filterBar.filters = {};
 		filterBarVertical: '.tribe-events--filter-bar-vertical',
 	};
 
-	/** eslint-disable
-	 *
-	 *
+	/**
 	 * URL-decodes the string. We need to specially handle '+'s because the javascript
 	 * library doesn't convert them to spaces.
 	 *
 	 * @since 5.4.5
 	 *
-	 * eslint-disable-next-line max-len
 	 * @see https://chromium.googlesource.com/chromium/src.git/+/62.0.3178.1/third_party/google_input_tools/third_party/closure_library/closure/goog/string/string.js?autodive=0%2F%2F%2F%2F#486
 	 *
 	 * @param {string} val The value to decodeURIComponent, as well as + space url encodings
@@ -430,14 +427,12 @@ tribe.filterBar.filters = {};
 		url = decodeURIComponent( url );
 		$container.trigger( 'beforeFilterBarSubmitRequest.tribeEvents' );
 
-		var nonce = $container.data( 'view-rest-nonce' );
 		var shouldManageUrl = tribe.events.views.manager.shouldManageUrl( $container );
 
 		var data = {
 			prev_url: encodeURI( decodeURI( obj.getCurrentUrl( $container ) ) ),
 			url: encodeURI( decodeURI( url ) ),
 			should_manage_url: shouldManageUrl,
-			_wpnonce: nonce,
 		};
 
 		obj.setTribeFilterBarRequest( $container );

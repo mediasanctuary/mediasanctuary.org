@@ -9,7 +9,6 @@
 
 namespace Tribe\Events\Filterbar\Views\V2\Filters;
 
-use Tribe\Events\Views\V2\View;
 use Tribe\Events\Filterbar\Views\V2\Filters;
 use Tribe__Context as Context;
 use Tribe__Events__Filterbar__Filter as Filter;
@@ -189,7 +188,7 @@ class Factory {
 	 *
 	 * @since 4.9.0
 	 *
-	 * @param Context $context     The context to attach each instance to.
+	 * @param Context       $context     The context to attach each instance to.
 	 * @param bool|callable $skip_filter Whether to build the filter or not; if this value is `true` then the
 	 *                                   filter will be not be built if the value the filter works on is empty. If this
 	 *                                   parameter is a callable then it will be called for each filter and passed the
@@ -215,7 +214,7 @@ class Factory {
 
 			if ( $filter_context_key === 'filterbar_additional_fields' ) {
 				if ( ! $skip_this_filter ) {
-					$active_additional_fields = Context_Filter::get_available_additional_fields();
+					$active_additional_fields = Additional_Field::get_available_additional_fields();
 
 					$value = array_combine(
 						$active_additional_fields,
@@ -227,7 +226,7 @@ class Factory {
 
 				// We need to add a filter instance for each value.
 				foreach ( $value as $k => $v ) {
-					if ( ! Context_Filter::is_available( $filter_class, $k ) ) {
+					if ( ! Additional_Field::is_available( $filter_class, $k ) ) {
 						// Never build a filter if the filter is not available at all.
 						continue;
 					}
@@ -239,7 +238,7 @@ class Factory {
 					$built_filters[ $k ] = $filter;
 				}
 			} else {
-				if ( ! Context_Filter::is_available( $filter_class, $filter_context_key ) ) {
+				if ( ! $filter_class::is_available( $filter_class, $filter_context_key ) ) {
 					// Never build a filter if the filter is not available at all.
 					continue;
 				}

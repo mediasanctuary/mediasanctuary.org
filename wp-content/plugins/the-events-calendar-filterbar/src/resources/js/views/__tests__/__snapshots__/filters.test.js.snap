@@ -307,7 +307,6 @@ Object {
 
 exports[`Filters Submit request Should submit request 1`] = `
 Object {
-  "_wpnonce": undefined,
   "prev_url": "https://test.tri.be/events/month/?hello=world",
   "should_manage_url": true,
   "url": "https://test.tri.be/events/month/",

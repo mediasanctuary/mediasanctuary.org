@@ -93,19 +93,4 @@ class Template_Modifications extends Abstract_Template_Modifications {
 
 		$this->template->template( 'zoom/single/zoom-details', $context );
 	}
-
-	/**
-	 * Gets Zoom disabled connect button.
-	 *
-	 * @since 1.0.1
-	 * @deprecated 1.11.0 - Replaced with Multiple Account Support, see Account_API class.
-	 *
-	 * @return string HTML for the authorize fields.
-	 */
-	public function get_disabled_button() {
-		_deprecated_function( __METHOD__, '1.11.0', 'No replacement, functionality moved to whodat server.' );
-
-		return $this->admin_template->template( 'zoom/api/authorize-fields/disabled-button', [], false );
-	}
-
 }

@@ -39,20 +39,22 @@ class Zapier_Provider extends Service_Provider {
 	 * @since 1.13.5
 	 */
 	protected function add_filters() {
-		add_filter( 'tec_automator_map_event_details', [ $this, 'add_virtual_fields' ], 10, 2 );
+		add_filter( 'tec_automator_map_event_details', [ $this, 'add_virtual_fields' ], 10, 3 );
 	}
 
 	/**
 	 * Filters the event details sent to a 3rd party.
 	 *
 	 * @since 1.13.5
+	 * @since 1.15.3 - Add Service ID.
 	 *
-	 * @param array<string|mixed> An array of event details.
-	 * @param WP_Post An instance of the event WP_Post object.
+	 * @param array<string|mixed> $next_event An array of event details.
+	 * @param WP_Post             $event      An instance of the event WP_Post object.
+	 * @param string              $service_id The service id used to modify the mapped event details.
 	 *
 	 * @return array<string|mixed> An array of event details.
 	 */
-	public function add_virtual_fields( array $next_event, WP_Post $event ) {
-		return $this->container->make( Event::class )->add_virtual_fields( $next_event, $event );
+	public function add_virtual_fields( array $next_event, WP_Post $event, $service_id ) {
+		return $this->container->make( Event::class )->add_virtual_fields( $next_event, $event, $service_id );
 	}
 }

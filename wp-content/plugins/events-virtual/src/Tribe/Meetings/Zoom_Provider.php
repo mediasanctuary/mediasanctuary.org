@@ -205,15 +205,6 @@ class Zoom_Provider extends Meeting_Provider {
 	}
 
 	/**
-	 * Render the Migration Notice to the New Zoom App.
-	 *
-	 * @since 1.4.0
-	 */
-	public function render_migration_notice() {
-		$this->container->make( Migration_Notice::class )->render();
-	}
-
-	/**
 	 * If there is no original account for Zoom, save the first one to use to update individual events.
 	 *
 	 * @since 1.9.0
@@ -665,7 +656,6 @@ class Zoom_Provider extends Meeting_Provider {
 		add_action( 'wp', [ $this, 'check_zoom_meeting' ], 50 );
 		add_action( 'tribe_events_virtual_metabox_save', [ $this, 'on_metabox_save' ], 10, 2 );
 		add_action( 'save_post_tribe_events', [ $this, 'on_post_save' ], 100, 3 );
-		add_action( 'admin_init', [ $this, 'render_migration_notice' ] );
 		add_action( 'tec_events_virtual_before_update_api_accounts', [ $this, 'update_original_account' ], 10, 3 );
 		add_action( 'tec_virtual_automator_map_event_details', [ $this, 'add_event_automator_properties' ], 10, 2 );
 	}
@@ -691,75 +681,13 @@ class Zoom_Provider extends Meeting_Provider {
 	}
 
 	/**
-	 * Get the confirmation text for refreshing a Zoom account.
+	 * Render the Migration Notice to the New Zoom App.
 	 *
-	 * @since 1.5.0
-	 * @deprecated 1.9.0 - Use API::get_confirmation_to_refresh_account()
-	 *
-	 * @return string The confirmation text.
+	 * @since 1.4.0
+	 * @deprecated 1.15.3 - No replacement.
 	 */
-	public static function get_zoom_confirmation_to_refresh_account() {
-		_deprecated_function( __METHOD__, '1.9.0', 'Use API::get_confirmation_to_refresh_account().' );
-		return tribe( Api::class )->get_confirmation_to_refresh_account();
-	}
-
-	/**
-	 * Get the confirmation text for deleting a Zoom account.
-	 *
-	 * @since 1.5.0
-	 * @deprecated 1.9.0 - Use API::get_confirmation_to_delete_account()
-	 *
-	 * @return string The confirmation text.
-	 */
-	public static function get_zoom_confirmation_to_delete_account() {
-		_deprecated_function( __METHOD__, '1.9.0', 'Use API::get_confirmation_to_delete_account().' );
-		return tribe( Api::class )->get_confirmation_to_delete_account();
-	}
-
-	/**
-	 * Get authorized field template.
-	 *
-	 * @since 1.0.0
-	 * @deprecated 1.9.0
-	 *
-	 * @param Api $api An instance of the Zoom API handler.
-	 * @param Url $url An instance of the URL handler.
-	 */
-	public function zoom_api_authorize_fields( $api, $url ) {
-		_deprecated_function( __METHOD__, '1.9.0', 'No replacement, authorization system replaced with whodat and multiple accounts.' );
-		$this->container->make( Template_Modifications::class )->add_zoom_api_authorize_fields( $api, $url );
-	}
-
-	/**
-	 * Renders the Zoom API controls related to the display of the Zoom Meeting link.
-	 *
-	 * @since 1.0.0
-	 * @deprecated 1.9.0 - Moved to a common location to be shared with other APIs.
-	 *
-	 * @param string           $file        The path to the template file, unused.
-	 * @param string           $entry_point The name of the template entry point, unused.
-	 * @param \Tribe__Template $template    The current template instance.
-	 */
-	public function render_classic_display_controls( $file, $entry_point, \Tribe__Template $template ) {
-		_deprecated_function( __METHOD__, '1.9.0', 'Hooks::render_classic_display_controls()' );
-		$this->container->make( Zoom\Classic_Editor::class )
-						->render_classic_display_controls( $template->get( 'post' ) );
-	}
-
-	/**
-	 * Get the confirmation text for removing a Zoom connection.
-	 *
-	 * @since 1.5.0
-	 * @deprecated 1.9.0
-	 *
-	 * @return string The confirmation text.
-	 */
-	public static function get_zoom_confirmation_to_remove_connection_text() {
-		_deprecated_function( __METHOD__, '1.9.0', 'Method removed with no replacement.' );
-		return _x(
-			'Are you sure you want to remove this Zoom meeting from this event? This operation cannot be undone.',
-			'The message to display to confirm a user would like to remove the Zoom connection from an event.',
-			'events-virtual'
-		);
+	public function render_migration_notice() {
+		_deprecated_function( __METHOD__, '1.15.3', 'No replacement.' );
+		$this->container->make( Migration_Notice::class )->render();
 	}
 }

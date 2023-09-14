@@ -49,15 +49,6 @@ class Provisional_Post_Cache {
 	];
 
 	/**
-	 * The base, a positive integer, of the Provisional Post IDs.
-	 *
-	 * @since 6.0.0
-	 *
-	 * @var int
-	 */
-	private $base;
-
-	/**
 	 * A reference to the provisional ID generator instance.
 	 *
 	 * @since 6.0.0
@@ -80,15 +71,12 @@ class Provisional_Post_Cache {
 	 * Returns the current base value.
 	 *
 	 * @since 6.0.0
+	 * @since 6.2.1 This no longer pulls from a memoized value, it will always defer to the ID generator.
 	 *
 	 * @return int
 	 */
 	public function get_base(): int {
-		if ( empty( $this->base ) ) {
-			$this->base = $this->generator->current();
-		}
-
-		return $this->base;
+		return $this->generator->current();
 	}
 
 	/**
@@ -120,7 +108,7 @@ class Provisional_Post_Cache {
 			$to_hydrate
 		] = array_reduce( $occurrences_ids, function ( array $carry, int $occurrence_id ) use ( $cache ): array {
 			$cache_key = "event_occurrence_$occurrence_id";
-			$cached = $cache->get( $cache_key );
+			$cached = $cache[ $cache_key ];
 			if ( $cached instanceof Occurrence ) {
 				$carry[0][] = $cached;
 			} else {
@@ -129,7 +117,6 @@ class Provisional_Post_Cache {
 
 			return $carry;
 		}, [ [], [] ] );
-
 
 		if ( ! empty( $to_hydrate ) ) {
 			$fetched = [];
@@ -277,6 +264,9 @@ class Provisional_Post_Cache {
 	private function flush_occurrences_from_a_post_id( $post_id ): void {
 		$occurrences             = $this->get_array_from_cache( $post_id );
 		$occurrences[ $post_id ] = true;
+		$cache                   = tribe_cache();
+
+		unset( $cache["event_occurrence_$post_id"] );
 
 		foreach ( array_keys( $occurrences ) as $provisional_ID ) {
 			wp_cache_delete( $provisional_ID, 'posts' );

@@ -42,20 +42,4 @@ class Settings extends Abstract_Settings {
 		$this->url                    = $url;
 		self::$api_id                 = Webex_Meta::$key_source_id;
 	}
-
-	/**
-	 * Returns the current API refresh token.
-	 *
-	 * If not available, then a new token should be fetched by the API.
-	 *
-	 * @since      1.11.0
-	 * @return string|boolean The API access token, or false if the token cannot be fetched (error).
-	 * @deprecated 1.11.0 - Removed unused method, no replacement.
-	 *
-	 */
-	public static function get_refresh_token() {
-		_deprecated_function( __METHOD__, '1.11.0', 'No replacement.' );
-
-		return tribe_get_option( static::$option_prefix . 'refresh_token', false );
-	}
 }
