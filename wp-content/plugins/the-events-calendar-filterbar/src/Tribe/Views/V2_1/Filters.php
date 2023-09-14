@@ -3,7 +3,6 @@ namespace Tribe\Events\Filterbar\Views\V2_1;
 
 use Tribe__Context as Context;
 use Tribe__Events__Filterbar__Filter as Filter;
-use Tribe__Events__Filterbar__Settings as Filter_Bar_Settings;
 use Tribe__Utils__Array as Arr;
 
 /**

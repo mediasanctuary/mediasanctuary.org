@@ -3,7 +3,7 @@
         'name' => 'the-events-calendar/events-virtual',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '6a6fbb8d1b0edb12a4aebc6de34a5a03ee5a4daa',
+        'reference' => 'cb69a30a88d39ce09ddc8783de68b2facaba94a4',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -31,7 +31,7 @@
         'the-events-calendar/events-virtual' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '6a6fbb8d1b0edb12a4aebc6de34a5a03ee5a4daa',
+            'reference' => 'cb69a30a88d39ce09ddc8783de68b2facaba94a4',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

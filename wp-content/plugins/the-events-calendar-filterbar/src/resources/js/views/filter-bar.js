@@ -237,7 +237,6 @@ tribe.events.views.filterBar = {};
 	 */
 	obj.submitForm = function( $form ) {
 		var $container = $form.closest( tribe.events.views.manager.selectors.container );
-		var nonce = $container.data( 'view-rest-nonce' );
 		var formData = Qs.parse( $form.serialize() );
 
 		// Flag to Backend that it can ignore the URL params.
@@ -246,7 +245,6 @@ tribe.events.views.filterBar = {};
 		var data = {
 			url: window.location.href,
 			view_data: formData,
-			_wpnonce: nonce,
 		};
 
 		tribe.events.views.manager.request( data, $container );

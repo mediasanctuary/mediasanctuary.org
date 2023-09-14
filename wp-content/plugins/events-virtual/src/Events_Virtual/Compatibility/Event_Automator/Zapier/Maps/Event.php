@@ -1,6 +1,6 @@
 <?php
 /**
- * The Virtual Event Integration with Zapier service provider.
+ * The Virtual Event Integration with Event Automator Event Mapping.
  *
  * @since 1.13.5
  * @package TEC\Events_Virtual\Compatibility\Event_Automator\Zapier\Maps
@@ -20,16 +20,36 @@ use WP_Post;
 class Event {
 
 	/**
+	 * The Power Automate service id.
+	 *
+	 * @since 1.15.3
+	 *
+	 * @var string
+	 */
+	public static $pa_service_id = 'power-automate';
+
+	/**
+	 * The Zapier service id.
+	 *
+	 * @since 1.15.3
+	 *
+	 * @var string
+	 */
+	public static $zapier_service_id = 'zapier';
+
+	/**
 	 * Filters the event details sent to a 3rd party.
 	 *
 	 * @since 1.13.5
+	 * @since 1.15.3 - Add Service ID.
 	 *
-	 * @param array<string|mixed> An array of event details.
-	 * @param WP_Post An instance of the event WP_Post object.
+	 * @param array<string|mixed> $next_eventAn array of event details.
+	 * @param WP_Post             $event        An instance of the event WP_Post object.
+	 * @param string              $service_id   The service id used to modify the mapped event details.
 	 *
-	 * @return array<string|mixed> An array of event details.
+	 * @return array<string|mixed> $next_event An array of event details.
 	 */
-	public function add_virtual_fields( array $next_event, WP_Post $event ) {
+	public function add_virtual_fields( array $next_event, WP_Post $event, $service_id ) {
 		if ( ! $event->virtual ) {
 			return $next_event;
 		}
@@ -65,11 +85,20 @@ class Event {
 		 * Filters the event details map sent to a 3rd party.
 		 *
 		 * @since 1.13.5
+		 * @since 1.15.3 - Add Service ID.
 		 *
 		 * @param array<string|mixed> $next_event An array of event details.
 		 * @param WP_Post             $event      An instance of the event WP_Post object.
+		 * @param string              $service_id The service id used to modify the mapped event details.
 		 */
-		$next_event = apply_filters( 'tec_virtual_automator_map_event_details', $next_event, $event );
+		$next_event = apply_filters( 'tec_virtual_automator_map_event_details', $next_event, $event, $service_id );
+
+		// Power Automate Expects an array of provider details and considers the standard formatting as an object.
+		if ( $service_id === static::$pa_service_id && ! empty( $next_event['virtual_provider_details'] ) ) {
+			$provider_details = $next_event['virtual_provider_details'];
+			unset( $next_event['virtual_provider_details'] );
+			$next_event['virtual_provider_details'][0] = $provider_details;
+		}
 
 		return $next_event;
 	}

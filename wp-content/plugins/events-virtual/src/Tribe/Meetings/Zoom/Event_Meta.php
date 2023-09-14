@@ -31,16 +31,6 @@ class Event_Meta extends Abstract_Event_Meta {
 	public static $key_source_id = 'zoom';
 
 	/**
-	 * Key for Zoom video and autodetect source.
-	 *
-	 * @since 1.8.0
-	 * @deprecated 1.11.0 - use Event_Meta::$key_source_id
-	 *
-	 * @var string
-	 */
-	public static $key_zoom_source_id = 'zoom';
-
-	/**
 	 * {@inheritDoc}
 	 */
 	public static $encrypted_fields = [

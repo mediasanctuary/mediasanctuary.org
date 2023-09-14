@@ -99,7 +99,8 @@ class Tribe__Events__Filterbar__Filters__Cost extends Tribe__Events__Filterbar__
 		);
 
 		$cost_field = sprintf(
-			__( '%s are considered free when cost field is: %s %s', 'tribe-events-filter-view' ),
+			/* Translator: %1$s is the pluralized event label, %2$s is the "or empty or set to zero" string, %3$s is the "only when set to zero" string */
+			__( '%1$s are considered free when cost field is: %2$s %3$s', 'tribe-events-filter-view' ),
 			tribe_get_event_label_plural(),
 			$empty_or_zero_input,
 			$only_when_zero

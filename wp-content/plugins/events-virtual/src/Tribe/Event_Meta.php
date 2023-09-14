@@ -225,6 +225,27 @@ class Event_Meta {
 	];
 
 	/**
+	 * Key value map of the meta field to the schema type, for registering meta fields.
+	 *
+	 * @since 1.15.2
+	 *
+	 * @var array<string,string>
+	 */
+	public static $meta_field_types = [
+		'_tribe_events_is_hybrid'                  => 'string',
+		'_tribe_events_is_virtual'                 => 'string',
+		'_tribe_events_virtual_video_source'       => 'string',
+		'_tribe_events_virtual_embed_video'        => 'string',
+		'_tribe_events_virtual_linked_button_text' => 'string',
+		'_tribe_events_virtual_linked_button'      => 'string',
+		'_tribe_events_virtual_show_embed_at'      => 'string',
+		'_tribe_events_virtual_show_embed_to'      => 'array',
+		'_tribe_events_virtual_show_on_event'      => 'string',
+		'_tribe_events_virtual_show_on_views'      => 'string',
+		'_tribe_events_virtual_url'                => 'string',
+	];
+
+	/**
 	 * The prefix used to mark the meta saved by the plugin.
 	 *
 	 * @since 1.0.0
