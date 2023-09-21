@@ -93,6 +93,7 @@ class Hooks extends Service_Provider {
 		add_filter( 'tribe_events_filter_bar_views_v2_1_is_checked_filterbar_cost', [ $this, 'filterbar_cost_is_checked' ], 10, 4 );
 		add_filter( 'tribe_events_filter_bar_views_v2_1_range_label_filterbar_cost', [ $this, 'filterbar_cost_range_label' ], 10, 3 );
 		add_filter( 'tribe_context_locations', [ $this, 'filter_context_locations' ] );
+		add_filter( 'tribe_events_views_v2_ff_link_next_event', [ $this, 'filter_tribe_events_views_v2_ff_link_next_event' ], 10, 2 );
 	}
 
 	/**
@@ -488,6 +489,56 @@ class Hooks extends Service_Provider {
 		return $locations;
 	}
 
+	/**
+	 * Hooks into the Fast-forward link to alter the next event query by our filters
+	 *
+	 * @since 5.5.2
+	 *
+	 * @param Tribe__Repository__Interface $next_event Current instance of the events repository class.
+	 * @param View_Interface               $view       The View currently rendering.
+	 * @return void
+	 */
+	public function filter_tribe_events_views_v2_ff_link_next_event( $next_event, $view ) {
+		$context = $view->get_context();
+		$factory = $this->container->make( Factory::class );
+		$factory->build_for_context( $context );
+		$query_args = [];
+
+		foreach ( $factory::context_to_filters_map() as $context_key => $filter_class ) {
+			$value = $context->get( $context_key, '__not_found__' );
+
+			// Skip if doesn't exist/isn't active
+			if ( '__not_found__' === $value ) {
+				continue;
+			}
+
+			// Skip if no value set.
+			if ( empty( $value ) ) {
+				continue;
+			}
+
+			$filter_request_key = $context->get_read_key_for( substr( $context_key, strrpos( $context_key, '_' ) + 1 ), Context::REQUEST_VAR );
+
+			if ( method_exists( $filter_class, 'fill_query_args' ) ) {
+				$query_args = $filter_class::fill_query_args( $query_args, $value, $context_key, $context );
+			} elseif ( method_exists( $filter_class, 'build_query_arg_value' ) ) {
+				$value = $filter_class::build_query_arg_value( $value, $context_key, $context );
+				$query_args[ $filter_request_key ] = $value;
+			} else {
+				$query_args[ $filter_request_key ] = $value;
+			}
+
+			if ( is_array( $value ) ) {
+				$query_args[ $filter_request_key ] = Arr::to_list( $value, ',' );
+			}
+		}
+
+		if ( empty( $query_args ) ) {
+			return $next_event;
+		}
+
+		return $next_event->by_args( $query_args );
+	}
 
 
 	/************************

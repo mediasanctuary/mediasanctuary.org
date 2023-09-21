@@ -35,6 +35,6 @@
 			<?php echo esc_html( _x( 'Facebook Live', 'Title for Zoom Meeting or Webinar creation.', 'events-virtual' ) ); ?>
 		</div>
 
-		<?php $this->template( 'virtual-metabox/zoom/components/dropdown', $pages ); ?>
+		<?php $this->template( 'components/dropdown', $pages ); ?>
 	</div>
 </div>

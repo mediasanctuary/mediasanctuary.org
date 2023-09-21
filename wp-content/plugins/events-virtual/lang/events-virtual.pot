@@ -2,15 +2,15 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: The Events Calendar: Virtual Events 1.15.0\n"
+"Project-Id-Version: The Events Calendar: Virtual Events 1.15.4\n"
 "Report-Msgid-Bugs-To: https://evnt.is/191x\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-06-15T09:17:20-07:00\n"
-"PO-Revision-Date: 2023-06-15 16:17\n"
+"POT-Creation-Date: 2023-09-11T19:31:00-07:00\n"
+"PO-Revision-Date: 2023-09-12 02:31\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: events-virtual\n"
 
@@ -233,7 +233,6 @@ msgid "Dismiss"
 msgstr ""
 
 #: src/admin-views/virtual-metabox/api/type-options.php:47
-#: src/admin-views/virtual-metabox/zoom/type-options.php:39
 #: src/Tribe/Meetings/Google/Classic_Editor.php:299
 #: src/Tribe/Meetings/Microsoft/Classic_Editor.php:301
 #: src/Tribe/Meetings/Webex/Classic_Editor.php:299
@@ -432,16 +431,6 @@ msgctxt "Title for Microsoft Meeting creation."
 msgid "Microsoft Meeting"
 msgstr ""
 
-#: src/admin-views/virtual-metabox/video/input.php:65
-msgctxt "Title for video source."
-msgid "Video"
-msgstr ""
-
-#: src/admin-views/virtual-metabox/video/input.php:74
-msgctxt "Label for live stream URL field"
-msgid "Live Stream URL"
-msgstr ""
-
 #. translators: %1$s: Webex meeting password.
 #: src/admin-views/virtual-metabox/webex/details.php:124
 msgctxt "The label for the webex Meeting password, prefixed by password label."
@@ -477,31 +466,6 @@ msgstr ""
 #: src/admin-views/virtual-metabox/zoom/setup.php:68
 msgctxt "Title for Zoom Meeting or Webinar creation."
 msgid "Zoom Meeting"
-msgstr ""
-
-#: src/admin-views/virtual-metabox/zoom/display.php:43
-msgctxt "Option to display Zoom Meeting link in event."
-msgid "Zoom link with details"
-msgstr ""
-
-#: src/admin-views/virtual-metabox/zoom/meeting-link-error-details.php:26
-msgctxt "Accessible label of the control to dismiss a failure to generate a Zoom Meeting link."
-msgid "Dismiss"
-msgstr ""
-
-#: src/admin-views/virtual-metabox/zoom/meeting-link-error-details.php:51
-msgctxt "Header of the details shown when an attempt to generate a Zoom Meeting link fails."
-msgid "Zoom Link"
-msgstr ""
-
-#: src/admin-views/virtual-metabox/zoom/meeting-link-error-details.php:62
-msgctxt "Message shown when an attempt to generate a Zoom Meeting link fails."
-msgid "We were not able to generate a Zoom link."
-msgstr ""
-
-#: src/admin-views/virtual-metabox/zoom/meeting-link-error-details.php:73
-msgctxt "Header of the error details section shown when an attempt to generate a Zoom Meeting link fails."
-msgid "Zoom error:"
 msgstr ""
 
 #: src/admin-views/webex/api/accounts/list.php:43
@@ -577,29 +541,6 @@ msgstr ""
 #: src/admin-views/zoom/api/authorize-fields/add-link.php:43
 msgctxt "Settings help text for multiple Zoom accounts button"
 msgid "Using multiple Zoom Accounts"
-msgstr ""
-
-#: src/admin-views/zoom/api/authorize-fields/connect-link.php:24
-msgctxt "Label to connect to Zoom API."
-msgid "Connect to Zoom"
-msgstr ""
-
-#: src/admin-views/zoom/api/authorize-fields/connect-link.php:25
-msgctxt "Label to refresh connection to Zoom API."
-msgid "Refresh Zoom Connection"
-msgstr ""
-
-#: src/admin-views/zoom/api/authorize-fields/disabled-button.php:18
-msgctxt "Label to connect to Zoom API (disabled button)."
-msgid "Connect to Zoom"
-msgstr ""
-
-#: src/admin-views/zoom/api/authorize-fields/disabled-button.php:22
-msgid "Enter client app information to connect to Zoom"
-msgstr ""
-
-#: src/admin-views/zoom/api/authorize-fields/disconnect-link.php:20
-msgid "Disconnect"
 msgstr ""
 
 #: src/admin-views/zoom/api/intro-text.php:21
@@ -761,12 +702,12 @@ msgstr ""
 msgid "Virtual Events"
 msgstr ""
 
-#: src/Tribe/Event_Meta.php:256
+#: src/Tribe/Event_Meta.php:277
 msgctxt "Default label of the virtual event URL call-to-action link."
 msgid "Watch"
 msgstr ""
 
-#: src/Tribe/Event_Meta.php:275
+#: src/Tribe/Event_Meta.php:296
 msgctxt "Default placeholder text for the virtual event smart URL input."
 msgid "Enter URL (YouTube, Zoom, Outlook Event, Webex, etc.)"
 msgstr ""
@@ -791,62 +732,63 @@ msgctxt "The name of the autodetect source."
 msgid "OEmbed"
 msgstr ""
 
-#: src/Tribe/Importer/Events.php:67
+#. Translators: %1$s: Virtual Events label, %2$s: Events label singular
+#: src/Tribe/Importer/Events.php:68
 msgctxt "Column name for importer of virtual events."
 msgid "Configure %1$s %2$s"
 msgstr ""
 
-#: src/Tribe/Importer/Events.php:78
+#: src/Tribe/Importer/Events.php:79
 msgctxt "Column name for importer of virtual event type."
 msgid "Type of %1$s (Virtual, Hybrid)"
 msgstr ""
 
-#: src/Tribe/Importer/Events.php:87
+#: src/Tribe/Importer/Events.php:88
 msgctxt "Column name for importer of virtual event source url."
 msgid "Video Source URL"
 msgstr ""
 
-#: src/Tribe/Importer/Events.php:94
+#: src/Tribe/Importer/Events.php:95
 msgctxt "Column name for importer of virtual event to embed the video."
 msgid "Embed Video"
 msgstr ""
 
-#: src/Tribe/Importer/Events.php:101
+#: src/Tribe/Importer/Events.php:102
 msgctxt "Column name for importer of virtual event linked button shows."
 msgid "Linked Button"
 msgstr ""
 
-#: src/Tribe/Importer/Events.php:108
+#: src/Tribe/Importer/Events.php:109
 msgctxt "Column name for importer of virtual event linked button text."
 msgid "Linked Button Text"
 msgstr ""
 
-#: src/Tribe/Importer/Events.php:115
+#: src/Tribe/Importer/Events.php:116
 msgctxt "Column name for importer of virtual event for when to show the emebed."
 msgid "Show Embed At"
 msgstr ""
 
-#: src/Tribe/Importer/Events.php:122
+#: src/Tribe/Importer/Events.php:123
 msgctxt "Column name for importer of virtual event to show virtual icon on signle view."
 msgid "Show Virtual Event Icon on Single"
 msgstr ""
 
-#: src/Tribe/Importer/Events.php:129
+#: src/Tribe/Importer/Events.php:130
 msgctxt "Column name for importer of virtual event to show virtual icon on all views."
 msgid "Show Virtual Event on all Views"
 msgstr ""
 
-#: src/Tribe/Importer/Events.php:136
+#: src/Tribe/Importer/Events.php:137
 msgctxt "Column name for importer of virtual event to show the embed to."
 msgid "Show Embed to"
 msgstr ""
 
-#: src/Tribe/Importer/Events.php:143
+#: src/Tribe/Importer/Events.php:144
 msgctxt "Column name for importer of virtual event RSVP email link."
 msgid "Include Link in RSVP Email"
 msgstr ""
 
-#: src/Tribe/Importer/Events.php:150
+#: src/Tribe/Importer/Events.php:151
 msgctxt "Column name for importer of virtual event ticket email link."
 msgid "Include Link in Ticket Email"
 msgstr ""
@@ -1822,7 +1764,6 @@ msgid "The Zoom Host ID is missing to access the API."
 msgstr ""
 
 #: src/Tribe/Meetings/Zoom/Abstract_Meetings.php:197
-#: src/Tribe/Meetings/Zoom/Account_API.php:512
 #: src/Tribe/Meetings/Zoom/Classic_Editor.php:564
 msgctxt "Account ID is missing error message."
 msgid "The Zoom Account ID is missing to access the API."
@@ -1847,12 +1788,6 @@ msgstr ""
 #: src/Tribe/Meetings/Zoom/Account_API.php:313
 msgctxt "The refresh message if the account exists."
 msgid "Zoom Account added for %1$s"
-msgstr ""
-
-#: src/Tribe/Meetings/Zoom/Account_API.php:523
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:573
-msgctxt "Zoom account loading error message."
-msgid "The Zoom Account could not be loaded to access the API. Please try refreshing the account in the Events API Settings."
 msgstr ""
 
 #: src/Tribe/Meetings/Zoom/Api.php:416
@@ -1965,18 +1900,14 @@ msgctxt "The placeholder for the multiselect to select alternative hosts."
 msgid "Add Alternative hosts"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Classic_Editor.php:666
-msgctxt "Label for the link to set up the Zoom integration in the event classic editor UI."
-msgid "Set up Zoom integration"
+#: src/Tribe/Meetings/Zoom/Classic_Editor.php:573
+msgctxt "Zoom account loading error message."
+msgid "The Zoom Account could not be loaded to access the API. Please try refreshing the account in the Events API Settings."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom/Migration_Notice.php:61
+#: src/Tribe/Meetings/Zoom/Migration_Notice.php:69
 msgctxt "The migration notice to authorize the new Zoom App."
 msgid "Thank you for updating to the latest version of Virtual Events. You will need to <a href=\"%1$s\">reconnect your Zoom account</a> for the plugin to work as intended."
-msgstr ""
-
-#: src/Tribe/Meetings/Zoom/OAuth.php:203
-msgid "Disconnected from Zoom API."
 msgstr ""
 
 #: src/Tribe/Meetings/Zoom/Users.php:149
@@ -2004,19 +1935,14 @@ msgctxt "Zoom API loading error message for Zoom user validation."
 msgid "The Zoom API did not return the user settings. Please try refreshing the account in the Events Integration Settings."
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:497
+#: src/Tribe/Meetings/Zoom_Provider.php:488
 msgctxt "The name of the video source."
 msgid "Zoom"
 msgstr ""
 
-#: src/Tribe/Meetings/Zoom_Provider.php:575
+#: src/Tribe/Meetings/Zoom_Provider.php:566
 msgctxt "The name of the autodetect source."
 msgid "Zoom"
-msgstr ""
-
-#: src/Tribe/Meetings/Zoom_Provider.php:759
-msgctxt "The message to display to confirm a user would like to remove the Zoom connection from an event."
-msgid "Are you sure you want to remove this Zoom meeting from this event? This operation cannot be undone."
 msgstr ""
 
 #: src/Tribe/Metabox.php:83

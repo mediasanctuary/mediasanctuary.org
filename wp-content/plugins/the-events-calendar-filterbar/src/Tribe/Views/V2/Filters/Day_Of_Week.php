@@ -32,6 +32,11 @@ class Day_Of_Week extends \Tribe__Events__Filterbar__Filters__Day_Of_Week {
 	 * @return array An array of Venue IDs.
 	 */
 	protected function parse_value( $raw_value ) {
+		// Short circuit on empty values.
+		if ( empty( $raw_value ) ) {
+			return [];
+		}
+
 		$values = is_array( $raw_value ) ? $raw_value : explode( ',', $raw_value );
 		$values = array_map( 'absint', $values );
 

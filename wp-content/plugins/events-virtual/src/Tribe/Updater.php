@@ -54,7 +54,6 @@ class Updater extends Tribe__Events__Updater {
 	 */
 	public function get_update_callbacks() {
 		return [
-			'1.5' => [ $this, 'multiple_account_migration_setup' ],
 			'1.6' => [ $this, 'video_source_migration' ],
 			'1.8' => [ $this, 'autodetect_source_migration' ],
 		];
@@ -64,10 +63,13 @@ class Updater extends Tribe__Events__Updater {
 	 * Setup multiple account migration.
 	 *
 	 * @since 1.5.0
+	 * @deprecated 1.15.3 - No replacement.
 	 *
 	 * @return boolean whether the migration to multiple accounts is complete.
 	 */
 	public function multiple_account_migration_setup() {
+		_deprecated_function( __METHOD__, '1.15.3', 'No replacement.' );
+
 		/** @var \Tribe\Events\Virtual\Meetings\Zoom\Api */
 		$api = tribe( API::class );
 
@@ -85,6 +87,7 @@ class Updater extends Tribe__Events__Updater {
 	 * Migrate the Zoom Account.
 	 *
 	 * @since 1.5.0
+	 * @deprecated 1.15.3 - No replacement.
 	 *
 	 * @param Api    $api           An instance of the API class.
 	 * @param string $refresh_token The refresh token from the connection before multiple accounts.
@@ -92,6 +95,8 @@ class Updater extends Tribe__Events__Updater {
 	 * @return boolean whether the migration to multiple accounts is complete.
 	 */
 	public function migrate_zoom_account( $api, $refresh_token ) {
+		_deprecated_function( __METHOD__, '1.15.3', 'No replacement.' );
+
 		$refreshed = false;
 		$api->post(
 			Url::$refresh_url,

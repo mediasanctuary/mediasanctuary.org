@@ -123,7 +123,7 @@ $short_zoom_url = implode(
 		<?php if ( count( $phone_numbers ) ) : ?>
 			<div class="tec-events-virtual-meetings-api-standard-details__wrapper tribe-events-virtual-meetings-zoom__phone-wrapper">
 				<?php
-				$this->template( 'virtual-metabox/zoom/icons/phone', [
+				$this->template( 'components/icons/phone', [
 					'classes' => [
 						'tribe-events-virtual-meeting-zoom__icon',
 						'tribe-events-virtual-meeting-zoom__icon--phone',

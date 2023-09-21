@@ -18,6 +18,7 @@ namespace TEC\Events_Virtual\Integrations\Plugins\Event_Tickets\Emails;
 use TEC\Events_Virtual\Integrations\Plugins\Event_Tickets\Emails\Email\RSVP;
 use TEC\Events_Virtual\Integrations\Plugins\Event_Tickets\Emails\Email\Ticket;
 use \Tribe__Template as Common_Template;
+use TEC\Common\Contracts\Service_Provider;
 
 /**
  * Class Hooks.
@@ -26,7 +27,7 @@ use \Tribe__Template as Common_Template;
  *
  * @package TEC\Events_Virtual\Integrations\Plugins\Event_Tickets\Emails
  */
-class Hooks extends \tad_DI52_ServiceProvider {
+class Hooks extends Service_Provider {
 
 	/**
 	 * Binds and sets up implementations.

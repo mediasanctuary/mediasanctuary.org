@@ -172,10 +172,12 @@ class Tribe__Events__Filterbar__Filters__Category extends Tribe__Events__Filterb
 		// if select display and event category has children get all those ids for query
 		if ( 'select' === $this->type ) {
 
-			$categories = get_categories( array(
-				'taxonomy' => 'tribe_events_cat',
-				'child_of' => current( $values ),
-			) );
+			$categories = get_categories(
+				[
+					'taxonomy' => Tribe__Events__Main::TAXONOMY,
+					'child_of' => current( $values ),
+				]
+			);
 
 			if ( ! empty( $categories ) ) {
 				foreach ( $categories as $category ) {
@@ -187,11 +189,11 @@ class Tribe__Events__Filterbar__Filters__Category extends Tribe__Events__Filterb
 			$values = array_filter( Arr::list_to_array( $values ) );
 		}
 
-		$new_rules[] = array(
+		$new_rules[] = [
 			'taxonomy' => Tribe__Events__Main::TAXONOMY,
 			'operator' => 'IN',
 			'terms'    => array_map( 'absint', $values ),
-		);
+		];
 
 		/**
 		 * Controls the relationship between different taxonomy queries.

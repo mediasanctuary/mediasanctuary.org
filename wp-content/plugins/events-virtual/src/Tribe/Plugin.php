@@ -95,7 +95,7 @@ class Plugin {
 	 * Note this specifically doesn't have a typing for the container, just a type hinting via Docblocks, it helps
 	 * avoid problems with deprecation since this is loaded so early.
 	 *
-	 * @since TBD
+	 * @since 1.14.0
 	 *
 	 * @param ?\Tribe__Container $container The container to use, if any. If not provided, the global container will be used.
 	 *
@@ -110,7 +110,7 @@ class Plugin {
 	 * Note this specifically doesn't have a typing for the container, just a type hinting via Docblocks, it helps
 	 * avoid problems with deprecation since this is loaded so early.
 	 *
-	 * @since TBD
+	 * @since 1.14.0
 	 *
 	 * @param ?\Tribe__Container $container The container to use, if any. If not provided, the global container will be used.
 	 */

@@ -177,18 +177,51 @@ class Metabox {
 	 */
 	public function register_fields() {
 		foreach ( Event_Meta::$virtual_event_keys as $key ) {
-			register_post_meta(
-				'tribe_events',
-				$key,
-				[
-					'show_in_rest'  => true,
-					'single'        => true,
-					'type'          => 'string',
-					'auth_callback' => static function() {
-						return current_user_can( 'edit_posts' );
-					},
-				]
-			);
+			// Register the appropriate data type from our schema definitions, defaulting to 'string'.
+			$type = Event_Meta::$meta_field_types[ $key ] ?? 'string';
+			switch ( $type ) {
+				case 'array':
+					register_post_meta(
+						'tribe_events',
+						$key,
+						[
+							'show_in_rest'  => [
+								'schema' => [
+									'items' => [
+										'type'              => 'string',
+										// The schema type of each item in the array
+										'sanitize_callback' => 'sanitize_text_field',
+										// Sanitization callback for each item
+									]
+								],
+							],
+							'single'        => true,
+							'type'          => 'array',
+							'auth_callback' => static function () {
+								return current_user_can( 'edit_posts' );
+							},
+						]
+					);
+					break;
+				case 'string':
+					register_post_meta(
+						'tribe_events',
+						$key,
+						[
+							'show_in_rest'     => true,
+							'single'           => true,
+							'type'             => 'string',
+							'prepare_callback' => static function ( $val ) {
+								return is_string( $val ) ? $val : serialize( $val );
+							},
+							'auth_callback'    => static function () {
+								return current_user_can( 'edit_posts' );
+							},
+						]
+					);
+					break;
+			}
+
 		}
 	}
 

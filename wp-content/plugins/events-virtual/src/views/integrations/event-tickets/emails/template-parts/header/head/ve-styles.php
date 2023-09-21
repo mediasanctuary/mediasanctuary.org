@@ -1,5 +1,4 @@
 <style type="text/css">
-	.tec-tickets__email-table-content-virtual-event-title-container, 
 	td.tec-tickets__email-table-content-virtual-event-title-container {
 		padding: 54px 0 12px 0;
 	}
@@ -14,18 +13,17 @@
 		text-align: center;
 	}
 
-	.tec-tickets__email-table-content-virtual-event-link-container, 
 	td.tec-tickets__email-table-content-virtual-event-link-container {
 		text-align: center;
 	}
 
-	.tec-tickets__email-table-content-virtual-event-button-container,
 	td.tec-tickets__email-table-content-virtual-event-button-container {
 		padding-top: 20px;
 	}
 
-	.tec-tickets__email-table-content-virtual-event-button,
-	a.tec-tickets__email-table-content-virtual-event-button {
+	.tec-tickets__email-body a.tec-tickets__email-table-content-virtual-event-button,
+	.tec-tickets__email-body a.tec-tickets__email-table-content-virtual-event-button:visited,
+	.tec-tickets__email-body a.tec-tickets__email-table-content-virtual-event-button:active {
 		background-color: <?php echo esc_attr( $ticket_bg_color ); ?> !important;
 		border-radius: 4px;
 		color: <?php echo esc_attr( $ticket_text_color ); ?> !important;
@@ -36,7 +34,6 @@
 		text-decoration: none !important;
 	}
 
-	.tec-tickets__email-table-content-virtual-event-button:hover,
 	a.tec-tickets__email-table-content-virtual-event-button:hover {
 		opacity: .8;
 	}

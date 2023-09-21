@@ -29,7 +29,7 @@ class Plugin_Register extends Abstract_Plugin_Register {
 	 *
 	 * @var string
 	 */
-	public const VERSION  = '1.15.0';
+	public const VERSION  = '1.15.4';
 
 	/**
 	 * Configures the base_dir property which is the path to the plugin bootstrap file.
@@ -101,7 +101,7 @@ class Plugin_Register extends Abstract_Plugin_Register {
 	 */
 	protected $dependencies = [
 		'parent-dependencies' => [
-			'Tribe__Events__Main' => '6.1.0-dev',
+			'Tribe__Events__Main' => '6.1.2-dev',
 		],
 	];
 }

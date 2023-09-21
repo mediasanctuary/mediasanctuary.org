@@ -3,9 +3,9 @@
 Contributors: theeventscalendar, borkweb, bordoni, brianjessee, aguseo, camwynsp, GeoffBel, geoffgraham, jentheo, leahkoerper, lucatume, neillmcshea, paulskim, vicskf, zbtirrell, juanfra
 Tags: events, calendar, event, venue, organizer, dates, date, google maps, conference, workshop, concert, meeting, seminar, summit, class, the events calendar, widget, pro, filters, categories, sort, tags, taxonomy, find, search
 Donate link: http://evnt.is/29
-Requires at least: 5.8.6
-Stable tag: 5.5.0
-Tested up to: 6.2.2
+Requires at least: 6.1.0
+Stable tag: 5.5.2
+Tested up to: 6.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -194,6 +194,19 @@ Our Premium Plugins:
 * <a href="http://evnt.is/18h9" target="_blank">The Events Calendar: iCal Importer</a>
 
 == Changelog ==
+
+= [5.5.2] 2023-08-10 =
+
+* Version - Filter Bar 5.5.0 is only compatible with The Events Calendar 6.1.4 and higher.
+* Version - The minimum supported version of WordPress is now 6.1.0
+* Fix - In some scenarios our pagination and various view actions would fail due to 403 errors on the REST endpoints, because of failing nonce checks, likely due to cache. Updating the way we handle nonces to avoid some scenarios the wrong nonce could be cached. [TEC-4814]
+* Fix - Correct next upcoming events link when filters are applied. [FBAR-292]
+* Tweak - Correct some PHP 8.1 deprecation notices. [FBAR-309]
+
+= [5.5.1] 2023-07-13 =
+
+* Fix - Harden some of our CSS to prevent unintended overrides by Elementor global styles. [FBAR-301]
+* Language - 0 new strings added, 3 updated, 0 fuzzied, and 0 obsoleted
 
 = [5.5.0] 2023-06-14 =
 

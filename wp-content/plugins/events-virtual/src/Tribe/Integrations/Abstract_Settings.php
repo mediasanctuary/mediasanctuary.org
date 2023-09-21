@@ -132,19 +132,6 @@ abstract class Abstract_Settings {
 		 */
 		$api_fields = apply_filters( 'tec_events_virtual_meetings_' . static::$api_id . '_settings_fields', $api_fields, $this );
 
-		if ( has_filter( 'tribe_events_virtual_meetings_zoom_settings_fields' ) ) {
-			/**
-			 * Filters the Zoom API settings shown to the user in the Events > Settings > APIs screen.
-			 *
-			 * @since      1.0.0
-			 * @deprecated 1.11.0 - Replaced with tec_events_virtual_meetings_zoom_settings_fields.
-			 *
-			 * @param array<string,array> A map of the Zoom API fields that will be printed on the page.
-			 * @param Settings $this This Settings instance.
-			 */
-			$api_fields = apply_filters_deprecated( 'tribe_events_virtual_meetings_zoom_settings_fields', [ $api_fields, $this ], '1.11.0', 'tec_events_virtual_meetings_zoom_settings_fields' );
-		}
-
 		// Insert the link after the other APIs and before the Google Maps API ones.
 		$gmaps_fields = array_splice( $fields, array_search( $this->get_integrations_fields_key(), array_keys( $fields ) ) );
 

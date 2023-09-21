@@ -45,6 +45,8 @@ class Ticket {
 	 * Renders the calendar links for the email body.
 	 *
 	 * @since 1.15.0
+	 * @since 1.15.2    Always show the email links in previews.
+	 * @since 1.15.4    Added check for `virtual_meeting_url` property.
 	 *
 	 * @param array<string,mixed> $args The email arguments.
 	 *
@@ -58,14 +60,14 @@ class Ticket {
 		}
 
 		// Check if user wants link in email.
-		if ( empty( $args['event']->virtual_ticket_email_link ) ) {
+		if ( empty( $args['preview'] ) && empty( $args['event']->virtual_ticket_email_link ) ) {
 			return;
 		}
 
 		if ( ! empty( $args['preview'] ) ) {
 			$args['virtual_url']       = home_url();
 			$args['virtual_link_text'] = Event_Meta::linked_button_default_text();
-		} else {
+		}elseif( ! empty( $args['event']->virtual_url ) || ! empty( $args['event']->virtual_meeting_url ) ) {
 			/**
 			 * Allows filtering the url used in ticket and rsvp emails.
 			 *
@@ -74,7 +76,8 @@ class Ticket {
 			 * @param string  $virtual_url The virtual url for the ticket and rsvp emails.
 			 * @param WP_Post $event       The event post object with properties added by the `tribe_get_event` function.
 			 */
-			$args['virtual_url']       = apply_filters( 'tec_events_virtual_ticket_email_url', $args['event']->virtual_url, $args['event'] );
+			$virtual_url = empty( $args['event']->virtual_meeting_url ) ? $args['event']->virtual_url : $args['event']->virtual_meeting_url;
+			$args['virtual_url']       = apply_filters( 'tec_events_virtual_ticket_email_url', $virtual_url, $args['event'] );
 			$args['virtual_link_text'] = get_post_meta( $args['event']->ID, Event_Meta::$key_linked_button_text, true );
 		}
 
