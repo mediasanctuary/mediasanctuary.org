@@ -121,3 +121,38 @@ function qr_code_url($id) {
 	// Done!
 	return $qr_url;
 }
+
+if (class_exists('WP_CLI')) {
+	WP_CLI::add_command('qrcode', function($args, $assoc_args) {
+		if (count($args) < 2) {
+			WP_CLI::error("Usage: wp qrcode \"[QR code post title]\" [Target URL]");
+			return false;
+		}
+
+		list($title, $target_url) = $args;
+
+		$id = wp_insert_post([
+			'post_title' => $title,
+			'post_status' => 'publish',
+			'post_type' => 'qrcode'
+		]);
+		$redirect_url = get_permalink($id);
+		$image_url = qr_code_url($id);
+
+		if ($assoc_args['format'] == 'json') {
+			echo wp_json_encode([
+				'id' => $id,
+				'title' => $title,
+				'target_url' => $target_url,
+				'redirect_url' => $redirect_url,
+				'image_url' => $image_url
+			], JSON_PRETTY_PRINT);
+		} else {
+			WP_CLI::success("Created QR code \"$title\" (post ID $id) redirecting to $target_url");
+			WP_CLI::log("Redirect URL: $redirect_url");
+			WP_CLI::log("Image URL: $image_url");
+		}
+
+		return true;
+	});
+}
