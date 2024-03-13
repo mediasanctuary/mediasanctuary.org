@@ -139,18 +139,28 @@ if (class_exists('WP_CLI')) {
 		$redirect_url = get_permalink($id);
 		$image_url = qr_code_url($id);
 
-		if ($assoc_args['format'] == 'json') {
+		if (empty($assoc_args['format'])) {
+			WP_CLI::success("Created QR code \"$title\" (post ID $id)");
+			WP_CLI::log("Image URL: $image_url");
+			WP_CLI::log("Redirect URL: $redirect_url");
+			WP_CLI::log("Target URL: $target_url");
+		} else if ($assoc_args['format'] == 'json') {
 			echo wp_json_encode([
 				'id' => $id,
 				'title' => $title,
-				'target_url' => $target_url,
+				'image_url' => $image_url,
 				'redirect_url' => $redirect_url,
-				'image_url' => $image_url
+				'target_url' => $target_url
 			], JSON_PRETTY_PRINT);
-		} else {
-			WP_CLI::success("Created QR code \"$title\" (post ID $id) redirecting to $target_url");
-			WP_CLI::log("Redirect URL: $redirect_url");
-			WP_CLI::log("Image URL: $image_url");
+		} else if ($assoc_args['format'] == 'csv') {
+			$stdout = fopen('php://output', 'w');
+			fputcsv($stdout, [
+				$id,
+				$title,
+				$image_url,
+				$redirect_url,
+				$target_url
+			]);
 		}
 
 		return true;
