@@ -121,3 +121,50 @@ function qr_code_url($id) {
 	// Done!
 	return $qr_url;
 }
+
+if (class_exists('WP_CLI')) {
+	WP_CLI::add_command('qrcode', function($args, $assoc_args) {
+		if (count($args) < 2) {
+			WP_CLI::error("Usage: wp qrcode \"[QR code post title]\" [Target URL]");
+			return false;
+		}
+
+		list($title, $target_url) = $args;
+
+		$id = wp_insert_post([
+			'post_title' => $title,
+			'post_status' => 'publish',
+			'post_type' => 'qrcode'
+		]);
+		update_post_meta($id, 'redirect_url', $target_url);
+
+		$redirect_url = get_permalink($id);
+		$image_url = qr_code_url($id);
+
+		if (empty($assoc_args['format'])) {
+			WP_CLI::success("Created QR code \"$title\" (post ID $id)");
+			WP_CLI::log("Image URL: $image_url");
+			WP_CLI::log("Redirect URL: $redirect_url");
+			WP_CLI::log("Target URL: $target_url");
+		} else if ($assoc_args['format'] == 'json') {
+			echo wp_json_encode([
+				'id' => $id,
+				'title' => $title,
+				'image_url' => $image_url,
+				'redirect_url' => $redirect_url,
+				'target_url' => $target_url
+			], JSON_PRETTY_PRINT);
+		} else if ($assoc_args['format'] == 'csv') {
+			$stdout = fopen('php://output', 'w');
+			fputcsv($stdout, [
+				$id,
+				$title,
+				$image_url,
+				$redirect_url,
+				$target_url
+			]);
+		}
+
+		return true;
+	});
+}
