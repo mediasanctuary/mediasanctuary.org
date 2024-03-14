@@ -136,6 +136,8 @@ if (class_exists('WP_CLI')) {
 			'post_status' => 'publish',
 			'post_type' => 'qrcode'
 		]);
+		update_post_meta($id, 'redirect_url', $target_url);
+
 		$redirect_url = get_permalink($id);
 		$image_url = qr_code_url($id);
 
