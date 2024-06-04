@@ -29,7 +29,7 @@ Template Name: Eco Art Trail
                 <h1><?php the_title(); ?></h1>
                 <?php the_content(); ?>
                 <div class="eat-footer">
-                  Part of the <a href="/project/sanctuary-eco-art-trail/">Sanctuary Eco-Art Trail</a>
+                  Part of the <a href="/project/sanctuary-eco-art-trail/" target="_blank">Sanctuary Eco-Art Trail</a>
                 </div>
                 <?php
               }
