@@ -2,6 +2,10 @@ body.page-template-eco-art-trail {
     background-color: $c-asphalt;
     color: $c-white;
 
+    h1 {
+        padding-bottom: 30px;
+    }
+
     .content {
         width: 100%;
         max-width: 700px;
@@ -10,11 +14,16 @@ body.page-template-eco-art-trail {
     }
 
     .wp-block-embed-youtube, .wp-block-embed-vimeo, .wp-block-embed-soundcloud {
-        padding-bottom: 15px;
+        margin-bottom: 30px;
     }
 
     .eat-footer {
-        font-size: $s-xxs;
+        color: mix($c-white, $c-asphalt, 0.5);
+        font-size: $s-xs;
         margin-top: 30px;
+
+        a {
+            color: $c-white;
+        }
     }
 }
