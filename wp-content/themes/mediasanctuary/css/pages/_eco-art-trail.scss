@@ -8,4 +8,13 @@ body.page-template-eco-art-trail {
         margin-left: auto;
         margin-right: auto;
     }
+
+    .wp-block-embed-youtube, .wp-block-embed-vimeo, .wp-block-embed-soundcloud {
+        padding-bottom: 15px;
+    }
+
+    .eat-footer {
+        font-size: $s-xxs;
+        margin-top: 30px;
+    }
 }
