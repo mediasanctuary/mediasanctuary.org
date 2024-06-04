@@ -2,8 +2,8 @@ body.page-template-eco-art-trail {
     background-color: $c-asphalt;
     color: $c-white;
 
-    h1 {
-        padding-bottom: 30px;
+    #content h1 {
+        padding-bottom: 24px;
     }
 
     .content {
@@ -18,12 +18,16 @@ body.page-template-eco-art-trail {
     }
 
     .eat-footer {
-        color: mix($c-white, $c-asphalt, 0.5);
+        color: $c-slate;
         font-size: $s-xs;
         margin-top: 30px;
 
         a {
-            color: $c-white;
+            color: $c-slate;
+
+            &:hover {
+                color: $c-white;
+            }
         }
     }
 }
