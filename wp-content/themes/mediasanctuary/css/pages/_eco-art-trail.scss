@@ -11,6 +11,10 @@ body.page-template-eco-art-trail {
         max-width: 700px;
         margin-left: auto;
         margin-right: auto;
+
+        a {
+            color: $c-white;
+        }
     }
 
     .wp-block-embed-youtube, .wp-block-embed-vimeo, .wp-block-embed-soundcloud {
@@ -20,7 +24,7 @@ body.page-template-eco-art-trail {
     .eat-footer {
         color: $c-slate;
         font-size: $s-xs;
-        margin-top: 30px;
+        margin-top: 15px;
 
         a {
             color: $c-slate;
