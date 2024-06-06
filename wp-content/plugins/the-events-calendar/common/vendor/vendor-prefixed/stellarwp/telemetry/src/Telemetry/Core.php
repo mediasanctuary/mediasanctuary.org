@@ -18,8 +18,10 @@ use TEC\Common\StellarWP\Telemetry\Admin\Admin_Subscriber;
 use TEC\Common\StellarWP\Telemetry\Admin\Resources;
 use TEC\Common\StellarWP\Telemetry\Contracts\Data_Provider;
 use TEC\Common\StellarWP\Telemetry\Data_Providers\Debug_Data;
+use TEC\Common\StellarWP\Telemetry\Events\Event_Subscriber;
 use TEC\Common\StellarWP\Telemetry\Exit_Interview\Exit_Interview_Subscriber;
 use TEC\Common\StellarWP\Telemetry\Exit_Interview\Template;
+use TEC\Common\StellarWP\Telemetry\Last_Send\Last_Send;
 use TEC\Common\StellarWP\Telemetry\Last_Send\Last_Send_Subscriber;
 use TEC\Common\StellarWP\Telemetry\Opt_In\Opt_In_Subscriber;
 use TEC\Common\StellarWP\Telemetry\Opt_In\Opt_In_Template;
@@ -49,6 +51,7 @@ class Core {
 	private $subscribers = [
 		Admin_Subscriber::class,
 		Exit_Interview_Subscriber::class,
+		Event_Subscriber::class,
 		Last_Send_Subscriber::class,
 		Opt_In_Subscriber::class,
 		Telemetry_Subscriber::class,
@@ -142,6 +145,8 @@ class Core {
 		$container->bind( self::PLUGIN_FILE, $plugin_path );
 		$container->bind( self::SITE_PLUGIN_DIR, dirname( plugin_dir_path( $plugin_path ) ) );
 		$container->bind( Data_Provider::class, Debug_Data::class );
+		$container->bind( Status::class, Status::class );
+		$container->bind( Last_Send::class, Last_Send::class );
 		$container->bind(
 			Opt_In_Template::class,
 			static function () use ( $container ) {

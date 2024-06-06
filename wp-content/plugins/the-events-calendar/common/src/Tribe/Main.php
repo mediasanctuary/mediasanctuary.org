@@ -1,15 +1,10 @@
 <?php
-/**
- * Main Tribe Common class.
- */
-
-// Don't load directly
-
 use TEC\Common\Libraries;
 use TEC\Common\Translations_Loader;
 use Tribe\Admin\Settings;
 use Tribe\DB_Lock;
 
+// Don't load directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
@@ -19,13 +14,11 @@ if ( class_exists( 'Tribe__Main', false ) ) {
 }
 
 class Tribe__Main {
-	const EVENTSERROROPT      = '_tribe_events_errors';
-	const OPTIONNAME          = 'tribe_events_calendar_options';
-	const OPTIONNAMENETWORK   = 'tribe_events_calendar_network_options';
-
-	const VERSION             = '5.1.8';
-
-	const FEED_URL            = 'https://theeventscalendar.com/feed/';
+	const EVENTSERROROPT    = '_tribe_events_errors';
+	const OPTIONNAME        = 'tribe_events_calendar_options';
+	const OPTIONNAMENETWORK = 'tribe_events_calendar_network_options';
+	const FEED_URL          = 'https://theeventscalendar.com/feed/';
+	const VERSION           = '5.2.7';
 
 	protected $plugin_context;
 	protected $plugin_context_class;
@@ -238,8 +231,9 @@ class Tribe__Main {
 				[ 'tribe-select2', 'vendor/tribe-selectWoo/dist/js/selectWoo.full.js', [ 'jquery' ] ],
 				[ 'tribe-select2-css', 'vendor/tribe-selectWoo/dist/css/selectWoo.css' ],
 				[ 'tribe-utils-camelcase', 'utils-camelcase.js', [ 'underscore' ] ],
-				[ 'tribe-moment', 'vendor/momentjs/moment.js' ],
-				[ 'tribe-moment-locales', 'vendor/momentjs/locale.min.js' ],
+				[ 'tec-dayjs', 'vendor/dayjs/dayjs.min.js' ],
+				[ 'tec-dayjs-isoweek', 'vendor/dayjs/plugin/isoWeek.min.js', [ 'tec-dayjs' ] ],
+				[ 'tec-dayjs-customparseformat', 'vendor/dayjs/plugin/customParseFormat.min.js', [ 'tec-dayjs' ] ],
 				[ 'tribe-tooltipster', 'vendor/tooltipster/tooltipster.bundle.js', [ 'jquery' ] ],
 				[ 'tribe-tooltipster-css', 'vendor/tooltipster/tooltipster.bundle.css' ],
 				[ 'datatables-css', 'datatables.css' ],
@@ -275,7 +269,7 @@ class Tribe__Main {
 				[ 'tribe-ui', 'tribe-ui.css', [ 'tec-variables-full' ] ],
 				[ 'tribe-buttonset', 'buttonset.js', [ 'jquery', 'underscore' ] ],
 				[ 'tribe-common-admin', 'tribe-common-admin.css', [ 'tec-variables-skeleton', 'tec-variables-full', 'tribe-dependency-style', 'tribe-bumpdown-css', 'tribe-buttonset-style', 'tribe-select2-css' ] ],
-				[ 'tribe-validation', 'validation.js', [ 'jquery', 'underscore', 'tribe-common', 'tribe-utils-camelcase', 'tribe-tooltipster' ] ],
+				[ 'tribe-validation', 'validation.js', [ 'jquery', 'underscore', 'tribe-common', 'tribe-utils-camelcase', 'tribe-tooltipster', 'tec-dayjs', 'tec-dayjs-customparseformat' ] ],
 				[ 'tribe-validation-style', 'validation.css', [ 'tec-variables-full', 'tribe-tooltipster-css' ] ],
 				[ 'tribe-dependency', 'dependency.js', [ 'jquery', 'underscore', 'tribe-common' ] ],
 				[ 'tribe-dependency-style', 'dependency.css', [ 'tribe-select2-css' ] ],
@@ -432,7 +426,7 @@ class Tribe__Main {
 				'monthNames'      => $datepicker_months,
 				'monthNamesShort' => $datepicker_months, // We deliberately use full month names here,
 				'monthNamesMin'   => array_values( Tribe__Date_Utils::get_localized_months_short() ),
- 				'nextText'        => esc_html__( 'Next', 'tribe-common' ),
+				'nextText'        => esc_html__( 'Next', 'tribe-common' ),
 				'prevText'        => esc_html__( 'Prev', 'tribe-common' ),
 				'currentText'     => esc_html__( 'Today', 'tribe-common' ),
 				'closeText'       => esc_html__( 'Done', 'tribe-common' ),
@@ -747,6 +741,7 @@ class Tribe__Main {
 
 		// Load the new third-party integration system.
 		tribe_register_provider( TEC\Common\Integrations\Provider::class );
+		// Load Site Health and Telemetry.
 		tribe_register_provider( TEC\Common\Site_Health\Provider::class );
 		tribe_register_provider( TEC\Common\Telemetry\Provider::class );
 	}
