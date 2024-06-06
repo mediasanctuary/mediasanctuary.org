@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitad0687bc869e05f85e1b65fbbe653c57
+class ComposerStaticInit6b73fd2c3dd621ec2cc01b42d50549af
 {
     public static $prefixLengthsPsr4 = array (
         'l' => 
@@ -21,6 +21,8 @@ class ComposerStaticInitad0687bc869e05f85e1b65fbbe653c57
             'StellarWP\\Telemetry\\Views_Dir\\' => 30,
             'StellarWP\\Telemetry\\Assets_Dir\\' => 31,
             'StellarWP\\Telemetry\\' => 20,
+            'StellarWP\\Schema\\' => 17,
+            'StellarWP\\Models\\' => 17,
             'StellarWP\\Installer\\Assets_JS\\' => 30,
             'StellarWP\\Installer\\Admin_Views\\' => 32,
             'StellarWP\\Installer\\' => 20,
@@ -66,6 +68,14 @@ class ComposerStaticInitad0687bc869e05f85e1b65fbbe653c57
         'StellarWP\\Telemetry\\' => 
         array (
             0 => __DIR__ . '/..' . '/stellarwp/telemetry/src/Telemetry',
+        ),
+        'StellarWP\\Schema\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stellarwp/schema/src/Schema',
+        ),
+        'StellarWP\\Models\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stellarwp/models/src/Models',
         ),
         'StellarWP\\Installer\\Assets_JS\\' => 
         array (
@@ -136,6 +146,7 @@ class ComposerStaticInitad0687bc869e05f85e1b65fbbe653c57
         'TEC\\Common\\Site_Health\\Provider' => __DIR__ . '/../..' . '/src/Common/Site_Health/Provider.php',
         'TEC\\Common\\Storage\\Timed_Option' => __DIR__ . '/../..' . '/src/Common/Storage/Timed_Option.php',
         'TEC\\Common\\Telemetry\\Migration' => __DIR__ . '/../..' . '/src/Common/Telemetry/Migration.php',
+        'TEC\\Common\\Telemetry\\Opt_In' => __DIR__ . '/../..' . '/src/Common/Telemetry/Opt_In.php',
         'TEC\\Common\\Telemetry\\Provider' => __DIR__ . '/../..' . '/src/Common/Telemetry/Provider.php',
         'TEC\\Common\\Telemetry\\Telemetry' => __DIR__ . '/../..' . '/src/Common/Telemetry/Telemetry.php',
         'TEC\\Common\\Translations_Loader' => __DIR__ . '/../..' . '/src/Common/Translations_Loader.php',
@@ -227,9 +238,9 @@ class ComposerStaticInitad0687bc869e05f85e1b65fbbe653c57
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitad0687bc869e05f85e1b65fbbe653c57::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitad0687bc869e05f85e1b65fbbe653c57::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitad0687bc869e05f85e1b65fbbe653c57::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit6b73fd2c3dd621ec2cc01b42d50549af::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit6b73fd2c3dd621ec2cc01b42d50549af::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit6b73fd2c3dd621ec2cc01b42d50549af::$classMap;
 
         }, null, ClassLoader::class);
     }
