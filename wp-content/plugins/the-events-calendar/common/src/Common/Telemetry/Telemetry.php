@@ -6,14 +6,15 @@
  *
  * @package TEC\Common\Telemetry
  */
+
 namespace TEC\Common\Telemetry;
 
 use TEC\Common\StellarWP\Telemetry\Core;
 use TEC\Common\StellarWP\Telemetry\Config;
 use TEC\Common\StellarWP\Telemetry\Opt_In\Status;
-use TEC\Common\StellarWP\Telemetry\Opt_In\Opt_In_Subscriber;
 use Tribe__Container as Container;
 use TEC\Common\StellarWP\Telemetry\Opt_In\Opt_In_Template;
+use TEC\Common\StellarWP\Telemetry\Opt_In\Opt_In_Subscriber;
 
 /**
  * Class Telemetry
@@ -30,7 +31,7 @@ final class Telemetry {
 	 *
 	 * @var string
 	 */
-	protected static $plugin_slug  = '';
+	protected static $plugin_slug = '';
 
 	/**
 	 * The custom hook prefix.
@@ -68,16 +69,16 @@ final class Telemetry {
 	 */
 	private static $base_parent_slugs = [
 		'the-events-calendar',
-		'event-tickets'
+		'event-tickets',
 	];
 
 	/**
-	 * Path to main pugin file
-	*
-	* @since 5.1.0
-	*
-	* @var string
-	*/
+	 * Path to main plugin file
+	 *
+	 * @since 5.1.0
+	 *
+	 * @var string
+	 */
 	private static $plugin_path = '';
 
 	/**
@@ -112,18 +113,18 @@ final class Telemetry {
 
 		Config::set_container( $container );
 
-		static::clean_up();
+		self::clean_up();
 
-		self::$tec_slugs    = self::get_tec_telemetry_slugs();
-		self::$plugin_slug  = self::get_parent_plugin_slug();
-		self::$plugin_path  = \Tribe__Main::instance()->get_parent_plugin_file_path();
-		$stellar_slug = self::get_stellar_slug();
+		self::$tec_slugs   = self::get_tec_telemetry_slugs();
+		self::$plugin_slug = self::get_parent_plugin_slug();
+		self::$plugin_path = \Tribe__Main::instance()->get_parent_plugin_file_path();
+		$stellar_slug      = self::get_stellar_slug();
 
 		if ( empty( $stellar_slug ) ) {
 			return;
 		}
 
-		$telemetry_server   = ! defined('TELEMETRY_SERVER') ? 'https://telemetry.stellarwp.com/api/v1': TELEMETRY_SERVER;
+		$telemetry_server = ! defined( 'STELLARWP_TELEMETRY_SERVER' ) ? 'https://telemetry.stellarwp.com/api/v1' : STELLARWP_TELEMETRY_SERVER;
 
 		Config::set_server_url( $telemetry_server );
 
@@ -132,8 +133,6 @@ final class Telemetry {
 
 		// Set a unique plugin slug.
 		Config::set_stellar_slug( $stellar_slug );
-
-		self::$plugin_path  = \Tribe__Main::instance()->get_parent_plugin_file_path();
 
 		if ( empty( self::$plugin_path ) ) {
 			return;
@@ -185,13 +184,18 @@ final class Telemetry {
 	 * @return void
 	 */
 	public static function clean_up(): void {
-		$status = static::get_status_object();
+		$status = self::get_status_object();
 		$option = $status->get_option();
-		if ( ! empty( $option['plugins'][ 'tec' ] ) && empty( $option['plugins'][ 'tec' ]['wp_slug'] ) ) {
+		if ( ! empty( $option['plugins']['tec'] ) && empty( $option['plugins']['tec']['wp_slug'] ) ) {
 			$status->remove_plugin( 'tec' );
 		}
 	}
 
+	/**
+	 * Get the slug of the plugin.
+	 *
+	 * @since 5.1.0
+	 */
 	public static function get_plugin_slug() {
 		if ( empty( self::$plugin_slug ) ) {
 			self::$plugin_slug = self::get_parent_plugin_slug();
@@ -210,7 +214,7 @@ final class Telemetry {
 	 */
 	public static function get_parent_plugin_slug(): string {
 		if ( empty( self::$parent_plugin ) ) {
-			$file = \Tribe__Main::instance()->get_parent_plugin_file_path();
+			$file                = \Tribe__Main::instance()->get_parent_plugin_file_path();
 			self::$parent_plugin = substr(
 				$file,
 				( strrpos( $file, '/' ) + 1 ),
@@ -229,7 +233,7 @@ final class Telemetry {
 	public static function get_stellar_slug(): string {
 		$tec_slugs = self::get_tec_telemetry_slugs();
 
-		foreach( $tec_slugs as $slug => $path ) {
+		foreach ( $tec_slugs as $slug => $path ) {
 			if ( stripos( self::$plugin_path, $path ) ) {
 				return $slug;
 			}
@@ -244,18 +248,17 @@ final class Telemetry {
 	 * @since 5.1.0
 	 *
 	 * @param array<string|mixed> $args The current optin modal args.
+	 * @param ?string             $slug The Stellar slug being used for Telemetry.
 	 *
 	 * @return array<string|mixed>
 	 */
-	public function filter_optin_args( $args ): array {
-		$user_name   = esc_html( wp_get_current_user()->display_name );
+	public function filter_optin_args( $args, $slug = null ): array {
+		// Sanity check for slug mismatch.
+		if ( ! in_array( $slug, self::$base_parent_slugs, true ) ) {
+			return $args;
+		}
 
-		/*
-		if ET only change logo, name to Event Tickets
-		if TEC only change logo
-		If both, use The Events Calendar
-		*/
-
+		$user_name  = esc_html( wp_get_current_user()->display_name );
 		$optin_args = [
 			'plugin_logo'           => tribe_resource_url( 'images/logo/tec-brand.svg', false, null, \Tribe__Main::instance() ),
 			'plugin_logo_width'     => 'auto',
@@ -269,7 +272,11 @@ final class Telemetry {
 			'privacy_url'           => self::get_privacy_url(),
 			'opted_in_plugins_text' => __( 'See which plugins you have opted in to tracking for', 'tribe-common' ),
 			'heading'               => __( 'We hope you love TEC Common!', 'tribe-common' ),
-			'intro'                 => __( "Hi, {$user_name}! This is an invitation to help our StellarWP community. If you opt-in, some data about your usage of TEC Common and future StellarWP Products will be shared with our teams (so they can work their butts off to improve). We will also share some helpful info on WordPress, and our products from time to time. And if you skip this, that’s okay! Our products still work just fine.", 'tribe-common' ),
+			'intro'                 => sprintf(
+				/* Translators: %s is the current user's display name. */
+				__( 'Hi, %1$s! This is an invitation to help our StellarWP community. If you opt-in, some data about your usage of TEC Common and future StellarWP Products will be shared with our teams (so they can work their butts off to improve). We will also share some helpful info on WordPress, and our products from time to time. And if you skip this, that\'s okay! Our products still work just fine.', 'tribe-common' ),
+				$user_name
+			),
 		];
 
 		/**
@@ -353,12 +360,12 @@ final class Telemetry {
 			'plugin_logo_width'  => 'auto',
 			'plugin_logo_height' => 32,
 			'plugin_logo_alt'    => 'TEC Common Logo',
-			'heading'            => __( 'We’re sorry to see you go.', 'tribe-common' ),
-			'intro'              => __( 'We’d love to know why you’re leaving so we can improve our plugin.', 'tribe-common' ),
+			'heading'            => __( 'We\'re sorry to see you go.', 'tribe-common' ),
+			'intro'              => __( 'We\'d love to know why you\'re leaving so we can improve our plugin.', 'tribe-common' ),
 			'uninstall_reasons'  => [
 				[
 					'uninstall_reason_id' => 'confusing',
-					'uninstall_reason'    => __( 'I couldn’t understand how to make it work.', 'tribe-common' ),
+					'uninstall_reason'    => __( 'I couldn\'t understand how to make it work.', 'tribe-common' ),
 				],
 				[
 					'uninstall_reason_id' => 'better-plugin',
@@ -367,12 +374,12 @@ final class Telemetry {
 				],
 				[
 					'uninstall_reason_id' => 'no-feature',
-					'uninstall_reason'    => __( 'I need a specific feature it doesn’t provide.', 'tribe-common' ),
+					'uninstall_reason'    => __( 'I need a specific feature it doesn\'t provide.', 'tribe-common' ),
 					'show_comment'        => true,
 				],
 				[
 					'uninstall_reason_id' => 'broken',
-					'uninstall_reason'    => __( 'The plugin doesn’t work.', 'tribe-common' ),
+					'uninstall_reason'    => __( 'The plugin doesn\'t work.', 'tribe-common' ),
 					'show_comment'        => true,
 				],
 				[
@@ -391,10 +398,11 @@ final class Telemetry {
 	 *
 	 * @since 5.1.0
 	 *
+	 * @param string $slug The plugin slug for Telemetry.
+	 *
 	 * @return void
 	 */
-	public function show_optin_modal(  $slug  ): void {
-
+	public function show_optin_modal( $slug ): void {
 		/**
 		 * Filter allowing disabling of the optin modal.
 		 * Returning boolean false will disable the modal
@@ -402,9 +410,8 @@ final class Telemetry {
 		 * @since 5.1.0
 		 *
 		 * @param bool $show Whether to show the modal or not.
-		 *
 		 */
-		$show = (bool) apply_filters( 'tec_common_telemetry_show_optin_modal', true,  $slug  );
+		$show = (bool) apply_filters( 'tec_common_telemetry_show_optin_modal', true, $slug );
 
 		if ( ! $show ) {
 			return;
@@ -418,7 +425,7 @@ final class Telemetry {
 		 *
 		 * @param string $plugin_slug The slug of the plugin showing the modal.
 		 */
-		do_action( 'stellarwp/telemetry/optin', $slug );
+		do_action( 'stellarwp/telemetry/optin', $slug ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	}
 
 	/**
@@ -438,7 +445,7 @@ final class Telemetry {
 	 *
 	 * @since 5.1.0
 	 *
-	 * @return array<string,string> An array of plugins in the format [ 'plugin_slug' => 'plugin_path' ]
+	 * @return array<string,string> An array of plugins in the format ['plugin_slug' => 'plugin_path']
 	 */
 	public static function get_tec_telemetry_slugs() {
 		/**
@@ -448,7 +455,7 @@ final class Telemetry {
 		 *
 		 * @since 5.1.0
 		 *
-		 * @param array<string,string> $slugs An array of plugins in the format [ 'plugin_slug' => 'plugin_path' ]
+		 * @param array<string,string> $slugs An array of plugins in the format ['plugin_slug' => 'plugin_path']
 		 */
 		return apply_filters( 'tec_telemetry_slugs', [] );
 	}
@@ -459,16 +466,24 @@ final class Telemetry {
 	 *
 	 * @since 5.1.0
 	 *
+	 * @param bool|null $opted Whether to opt in or out. If null, will calculate based on existing status.
+	 *
 	 * @return void
 	 */
-	public function register_tec_telemetry_plugins( $opted = NULL ) {
-		$new_opted = $opted;
+	public function register_tec_telemetry_plugins( $opted = null ) {
 		// Let's reduce the amount this triggers.
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			return;
 		}
 
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		global $pagenow;
+
+		// Only run on the plugins page, or when we're manually setting an opt-in!
+		if ( $pagenow !== 'plugins.php' && is_null( $opted ) ) {
 			return;
 		}
 
@@ -479,12 +494,20 @@ final class Telemetry {
 			return;
 		}
 
+		// Check for cached slugs.
+		$cached_slugs = tribe( 'cache' )['tec_telemetry_slugs'] ?? null;
+
+		// We have already run and the slug list hasn't changed since then. Or we are manually running.
+		if ( is_null( $opted ) && ! empty( $cached_slugs ) && $cached_slugs == $tec_slugs ) {
+			return;
+		}
+
+		// No cached slugs, or the list has changed, or we're running manually - so (re)set the cached value.
+		tribe( 'cache' )['tec_telemetry_slugs'] = $tec_slugs;
+
 		// In case we're not specifically passed a status...
 		$new_opted = $this->calculate_optin_status( $opted );
-
-		$status = Config::get_container()->get( Status::class );
-		$opt_in_subscriber = Config::get_container()->get( Opt_In_Subscriber::class );
-		$opt_in_subscriber->initialize_optin_option();
+		$status    = Config::get_container()->get( Status::class );
 
 		foreach ( $tec_slugs as $slug => $path ) {
 			// Register each plugin with the already instantiated library.
@@ -492,21 +515,50 @@ final class Telemetry {
 			$status->add_plugin( $slug, $new_opted, $path );
 
 			if ( $new_opted ) {
-				$opt_in_subscriber->opt_in( $slug );
 				$status->set_status( $new_opted, $slug );
 			}
 
 			// If we're manually opting in/out, don't show the modal(s).
-			if ( ! is_null( $opted ) || ! empty( $new_opted ) ) {
-				static::disable_modal( $slug );
+			if ( ! is_null( $opted ) ) {
+				/*
+				 * If we originally opted out, there will be no registration token,
+				 * so we have to do this to get Telemetry to *register* the site -
+				 * else it will never send updates!
+				 */
+				$status = Config::get_container()->get( Status::class );
+				if ( empty( $status->get_token() ) && ! empty( $opted ) ) {
+					$opt_in_subscriber = Config::get_container()->get( Opt_In_Subscriber::class );
+					$opt_in_subscriber->initialize_optin_option();
+
+					$this->normalize_optin_status();
+				}
 			}
 
-			// If we've already interacted with a modal, don't show another one.
-			$show = static::calculate_modal_status();
-			if ( ! $show ) {
-				static::disable_modal( $slug, $show );
+			$show_modal = self::calculate_modal_status();
+
+			self::disable_modal( $slug, $show_modal );
+		}
+	}
+
+	/**
+	 * This ensures all our entries are the same.
+	 *
+	 * @since 5.1.8.1
+	 */
+	public function normalize_optin_status(): void {
+		// If they have opted in to one plugin, opt them in to all TEC ones.
+		$status_obj = self::get_status_object();
+		$stati      = [];
+		$status     = $this->calculate_optin_status();
+		$stati      = array_filter( $stati );
+
+		foreach ( self::$base_parent_slugs as $slug ) {
+			if ( $status_obj->plugin_exists( $slug ) ) {
+				$status_obj->set_status( (bool) $status, $slug );
 			}
 		}
+
+		tribe_update_option( 'opt-in-status', $status );
 	}
 
 	/**
@@ -514,28 +566,27 @@ final class Telemetry {
 	 *
 	 * @since 6.1.0
 	 *
-	 * @param bool $opted
+	 * @param bool $opted Whether to opt in or out. If null, will calculate based on existing status.
 	 *
 	 * @return bool $opted
 	 */
-	public function calculate_optin_status( $opted ) {
-		if ( NULL !== $opted ) {
+	public function calculate_optin_status( $opted = null ) {
+		if ( null !== $opted ) {
 			return $opted;
 		}
 
 		// If they have opted in to one plugin, opt them in to all TEC ones.
-		$status_obj = static::get_status_object();
+		$status_obj = self::get_status_object();
 		$stati      = [];
 		$option     = $status_obj->get_option();
 
-		foreach ( static::$base_parent_slugs as $slug ) {
+		foreach ( self::$base_parent_slugs as $slug ) {
 			if ( $status_obj->plugin_exists( $slug ) ) {
-				$stati[ $slug ] = $option['plugins'][ $slug ][ 'optin' ];
+				$stati[ $slug ] = $option['plugins'][ $slug ]['optin'];
 			}
 		}
 
 		$status = array_filter( $stati );
-
 		return (bool) array_pop( $status );
 	}
 
@@ -546,32 +597,43 @@ final class Telemetry {
 	 *
 	 * @return bool $show If the modal should show
 	 */
-	public static function calculate_modal_status() {
+	public static function calculate_modal_status(): bool {
+		// If we've already opted in, don't show the modal.
+		$option = tribe_get_option( 'opt-in-status', null );
+		if ( tribe_is_truthy( $option ) ) {
+			return false;
+		}
+
 		// If they have already interacted with a modal, find out.
-		$shows = array_flip( static::$base_parent_slugs );
+		$shows = array_flip( self::$base_parent_slugs );
 		$optin = Config::get_container()->get( Opt_In_Template::class );
 
-		foreach ( static::$base_parent_slugs as $slug ) {
+		foreach ( self::$base_parent_slugs as $slug ) {
 			$show = get_option( $optin->get_option_name( $slug ), null );
 			// Remove unset entries from the array.
-			if ( is_null( $show )  ) {
+			if ( is_null( $show ) ) {
 				unset( $shows[ $slug ] );
 				continue;
 			}
 
-			$shows[ $slug ] = $show;
+			$shows[ $slug ] = (int) $show;
 		}
 
 		// No entries - show modal.
-		if ( empty( $shows ) ) {
+		if ( count( $shows ) < 1 ) {
 			return true;
 		}
 
-		// Flip the array = duplicate entries will be overwritten.
-		$shows = array_flip( $shows );
+		$shows = array_filter(
+			$shows,
+			function ( $val ) {
+				// remove all the truthy values from the array.
+				return ! tribe_is_truthy( $val );
+			}
+		);
 
 		// If we have interacted with any modals, don't show this one.
-		return ! isset( $shows[0] );
+		return empty( $shows );
 	}
 
 	/**
