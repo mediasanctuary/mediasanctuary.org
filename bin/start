@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -o errexit
 set -o pipefail
@@ -6,6 +6,12 @@ set -o nounset
 
 dir="$( cd "$(dirname "$( dirname "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && pwd )"
 mkdir -p "$dir/wp-content/uploads"
+
+# use nvm if it's installed
+if [ -f ~/.nvm/nvm.sh ] ; then
+  source ~/.nvm/nvm.sh
+  nvm use
+fi
 
 stop_containers() {
   echo "Shutting off containers..."
