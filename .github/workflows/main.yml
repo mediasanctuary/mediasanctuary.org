@@ -36,4 +36,6 @@ jobs:
                     --human-readable \
                     --filter='P uploads' \
                     --exclude wp-content/uploads \
+                    --exclude deploy_key \
                     ./wp-content/ ${{env.dest}}
+                  rm deploy_key
