@@ -255,8 +255,14 @@
 /* -----------------------------------------------------------------------------
  * Anchor - Event Title
  *
- * This mixin intentionally only affects the text and border _colors_
+ * This mixin intentionally only affects the text, border and background _colors_
  * to make sure they all follow the Customizer overrides.
+ * ----------------------------------------------------------------------------- */
+
+/* -----------------------------------------------------------------------------
+ * Anchor - Event Title
+ *
+ * This mixin intentionally only affects typography of the title
  * ----------------------------------------------------------------------------- */
 
 /* -----------------------------------------------------------------------------
@@ -422,7 +428,7 @@
 	}
 
 .tribe-filter-bar .tribe-filter-bar-c-filter__toggle:focus {
-			outline: none;
+			outline: auto;
 		}
 
 .tribe-filter-bar .tribe-filter-bar-c-filter__toggle-text {

@@ -40,6 +40,11 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__View' ) ) {
 		public $pluginPath;
 
 		/**
+		 * @var string The plugin URL.
+		 */
+		public $pluginUrl;
+
+		/**
 		 * @var Whether filters sidebar is being displayed or not.
 		 */
 		protected $sidebarDisplayed;
@@ -51,7 +56,7 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__View' ) ) {
 		 */
 		protected static $defaultMuFilters;
 
-		const VERSION = '5.5.2';
+		const VERSION = '5.5.7';
 
 		/**
 		 * The Events Calendar Required Version
@@ -60,7 +65,7 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__View' ) ) {
 		 * @deprecated 4.6
 		 *
 		 */
-		const REQUIRED_TEC_VERSION = '6.1.0';
+		const REQUIRED_TEC_VERSION = '6.7.0';
 
 		/**
 		 * Where in the themes we will look for templates

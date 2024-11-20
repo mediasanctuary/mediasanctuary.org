@@ -1,3 +1,7 @@
+.tribe_events_page_tec-events-settings .tec-nav__tab.tec-nav__tab--filter-view {
+	display: list-item;
+}
+
 #tribe-field-events_filters_layout {
 	clear: both;
 	display: block;
@@ -61,4 +65,92 @@
 	border-left: 4px inset transparent;
 	border-right: 4px inset transparent;
 	border-top: 0 inset transparent;
+}
+
+/* Ensures the settings tab shows up */
+.tec-nav__tab.tec-nav__tab--filter-view {
+	display: list-item;
+}
+
+/* miscellaneous
+============================================= */
+.tribe-admin-box-left {
+	background-color: #f9f9f9;
+	border: 1px solid var(--tec-color-background);
+	border-radius: var(--tec-border-radius-default);
+	padding: 0 var(--tec-spacer-4) var(--tec-spacer-3);
+}
+
+.tribe-admin-box-right {
+	background-color: #f9f9f9;
+	border: 1px solid var(--tec-color-background);
+	border-radius: var(--tec-border-radius-default);
+	padding: 0 var(--tec-spacer-4) var(--tec-spacer-3);
+}
+
+.tribe_events_page_tec-events-settings #tec-settings-form {
+	> .tribe-admin-box-left {
+		grid-column: 1;
+
+		@media (min-width: 500px) {
+			padding: 0 var(--tec-spacer-4) var(--tec-spacer-3);
+		}
+	}
+}
+
+.tribe_events_page_tec-events-settings #tec-settings-form.tec-settings-form__filter-view-tab--active {
+
+	#tec-settings-filter-header {
+		@media (min-width: 1260px) {
+			grid-row: 1;
+		}
+	}
+
+	#tec-active-filters h4 {
+		margin-top: 0;
+	}
+
+	#tec-active-filters,
+	#tec-available-filters {
+		background-color: transparent;
+		padding: 0;
+	}
+
+	@media (min-width: 500px) {
+		#tec-active-filters,
+		#tec-available-filters {
+			padding: 0 var(--tec-spacer-7);
+		}
+	}
+
+	@media (min-width: 960px) and (max-width: 1259px) {
+		grid-template-columns: 1fr 1fr;
+
+		#tec-settings-filter-header {
+			grid-column: 1;
+			grid-row: 1;
+		}
+
+		#tec-active-filters {
+			grid-column: 2;
+			grid-row: 1 / span 2;
+		}
+
+		#tec-available-filters {
+			grid-column: 1;
+			grid-row: 2;
+		}
+
+		#tec-settings-filter-settings-header {
+			grid-column: 1 / span 2;
+
+			~ fieldset {
+				grid-column: 2;
+			}
+		}
+
+		.tec-settings-form__footer {
+			grid-column: 1 / span 2;
+		}
+	}
 }

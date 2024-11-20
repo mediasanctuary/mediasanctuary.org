@@ -1,85 +1,70 @@
-﻿=== The Events Calendar Shortcode and Templates Pro Addon ===
-Contributors:narinder-singh,satindersingh,coolplugins
-Tags:event,timeline,calendar,shortcode, template,event templates, design, addon, extension,events calendar,the events calendar,the events calendar shortcode
-Requires at least: 4.5
-Tested up to:5.5
-Stable tag:2.3.2
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+﻿=== Events Shortcode Pro ===
+Requires at least: 5.0
+Tested up to: 6.7
+Requires PHP: 7.2
+Version: 3.2.1
+License: GPLv3
 
 
-The Events Calendar shortcodes addon provides event shortcode builder & Gutenberg blocks to show events list in any page/post.
-The Events Calendar Shortcode and Templates addon provides events shortcode block and templates for The Events Calendar Free Plugin (by MODERN TRIBE)
-
-== Description ==
-### The Events Calendar Shortcode Block And Templates Addon
-
-Extend **The Events Calendar (by Modern Tribe)** free plugin template design limitations by using **The Events Calendar Shortcode and Templates** addon. This WordPress plugin provides free stunning design **templates and shortcode / block generator** for The Events Calendar free plugin (by Modern Tribe).
-
-You can simply create events by using WordPress most powerful **calendar plugin** - [The Events Calendar](https://wordpress.org/plugins/the-events-calendar/) - **700,000+ Active Users**. After that this **calendar addon** provides a functionality to extend the design of your events listing page by using our gorgeous **events design templates**. Also you can easily show your upcoming events or past events anywhere on your page by using our flexible & intuitive **block / shortcode builder for the events calendar**.
-
-The Events Calendar Shortcode and Templates Pro Addon
-The Events Calendar Shortcode and Templates Pro plugin provides premium event listing design templates & shortcode generator facility for The Events Calendar Plugin (by Modern Tribe).
-
-It is an unofficial, third party addon for The Events Calendar, that extends the design and shortcode limitations of The Events Calendar free WordPress Plugin. You can choose beautiful design templates and layouts to showcase your events. Also you can choose any color combination and fonts based on your theme styles.
-
-Check Plugin Demo | Read Documentation | Changelog
-
-### The Events Calendar Shortcode and Templates Plugin Demo
-
-* [Events List Demo](https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-list/?utm_source=ect_plugin&utm_medium=plugin_link&utm_campaign=ect_plugin_page)
-* [Events Timeline Demo](https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-timeline/?utm_source=ect_plugin&utm_medium=plugin_link&utm_campaign=ect_plugin_page)
-
-= Premium Version Demo =
-
-* [Events Grid Demo](https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-grid/?utm_source=ect_plugin&utm_medium=plugin_link&utm_campaign=ect_plugin_page)
-* [Events Carousel Demo](https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-carousel/?utm_source=ect_plugin&utm_medium=plugin_link&utm_campaign=ect_plugin_page)
-* [Events Slider Demo](https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-slider/?utm_source=ect_plugin&utm_medium=plugin_link&utm_campaign=ect_plugin_page)
-
-> [Buy The Events Calendar Shortcode and Templates Pro](https://1.envato.market/c/1258464/275988/4415?u=https%3A%2F%2Fcodecanyon.net%2Fitem%2Fthe-events-calendar-templates-and-shortcode-wordpress-plugin%2F20143286)
-
-### Plugin Features
-
-* Provides an easiest design settings panel for beginners. You can find these settings options under your **WP dashboard > Events > Events Template Settings**.
-* You can choose custom colors and fonts for events listing page.
-* Powerful **shortcode generator** to show your upcoming or past events on any page/anywhere. You can easily generate the shortcode by clicking on events calendar templates icon inside your classic visual editor or it also supports Gutenberg, simply add events block on any page.
-* 100% Responsive / Mobile Friendly designs.
-
-= The Events Calendar Shortcode And Templates Pro Features =
-
-* 3 Extra events design templates (Grid, Slider & Carousel).
-* 15+ unique past or upcoming events page design options.
-* Show a list of only featured events.
-* Contains SEO optimized events schema tags.
-* Premium design and settings options.
-* 24x7 premium plugin support.
+### Plugin Description
+This Addon solves the major compatibility problem of The Events Calendar. It provides shortcode and gutenberg block facility so you can showcase your events in any layout - list, grid & more.
 
 
-[youtube https://www.youtube.com/watch?v=_HfZphbY4eU]
+### Plugin Author
+This plugin has been developed by Cool Plugins team. We have released 15+ free and premium WordPress plugins that are currently active on 200,000+ websites, you can know more about us on our official website:- https://coolplugins.net
 
-It is a third party **addon for The Events Calendar** that extends the design and shortcode builder limitations of The Events Calendar plugin, It is not developed or supported by **The Events Calendar (by Modern Tribe)** team. You can show your upcoming events in a beautiful list or timeline style by using awesome templates of this addon/plugin.
 
-== Installation ==
-= There are 3 ways to install The Events Calendar Shortcode and Templates plugin. =
+### Plugin Support
+If you face any issue in plugin, you can contact plugin premium support team at - https://coolplugins.net/support/
 
-1. **Automatically install our plugin via WordPress admin panel:-** Open your WordPress website admin panel and go to **Plugins** > Click **Add New** & search **Events Calendar Templates** at here > Here you will find our plugin > Now click on **install** button > After this you will see an **activate** button > Just activate it to use Events Calendar Templates inside your website
-2. **Install via Zip file:-** In this method first you need to download our plugin from wordpress plugins directory. Download Events Calendar Templates. After this inside your WP-admin panel, click on **Plugins > Add New > Upload Button**. Now choose the plugin zip file that you just downloaded from wordpress plugins directory & activate it.
-3. **Install plugin via FTP:-** In this method first you need to download plugin zip file from wordpress plugins directory. After this open your FTP manager and Go to > **wp-content/plugins** folder. Here you need to upload extracted version of **The Events Calendar Shortcode And Templates** plugin(remember do not upload zip file directly at here). After this you can activate plugin from wp-admin > plugins page.
+### Documentation
+Know how to install and activate this plugin to show events list in Elementor pages - https://eventscalendaraddons.com/docs/events-shortcodes-pro/
 
-> Remember this is a design addon. It will only work if you first install "The Events Calendar (by MODERN TRIBE)" plugin.
 
-== Screenshots ==
-1. Events List Template Style 1
-2. Events Timeline Template Style 1
-3. Events List Template Style 2
-4. Events Timeline Template Style 2
-5. Events List Template Style 3
-6. Events Timeline Template Style 3
-7. Events Template Settings Panel
-8. The Events Calendar Shortcode Generator
-9. The Events Calendar Gutenberg Block
+
+### Plugin License Key
+When you purchase this premium plugin it includes a license key, you need to add this license key inside plugin settings to receive automatic updates. You can know more about plugin license at here - https://eventscalendaraddons.com/terms/plugin-license/
+
+
 
 == Changelog ==
+Version 3.2.1 | 20 November 2024
+Added: Events Shortcode Gutenberg block.
+
+Version 3.2.0 | 12 November 2024
+Added: A New Highlighted Layout to showcase your events in new and unique designs.
+Fixed: Masonry layout re-initialization when load more is clicked.
+Improved: Load More button accessibility by adding ALT tag.
+
+Version 3.1.3 | 25 September 2024
+Fixed: Different Category Color Issue.
+
+Version 3.1.2 | 25 September 2024
+Fixed: Security Issues.
+Fixed: End date issue when fetching events using Between date setting.
+
+Version 3.1.1 | 17 July 2024
+Integrated: Primary Color with Show Filter Button color in Shortcode settings .
+Fixed: Reset Button not getting hide.
+Fixed: Venue not displaying on load more with filter bar.
+Fixed: Issue related to filtering events when there is no venue or organizer for an event.
+Fixed: Issue where events were not displayed based on the end date in the date range filter.
+Version 3.1.0 | 01 July 2024
+Integrated: Filter bar feature to filter events on frontend in all designs.
+Added: Search Only, Search with filters and filter only option for filter bar.
+Added: Filter Bar feature in Gutenberg block and shortcode generator.
+Version 3.0.1 || 28 May 2024
+Added: New date formats
+Fixed: Issue for invalid data in Rich Text Results.
+Fixed: Masonry layout issue not loading in other browsers.
+Version 3.0 || 27 December 2023 
+Improvements: Designs HTML and CSS
+Improvements: New Default value for style settings
+Fixed: Shortcode Generator in block editor
+Version 2.9.6 || 28 March 2023 
+Improvements: Code Improved
+Improvements: Short code Generator Improved
+Fixed: Minor Bug
 Version 2.9.5 || 06/Dec/2022
 Added: Update Find Out More Settings
 Added: Load Google Font Settings

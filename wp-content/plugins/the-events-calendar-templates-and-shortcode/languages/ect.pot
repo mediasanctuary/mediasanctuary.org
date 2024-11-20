@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: The Events Calendar - Shortcode And Templates Pro\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-06 09:38+0000\n"
+"POT-Creation-Date: 2024-07-19 10:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -15,43 +15,54 @@ msgstr ""
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.2.0; wp-5.0.3"
 
-#: includes/ect-event-helpers.php:179 includes/ect-event-helpers.php:182
+#: includes/ect-event-helpers.php:218
+#, php-format
+msgid "%1$s - %2$s"
+msgstr ""
+
+#: includes/ect-event-helpers.php:224 includes/ect-event-helpers.php:226
 #, php-format
 msgid "%s"
 msgstr ""
 
-#: includes/ect-event-helpers.php:151 includes/ect-event-helpers.php:154
-#: includes/ect-event-helpers.php:171
-#, php-format
-msgid "%s - %s"
-msgstr ""
-
-#: includes/ect-event-helpers.php:261
+#: includes/ect-event-helpers.php:305
 #, php-format
 msgid "%s spot left"
 msgid_plural "%s spots left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/ect-event-helpers.php:263
+#: includes/ect-event-helpers.php:307
 #, php-format
 msgid "%s ticket left"
 msgid_plural "%s tickets left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: the-events-calendar-templates-and-shortcode.php:135
+#. Description of the plugin
+msgid ""
+"<a href=\"http://wordpress.org/plugins/the-events-calendar/\">📅 The Events "
+"Calendar Addon</a> - Use shortcodes to display a list of events from The "
+"Events Calendar plugin in premium layouts, including grid, masonry, carousel,"
+" and slider, on any page or post."
+msgstr ""
+
+#: the-events-calendar-templates-and-shortcode.php:169
 msgid ""
 "<strong>Important Update</strong>:- <strong>Events Shortcodes (Pro) - The "
 "Events Calendar Addon</strong> plugin has integrated new settings panel. "
 "Please save your settings and check events views."
 msgstr ""
 
-#: includes/ect-functions.php:30
+#: the-events-calendar-templates-and-shortcode.php:158
+msgid ">style settings</a> if you face any design issues."
+msgstr ""
+
+#: includes/ect-functions.php:35
 msgid "All"
 msgstr ""
 
-#: admin/ect-event-shortcode.php:691
+#: admin/ect-event-shortcode.php:725 includes/ect-functions.php:240
 msgid "All Category"
 msgstr ""
 
@@ -60,15 +71,27 @@ msgstr ""
 msgid "All Day"
 msgstr ""
 
-#: templates/calendar/calendar.php:106
+#: includes/ect-functions.php:282
+msgid "All Organizer"
+msgstr ""
+
+#: includes/ect-functions.php:260
+msgid "All Tags"
+msgstr ""
+
+#: includes/ect-functions.php:300
+msgid "All Venue"
+msgstr ""
+
+#: templates/calendar/calendar.php:111
 msgid "April"
 msgstr ""
 
-#: templates/calendar/calendar.php:110
+#: templates/calendar/calendar.php:115
 msgid "August"
 msgstr ""
 
-#: includes/ect-event-helpers.php:278
+#: includes/ect-event-helpers.php:322
 msgid "Buy Now"
 msgstr ""
 
@@ -76,40 +99,45 @@ msgstr ""
 msgid "Cool Plugins"
 msgstr ""
 
-#: templates/calendar/calendar.php:114
+#: templates/calendar/calendar.php:119
 msgid "December"
 msgstr ""
 
-#: includes/events-shortcode-pro.php:634
+#: includes/events-shortcode-pro.php:498
 msgid "Events"
 msgstr ""
 
 #. Name of the plugin
-msgid "Events Shortcodes (Pro) - The Events Calendar Addon"
+msgid "Events Shortcodes Pro"
 msgstr ""
 
-#: templates/calendar/calendar.php:104
+#: templates/calendar/calendar.php:109
 msgid "February"
 msgstr ""
 
-#: admin/ect-codestar-settings.php:178 includes/ect-load-more-handler.php:12
-#: includes/ect-masonry-loop.php:11 includes/events-shortcode-pro.php:262
+#: includes/ect-get-event-data.php:5 includes/ect-load-more-handler.php:12
+#: includes/ect-masonry-loop.php:11
 msgid "Find out more"
 msgstr ""
 
-#: templates/calendar/calendar.php:122
+#: templates/calendar/calendar.php:127
 msgid "Fri"
 msgstr ""
 
-#: the-events-calendar-templates-and-shortcode.php:145
+#: the-events-calendar-templates-and-shortcode.php:179
 msgid ""
 "Hi! We checked that you are using <strong>Elementor Page Builder</strong>.\n"
 "\t\t\t\t\t\t\t<br/>Please try latest <a target=\"_blank\" href=\"https:"
-"//wordpress.org/plugins/events-widgets-for-elementor-and-the-events-"
-"calendar/\"><strong>The Events Calendar Widgets For Elementor</strong></a> "
-"plugin developed by <a href=\"https://coolplugins.net\">Cool Plugins</a>\n"
+"//eventscalendaraddons.com/plugin/events-widgets-pro/?"
+"utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro_ectbe&utm_content=elementor_notice\""
+"><strong>The Events Calendar Widgets For Elementor</strong></a> plugin "
+"developed by <a href=\"https://coolplugins.net\">Cool Plugins</a>\n"
 "\t\t\t\t\t\t\t   & <br/> represent The Events Calendar events in the "
 "Elementor page builder pages."
+msgstr ""
+
+#: includes/ect-filterbar.php:82
+msgid "Hide Filters"
 msgstr ""
 
 #. Author URI of the plugin
@@ -117,14 +145,16 @@ msgid "https://coolplugins.net/"
 msgstr ""
 
 #. URI of the plugin
-msgid "https://eventscalendaraddons.com/"
+msgid ""
+"https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?"
+"utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri"
 msgstr ""
 
-#: includes/events-shortcode-pro.php:656
+#: includes/events-shortcode-pro.php:524
 msgid "Image"
 msgstr ""
 
-#: the-events-calendar-templates-and-shortcode.php:223
+#: the-events-calendar-templates-and-shortcode.php:257
 #, php-format
 msgid ""
 "In order to set the event status to Online event,Canceled or Postponed, "
@@ -132,153 +162,149 @@ msgid ""
 "target=\"_blank\" title=\"%2$s\">%3$s</a>."
 msgstr ""
 
-#: includes/events-shortcode-pro.php:635
+#: includes/events-shortcode-pro.php:499
 msgid "in Total"
 msgstr ""
 
-#: templates/calendar/calendar.php:103
+#: templates/calendar/calendar.php:108
 msgid "January"
 msgstr ""
 
-#: templates/calendar/calendar.php:109
+#: templates/calendar/calendar.php:114
 msgid "July"
 msgstr ""
 
-#: templates/calendar/calendar.php:108
+#: templates/calendar/calendar.php:113
 msgid "June"
 msgstr ""
 
-#: includes/ect-event-helpers.php:228
+#: includes/ect-event-helpers.php:272
 msgctxt "list view stock sold out"
 msgid "Sold out"
 msgstr ""
 
-#: templates/cover/cover.php:77 templates/minimal-list/minimal-list.php:89
-#: templates/minimal-list/minimal-list.php:120
+#: templates/cover/cover.php:77
 msgid "Live stream:-"
 msgstr ""
 
-#: includes/events-shortcode-pro.php:496 includes/events-shortcode-pro.php:532
-#: includes/events-shortcode-pro.php:567 includes/events-shortcode-pro.php:609
-#: includes/events-shortcode-pro.php:694
+#: includes/events-shortcode-pro.php:336 includes/events-shortcode-pro.php:380
+#: includes/events-shortcode-pro.php:421 includes/events-shortcode-pro.php:468
+#: includes/events-shortcode-pro.php:563 includes/events-shortcode-pro.php:739
 msgid "Load More"
 msgstr ""
 
-#: includes/events-shortcode-pro.php:497 includes/events-shortcode-pro.php:533
-#: includes/events-shortcode-pro.php:569 includes/events-shortcode-pro.php:610
-#: includes/events-shortcode-pro.php:695
+#: includes/events-shortcode-pro.php:337 includes/events-shortcode-pro.php:381
+#: includes/events-shortcode-pro.php:423 includes/events-shortcode-pro.php:469
+#: includes/events-shortcode-pro.php:564 includes/events-shortcode-pro.php:740
 msgid "Load more"
 msgstr ""
 
-#: includes/events-shortcode-pro.php:498 includes/events-shortcode-pro.php:534
-#: includes/events-shortcode-pro.php:570 includes/events-shortcode-pro.php:611
-#: includes/events-shortcode-pro.php:696
+#: includes/events-shortcode-pro.php:338 includes/events-shortcode-pro.php:382
+#: includes/events-shortcode-pro.php:424 includes/events-shortcode-pro.php:470
+#: includes/events-shortcode-pro.php:565 includes/events-shortcode-pro.php:741
 msgid "Loading"
 msgstr ""
 
-#: templates/calendar/calendar.php:105
+#: templates/calendar/calendar.php:110
 msgid "March"
 msgstr ""
 
-#: templates/calendar/calendar.php:107
+#: templates/calendar/calendar.php:112
 msgid "May"
 msgstr ""
 
-#: templates/calendar/calendar.php:118
+#: templates/calendar/calendar.php:123
 msgid "Mon"
 msgstr ""
 
-#: includes/events-shortcode-pro.php:632
+#: includes/events-shortcode-pro.php:496
 msgid "NEXT"
 msgstr ""
 
-#: includes/events-shortcode-pro.php:497 includes/events-shortcode-pro.php:533
-#: includes/events-shortcode-pro.php:569 includes/events-shortcode-pro.php:610
-#: includes/events-shortcode-pro.php:695
+#: includes/events-shortcode-pro.php:337 includes/events-shortcode-pro.php:381
+#: includes/events-shortcode-pro.php:423 includes/events-shortcode-pro.php:469
+#: includes/events-shortcode-pro.php:564 includes/events-shortcode-pro.php:740
 msgid "No Event Found"
 msgstr ""
 
-#: templates/calendar/calendar.php:113
+#: templates/calendar/calendar.php:118
 msgid "November"
 msgstr ""
 
-#: templates/calendar/calendar.php:112
+#: templates/calendar/calendar.php:117
 msgid "October"
 msgstr ""
 
-#: includes/events-shortcode-pro.php:633
+#: includes/events-shortcode-pro.php:497
 msgid "PREV"
 msgstr ""
 
-#: templates/calendar/calendar.php:126
+#: templates/calendar/calendar.php:131
 msgid "Read More"
 msgstr ""
 
-#: includes/ect-event-helpers.php:275
+#: includes/ect-event-helpers.php:319
 msgid "RSVP Now"
 msgstr ""
 
-#: templates/calendar/calendar.php:123
+#: templates/calendar/calendar.php:128
 msgid "Sat"
 msgstr ""
 
-#: includes/events-shortcode-pro.php:636
+#: includes/events-shortcode-pro.php:500
 msgid "Search..."
 msgstr ""
 
-#: includes/events-shortcode-pro.php:642
+#: includes/events-shortcode-pro.php:508
 msgid "Select By Category"
 msgstr ""
 
-#: includes/events-shortcode-pro.php:647
+#: includes/events-shortcode-pro.php:513
 msgid "Select By Tag"
 msgstr ""
 
-#: templates/calendar/calendar.php:111
+#: templates/calendar/calendar.php:116
 msgid "September"
 msgstr ""
 
-#: templates/calendar/calendar.php:117
+#: includes/ect-filterbar.php:81
+msgid "Show Filters"
+msgstr ""
+
+#: templates/calendar/calendar.php:122
 msgid "Sun"
 msgstr ""
 
-#: includes/events-shortcode-pro.php:666
+#: includes/events-shortcode-pro.php:532
 msgid "Tags"
 msgstr ""
 
-#: the-events-calendar-templates-and-shortcode.php:209
+#: the-events-calendar-templates-and-shortcode.php:243
 msgid "The Events Calendar"
 msgstr ""
 
-#. Description of the plugin
-msgid ""
-"The Events Calendar Shortcode And Templates Pro addon provides events list "
-"design templates and shortcode generator functionality for The Events "
-"Calendar plugin. It is an unofficial third party addon for <a href=\"http:"
-"//wordpress.org/plugins/the-events-calendar/\">The Events Calendar (by "
-"Modern Tribe)</a> that extends its design limitations."
-msgstr ""
-
-#: includes/ect-load-more-handler.php:151 includes/ect-masonry-loop.php:135
-#: includes/events-shortcode-pro.php:439 includes/events-shortcode-pro.php:845
+#: includes/ect-get-event-data.php:218 includes/ect-load-more-handler.php:183
+#: includes/ect-masonry-loop.php:139 includes/events-shortcode-pro.php:901
 #: templates/week-view/ect-weekly-temaplate.php:132
 msgid "There are no upcoming events at this time."
 msgstr ""
 
-#: templates/calendar/calendar.php:121
+#: templates/calendar/calendar.php:126
 msgid "Thu"
 msgstr ""
 
-#: templates/calendar/calendar.php:119
+#: templates/calendar/calendar.php:124
 msgid "Tue"
 msgstr ""
 
-#: templates/cover/cover.php:77 templates/minimal-list/minimal-list.php:54
-#: templates/minimal-list/minimal-list.php:89
-#: templates/minimal-list/minimal-list.php:120
+#: the-events-calendar-templates-and-shortcode.php:91
+msgid "Video Tutorials"
+msgstr ""
+
+#: templates/cover/cover.php:77 templates/minimal-list/minimal-list.php:67
 msgid "Watch Now"
 msgstr ""
 
-#: templates/calendar/calendar.php:120
+#: templates/calendar/calendar.php:125
 msgid "Wed"
 msgstr ""

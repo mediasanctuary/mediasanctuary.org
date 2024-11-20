@@ -58,6 +58,13 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__Filter' ) ) {
 		public $whereClause = '';
 
 		/**
+		 * The title of the filter.
+		 *
+		 * @var string
+		 */
+		protected string $title = '';
+
+		/**
 		 * @param string $name The name of the filter.
 		 * @param string $slug The filter's slug.
 		 */
@@ -1117,7 +1124,7 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__Filter' ) ) {
 
 				return ! empty( $display_current[ $selected ] ) ? $display_current[ $selected ] : '';
 			} elseif ( 'range' === $this->type ) {
-				return is_array( $this->currentValue ) ? implode( '-', current( $this->currentValue ) ) : $this->currentValue;
+				return is_array( $this->currentValue ) ? implode( '-', (array) current( $this->currentValue ) ) : $this->currentValue;
 			}
 
 			// Since values can be comma-delimited IDs, we need to build a map of single IDs to their comma-delimited counterparts.

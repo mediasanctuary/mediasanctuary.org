@@ -59,35 +59,35 @@ if ( ! class_exists( 'ECTProSettings' ) ) {
 								'id'      => 'main_skin_color',
 								'type'    => 'color',
 								'desc'    => 'It is a main color scheme for all designs',
-								'default' => '#dbf5ff',
+								'default' => '#5bbd8a',
 							),
 							array(
 								'title'   => 'Main Skin Alternate Color / Font Color',
 								'id'      => 'main_skin_alternate_color',
 								'type'    => 'color',
 								'desc'    => 'Text/Font color where background color is Main Skin.',
-								'default' => '',
+								'default' => '#ffffff',
 							),
 							array(
 								'title'   => 'Featured Event Skin Color',
 								'id'      => 'featured_event_skin_color',
 								'type'    => 'color',
 								'desc'    => 'This skin color applies on featured events',
-								'default' => '#f19e59',
+								'default' => '#008cff',
 							),
 							array(
 								'title'   => 'Featured Event Font Color',
 								'id'      => 'featured_event_font_color',
 								'type'    => 'color',
 								'desc'    => 'This color applies on some fonts of featured events',
-								'default' => '#3a2201',
+								'default' => '#ffffff',
 							),
 							array(
 								'title'   => 'Event Background Color',
 								'id'      => 'event_desc_bg_color',
 								'type'    => 'color',
 								'desc'    => 'This skin color applies on background of event description area.',
-								'default' => '#f4fcff',
+								'default' => '#ffffff',
 							),
 							array(
 								'title'            => 'Event Title Styles',
@@ -97,7 +97,7 @@ if ( ! class_exists( 'ECTProSettings' ) ) {
 								'font_style'       => 'normal',
 								'desc'             => 'Select a style',
 								'default'          => array(
-									'color'              => '#00445e',
+									'color'              => '#383838',
 									'font-family'        => 'Monda',
 									'font-size'          => '18',
 									'line-height'        => '1.5',
@@ -108,12 +108,12 @@ if ( ! class_exists( 'ECTProSettings' ) ) {
 								'line_height_unit' => 'em',
 							),
 							array(
-								'title'            => 'Events Description Styles',
+								'title'            => 'Event Description Styles',
 								'id'               => 'ect_desc_styles',
 								'type'             => 'typography',
 								'desc'             => 'Select Styles',
 								'default'          => array(
-									'color'       => '#515d64',
+									'color'       => '#a5a5a5',
 									'font-family' => 'Open Sans',
 									'font-size'   => '15',
 									'line-height' => '1.5',
@@ -126,7 +126,7 @@ if ( ! class_exists( 'ECTProSettings' ) ) {
 								'type'             => 'typography',
 								'desc'             => 'Select a style',
 								'default'          => array(
-									'color'       => '#00445e',
+									'color'       => '#a5a5a5',
 									'font-family' => 'Open Sans',
 									'font-size'   => '15',
 									'font-style'  => 'italic',
@@ -140,7 +140,7 @@ if ( ! class_exists( 'ECTProSettings' ) ) {
 								'type'             => 'typography',
 								'desc'             => 'Select a style',
 								'default'          => array(
-									'color'       => '#00445e',
+									'color'       => '#ffffff',
 									'font-family' => 'Monda',
 									'font-size'   => '36',
 									'font-weight' => '700',
@@ -173,12 +173,12 @@ if ( ! class_exists( 'ECTProSettings' ) ) {
 								'desc'    => '',
 							),
 							array(
-								'title'   => 'Update Find Out More label',
-								'id'      => 'events_more_info',
-								'default' =>  '',
+								'title'       => 'Update Find Out More label',
+								'id'          => 'events_more_info',
+								'default'     => '',
 								'placeholder' => 'Enter Find Out More label',
-								'type'    => 'text',
-								'desc'    => 'Default value is Find out more, Add the string you want to show',
+								'type'        => 'text',
+								'desc'        => 'Default value is Find out more, Add the string you want to show',
 							),
 							array(
 								'id'    => 'ect_no_featured_img',
@@ -197,15 +197,15 @@ if ( ! class_exists( 'ECTProSettings' ) ) {
 								'default'     => 'ect_disable_cat',
 							),
 							array(
-								'id'          => 'ect_load_google_font',
-								'type'        => 'select',
-								'title'       => 'Load Google Font',
-								'options'     => array(
-								  'yes'  => 'Yes',
-								  'no'  => 'No',
+								'id'      => 'ect_load_google_font',
+								'type'    => 'select',
+								'title'   => 'Load Google Font',
+								'options' => array(
+									'yes' => 'Yes',
+									'no'  => 'No',
 								),
-								'default'     => 'yes'
-							  ),
+								'default' => 'yes',
+							),
 						),
 					)
 				);
@@ -217,7 +217,7 @@ if ( ! class_exists( 'ECTProSettings' ) ) {
 							array(
 								'title'   => 'Default Shortcode',
 								'type'    => 'heading',
-								'content' => '<code>[events-calendar-templates template="default" style="style-1" category="all" date_format="default" start_date="" end_date="" limit="10" order="ASC" hide-venue="no" time="future" featured-only="false" columns="2" autoplay="true" tags="" venues="" organizers="" socialshare="no"]</code>',
+								'content' => '<code>[events-calendar-templates template="default" style="style-1" category="all" date_format="default" start_date="" end_date="" limit="10" order="ASC" hide-venue="no" time="future" featured-only="false" columns="2" autoplay="true" tags="" venues="" organizers="" socialshare="no" filterbar="no" filterbarstyle="both"]</code>',
 							),
 							array(
 								'type'     => 'callback',
@@ -274,7 +274,7 @@ if ( ! class_exists( 'ECTProSettings' ) ) {
 							</table>';
 		}
 		function ect_shortcode_attr() {
-			$ect_admin_url = admin_url( 'edit.php?page=tribe-common&tab=display&post_type=tribe_events' );
+			$ect_admin_url = admin_url( 'edit.php?page=tec-events-settings&tab=display&post_type=tribe_events#tec-settings-events-settings-display-date' );
 				echo '
       <style>
       table.ect-shortcodes-tbl{
@@ -299,6 +299,7 @@ if ( ! class_exists( 'ECTProSettings' ) ) {
       <li><strong>masonry-view</strong></li>
       <li><strong>minimal-list</strong></li>
       <li><strong>accordion-view</strong> </li>
+	  <li><strong>highlighted-layout</strong> </li>
       </ul></td></tr>
 
       <tr style="border:1px solid #ddd"><td  style="border:1px solid #ddd">style</td>
@@ -316,16 +317,20 @@ if ( ! class_exists( 'ECTProSettings' ) ) {
 
       <tr style="border:1px solid #ddd"><td style="border:1px solid #ddd">date_format</td>
       <td style="border:1px solid #ddd"><ul>
-      <li><strong>default</strong> (01 January 2019)</li>
-      <li><strong>MD,Y</strong> (Jan 01, 2019)</li>
-      <li><strong>MD,Y</strong> (January 01, 2019)</li>
+      <li><strong>default</strong> (01 January 2024)</li>
+      <li><strong>MD,Y</strong> (Jan 01, 2024)</li>
+      <li><strong>FD,Y</strong> (January 01, 2024)</li>
       <li><strong>DM</strong> (01 Jan)</li>
       <li><strong>DML</strong> (01 Jan Monday)</li>
       <li><strong>DF</strong> (01 January)</li>
       <li><strong>MD</strong> (Jan 01)</li>
       <li><strong>FD</strong> (January 01)</li>
-      <li><strong>MD,YT</strong> (Jan 01, 2019 8:00am-5:00pm)</li>
-      <li><strong>full</strong> (01 January 2019 8:00am-5:00pm)</li>
+      <li><strong>MD,YT</strong> (Jan 01, 2024 8:00am-5:00pm)</li>
+      <li><strong>full</strong> (01 January 2024 8:00am-5:00pm)</li>
+	  <li><strong>dFT</strong> (01 January 8:00am-5:00pm)</li>
+	  <li><strong>sed</strong> (01 Jan - 02 Jan 2023 )</li>
+	  <li><strong>sedt</strong> (01 Jan - 02 Jan 2023 8:00am-5:00pm )</li>
+	  <li><strong>D.j.F</strong> (Wed., 15. Jan)</li>
       <li><strong>custom</strong>( Please check TEC settings for custom date format <a href = "' . $ect_admin_url . '">Click here </a>)</li>
       </ul></td></tr>
 
@@ -392,6 +397,19 @@ if ( ! class_exists( 'ECTProSettings' ) ) {
             <li><strong>no</strong></li>
           </ul>
           </td>
+      </tr>
+	  <tr style="border:1px solid #ddd"><td style="border:1px solid #ddd">filterbar</td>
+							<td style="border:1px solid #ddd"><ul>
+							<li><strong>yes</strong></li>
+      						<li><strong>no</strong></li>
+							</ul></td>
+      </tr>
+	  <tr style="border:1px solid #ddd"><td style="border:1px solid #ddd">filterbarstyle</td>
+							<td style="border:1px solid #ddd"><ul>
+							<li><strong>both</strong> (search + filters)</li>
+							<li><strong>search</strong> (only search)</li>
+							<li><strong>filter</strong> (only filters)</li>
+							</ul></td>
       </tr>
     </table>';
 		}

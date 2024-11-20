@@ -112,7 +112,7 @@ class ect_weekly_temaplate extends EctProStyles {
                     $start_date =$dateTimeago->format("Y-m-d");
 				$settings = array("event_start_date"=>$multiday_start_date, "start_prev_week"=>$start_date,"next_week_day"=>$start_next_dates,"Category"=>$attribute['category'],
                     "tags"=>$attribute['tags'], "limit"=>$attribute['limit'], "featured"=>$featured_only, "venue"=>$attribute['venues'], "organizers"=>$attribute['organizers']);
-                         $output .='<!========= Weekly Template Template '.ECT_VERSION.'=========>';
+                         $output .='<!========= Weekly Template Template '.ECT_PRO_VERSION.'=========>';
 				     $output .='<div id="ect-weekly-events-wrapper" data-weekly-id="'.$weekly_id .'">
                          <div class="ect-week-nav">
 				       <button class="ect-prev "><i class="ect-icon-left-double"></i></button>
@@ -127,7 +127,7 @@ class ect_weekly_temaplate extends EctProStyles {
                          }else{
                               $no_event_found_text =ect_get_option( 'events_not_found' );
 				          if(!empty($no_event_found_text)){
-				          	$output.='<div class="ect-no-events"><p>'.filter_var($no_event_found_text,FILTER_SANITIZE_STRING).'</p></div>';
+				          	$output.='<div class="ect-no-events"><p>'.filter_var($no_event_found_text,FILTER_SANITIZE_SPECIAL_CHARS).'</p></div>';
 				          }else{
                                    $output.='<div class="ect-no-events"><p>'.__('There are no upcoming events at this time.','ect').'</p></div>';
 				          }
