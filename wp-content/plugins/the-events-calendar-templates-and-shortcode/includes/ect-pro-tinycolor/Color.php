@@ -457,6 +457,9 @@ class Color
     // (see `matchers` above for definition).
     private function isValidCSSUnit($color)
     {
+        if ($color === null) {
+            return false; // or handle the null case as needed
+        }
         return (bool)preg_match($this->matchers['CSS_UNIT'], $color);
         // return !!matchers . CSS_UNIT . exec(color);
     }

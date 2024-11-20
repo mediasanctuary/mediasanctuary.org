@@ -1,16 +1,16 @@
-# Copyright (C) 2023 The Events Calendar
+# Copyright (C) 2024 The Events Calendar
 # This file is distributed under the GPLv2.
 msgid ""
 msgstr ""
-"Project-Id-Version: The Events Calendar: Filter Bar 5.5.2\n"
+"Project-Id-Version: The Events Calendar: Filter Bar 5.5.7\n"
 "Report-Msgid-Bugs-To: https://evnt.is/191x\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-08-10T09:39:01-07:00\n"
-"PO-Revision-Date: 2023-08-10 16:39\n"
+"POT-Creation-Date: 2024-09-24T14:08:13-07:00\n"
+"PO-Revision-Date: 2024-09-24 21:08\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: tribe-events-filter-view\n"
 
@@ -23,8 +23,8 @@ msgid "Creates an advanced filter panel on the frontend of your events list view
 msgstr ""
 
 #. Author of the plugin
-#: the-events-calendar-filter-view.php:179
-#: the-events-calendar-filter-view.php:180
+#: the-events-calendar-filter-view.php:181
+#: the-events-calendar-filter-view.php:182
 msgid "The Events Calendar"
 msgstr ""
 
@@ -36,8 +36,16 @@ msgstr ""
 msgid "Active Filters"
 msgstr ""
 
+#: src/admin-views/settings-field-active-filters.php:9
+msgid "The filters that are currently enabled and can be re-arranged by dragging and dropping. Expand a filter to edit the label and choose from a subset of input types (dropdown, select, range slider, checkbox, and radio). Each filter can be edited for its label and input type."
+msgstr ""
+
 #: src/admin-views/settings-field-available-filters.php:8
 msgid "Available Filters"
+msgstr ""
+
+#: src/admin-views/settings-field-available-filters.php:9
+msgid "Uncheck the box to hide the filter."
 msgstr ""
 
 #: src/Filter_Bar/Custom_Tables/V1/Provider.php:149
@@ -74,38 +82,38 @@ msgstr ""
 msgid "Contact your Host or your system administrator and ask to upgrade to the latest version of PHP."
 msgstr ""
 
-#: src/Tribe/Filter.php:357
+#: src/Tribe/Filter.php:364
 #: src/views/v2_1/components/dropdown.php:38
 msgid "Select"
 msgstr ""
 
-#: src/Tribe/Filter.php:392
+#: src/Tribe/Filter.php:399
 msgid "Select an Item"
 msgstr ""
 
-#: src/Tribe/Filter.php:414
+#: src/Tribe/Filter.php:421
 msgctxt "Featured Events active filter display label"
 msgid "Active"
 msgstr ""
 
-#: src/Tribe/Filter.php:678
+#: src/Tribe/Filter.php:685
 msgid "Title: %s"
 msgstr ""
 
-#: src/Tribe/Filter.php:696
+#: src/Tribe/Filter.php:703
 msgid "Type: %s %s %s"
 msgstr ""
 
-#: src/Tribe/Filter.php:700
+#: src/Tribe/Filter.php:707
 msgid "Dropdown"
 msgstr ""
 
-#: src/Tribe/Filter.php:705
+#: src/Tribe/Filter.php:712
 #: src/Tribe/Filters/Cost.php:71
 msgid "Checkboxes"
 msgstr ""
 
-#: src/Tribe/Filter.php:710
+#: src/Tribe/Filter.php:717
 msgid "Multi-Select"
 msgstr ""
 
@@ -214,116 +222,122 @@ msgid "Night"
 msgstr ""
 
 #: src/Tribe/Settings.php:77
-#: src/Tribe/Settings.php:134
+#: src/Tribe/Settings.php:136
 #: src/views/v2_1/filter-bar.php:58
 msgid "Filters"
 msgstr ""
 
-#: src/Tribe/Settings.php:139
-msgid "The settings below allow you to enable or disable front-end %s filters. Uncheck the box to hide the filter. Drag and drop active filters to re-arrange them."
-msgstr ""
-
-#: src/Tribe/Settings.php:142
-msgid "Expand an active filter to edit the label and choose from a subset of input types (dropdown, select, range slider, checkbox and radio)."
+#. translators: %1$s: singular label for events
+#: src/Tribe/Settings.php:141
+msgid "The settings below allow you to enable or disable front-end %1$s filters."
 msgstr ""
 
 #: src/Tribe/Settings.php:158
+msgid "Filter Settings"
+msgstr ""
+
+#. translators: %1$s: singular label for events
+#: src/Tribe/Settings.php:163
+msgid "The settings to the right allow you to change the layout and default state of the %1$s filters."
+msgstr ""
+
+#: src/Tribe/Settings.php:170
 msgid "Filters Layout"
 msgstr ""
 
-#: src/Tribe/Settings.php:161
+#: src/Tribe/Settings.php:173
 msgid "Vertical"
 msgstr ""
 
-#: src/Tribe/Settings.php:162
+#: src/Tribe/Settings.php:174
 msgid "Horizontal"
 msgstr ""
 
-#: src/Tribe/Settings.php:168
+#: src/Tribe/Settings.php:180
 msgid "Filter Bar default state"
 msgstr ""
 
-#: src/Tribe/Settings.php:171
+#: src/Tribe/Settings.php:183
 msgid "Stay collapsed until visitors open it"
 msgstr ""
 
-#: src/Tribe/Settings.php:172
+#: src/Tribe/Settings.php:184
 msgid "Show on initial page load"
 msgstr ""
 
-#: src/Tribe/Settings.php:199
+#: src/Tribe/Settings.php:207
 msgid "Filter Bar"
 msgstr ""
 
-#: src/Tribe/Settings.php:213
+#: src/Tribe/Settings.php:221
 msgid "Enabled: datepicker and filter selections automatically update calendar views"
 msgstr ""
 
-#: src/Tribe/Settings.php:226
+#: src/Tribe/Settings.php:234
 msgid "Disabled: users must manually submit date search and Filter Bar"
 msgstr ""
 
-#: src/Tribe/Settings.php:242
+#: src/Tribe/Settings.php:250
 msgid "Settings"
 msgstr ""
 
-#: src/Tribe/View.php:517
-#: src/Tribe/Views/V2/Filters/Context_Filter.php:234
+#: src/Tribe/View.php:522
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:245
 msgid "%s Category"
 msgstr ""
 
-#: src/Tribe/View.php:523
+#: src/Tribe/View.php:528
 msgid "Cost (%s)"
 msgstr ""
 
-#: src/Tribe/View.php:530
-#: src/Tribe/Views/V2/Filters/Context_Filter.php:246
+#: src/Tribe/View.php:535
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:257
 msgid "Tags"
 msgstr ""
 
-#: src/Tribe/View.php:544
-#: src/Tribe/Views/V2/Filters/Context_Filter.php:239
+#: src/Tribe/View.php:549
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:250
 msgid "Day"
 msgstr ""
 
-#: src/Tribe/View.php:548
-#: src/Tribe/Views/V2/Filters/Context_Filter.php:247
+#: src/Tribe/View.php:553
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:258
 msgid "Time"
 msgstr ""
 
-#: src/Tribe/View.php:553
-#: src/Tribe/Views/V2/Filters/Context_Filter.php:238
+#: src/Tribe/View.php:558
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:249
 msgid "Country"
 msgstr ""
 
-#: src/Tribe/View.php:558
-#: src/Tribe/Views/V2/Filters/Context_Filter.php:236
+#: src/Tribe/View.php:563
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:247
 msgid "City"
 msgstr ""
 
-#: src/Tribe/View.php:563
-#: src/Tribe/Views/V2/Filters/Context_Filter.php:244
+#: src/Tribe/View.php:568
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:255
 msgid "State/Province"
 msgstr ""
 
-#: src/Tribe/View.php:569
-#: src/Tribe/Views/V2/Filters/Context_Filter.php:241
+#: src/Tribe/View.php:574
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:252
 msgid "Featured %s"
 msgstr ""
 
-#: src/Tribe/View.php:720
+#: src/Tribe/View.php:725
 msgid "Accessibility Form Notice"
 msgstr ""
 
-#: src/Tribe/View.php:721
+#: src/Tribe/View.php:726
 msgid "Notice: Utilizing the form controls will dynamically update the content"
 msgstr ""
 
-#: src/Tribe/Views/V2/Filters/Context_Filter.php:237
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:248
 msgid "Cost ($)"
 msgstr ""
 
-#: src/Tribe/Views/V2/Filters/Context_Filter.php:240
+#: src/Tribe/Views/V2/Filters/Context_Filter.php:251
 msgid "Distance"
 msgstr ""
 
@@ -407,10 +421,10 @@ msgstr ""
 msgid "Your selections"
 msgstr ""
 
-#: the-events-calendar-filter-view.php:52
+#: the-events-calendar-filter-view.php:54
 msgid "Events Filter Bar"
 msgstr ""
 
-#: the-events-calendar-filter-view.php:177
+#: the-events-calendar-filter-view.php:179
 msgid "To begin using The Events Calendar: Filter Bar, please install the latest version of"
 msgstr ""

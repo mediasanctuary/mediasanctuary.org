@@ -29,7 +29,7 @@ class ECT_Settings {
 		$this->PLUGIN_VER   = ECT_ApiConf::PLUGIN_VERSION;
 		$this->settings_api = \cool_plugins_events_registration_Settings::init();
 		// $this->settings_api = new Settings_API;
-		$this->plugin_purchase_url      = 'https://1.envato.market/a4avW';
+		$this->plugin_purchase_url      = 'https://eventscalendaraddons.com/plugin/events-shortcodes-pro/';
 		$this->plugin_documentation_url = 'https://docs.coolplugins.net/doc/the-events-calendar-shortcode-templates-pro/';
 		$this->verification_status      = 'License is not verified yet! ';
 		$this->settings_api->add_registration_page();
@@ -76,7 +76,7 @@ class ECT_Settings {
 						'desc'    => $this->find_purchase_code(),
 						'type'    => 'html',
 						'default' => '',
-					)
+					),
 				)
 			);
 
@@ -92,23 +92,23 @@ class ECT_Settings {
 	|---------------------------------------------------
 	*/
 	public function admin_init() {
-			
+
 			$this->settings_api->admin_init();
 	}
 
-	
+
 	function find_purchase_code() {
 		$html = '
 		<h4 class="cool-license-q">Q1) Where can I find my license key?</h4>
-		<p class="cool-license-a">Codecanyon users can find their license key by following these steps - <a href="https://help.market.envato.com/hc/en-us/articles/202822600-Where-Is-My-Purchase-Code-" target="_blank">check here</a>
+		<p class="cool-license-a">You can find license key inside your purchase order email or /my-account section in the <a href="https://eventscalendaraddons.com/my-account/" target="_blank">website.</a>
 		<br/>
-		or you can find license key inside your purchase order email or /my-account section in the website from where you purchased the plugin.</p>
+		or Codecanyon users can find their license key by following these steps - <a href="https://help.market.envato.com/hc/en-us/articles/202822600-Where-Is-My-Purchase-Code-" target="_blank">check here</a></p>
 
 		<h4 class="cool-license-q">Q2) Can I use single site license on another domain?</h4>
 		<p class="cool-license-a">You need to deactivate license from current active site to use it on another domain. Remember to deactivate license before moving your site to another domain or server.</p>
 
 		<h4 class="cool-license-q">Q3) Having trouble in license activation?</h4>
-		<p class="cool-license-a">Please contact support at <a href="mailto:contact@coolplugins.net?subject=License Activation Issue" target="_blank">contact@coolplugins.net</a> along with your license key and domain url.</p>
+		<p class="cool-license-a">Please submit a support ticket at <a href="https://coolplugins.net/support/" target="_blank">https://coolplugins.net/support/</a> along with your license key and domain url.</p>
 		';
 		return $html;
 	}
@@ -169,8 +169,8 @@ class ECT_Settings {
 				}
 				$current_date      = date( 'Y-m-d H:i:s' );
 				$current_date_time = strtotime( $current_date );
-				$support_time      = ! empty( $this->Response->support_end ) ? strtotime($this->Response->support_end) : '';
-				if (!empty($support_time ) && $support_time < $current_date_time) {
+				$support_time      = ! empty( $this->Response->support_end ) ? strtotime( $this->Response->support_end ) : '';
+				if ( ! empty( $support_time ) && $support_time < $current_date_time ) {
 					$registration .= "<span class='" . $this->PREFIX . "-renew-support-notice'><ol><li>Your support validity has expired, please renew it to get support for plugin bugs and updates.</li><li>If you have already renewed your support then uninstall and install license once to update your support status.</li></ol></span>";
 				}
 				return $registration;
@@ -294,9 +294,9 @@ class ECT_Settings {
 		$current_user = wp_get_current_user();
 		$user_name    = $current_user->display_name;
 		$currnt_scren = get_current_screen();
-		$parent_base = isset($currnt_scren->parent_base)?$currnt_scren->parent_base:'';
-		if ($parent_base=='cool-plugins-events-addon') {
-		?>
+		$parent_base  = isset( $currnt_scren->parent_base ) ? $currnt_scren->parent_base : '';
+		if ( $parent_base == 'cool-plugins-events-addon' ) {
+			?>
 				<div class="license-warning notice notice-error is-dismissible">
 					<p>Hi, <strong><?php echo ucwords( $user_name ); ?></strong>! Please <strong><a href="<?php echo esc_url( get_admin_url( null, 'admin.php?page=cool-events-registration' ) ); ?>">enter and activate</a></strong> your license key for <strong><?php echo $this->PLUGIN_NAME; ?></strong> plugin for unrestricted and full access of all premium features.</p>
 				</div>

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Main Tribe Events Calendar class.
  */
@@ -40,17 +39,17 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		const POSTTYPE            = 'tribe_events';
 		const VENUE_POST_TYPE     = 'tribe_venue';
 		const ORGANIZER_POST_TYPE = 'tribe_organizer';
-		const VERSION             = '6.5.0.1';
+		const VERSION             = '6.8.2';
 
 		/**
 		 * Min Pro Addon.
 		 *
 		 * @deprecated 4.8
 		 */
-		const MIN_ADDON_VERSION = '6.5.0.1';
+		const MIN_ADDON_VERSION = '6.7.0';
 
 		/**
-		 * Min Common
+		 * Min Common.
 		 *
 		 * @deprecated 4.8
 		 */
@@ -77,7 +76,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		 *
 		 * @since 4.8
 		 */
-		protected $min_et_version = '5.10.0-dev';
+		protected $min_et_version = '5.16.0-dev';
 
 		/**
 		 * Maybe display data wrapper
@@ -168,6 +167,8 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		/**
 		 * A Stored version of the Welcome and Update Pages.
 		 * @var Tribe__Admin__Activation_Page
+		 *
+		 * @deprecated 6.8.2
 		 */
 		public $activation_page;
 
@@ -403,7 +404,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		}
 
 		/**
-		 * Resets the global common info back to ET's common path
+		 * Resets the global common info back to ET's common path.
 		 *
 		 * @since 4.9.3.2
 		 */
@@ -676,9 +677,6 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 				tribe_register_provider( '\\TEC\\Events\\Custom_Tables\\V1\\Provider' );
 			}
 
-			// Filter Bar.
-			tribe_register_provider( Tribe\Events\Admin\Filter_Bar\Provider::class );
-
 			// Blocks
 			tribe_register_provider( TEC\Events\Blocks\Controller::class );
 
@@ -703,6 +701,12 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 			// Register new Admin Notice system.
 			tribe_register_provider( TEC\Events\Admin\Notice\Provider::class );
 
+			// Register new Admin Settings system.
+			tribe_register_provider( TEC\Events\Admin\Settings\Provider::class );
+
+			// Register the Help Hub system.
+			tribe_register_provider( TEC\Events\Admin\Help_Hub\Provider::class );
+
 			/**
 			 * Allows other plugins and services to override/change the bound implementations.
 			 *
@@ -722,9 +726,6 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		 * Load all the required library files.
 		 */
 		protected function loadLibraries() {
-			// Setup the Activation page
-			$this->activation_page();
-
 			// Tribe common resources
 			require_once $this->plugin_path . 'vendor/tribe-common-libraries/tribe-common-libraries.class.php';
 
@@ -931,7 +932,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 			add_filter( 'tribe_events_google_maps_api', [ $google_maps_api_key, 'filter_tribe_events_google_maps_api' ] );
 			add_filter( 'tribe_events_pro_google_maps_api', [ $google_maps_api_key, 'filter_tribe_events_google_maps_api' ] );
 			add_filter( 'tribe_field_value', [ $google_maps_api_key, 'populate_field_with_default_api_key' ], 10, 2 );
-			add_filter( 'tribe_field_tooltip', [ $google_maps_api_key, 'populate_field_tooltip_with_helper_text' ], 10, 2 );
+			add_filter( 'tribe_field_append', [ $google_maps_api_key, 'populate_field_tooltip_with_helper_text' ], 10, 2 );
 
 			// Preview handling
 			add_action( 'template_redirect', [ Tribe__Events__Revisions__Preview::instance(), 'hook' ] );
@@ -973,7 +974,6 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 			tribe( 'tec.rest-v1.main' );
 			tribe( 'tec.privacy' );
 			tribe( Tribe__Events__Capabilities::class );
-			tribe( Tribe\Events\Admin\Filter_Bar\Provider::class );
 		}
 
 		/**
@@ -1085,8 +1085,12 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 
 		/**
 		 * @return Tribe__Admin__Activation_Page
+		 *
+		 * @deprecated 6.8.2 Activation page no longer used.
 		 */
 		public function activation_page() {
+			_deprecated_function( __METHOD__, '6.8.2', 'No replacement' );
+
 			// Setup the activation page only if the relevant class exists (in some edge cases, if another
 			// plugin hosting an earlier version of tribe-common is already active we could hit fatals
 			// if we don't take this precaution).
@@ -1103,7 +1107,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 						'plugin_path'           => $this->plugin_dir . 'the-events-calendar.php',
 						'version_history_slug'  => 'previous_ecp_versions',
 						'update_page_title'     => __( 'Welcome to The Events Calendar!', 'the-events-calendar' ),
-						'update_page_template'  => $this->plugin_path . 'src/admin-views/updates/6.0.0.php',
+						'update_page_template'  => $this->plugin_path . 'src/admin-views/admin-update-message.php',
 						'welcome_page_title'    => __( 'Welcome to The Events Calendar!', 'the-events-calendar' ),
 						'welcome_page_template' => $this->plugin_path . 'src/admin-views/admin-welcome-message.php',
 					]
@@ -1265,7 +1269,13 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 			$edit_settings_link = __( ' ask the site administrator to set a different Events URL slug.', 'the-events-calendar' );
 
 			if ( current_user_can( $settings_cap ) ) {
-				$setting_page_link  = tribe( Tribe\Events\Admin\Settings::class )->get_url() . '#tribe-field-eventsSlug';
+				$setting_page_link = tribe( Tribe\Events\Admin\Settings::class )->get_url(
+					[
+						'anchor' => 'tribe-field-eventsSlug',
+						'tab'    => 'general-viewing-tab',
+					]
+				);
+
 				$edit_settings_link = sprintf( '<a href="%1$s">%2$s</a>', $setting_page_link, __( 'edit Events settings.', 'the-events-calendar' ) );
 			}
 
@@ -3976,7 +3986,6 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		/**
 		 * Specify the "preview venue" to link to an event.
 		 *
-		 *
 		 * @since 4.5.1
 		 *
 		 * @param int $event_id The ID of the event being previewed.
@@ -4005,7 +4014,6 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 
 		/**
 		 * Specify the "preview organizer" to link to an event.
-		 *
 		 *
 		 * @since 4.5.1
 		 *

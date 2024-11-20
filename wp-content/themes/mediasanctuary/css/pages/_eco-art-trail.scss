@@ -1,3 +1,6 @@
+@use '../global/colors' as *;
+@use '../global/typography' as *;
+
 body.page-template-eco-art-trail {
     background-color: $c-asphalt;
     color: $c-white;

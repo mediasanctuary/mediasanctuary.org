@@ -4,8 +4,9 @@
  */
 $priority = 0;
 ?>
-<div class="tribe-admin-box-right">
+<div id="tec-active-filters" class="tribe-admin-box-right tec-settings-form__element--rowspan-2">
 	<h4><?php esc_html_e( 'Active Filters', 'tribe-events-filter-view' ); ?></h4>
+	<p><?php esc_html_e( 'The filters that are currently enabled and can be re-arranged by dragging and dropping. Expand a filter to edit the label and choose from a subset of input types (dropdown, select, range slider, checkbox, and radio). Each filter can be edited for its label and input type.', 'tribe-events-filter-view' ); ?></p>
 	<ul id="active_filters">
 		<?php foreach ( $filters as $slug => $filter ) : ?>
 			<li id="tribe_events_active_filter_<?php echo esc_attr( $slug ); ?>" class="tribe-arrangeable-item">

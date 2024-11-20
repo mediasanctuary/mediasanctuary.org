@@ -30,6 +30,7 @@
         html: false,
         className: false,
         customClassName: false,
+        inserter: false,
       },
       attributes: {
         shortcode: {

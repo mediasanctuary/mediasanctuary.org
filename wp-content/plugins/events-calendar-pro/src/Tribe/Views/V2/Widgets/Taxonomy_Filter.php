@@ -106,7 +106,7 @@ class Taxonomy_Filter {
 	 * @return array<string,mixed> $filters The clean and ready filters argument.
 	 */
 	public function set_taxonomy_args( $filters, $operand = self::DEFAULT_OPERAND ) {
-		$filters = maybe_unserialize( $filters );
+		$filters = tec_events_pro_maybe_unserialize( $filters, false );
 
 		if ( is_string( $filters ) ) {
 			$filters = json_decode( $filters, true );
@@ -179,7 +179,7 @@ class Taxonomy_Filter {
 	 * @return string A JSON string representation of the clean and properly formatted filters.
 	 */
 	public function format_taxonomy_filters( $filters ) {
-		$filters = maybe_unserialize( $filters );
+		$filters = tec_events_pro_maybe_unserialize( $filters, false );
 
 		if ( is_string( $filters ) ) {
 			$filters = json_decode( $filters, true );
@@ -256,7 +256,7 @@ class Taxonomy_Filter {
 	 *
 	 * @since 5.2.0
 	 *
-	 * @param array<string,string> $value The input values to iterate through and display.
+	 * @param string|array<string,string> $value The input values to iterate through and display. Can be a json_encoded string.
 	 *
 	 * @return array<string,string> $list_items The array of taxonomy items.
 	 */

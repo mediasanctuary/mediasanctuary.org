@@ -3,9 +3,9 @@
 Contributors: theeventscalendar, borkweb, bordoni, brianjessee, aguseo, camwynsp, GeoffBel, geoffgraham, jentheo, leahkoerper, lucatume, neillmcshea, paulskim, vicskf, zbtirrell, juanfra
 Tags: events, calendar, event, venue, organizer, dates, date, google maps, conference, workshop, concert, meeting, seminar, summit, class, the events calendar, widget, pro, filters, categories, sort, tags, taxonomy, find, search
 Donate link: http://evnt.is/29
-Requires at least: 6.1.0
-Stable tag: 5.5.2
-Tested up to: 6.3
+Stable tag: 5.5.7
+Requires at least: 6.3
+Tested up to: 6.6
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -195,6 +195,33 @@ Our Premium Plugins:
 
 == Changelog ==
 
+= [5.5.7] 2024-09-25 =
+
+* Version - Events Filterbar 5.5.7 is only compatible with The Events Calendar 6.7.0 and higher.
+* Feature - New and improved settings layout and styles. [TEC-5124]
+* Language - 5 new strings added, 19 updated, 0 fuzzied, and 2 obsoleted
+
+= [5.5.6] 2024-09-11 =
+
+* Fix - Subscribing to a filtered calendar should not include all events. [FBAR-316]
+* Fix - Show only the tags associated with Events in the Filter Bar. [FBAR-268]
+* Language - 0 new strings added, 13 updated, 0 fuzzied, and 0 obsoleted
+
+= [5.5.5] 2024-07-18 =
+
+* Fix - Show only the tags associated with Events in the Filter Bar. [FBAR-268]
+* Language - 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted
+
+= [5.5.4] 2024-03-20 =
+
+* Tweak - Correct some PHP 8.2 deprecation notices. [FBAR-323]
+* Language - 0 new strings added, 11 updated, 0 fuzzied, and 0 obsoleted
+
+= [5.5.3] 2023-10-03 =
+
+* Fix - Filter Bar dropdowns were being automatically selected on page load. Now they should load in a default unselected state. [FBAR-291]
+* Tweak - Updated focus state for relevant elements to have default outline ensuring improved accessibility and consistent browser behavior. [TEC-4888]
+
 = [5.5.2] 2023-08-10 =
 
 * Version - Filter Bar 5.5.0 is only compatible with The Events Calendar 6.1.4 and higher.
@@ -334,7 +361,7 @@ Our Premium Plugins:
 
 = [5.0.2] 2020-12-02 =
 
-* Tweak - Add a filter to allow views to "turn off" Filter Bar classes on their container. [TBD]
+* Tweak - Add a filter to allow views to "turn off" Filter Bar classes on their container. [TEC-3614]
 * Language - 0 new strings added, 3 updated, 0 fuzzied, and 0 obsoleted
 
 = [5.0.1] 2020-10-22 =

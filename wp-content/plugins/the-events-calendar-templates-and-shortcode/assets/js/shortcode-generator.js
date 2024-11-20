@@ -39,22 +39,26 @@
 
     var date_formats = {
         "formats": [
-            { "text": "Default (01 January 2019)", "value": "default" },
-            { "text": "Md,Y (Jan 01, 2019)", "value": "MD,Y" },
-            { "text": "Fd,Y (January 01, 2019)", "value": "FD,Y" },
+            { "text": "Default (01 January 2024)", "value": "default" },
+            { "text": "Md,Y (Jan 01, 2024)", "value": "MD,Y" },
+            { "text": "Fd,Y (January 01, 2024)", "value": "FD,Y" },
             { "text": "dM (01 Jan)", "value": "DM" },
+            { "text": "dML (01 Jan Monday)", "value": "DML" },
             { "text": "dF (01 January)", "value": "DF" },
             { "text": "Md (Jan 01)", "value": "MD" },
             { "text": "Fd (January 01)", "value": "FD" },
-            { "text": "Md,YT (Jan 01, 2019 8:00am-5:00pm)", "value": "MD,YT" },
-            { "text": "Full (01 January 2019 8:00am-5:00pm)", "value": "full" },
+            { "text": "Md,YT (Jan 01, 2024 8:00am-5:00pm)", "value": "MD,YT" },
+            { "text": "Full (01 January 2024 8:00am-5:00pm)", "value": "full" },
             { "text": "jMl (1 Jan Monday)", "value": "jMl" },
-            { "text": "d.FY (01. January 2019)", "value": "d.FY" },
+            { "text": "d.FY (01. January 2024)", "value": "d.FY" },
             { "text": "d.F (01. January)", "value": "d.F" },
             { "text": "d.Ml (01. Jan Monday)", "value": "d.Ml" },
             { "text": "ldF (Monday 01 January)", "value": "ldF" },
             { "text": "Mdl (Jan 01 Monday)", "value": "Mdl" },
             { "text": "dFT (01 January 8:00am-5:00pm)", "value": "dFT" },
+            { "text": "SED (01 Jan - 02 Jan 2024)", "value": "sed" },
+            { "text": "SEDT (01 Jan - 02 Jan 2024 8:00am-5:00pm) ", "value": "sedt" },
+            { "text": "D.,j. F (Wed., 15. May)", "value": "D.j.F" },
             // {"text":"Custom(Please check The event calender settings)","value":"custom"},
         ]
     };
@@ -91,6 +95,7 @@
                                         { text: 'Masonry Layout(Categories Filters)', value: 'masonry-view' },
                                         { text: 'Toggle List(accordion-view)', value: 'accordion-view' },
                                         { text: 'Minimal List', value: 'minimal-list' },
+                                        { text: 'Highlighted Layout', value: 'highlighted-layout' },
                                         // { text: 'Cover View', value: 'cover-view' }
                                     ]
                                 },
@@ -217,7 +222,7 @@
                                     type: 'container',
                                     name: 'container',
                                     label: 'Note:-',
-                                    html: '<small style="color:red;">Show events in a date range e.g( 2019-01-25 to 2019-04-15).</small>'
+                                    html: '<small style="color:red;">Show events in a date range e.g( 2024-01-25 to 2024-04-15).</small>'
                                 },
                                 {
                                     type: 'textbox',
@@ -253,15 +258,15 @@
                                     name: 'dateFormat',
                                     label: 'Date Format',
                                     values: [
-                                        { "text": "Default (01 January 2019)", "value": "d F Y" },
-                                        { "text": "Md,Y (Jan 01, 2019)", "value": "M D, Y" },
-                                        { "text": "Fd,Y (January 01, 2019)", "value": "F D, Y" },
+                                        { "text": "Default (01 January 2024)", "value": "d F Y" },
+                                        { "text": "Md,Y (Jan 01, 2024)", "value": "M D, Y" },
+                                        { "text": "Fd,Y (January 01, 2024)", "value": "F D, Y" },
                                         { "text": "dM (01 Jan)", "value": "D M" },
                                         { "text": "dF (01 January)", "value": "D F" },
                                         { "text": "Md (Jan 01)", "value": "M D" },
                                         { "text": "Fd (January 01)", "value": "F D" },
                                         { "text": "jMl (1 Jan Monday)", "value": "j M l" },
-                                        { "text": "d.FY (01. January 2019)", "value": "d. F Y" },
+                                        { "text": "d.FY (01. January 2024)", "value": "d. F Y" },
                                         { "text": "d.F (01. January)", "value": "d. F" },
                                         { "text": "d.Ml (01. Jan Monday)", "value": "d. M l" },
                                         { "text": "ldF (Monday 01 January)", "value": "l d F" },
@@ -438,7 +443,7 @@
                                 type: 'container',
                                 name: 'container',
                                 label: 'Note:-',
-                                html: '<small style="color:red;">Show events in a date range e.g( 2019-01-25 to 2019-04-15).</small>'
+                                html: '<small style="color:red;">Show events in a date range e.g( 2024-01-25 to 2024-04-15).</small>'
                             },
                             {
                                 type: 'textbox',

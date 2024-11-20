@@ -1,3 +1,8 @@
+@use '../global/colors' as *;
+@use '../global/fonts' as *;
+@use '../global/typography' as *;
+@use '../global/breakpoints' as *;
+
 .header {
 	background-image: url('../img/bg-mosaic.jpg');
 	background-size: auto 240px;
