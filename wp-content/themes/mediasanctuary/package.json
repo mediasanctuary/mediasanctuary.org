@@ -1,6 +1,6 @@
 {
   "name": "mediasanctuary",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "WordPress theme for mediasanctuary.org",
   "main": "index.php",
   "scripts": {
