@@ -1,9 +1,9 @@
-@import 'reset';
-@import 'colors';
-@import 'fonts';
-@import 'breakpoints';
-@import 'typography';
-@import 'components';
-@import 'slick';
-@import 'slick-theme';
-@import 'gallery';
+@use 'reset' as *;
+@use 'colors' as *;
+@use 'fonts' as *;
+@use 'breakpoints' as *;
+@use 'typography' as *;
+@use 'components' as *;
+@use 'slick' as *;
+@use 'slick-theme' as *;
+@use 'gallery' as *;

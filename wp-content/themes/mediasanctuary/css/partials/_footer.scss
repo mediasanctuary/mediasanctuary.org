@@ -1,3 +1,6 @@
+@use '../global/colors' as *;
+@use '../global/fonts' as *;
+
 #about {
   position: relative;
   background: $c-red-oxide url('../img/bg-about-sanctuary.jpg') center center;

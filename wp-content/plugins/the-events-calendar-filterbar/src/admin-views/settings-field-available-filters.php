@@ -4,8 +4,9 @@
  * @var array $current_filters Slugs of all active filters
  */
 ?>
-<div class="tribe-admin-box-left">
+<div id="tec-available-filters" class="tribe-admin-box-left">
 	<h4><?php esc_html_e( 'Available Filters', 'tribe-events-filter-view' ); ?></h4>
+	<p><?php esc_html_e( 'Uncheck the box to hide the filter.', 'tribe-events-filter-view' ); ?>
 	<ul id="all_filters">
 		<?php foreach ( $filters as $slug => $filter ) : ?>
 			<li id="tribe_events_filter_<?php echo esc_attr( $slug ); ?>">

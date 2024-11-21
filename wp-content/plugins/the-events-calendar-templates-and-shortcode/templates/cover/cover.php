@@ -38,7 +38,7 @@ if($style=="style-1"){
 else{
     $ect_cover_left_cls = "ect-cover-right-top";
 }
-$events_html.='<div id="event-'.esc_attr($event_id) .'"'.$cat_colors_attr.' class="ect-cover-event '.$style.' '.$event_type.'" itemscope itemtype="http://schema.org/Event">
+$events_html.='<div id="event-'.esc_attr($event_id) .'"'.$cat_colors_attr.' class="ect-cover-event '.$style.' '.$event_type.'" >
                 <div class="ect-cover-event-area">
                 <div class="ect-cover-right ect-cover-image"><a href="'.tribe_get_event_link($event_id).'">
                 <img src="'.$ev_post_img.'" title="'.get_the_title($event_id) .'" alt="'.get_the_title($event_id) .'"></a>

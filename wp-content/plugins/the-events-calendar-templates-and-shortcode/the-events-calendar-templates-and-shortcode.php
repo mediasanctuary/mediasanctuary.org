@@ -3,10 +3,10 @@
  Plugin Name:Events Shortcodes Pro
  Plugin URI:https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
  Description:<a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Use shortcodes to display a list of events from The Events Calendar plugin in premium layouts, including grid, masonry, carousel, and slider, on any page or post.
- Version:2.9.6
- Requires at least: 4.5
- Tested up to:6.1.1
- Requires PHP:5.6
+ Version:3.2.1
+ Requires at least: 5.0
+ Tested up to:6.7
+ Requires PHP:7.2
  Stable tag:trunk
  License:GPL2
  Author:Cool Plugins
@@ -20,8 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	header( 'HTTP/1.1 403 Forbidden' );
 	exit();
 }
-if ( ! defined( 'ECT_VERSION' ) ) {
-	define( 'ECT_VERSION', '2.9.6' );
+if ( ! defined( 'ECT_PRO_VERSION' ) ) {
+	define( 'ECT_PRO_VERSION', '3.2.1' );
 }
 /*** Defined constent for later use */
 if ( ! defined( 'ECT_PRO_FILE' ) ) {
@@ -57,9 +57,15 @@ if ( ! class_exists( 'EventsCalendarTemplatesPro' ) ) {
 		// register all hooks
 		public function registers() {
 			$thisPlugin = self::$instance;
+
 			/*** Installation and uninstallation hooks */
 			register_activation_hook( __FILE__, array( 'EventsCalendarTemplatesPro', 'activate' ) );
+			if ( get_option( 'ect-v' ) ) {
+				update_option( 'ect-pro-v', ECT_PRO_VERSION );
+			}
 			register_deactivation_hook( __FILE__, array( 'EventsCalendarTemplatesPro', 'deactivate' ) );
+			add_action( 'init', array( self::$instance, 'ect_pro_load_textdomain' ) );
+			
 			/*** Load required files */
 			add_action( 'plugins_loaded', array( $thisPlugin, 'ect_load_files' ) );
 			add_action( 'plugins_loaded', array( $thisPlugin, 'ect_check_event_calender_installed' ) );
@@ -72,8 +78,14 @@ if ( ! class_exists( 'EventsCalendarTemplatesPro' ) ) {
 			$events_shortcode = new EventsShortcodePro();
 			/*** Include Gutenberg Block */
 			require_once ECT_PRO_PLUGIN_DIR . 'admin/gutenberg-block/ect-block.php';
-			add_action( 'plugin_row_meta', array($thisPlugin, 'ect_pro_addMeta_Links' ), 10, 2 );
+			add_action( 'plugin_row_meta', array( $thisPlugin, 'ect_pro_addMeta_Links' ), 10, 2 );
 		}
+		/*** Load Text domain */
+		public function ect_pro_load_textdomain(){
+			// Language translation.
+			load_plugin_textdomain( 'ect', false, basename( dirname( __FILE__ ) ) . '/languages/' );
+		}
+
 		/**
 		 * Add meta links to the Plugins list page.
 		 *
@@ -82,11 +94,11 @@ if ( ! class_exists( 'EventsCalendarTemplatesPro' ) ) {
 		 *
 		 * @return array The modified action links array.
 		 */
-		public function ect_pro_addMeta_Links( $links, $file){
-			if ( strpos( $file, basename(__FILE__) )) {
+		public function ect_pro_addMeta_Links( $links, $file ) {
+			if ( strpos( $file, basename( __FILE__ ) ) ) {
 				$ectanchor   = esc_html__( 'Video Tutorials', 'ect' );
 				$ectvideourl = 'https://eventscalendaraddons.com/docs/events-shortcodes-pro/video-tutorials/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=video_tutorial&utm_content=plugins_list';
-				$links[] = '<a href="' . esc_url( $ectvideourl ) . '" target="_blank">' . $ectanchor . '</a>';
+				$links[]     = '<a href="' . esc_url( $ectvideourl ) . '" target="_blank">' . $ectanchor . '</a>';
 			}
 
 			return $links;
@@ -105,8 +117,7 @@ if ( ! class_exists( 'EventsCalendarTemplatesPro' ) ) {
 			}
 		}
 		function onLoad() {
-			// language translation
-			load_plugin_textdomain( 'ect', false, basename( dirname( __FILE__ ) ) . '/languages/' );
+			
 			if ( file_exists( plugin_dir_path( __DIR__ ) . 'template-events-calendar/events-calendar-templates.php' ) ) {
 				include_once ABSPATH . 'wp-admin/includes/plugin.php';
 				if ( is_plugin_active( 'template-events-calendar/events-calendar-templates.php' ) ) {
@@ -129,6 +140,11 @@ if ( ! class_exists( 'EventsCalendarTemplatesPro' ) ) {
 				if ( defined( 'WPB_VC_VERSION' ) ) {
 					require_once ECT_PRO_PLUGIN_DIR . 'admin/visual-composer/ect-class-vc.php';
 				}
+				include_once ABSPATH . 'wp-admin/includes/plugin.php';
+				if ( ! is_plugin_active( 'events-block-for-the-events-calendar/events-block-for-the-event-calender.php' ) ) {
+					require ECT_PRO_PLUGIN_DIR . '/includes/events-shortcode-block/includes/ebec-functions.php';
+					require ECT_PRO_PLUGIN_DIR . '/includes/events-shortcode-block/includes/ebec-block.php';
+				}
 			}
 			if ( is_admin() ) {
 				/*** Plugin review notice file */
@@ -146,7 +162,19 @@ if ( ! class_exists( 'EventsCalendarTemplatesPro' ) ) {
 		}
 		// add notice on plugin init
 		public function onInit() {
-			if ( version_compare( get_option( 'ect-v' ), '2.7', '<' ) ) {
+			if ( get_option( 'ect-v' ) !== false ) {
+				if ( version_compare( get_option( 'ect-v' ), '3.0', '<' ) ) {
+					ect_pro_create_admin_notice(
+						array(
+							'id'              => 'ect-pro-setting-change',
+							'message'         => wp_kses_post( __( '<strong>Major design update</strong> for <strong>Events Shortcodes (Pro)</strong> plugin in version 3.0! Update or reset <a href=' . admin_url( 'admin.php?page=tribe-events-shortcode-template-settings' ) . '>style settings</a> if you face any design issues.', 'ect' ) ),
+							'review_interval' => 0,
+						)
+					);
+				}
+			}
+
+			if ( version_compare( get_option( 'ect-pro-v' ), '2.7', '<' ) ) {
 					ect_pro_create_admin_notice(
 						array(
 							'id'              => 'ect-pro-setting-migration',
@@ -155,14 +183,14 @@ if ( ! class_exists( 'EventsCalendarTemplatesPro' ) ) {
 						)
 					);
 			}
-			if ( did_action( 'elementor/loaded' ) && ! class_exists( 'Events_Calendar_Addon' ) || ! class_exists( 'Events_Calendar_Addon_Pro' )) {
+			if ( ( did_action( 'elementor/loaded' ) && ! class_exists( 'Events_Calendar_Addon' ) ) || ( did_action( 'elementor/loaded' ) && ! class_exists( 'Events_Calendar_Addon_Pro' ) ) ) {
 				ect_pro_create_admin_notice(
 					array(
 						'id'              => 'ect-elementor-addon-notice',
 						'message'         => wp_kses_post(
 							__(
 								'Hi! We checked that you are using <strong>Elementor Page Builder</strong>.
-							<br/>Please try latest <a target="_blank" href="https://wordpress.org/plugins/events-widgets-for-elementor-and-the-events-calendar/"><strong>The Events Calendar Widgets For Elementor</strong></a> plugin developed by <a href="https://coolplugins.net">Cool Plugins</a>
+							<br/>Please try latest <a target="_blank" href="https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro_ectbe&utm_content=elementor_notice"><strong>The Events Calendar Widgets For Elementor</strong></a> plugin developed by <a href="https://coolplugins.net">Cool Plugins</a>
 							   & <br/> represent The Events Calendar events in the Elementor page builder pages.',
 								'ect'
 							)
@@ -189,7 +217,7 @@ if ( ! class_exists( 'EventsCalendarTemplatesPro' ) ) {
 		}
 		/*** Admin side shortcode generator style CSS */
 		public function ect_tc_css() {
-		
+
 			wp_enqueue_style( 'sg-btn-css', plugins_url( 'assets/css/shortcode-generator.css', __FILE__ ) );
 		}
 
@@ -220,7 +248,7 @@ if ( ! class_exists( 'EventsCalendarTemplatesPro' ) ) {
 				printf(
 					'<div class="error CTEC_Msz"><p>' .
 					esc_html( __( '%1$s %2$s', 'ebec' ) ),
-					esc_html( __( 'In order to use this addon, Please first install the latest version of', 'ebec' ) ),
+					esc_html( __( 'In order to use Events Shortcode Pro addon, Please first install the latest version of', 'ebec' ) ),
 					sprintf(
 						'<a href="%s">%s</a>',
 						esc_url( 'plugin-install.php?tab=plugin-information&plugin=the-events-calendar&TB_iframe=true' ),
@@ -277,7 +305,7 @@ if ( ! class_exists( 'EventsCalendarTemplatesPro' ) ) {
 					deactivate_plugins( 'template-events-calendar/events-calendar-templates.php' );
 				}
 			}
-			update_option( 'ect-v', ECT_VERSION );
+			update_option( 'ect-pro-v', ECT_PRO_VERSION );
 			update_option( 'ect-type', 'PRO' );
 			update_option( 'ect-installDate', date( 'Y-m-d h:i:s' ) );
 			update_option( 'ect-ratingDiv', 'no' );
@@ -285,13 +313,13 @@ if ( ! class_exists( 'EventsCalendarTemplatesPro' ) ) {
 		}
 		public static function deactivate() {
 			delete_option( 'settings_migration_status' );
-			delete_option( 'ect-v' );
+			delete_option( 'ect-pro-v' );
 			delete_option( 'ect-type' );
 			delete_option( 'ect-installDate' );
 			delete_option( 'ect-ratingDiv' );
 		}
 		function ect_settings_migration() {
-			if ( version_compare( get_option( 'ect-v' ), '2.6', '>' ) ) {
+			if ( version_compare( get_option( 'ect-pro-v' ), '2.6', '>' ) ) {
 				return;
 			}
 			if ( get_option( 'settings_migration_status' ) ) {

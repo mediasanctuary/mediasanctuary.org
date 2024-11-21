@@ -1,3 +1,5 @@
+@use '../global/colors' as *;
+
 .initiatives {
 	color: $c-river-fog;
 	background: url('../img/bg-mosaic.jpg') repeat top center;

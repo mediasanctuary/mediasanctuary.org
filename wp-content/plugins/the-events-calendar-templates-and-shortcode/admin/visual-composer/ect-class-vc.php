@@ -14,20 +14,24 @@ if (!class_exists('EctVCAddon')) {
 
         function ect_vc_addon(){
           $ect_calendar_date_format = array(
-             __( 'Default (01 January 2019)', 'cool-timeline' )=> 'd F Y',
-             __( 'Md,Y (Jan 01, 2019)', 'cool-timeline' ) =>'M D, Y',
-              __( 'Fd,Y (January 01, 2019)', 'cool-timeline' )=>'F D, Y',
+             __( 'Default (01 January 2024)', 'cool-timeline' )=> 'd F Y',
+             __( 'Md,Y (Jan 01, 2024)', 'cool-timeline' ) =>'M D, Y',
+              __( 'Fd,Y (January 01, 2024)', 'cool-timeline' )=>'F D, Y',
              __( 'dM (01 Jan))', 'cool-timeline' ) =>'D M',
           
              __( 'dF (01 January)', 'cool-timeline' ) =>'D F',
               __( 'Md (Jan 01)', 'cool-timeline' )=>'M D',
               __( 'Fd (January 01)', 'cool-timeline' )=>'F D',
               __( 'jMl (1 Jan Monday)', 'cool-timeline' )=>'j M l',
-              __( 'd.FY (01. January 2019)', 'cool-timeline' )=>'d. F Y',
+              __( 'd.FY (01. January 2024)', 'cool-timeline' )=>'d. F Y',
               __( 'd.F (01. January)', 'cool-timeline' )=>'d. F',
               __( 'd.Ml (01. Jan Monday)', 'cool-timeline' )=>'d. M l',
              __( 'Mdl (Jan 01 Monday)', 'cool-timeline' ) =>'M d l',
               __( 'ldF (Monday 01 January)', 'cool-timeline' )=>'l d F',
+              __( 'sed (01 Jan - 02 Jan 2024)', 'cool-timeline' )=>'S E D',
+              __( 'sedt (01 Jan - 02 Jan 2024 8:00am-5:00pm)', 'cool-timeline' )=>'S E D T',
+              __( 'D.j.F (Wed., 15. May)', 'cool-timeline' )=>'D., j. F',
+                 
           );
          
               /**
@@ -95,23 +99,27 @@ if (!class_exists('EctVCAddon')) {
                 }
                $date_formats= array(
                    
-					  __( 'Default (01 January 2019)', 'ect2' )=>'default',
-                      __( 'Md,Y (Jan 01, 2019)', 'ect2' )=>'MD,Y',
-                     __( 'Fd,Y (January 01, 2019)', 'ect2' )=>'FD,Y',
-                    __( 'dM (01 Jan))', 'ect2' )=> 'DM',
+					  __( 'Default (01 January 2024)', 'ect2' )=>'default',
+                      __( 'Md,Y (Jan 01, 2024)', 'ect2' )=>'MD,Y',
+                     __( 'Fd,Y (January 01, 2024)', 'ect2' )=>'FD,Y',
+                    __( 'dM (01 Jan)', 'ect2' )=> 'DM',
+                    __( 'dML (01 Jan Monday)', 'ect2' )=> 'DML',
                       __( 'FD (January 01)', 'cool-timeline' )=>'FD',
                      
                      __( 'dF (01 January)', 'ect2' )=>'DF',
                      __( 'Md (Jan 01)', 'ect2' )=>'MD',
-                   __( 'Md,YT (Jan 01, 2019 8:00am-5:00pm)', 'ect2' )=> 'MD,YT',
-                    __( 'Full (01 January 2019 8:00am-5:00pm)', 'ect2' )=>'full',
+                   __( 'Md,YT (Jan 01, 2024 8:00am-5:00pm)', 'ect2' )=> 'MD,YT',
+                    __( 'Full (01 January 2024 8:00am-5:00pm)', 'ect2' )=>'full',
                     __( 'jMl', 'ect2' )=> 'jMl',
-                     __( 'd.FY (01. January 2019)', 'ect2' )=>'d.FY',
+                     __( 'd.FY (01. January 2024)', 'ect2' )=>'d.FY',
                      __( 'd.F (01. January)', 'ect2' )=>'d.F',
                      __( 'ldF (Monday 01 January)', 'ect2' )=>'ldF',
                     __( 'Mdl (Jan 01 Monday)', 'ect2' )=>'Mdl',
                     __( 'd.Ml (01. Jan Monday)', 'ect2' )=>'d.Ml',
                     __( 'dFT (01 January 8:00am-5:00pm)', 'ect2' )=>  'dFT',
+                    __( 'SED (01 Jan - 02 Jan 2024)', 'ect2' )=>  'sed',
+                    __( 'SEDT (01 Jan - 02 Jan 2024 8:00am-5:00pm)', 'ect2' )=>  'sedt',
+                    __( 'D.,j. F (Wed., 15. May)', 'ect2' )=>  'D.j.F',
                  
                     );
                     $templates=  array(
@@ -124,6 +132,7 @@ if (!class_exists('EctVCAddon')) {
                                 __( 'Toggle List(accordion-view)', 'ect2' )=>"accordion-view",
                                 __(  'Minimal List','ect2') => 'minimal-list',
                                 __(  'Advance List','ect2') => 'advance-list',
+                                __(  'Highlighted Layout','ect2') => 'highlighted-layout',
                                 // __('Cover View') => 'cover-view'
                                
                             );

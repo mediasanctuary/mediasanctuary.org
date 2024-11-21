@@ -1,5 +1,5 @@
 (function ($) {
-    
+    const filterbar = $('.ect-filter-bar');
   $(".ect-advance-list").each(function(i){
     var advance_list_id = $(this).data("id");
     let ect_table_btnNext = $('.ect-adl-nxt'+advance_list_id).text();
@@ -7,8 +7,9 @@
     let ect_evText = $('.ect-adl-text'+advance_list_id).text();
     let ect_InTottal = $('.ect-adl-intottal'+advance_list_id).text();
     let ect_tabel_serach = $('.ect-adl-search'+advance_list_id).text();
+    let filterbar_check = filterbar.length ? "rtp" : "rftp";
     $(this).DataTable({
-        'dom': "rftp",
+        'dom': filterbar_check,
         'pageLength': 10,
         'paging': true,
         'order': [], // No sorting on initial load

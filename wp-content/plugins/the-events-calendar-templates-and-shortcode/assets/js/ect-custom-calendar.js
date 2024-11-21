@@ -13,6 +13,8 @@
                const event_limit = $(wrapperClass).attr('data-events-limit');
                var featured_text_color = $(wrapperClass).attr('data-featured-textcolor');
                var featured_bg_color = $(wrapperClass).attr('data-featured-bgcolor');
+               var nonfeatured_text_color = $(wrapperClass).attr('data-alt-skin-color');
+               var nonfeatured_bg_color = $(wrapperClass).attr('data-skin-color');
                const readMoreText = $(wrapperClass).attr('data-readmore-text');
                var allCategories = [];
                var currentRequest = false;
@@ -94,12 +96,19 @@
                                    evt_bgColor = featured_bg_color
                                    evt_textColor = featured_text_color;
                                } else {
-                                   evt_bgColor = events[i].event_bgcolor;
-                                   evt_textColor = events[i].event_bgcolor;
+                                if((events[i].event_bgcolor === "") && (events[i].event_text_color === "")){
+                                    evt_bgColor = nonfeatured_bg_color;
+                                    evt_textColor = nonfeatured_text_color;
+                                }else{
+                                    evt_bgColor = events[i].event_bgcolor?events[i].event_bgcolor:nonfeatured_bg_color;
+                                    evt_textColor = events[i].event_text_color?events[i].event_text_color:nonfeatured_text_color;
+                                }
+                                   
                                }
+                               var parser = new DOMParser();
                                all_events.push({
                                    id: events[i].id,
-                                   title: events[i].title,
+                                   title: parser.parseFromString(events[i].title, 'text/html').body.textContent,
                                    start: events[i].start_date,
                                    end: events[i].end_date,
                                    allDay: events[i].all_day,
@@ -157,7 +166,6 @@
 
                // individual category option to hide and show
                $("#ect-calendar-wrapper[data-calendar-id='" + evt_cal_id + "']").on('change', "#ect-calendar-cat-filter", function() {
-
                    var cat_name = $(wrapperClass + ' .' + El_category + ' #ect-calendar-cat-filter').val();
 
                    let checkboxes = $("#ect-calendar-wrapper[data-calendar-id='" + evt_cal_id + "'] .ect-calendar-cat-filter input:not('.select_allCat'):checked");
@@ -171,9 +179,9 @@
                    })
 
                    all_events.forEach(function(deEvent, i) {
-                       if (cat_name == null) {
+                       if (cat_name.length === 0) {
                            calendar.addEvent(deEvent);
-                       } else if (cat_name != null) {
+                       } else {
                            let event_cats = deEvent.extendedProps.categories;
                            cat_name.forEach(function(category, i) {
                                // add event only if category exist and event already not added in calendar object
