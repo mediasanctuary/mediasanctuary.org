@@ -8,6 +8,8 @@
  */
 
 require_once __DIR__ . '/plugin.php';
+require_once __DIR__ . '/feed.php';
+require_once __DIR__ . '/post.php';
 
 add_action('plugins_loaded', function() {
 	if (!defined('FEED_IMPORT') || !is_array(FEED_IMPORT)) {
