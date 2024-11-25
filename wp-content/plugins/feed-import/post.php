@@ -84,17 +84,18 @@ class Post {
 	}
 
 	function status() {
-		return 'publish';
+		return apply_filters('feed_import_post_status', 'publish');
 	}
 
 	function title() {
-		return $this->data['title'];
+		return apply_filters('feed_import_post_title', $this->data['title']);
 	}
 
 	function content() {
 		$content = $this->data['description'];
 		$content = $this->autolink_urls($content);
 		$content = $this->format_paragraphs($content);
+		$content = apply_filters('feed_import_post_content', $content);
 		return $content;
 	}
 
@@ -147,11 +148,13 @@ class Post {
 
 	function date() {
 		$date = new \DateTime($this->data['pubDate'], wp_timezone());
+		$date = apply_filters('feed_import_post_date', $date);
 		return $date->format('Y-m-d H:i:s');
 	}
 
 	function date_gmt() {
 		$date = new \DateTime($this->data['pubDate']);
+		$date = apply_filters('feed_import_post_date_gmt', $date);
 		return $date->format('Y-m-d H:i:s');
 	}
 
