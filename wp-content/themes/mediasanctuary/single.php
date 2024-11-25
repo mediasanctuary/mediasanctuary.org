@@ -89,8 +89,8 @@
       <?php } ?>
       <div class="content">
         <?php
-          if (function_exists('soundcloud_podcast') && get_post_format($post->ID) == 'audio') {
-            soundcloud_podcast();
+          if (get_post_format($post->ID) == 'audio') {
+            audio_player();
             if (! empty($thumb)) {
               echo $thumb;
             }
