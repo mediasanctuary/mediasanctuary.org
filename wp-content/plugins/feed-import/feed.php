@@ -15,9 +15,9 @@ class Feed {
 
 	function import() {
 		if ($this->load()) {
-			$this->parse();
+			return $this->parse();
 		}
-		// print_r($this->items);
+		return [];
 	}
 
 	function load() {
@@ -41,7 +41,7 @@ class Feed {
 	}
 
 	function valid_cache($cache) {
-		$ttl = 60 * 60; // one hour
+		$ttl = 60 * 10; // ten minutes
 		$now = current_time('U', true);
 		if (empty($cache)) {
 			return false;
@@ -49,7 +49,6 @@ class Feed {
 		if (empty($cache['created']) || empty($cache['xml'])) {
 			return false;
 		}
-		echo $now - $cache['created'] . "\n";
 		return $now - $cache['created'] < $ttl;
 	}
 
@@ -57,6 +56,12 @@ class Feed {
 		$this->doc = new \DOMDocument;
 		$this->doc->loadXML($this->xml, LIBXML_NOWARNING | LIBXML_NOERROR | LIBXML_NOCDATA);
 		$items = $this->doc->getElementsByTagName('item');
+		// foreach ($items as $item) {
+		// 	echo "\n\n----\n";
+		// 	$content = $this->get_child($item, 'description')->nodeValue;
+			
+		// 	echo $content;
+		// }
 		foreach ($items as $item) {
 			$this->items[] = [
 				'guid'        => $this->get_child($item, 'guid')->nodeValue,
@@ -68,7 +73,9 @@ class Feed {
 				'audio'       => $this->get_child($item, 'enclosure')->getAttribute('url'),
 				'duration'    => $this->get_child($item, 'itunes:duration')->nodeValue,
 			];
+			break;
 		}
+		return $this->items;
 	}
 
 	function get_child($node, $tag) {

@@ -16,7 +16,11 @@ class Plugin {
 	function import() {
 		foreach ($this->feeds as $url) {
 			$feed = new Feed($url);
-			$feed->import();
+			$feed_data = $feed->import();
+			foreach ($feed_data as $post_data) {
+				$post = new Post($post_data);
+				$post->save();
+			}
 		}
 	}
 

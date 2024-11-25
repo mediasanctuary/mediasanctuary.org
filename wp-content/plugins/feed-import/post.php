@@ -4,20 +4,190 @@ namespace FeedImport;
 
 class Post {
 
-	public $item;
-	public $feed;
+	public $id;
+	public $data;
 
-	function __construct($item, $feed) {
-		$this->item = $item;
-		$this->feed = $feed;
+	function __construct($data) {
+		$this->data = $data;
 	}
 
-	function import() {
-		// $ns = $this->feed->getNamespaces(true);
-		// print_r($this->feed);
-		print_r($this->item);
-		$ns = 'http://www.itunes.com/dtds/podcast-1.0.dtd';
-		print_r($this->item->children($ns));
+	function save() {
+		$existing = $this->get_existing();
+		if ($existing) {
+			$this->id = $existing->ID;
+			wp_update_post([
+				'ID'            => $this->id,
+				'post_title'    => $this->title(),
+				'post_content'  => $this->content(),
+				'post_category' => $this->category(),
+			]);
+		} else {
+			$this->id = wp_insert_post([
+				'post_status'   => $this->status(),
+				'post_title'    => $this->title(),
+				'post_content'  => $this->content(),
+				'post_date'     => $this->date(),
+				'post_date_gmt' => $this->date_gmt(),
+				'post_category' => $this->category(),
+			]);
+		}
+		set_post_format($this->id, 'audio');
+		update_post_meta($this->id, 'feed_import_guid', $this->data['guid']);
+		update_post_meta($this->id, 'feed_import_link', $this->data['link']);
+		update_post_meta($this->id, 'feed_import_audio', $this->data['audio']);
+		update_post_meta($this->id, 'feed_import_duration', $this->data['duration']);
+		$this->attach_image();
+	}
+
+	function get_existing() {
+		$existing_query = apply_filters('feed_import_existing_query', [
+			'post_type' => 'post',
+			'post_status' => 'any',
+			'meta_query' => [
+				[
+					'key' => 'feed_import_guid',
+					'value' => $this->data['guid']
+				]
+			]
+		], $this->data);
+		$posts = get_posts($existing_query);
+		if (! empty($posts)) {
+			return $posts[0];
+		} else {
+			return null;
+		}
+	}
+
+	function status() {
+		return 'publish';
+	}
+
+	function title() {
+		return $this->data['title'];
+	}
+
+	function content() {
+		$content = $this->data['description'];
+		$content = $this->autolink_urls($content);
+		$content = $this->format_paragraphs($content);
+		return $content;
+	}
+
+	function autolink_urls($content) {
+		// Look for URL-shaped text and add hyperlinks.
+		// The regex is slightly modified from https://www.urlregex.com/
+		$regex = '%(?:(?:https?|ftp)://)(?:\S+(?::\S*)?@|\d{1,3}(?:\.\d{1,3}){3}|(?:(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)(?:\.(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)*(?:\.[a-z\x{00a1}-\x{ffff}]{2,6}))(?::\d+)?(?:[^\s]*)?%iu';
+		return preg_replace_callback($regex, function($matches) {
+
+			$url = $matches[0];
+			$last_char = substr($url, -1, 1);
+			$punctuation = ['.', ',', '!', ';'];
+			$postfix = '';
+
+			if ($last_char == ')') {
+				if (strpos($url, '(') === false) {
+					// do not link ) of "(https://www.mediasanctuary.org/)"
+					// but do link the ) of "https://en.wikipedia.org/wiki/Douglas_Davis_(artist)"
+					$url = substr($url, 0, -1);
+					$postfix = ')';
+				}
+			} else if (in_array($last_char, $punctuation)) {
+				// do not link . of "https://www.mediasanctuary.org/."
+				$url = substr($url, 0, -1);
+				$postfix = $last_char;
+			}
+
+			$label = $url;
+
+			// Remove the "https://www" part at the front of the label
+			$label = preg_replace('%^https?://%i', '', $label);
+
+			// Remove the trailing slash part of the label
+			$label = preg_replace('%^([^/]+)/$%', '$1', $label);
+
+			return "<a href=\"$url\">$label</a>$postfix";
+
+		}, $content);
+	}
+
+	function format_paragraphs($content) {
+		// Replace double-newlines (of various kinds) with paragraph elements,
+		// each <p>...</p> wrapped in a WordPress core/paragraph block.
+		return str_replace(
+			["\r\n\r\n", "\n\r\n\r", "\n\n", "\r\r"],
+			"</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>",
+			"<!-- wp:paragraph -->\n<p>" . $content . "</p>\n<!-- /wp:paragraph -->"
+		);
+	}
+
+	function date() {
+		$date = new \DateTime($this->data['pubDate'], wp_timezone());
+		return $date->format('Y-m-d H:i:s');
+	}
+
+	function date_gmt() {
+		$date = new \DateTime($this->data['pubDate']);
+		return $date->format('Y-m-d H:i:s');
+	}
+
+	function category() {
+		return apply_filters('feed_import_post_category', '');
+	}
+
+	function attach_image() {
+		if (empty($this->data['image'])) {
+			return;
+		}
+
+		$image_url = $this->data['image'];
+		$filename = basename($image_url);
+
+		$image_id = get_post_meta($this->id, '_thumbnail_id', true);
+		if (! empty($image_id)) {
+			$image = get_post($image_id);
+			if (! empty($image) && $image->post_title == $filename) {
+				return;
+			}
+		}
+
+		$rsp = wp_remote_get($image_url, [
+			'timeout' => '90',
+			'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:44.0) Gecko/20100101 Firefox/44.0'
+		]);
+		$status = wp_remote_retrieve_response_code($rsp);
+		if ($status != 200) {
+			error_log("Could not load image $image_url");
+			return;
+		}
+
+		$image_data = wp_remote_retrieve_body($rsp);
+		$content_type = $rsp['headers']['content-type'];
+
+		$upload_dir = wp_upload_dir();
+		$dir = $upload_dir['path'];
+		if (! file_exists($dir)) {
+			wp_mkdir_p($dir);
+		}
+		$path = "$dir/$filename";
+		file_put_contents($path, $image_data);
+
+		$filetype = wp_check_filetype($filename, null);
+		$attachment = [
+			'guid'           => "{$upload_dir['url']}/$filename",
+			'post_mime_type' => $filetype['type'],
+			'post_title'     => $filename,
+			'post_content'   => '',
+			'post_status'    => 'inherit'
+		];
+		$attach_id = wp_insert_attachment($attachment, $path);
+
+		if (preg_match('/^image/', $content_type)) {
+			require_once(ABSPATH . 'wp-admin/includes/image.php');
+			$attach_data = wp_generate_attachment_metadata($attach_id, $path);
+			wp_update_attachment_metadata($attach_id, $attach_data);
+		}
+
+		update_post_meta($this->id, '_thumbnail_id', $attach_id);
 	}
 
 }
