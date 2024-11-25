@@ -56,12 +56,6 @@ class Feed {
 		$this->doc = new \DOMDocument;
 		$this->doc->loadXML($this->xml, LIBXML_NOWARNING | LIBXML_NOERROR | LIBXML_NOCDATA);
 		$items = $this->doc->getElementsByTagName('item');
-		// foreach ($items as $item) {
-		// 	echo "\n\n----\n";
-		// 	$content = $this->get_child($item, 'description')->nodeValue;
-			
-		// 	echo $content;
-		// }
 		foreach ($items as $item) {
 			$this->items[] = [
 				'guid'        => $this->get_child($item, 'guid')->nodeValue,
@@ -73,7 +67,6 @@ class Feed {
 				'audio'       => $this->get_child($item, 'enclosure')->getAttribute('url'),
 				'duration'    => $this->get_child($item, 'itunes:duration')->nodeValue,
 			];
-			break;
 		}
 		return $this->items;
 	}

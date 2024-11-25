@@ -31,12 +31,37 @@ class Post {
 				'post_category' => $this->category(),
 			]);
 		}
+		$this->update_metadata();
+		$this->attach_image();
+	}
+
+	function has_updates() {
+		$existing = $this->get_existing();
+		if (empty($existing)) {
+			return true;
+		}
+		$db_hash = get_post_meta($existing->ID, 'feed_import_hash', true);
+		return ($this->get_content_hash() != $db_hash);
+	}
+
+	function update_metadata() {
 		set_post_format($this->id, 'audio');
 		update_post_meta($this->id, 'feed_import_guid', $this->data['guid']);
 		update_post_meta($this->id, 'feed_import_link', $this->data['link']);
 		update_post_meta($this->id, 'feed_import_audio', $this->data['audio']);
 		update_post_meta($this->id, 'feed_import_duration', $this->data['duration']);
-		$this->attach_image();
+		update_post_meta($this->id, 'feed_import_hash', $this->get_content_hash());
+	}
+
+	function get_content_hash() {
+		$plaintext = $this->data['guid'];
+		$plaintext .= '|' . $this->title();
+		$plaintext .= '|' . $this->content();
+		$plaintext .= '|' . $this->data['link'];
+		$plaintext .= '|' . $this->data['audio'];
+		$plaintext .= '|' . $this->data['image'];
+		$plaintext .= '|' . $this->data['duration'];
+		return md5($plaintext);
 	}
 
 	function get_existing() {

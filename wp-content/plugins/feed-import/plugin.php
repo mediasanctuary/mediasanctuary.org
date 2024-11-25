@@ -19,7 +19,10 @@ class Plugin {
 			$feed_data = $feed->import();
 			foreach ($feed_data as $post_data) {
 				$post = new Post($post_data);
-				$post->save();
+				if ($post->has_updates()) {
+					echo $post->title() . "\n";
+					$post->save();
+				}
 			}
 		}
 	}
