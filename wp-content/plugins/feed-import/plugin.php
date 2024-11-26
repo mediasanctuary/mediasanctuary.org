@@ -13,15 +13,21 @@ class Plugin {
 		}
 	}
 
-	function import() {
+	function import($args) {
 		foreach ($this->feeds as $url) {
 			$feed = new Feed($url);
 			$feed_data = $feed->import();
 			foreach ($feed_data as $post_data) {
 				$post = new Post($post_data);
-				if ($post->has_updates()) {
-					echo $post->title() . "\n";
+				if (!empty($args)) {
+					if ($post->has_id($args[0])) {
+						$post->save();
+						echo $post->title() . "\n";
+						break;
+					}
+				} else if ($post->has_updates()) {
 					$post->save();
+					echo $post->title() . "\n";
 				}
 			}
 		}

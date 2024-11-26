@@ -19,7 +19,7 @@ class Post {
 				'ID'            => $this->id,
 				'post_title'    => $this->title(),
 				'post_content'  => $this->content(),
-				'post_category' => $this->category(),
+				'post_category' => $this->post_category(),
 			]);
 		} else {
 			$this->id = wp_insert_post([
@@ -28,7 +28,7 @@ class Post {
 				'post_content'  => $this->content(),
 				'post_date'     => $this->date(),
 				'post_date_gmt' => $this->date_gmt(),
-				'post_category' => $this->category(),
+				'post_category' => $this->post_category(),
 			]);
 		}
 		$this->update_metadata();
@@ -42,6 +42,14 @@ class Post {
 		}
 		$db_hash = get_post_meta($existing->ID, 'feed_import_hash', true);
 		return ($this->get_content_hash() != $db_hash);
+	}
+
+	function has_id($id) {
+		$existing = $this->get_existing();
+		if (empty($existing)) {
+			return false;
+		}
+		return $existing->ID == $id;
 	}
 
 	function update_metadata() {
@@ -84,18 +92,18 @@ class Post {
 	}
 
 	function status() {
-		return apply_filters('feed_import_post_status', 'publish');
+		return apply_filters('feed_import_post_status', 'publish', $this);
 	}
 
 	function title() {
-		return apply_filters('feed_import_post_title', $this->data['title']);
+		return apply_filters('feed_import_post_title', $this->data['title'], $this);
 	}
 
 	function content() {
 		$content = $this->data['description'];
 		$content = $this->autolink_urls($content);
 		$content = $this->format_paragraphs($content);
-		$content = apply_filters('feed_import_post_content', $content);
+		$content = apply_filters('feed_import_post_content', $content, $this);
 		return $content;
 	}
 
@@ -148,18 +156,29 @@ class Post {
 
 	function date() {
 		$date = new \DateTime($this->data['pubDate'], wp_timezone());
-		$date = apply_filters('feed_import_post_date', $date);
+		$date = apply_filters('feed_import_post_date', $date, $this);
 		return $date->format('Y-m-d H:i:s');
 	}
 
 	function date_gmt() {
 		$date = new \DateTime($this->data['pubDate']);
-		$date = apply_filters('feed_import_post_date_gmt', $date);
+		$date = apply_filters('feed_import_post_date_gmt', $date, $this);
 		return $date->format('Y-m-d H:i:s');
 	}
 
 	function category() {
-		return apply_filters('feed_import_post_category', '');
+		return apply_filters('feed_import_post_category', '', $this);
+	}
+
+	function post_category() {
+		// The wp_insert_post and wp_update_post functions expect an array of
+		// term IDs, so we convert a more useful string to that format at the
+		// very last minute.
+		if (empty($this->category())) {
+			return [];
+		}
+		$term = get_term_by('name', $this->category(), 'category');
+		return [$term->term_id];
 	}
 
 	function attach_image() {

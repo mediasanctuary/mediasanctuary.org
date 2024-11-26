@@ -273,9 +273,9 @@ function social_meta_tags() {
 
 
     echo "\n";
-		echo '<title>'.$title.'</title>' . "\n";
-		echo '<meta name="description" content="'.$description.'"/>' . "\n";
-		echo '<meta property="og:title" content="'.$title.'">' . "\n";
+    echo '<title>'.$title.'</title>' . "\n";
+    echo '<meta name="description" content="'.$description.'"/>' . "\n";
+    echo '<meta property="og:title" content="'.$title.'">' . "\n";
     echo '<meta property="og:description" content="'.$description.'">' . "\n";
     echo '<meta property="og:image" content="'.$thumb_url.'">' . "\n";
     echo '<meta property="og:url" content="'.$url.'">' . "\n";
@@ -398,3 +398,72 @@ function audio_player() {
 </div>
 END;
 }
+
+add_filter('feed_import_existing_query', function($query, $data) {
+	// e.g., tag:soundcloud,2010:tracks/1964923891
+	$guid_parts = explode('/', $data['guid']);
+	$soundcloud_id = $guid_parts[1];
+	return [
+		'post_type' => 'post',
+		'post_status' => 'any',
+		'meta_query' => [
+			'relation' => 'OR',
+			[
+				'key' => 'feed_import_guid',
+				'value' => $data['guid'],
+			], [
+				'key' => 'soundcloud_podcast_id',
+				'value' => $soundcloud_id,
+			], [
+				'key' => 'soundcloud_podcast_url',
+				'value' => $data['link'],
+			],
+		]
+	];
+}, 10, 2);
+
+add_filter('feed_import_post_category', function($category, $post) {
+	if (preg_match('/^HMM/i', $post->data['title'])) {
+		return 'Hudson Mohawk Magazine Episodes';
+	}
+	return 'Stories';
+}, 10, 2);
+
+function feed_import_post_date($date, $post) {
+	$category = $post->category();
+	$four_days = 60 * 60 * 24 * 4;
+	$timezone = $date->getTimezone();
+
+	if ($category == 'Stories' &&
+		current_time('u') - $date->getTimestamp() < $four_days) {
+		// If the track's timestamp is within 4 days, we should schedule
+		// it for the next weekday at 6pm.
+		$date = null;
+	}
+
+	if (empty($date)) {
+		$schedule_at = 'Today 6pm';
+
+		// If it's after Friday at 7pm, schedule for Monday at 6pm.
+		if (current_time('w') == 5 && current_time('H') > 19 ||
+		    current_time('w') == 6 ||
+		    current_time('w') == 0) {
+			$schedule_at = 'Monday 6pm';
+		}
+
+		$date = new \DateTime($schedule_at, $timezone);
+	}
+
+	return $date;
+}
+add_filter('feed_import_post_date', 'feed_import_post_date', 10, 2);
+add_filter('feed_import_post_date_gmt', 'feed_import_post_date', 10, 2);
+
+add_filter('feed_import_post_status', function($status, $post) {
+	$date = $post->date();
+	if ($date > current_time('Y-m-d H:i:s')) {
+		return 'future';
+	} else {
+		return 'publish';
+	}
+}, 10, 2);
