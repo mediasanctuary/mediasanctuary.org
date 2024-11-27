@@ -21,6 +21,7 @@ class Post {
 				'post_content'  => $this->content(),
 				'post_category' => $this->post_category(),
 			]);
+			$action = 'Updated';
 		} else {
 			$this->id = wp_insert_post([
 				'post_status'   => $this->status(),
@@ -30,10 +31,11 @@ class Post {
 				'post_date_gmt' => $this->date_gmt(),
 				'post_category' => $this->post_category(),
 			]);
+			$action = 'Created';
 		}
 		$this->update_metadata();
 		$this->attach_image();
-		do_action('feed_import_post_saved', $this);
+		do_action('feed_import_post_saved', $this, $action);
 	}
 
 	function has_updates() {
