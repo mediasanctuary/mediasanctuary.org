@@ -33,6 +33,7 @@ class Post {
 		}
 		$this->update_metadata();
 		$this->attach_image();
+		do_action('feed_import_post_saved', $this);
 	}
 
 	function has_updates() {
