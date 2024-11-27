@@ -358,13 +358,15 @@ function audio_player() {
 		$feed_import_link = "<a href=\"$feed_import_link\" class=\"soundcloud-podcast__link\">Listen on SoundCloud</a>";
 	}
 
-	$soundcloud_id = get_post_meta($post->ID, 'soundcloud_podcast_id', true);
-	if (! empty($soundcloud_id)) {
-		$sources[] = "/wp-json/soundcloud-podcast/v1/stream/$soundcloud_id";
-	}
-	$soundcloud_url = get_post_meta($post->ID, 'soundcloud_podcast_url', true);
-	if (! empty($soundcloud_url)) {
-		$soundcloud_link = "<a href=\"$soundcloud_url\" class=\"soundcloud-podcast__link\">Listen on SoundCloud</a>";
+	if (empty($feed_import_link)) {
+		$soundcloud_id = get_post_meta($post->ID, 'soundcloud_podcast_id', true);
+		if (! empty($soundcloud_id)) {
+			$sources[] = "/wp-json/soundcloud-podcast/v1/stream/$soundcloud_id";
+		}
+		$soundcloud_url = get_post_meta($post->ID, 'soundcloud_podcast_url', true);
+		if (! empty($soundcloud_url)) {
+			$soundcloud_link = "<a href=\"$soundcloud_url\" class=\"soundcloud-podcast__link\">Listen on SoundCloud</a>";
+		}
 	}
 
 	$internet_archive_id = get_post_meta($post->ID, 'internet_archive_id', true);
