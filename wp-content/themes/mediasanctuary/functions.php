@@ -320,8 +320,19 @@ function is_story_post($post) {
 			return true;
 		}
 	}
+	$special_episode = get_field('special_episode', $post);
+	if (!empty($special_episode)) {
+		return true;
+	}
 	return false;
 }
+
+add_filter('the_title', function($title, $post) {
+	if (get_field('special_episode', $post)) {
+		return get_field('special_episode_title', $post);
+	}
+	return $title;
+}, 10, 2);
 
 add_action('pre_get_posts', function($query) {
 	if ($query->is_main_query() && $query->get('post_type') == 'peoplepower') {
