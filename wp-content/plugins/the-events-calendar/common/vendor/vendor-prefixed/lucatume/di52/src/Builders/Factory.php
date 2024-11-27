@@ -5,8 +5,7 @@
  * @package lucatume\DI52
  *
  * @license GPL-3.0
- * Modified using Strauss.
- * @see https://github.com/BrianHenryIE/strauss
+ * Modified using {@see https://github.com/BrianHenryIE/strauss}.
  */
 
 namespace TEC\Common\lucatume\DI52\Builders;
@@ -85,5 +84,33 @@ class Factory
         }
 
         return new ValueBuilder($implementation);
+    }
+
+    /**
+     * Sets the container the builder should use.
+     *
+     * @since TBD
+     *
+     * @param Container $container The container to bind.
+     *
+     * @return void
+     */
+    public function setContainer(Container $container)
+    {
+        $this->container = $container;
+    }
+
+    /**
+     * Sets the resolver the container should use.
+     *
+     * @since TBD
+     *
+     * @param Resolver $resolver The resolver the container should use.
+     *
+     * @return void
+     */
+    public function setResolver(Resolver $resolver)
+    {
+        $this->resolver = $resolver;
     }
 }

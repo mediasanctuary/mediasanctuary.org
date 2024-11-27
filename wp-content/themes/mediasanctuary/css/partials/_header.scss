@@ -1,3 +1,8 @@
+@use '../global/colors' as *;
+@use '../global/fonts' as *;
+@use '../global/typography' as *;
+@use '../global/breakpoints' as *;
+
 .header {
 	background-image: url('../img/bg-mosaic.jpg');
 	background-size: auto 240px;
@@ -6,7 +11,7 @@
 	padding-bottom: 30px;
 	
 	.container {
-  	min-height: 85px;
+  		min-height: 85px;
 	}
 	
 	&:before {
@@ -73,9 +78,9 @@
 		font-family: $f-system;
 		font-size: $s-xxs;
 		border: none;
-    -webkit-appearance: none;
-    appearance: none;
-    border-radius: 0;		
+		-webkit-appearance: none;
+		appearance: none;
+		border-radius: 0;
 
 		&:focus {
 			border: none;
@@ -95,18 +100,19 @@
 		text-indent: -99999em;
 	}
 
-
-	position:relative;
+	& {
+		position: relative;
+	}
 	
 	&:before {
-  	display: block;
-    content:'';
-  	background-color: rgba(0, 66, 78, 0.1);
-    position: absolute;
-    top:0;
-    left: 0;
-    right: 0;
-    bottom:0;
+		display: block;
+		content:'';
+		background-color: rgba(0, 66, 78, 0.1);
+		position: absolute;
+		top:0;
+		left: 0;
+		right: 0;
+		bottom:0;
 	}  	  	
 
 	
@@ -153,20 +159,17 @@
     }  	
 	}
 	
-  @media only screen and (max-width: 600px) {
-    padding-bottom:10px;  
-  }  		
-	
-	.initiative-logo {
-  	display: block;
-  	margin: 0px auto;
-  	padding: 100px 0 20px;
-    @media only screen and (max-width: 860px) {
-      padding: 20px 0;
-    }  	
+	@media only screen and (max-width: 600px) {
+		padding-bottom:10px;  
 	}
 	
-	
-	
-	
+	.initiative-logo {
+		display: block;
+		margin: 0px auto;
+		padding: 100px 0 20px;
+		
+		@media only screen and (max-width: 860px) {
+			padding: 20px 0;
+		}
+	}
 }

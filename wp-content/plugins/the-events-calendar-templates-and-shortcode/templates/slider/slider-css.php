@@ -1,191 +1,169 @@
 <?php
-if ( !defined( 'ABSPATH' ) ) {
-	header( 'Status: 403 Forbidden' );
-	header( 'HTTP/1.1 403 Forbidden' );
-	exit();
+if (!defined('ABSPATH')) {
+    header('Status: 403 Forbidden');
+    header('HTTP/1.1 403 Forbidden');
+    exit();
 }
 /**
  * This file is used only for dynamic styles in slider layouts.
  */
-//Default List Main Skin Color
-switch($style){
-  case "style-1":
-    /*--- Featured Event Color - CSS ---*/
-    $ect_output_css.='
-    #ect-slider-wrapper .ect-featured-event.style-1 .ect-slider-event-area {
-    border-color: '.Ecttinycolor($featured_event_skin_color)->darken(7)->toString().';
-    background: '.$thisPlugin::ect_hex2rgba($featured_event_skin_color, .94 ).';
-    box-shadow : inset 0px 0px 25px -5px '.Ecttinycolor($featured_event_skin_color)->darken(7)->toString().';
-    }
-    ';
-    /*--- Featured Event Font Color - CSS ---*/
-     $ect_output_css .='
-     #ect-slider-wrapper .ect-featured-event.style-1 .ect-slider-title h4,
-	#ect-slider-wrapper .ect-featured-event.style-1 .ect-slider-title h4 a,
-	#ect-slider-wrapper .ect-featured-event.style-1 .ect-slider-venue,
-	#ect-slider-wrapper .ect-featured-event.style-1 .ect-slider-cost,
-	#ect-slider-wrapper .ect-featured-event.style-1 .ect-slider-description .ect-event-content p{
-          color: '.$featured_event_font_color.';
-     }
-     #ect-slider-wrapper .ect-featured-event.style-1 .ect-slider-venue a,
-	#ect-slider-wrapper .ect-featured-event.style-1 .ect-slider-readmore a{
-      color: '.Ecttinycolor($featured_event_font_color)->darken(5)->toString().';
-     }';
-    break;
-    
-  case "style-2":
+// Default List Main Skin Color
+switch ($style) {
+    case 'style-1':
+        /*--- Featured Event Color - CSS ---*/
+        $ect_output_css .= '
+        #ect-slider-wrapper .ect-featured-event.style-1 .ect-slider-event-area {
+            background: ' . esc_attr($thisPlugin::ect_hex2rgba($featured_event_skin_color, .94)) . ';
+        }';
+        if ($event_desc_bg_color === '#ffffff') {
+            $ect_output_css .= '#ect-slider-wrapper .ect-simple-event.style-1 .ect-slider-event-area {
+                background-color:' . esc_attr(Ecttinycolor($main_skin_color)->lighten(40)->toString()) . ';
+            }';
+        } else {
+            $ect_output_css .= '#ect-slider-wrapper .ect-simple-event.style-1 .ect-slider-event-area {
+                background-color:' . esc_attr($event_desc_bg_color) . ';
+            }';
+        }
 
-    /*--- Main Skin Color - CSS ---*/
-    $ect_output_css.='
-    #ect-slider-wrapper .style-2 .ect-slider-date{
-       background: '.$main_skin_color.';
-    }
-    #ect-slider-wrapper .style-2 .ect-slider-date {
-		box-shadow : inset 0px 0px 12px -2px '.Ecttinycolor($main_skin_color)->darken(7)->toString().';
-	}
-    #ect-slider-wrapper .style-2 .ect-slider-title:before {
-		box-shadow: 0px 2px 30px 1px '.Ecttinycolor($main_skin_color)->darken(7)->toString().';
-	}
-    ';
-    /*--- Main Skin Alternate Color - CSS ---*/
-    $ect_output_css.='
-    #ect-slider-wrapper .style-2 .ect-slider-date{
-        color: '.$main_skin_alternate_color.';
-     }';
-    /*--- Featured Event Color - CSS ---*/
-     $ect_output_css.='
-     #ect-slider-wrapper .ect-featured-event.style-2 .ect-slider-date {
-		box-shadow : inset 0px 0px 25px -5px '.Ecttinycolor($featured_event_skin_color)->darken(7)->toString().';
-		background: '.$featured_event_skin_color.';
-	}
-     #ect-slider-wrapper .ect-featured-event.style-2 .ect-slider-title:before {
-		box-shadow: 0px 3px 20px 1px '.Ecttinycolor($featured_event_skin_color)->darken(7)->toString().';
-	}
-    ';
-    /*--- Event Background Color - CSS ---*/
-    $ect_output_css.='
-    #ect-slider-wrapper .style-2 .ect-slider-left{
-    	background: '.$event_desc_bg_color.';
-    }
-    #ect-slider-wrapper .style-2 .ect-slider-left{
-    	box-shadow: inset 0 0 25px -5px '.Ecttinycolor($event_desc_bg_color)->darken(10)->toString().';
-    }';
-    break;
-    
-    case "style-3":
-    /*--- Main Skin Color - CSS ---*/
-    $ect_output_css.='
-    #ect-slider-wrapper .style-3 .ect-slider-left {
-		border-color: '.$main_skin_color.' ;
-	}    
-    ';
-   /*--- Featured Event Color - CSS ---*/
-     $ect_output_css.='
-    		#ect-slider-wrapper .ect-featured-event.style-3 .ect-slider-left{
-          border-color: '.Ecttinycolor($featured_event_skin_color)->darken(7)->toString().';
-		background: '.$thisPlugin::ect_hex2rgba($featured_event_skin_color, .94 ).';
-		box-shadow : inset 0px 0px 25px -5px '.Ecttinycolor($featured_event_skin_color)->darken(7)->toString().';
-     }
-    ';
-     /*--- Featured Event Font Color - CSS ---*/
-     $ect_output_css.='
-     #ect-slider-wrapper .ect-featured-event.style-3 .ect-slider-title h4,
-		#ect-slider-wrapper .ect-featured-event.style-3 .ect-slider-title h4 a,
-		#ect-slider-wrapper .ect-featured-event.style-3 .ect-slider-venue,
-		#ect-slider-wrapper .ect-featured-event.style-3 .ect-slider-cost{
-        color:'.$featured_event_font_color.';
-     }
-     #ect-slider-wrapper .ect-featured-event.style-3 .ect-slider-venue a,
-	#ect-slider-wrapper .ect-featured-event.style-3 .ect-slider-readmore a
-	{
-		color: '.Ecttinycolor($featured_event_font_color)->darken(5)->toString().';
-	}
-     ';
-    /*--- Event Background Color - CSS ---*/
-    $ect_output_css.='
-    #ect-slider-wrapper .style-3 .ect-slider-left {
-		box-shadow: inset 0 0 25px -5px '.Ecttinycolor($event_desc_bg_color)->darken(10)->toString().';
-	}
-    #ect-slider-wrapper .style-3 .ect-slider-left {
-		background: '.$thisPlugin::ect_hex2rgba($event_desc_bg_color, .94 ).';
-	}
-    ';
-    break;
+        /*--- Featured Event Font Color - CSS ---*/
+        $ect_output_css .= '
+        #ect-slider-wrapper .ect-featured-event.style-1 .ect-slider-title h4,
+        #ect-slider-wrapper .ect-featured-event.style-1 .ect-slider-title h4 a,
+        #ect-slider-wrapper .ect-featured-event.style-1 .ect-slider-venue,
+        #ect-slider-wrapper .ect-featured-event.style-1 .ect-slider-cost,
+        #ect-slider-wrapper .ect-featured-event.style-1 .ect-slider-cost .ect-ticket-info span,
+        #ect-slider-wrapper .ect-featured-event.style-1 .ect-date-area.slider-view-schedule span,
+        #ect-slider-wrapper .ect-featured-event.style-1 .ect-slider-description .ect-event-content p{
+            color: ' . esc_attr($featured_event_font_color) . ';
+        }
+
+        #ect-slider-wrapper .ect-featured-event.style-1 .ect-event-category ul.tribe_events_cat li a{
+            color: ' . esc_attr($featured_event_font_color) . ';
+            border-color: ' . esc_attr($featured_event_font_color) . ';
+        }
+        #ect-slider-wrapper .ect-featured-event.style-1 .ect-slider-venue a{
+            color: ' . esc_attr(Ecttinycolor($featured_event_font_color)->darken(5)->toString()) . ';
+        }';
+        break;
+
+    case 'style-2':
+        /*--- Event Background Color - CSS ---*/
+        $ect_output_css .= '
+        #ect-slider-wrapper .style-2 .ect-slider-left{
+            background-color: ' . esc_attr($event_desc_bg_color) . ';
+        }
+        #ect-slider-wrapper .ect-featured-event.style-2 .ect-slider-datearea .ect-date-area span{
+            color: ' . esc_attr($featured_event_skin_color) . ';
+        }';
+        break;
+
+    case 'style-3':
+        /*--- Main Skin Color - CSS ---*/
+        $ect_output_css .= '
+        #ect-slider-wrapper .style-3 .ect-slider-left {
+            background-color: ' . esc_attr($event_desc_bg_color) . ' ;
+        }
+        ';
+        break;
 }
-    $ect_output_css.='
-   #ect-slider-wrapper .ect-slider-right.ect-slider-image{
-		border-color: '.$main_skin_color.';
-	}
-    ';
-    /*--- Featured Event Color - CSS ---*/
-    $ect_output_css.='
-    #ect-slider-wrapper .ect-featured-event .ect-slider-right.ect-slider-image{
-     border-color: '.Ecttinycolor($featured_event_skin_color)->darken(7)->toString().';
-		 background: '.$thisPlugin::ect_hex2rgba($featured_event_skin_color, .94 ).';
-		 box-shadow : inset 0px 0px 25px -5px '.Ecttinycolor($featured_event_skin_color)->darken(7)->toString().'}';
-     /*--- Featured Event Font Color - CSS ---*/
-     $ect_output_css.='
-     #ect-slider-wrapper .ect-featured-event .ect-slider-date{
-         color: '.$featured_event_font_color.';
-     }
-     ';
-    /*--- Event Background Color - CSS ---*/
-    $ect_output_css.='
-     #ect-slider-wrapper .ect-slider-event-area{
-          background-color: '.$event_desc_bg_color.';
-     }
-     #ect-slider-wrapper .ect-slider-event-area{
-      	box-shadow: inset 0 0 25px -5px '.Ecttinycolor($event_desc_bg_color)->darken(10)->toString().';
-     }
-      #ect-slider-wrapper .ect-slider-image {
-		background-color: '.Ecttinycolor($event_desc_bg_color)->darken(10)->toString().';
-	}
-	#ect-slider-wrapper .ect-events-slider .slick-arrow i {
-		background-color: '.$event_desc_bg_color.';
-		box-shadow: 2px 2px 0px 1px '.Ecttinycolor($event_desc_bg_color)->darken(1)->toString().';
-	}
-    ';
-    /*--- Event Title - CSS ---*/
-     $ect_output_css.='
-    	#ect-slider-wrapper .ect-slider-title h4,
-	#ect-slider-wrapper .ect-slider-title h4 a{
-        '.$title_styles.';
-     }
-    ';
-    /*--- Event Description - CSS ---*/
-      $ect_output_css.='
-    	#ect-slider-wrapper .ect-slider-description .ect-event-content p{
-          '.$ect_desc_styles.';
-     }
-     #ect-slider-wrapper .ect-events-slider .slick-arrow {
-		color: '.$ect_desc_color.';
-	}
-    ';
-    $venue_font_sizes = $ect_venue_font_size+6;
-    /*--- Event Venue Style - CSS ---*/
-    $ect_output_css.='#ect-slider-wrapper .ect-slider-venue{
-     '.$ect_venue_styles.';
+/*--- Event Background Color - CSS ---*/
+$ect_output_css .= '
+    #ect-slider-wrapper .ect-slider-event-area{
+        background-color: ' . esc_attr($event_desc_bg_color) . ';
     }
-    #ect-slider-wrapper .ect-slider-cost {
-		color:'.$ect_venue_color.';
-		font-size:'.$venue_font_sizes.'px;
-		font-family: '.$ect_venue_font_famiily.';
-    font-weight:bold;
-	}
-	#ect-slider-wrapper .ect-slider-venue a,
-	#ect-slider-wrapper .ect-slider-readmore a {
-		color: '.Ecttinycolor($ect_venue_color)->darken(6)->toString().';
-		font-family: '.$ect_venue_font_famiily.';
-	}
-	#ect-slider-wrapper .ect-slider-border:before {
-		background: '.Ecttinycolor($ect_venue_color)->darken(6)->toString().';
-	}
+    #ect-slider-wrapper .ect-events-slider .slick-arrow i {
+        background-color: ' . esc_attr($event_desc_bg_color) . ';
+        box-shadow: 2px 2px 0px 1px ' . esc_attr(Ecttinycolor($event_desc_bg_color)->darken(1)->toString()) . ';
+    }
+';
+/*--- Event Title - CSS ---*/
+$ect_output_css .= '
+    #ect-slider-wrapper .ect-slider-title h4,
+    #ect-slider-wrapper .ect-slider-title h4 a{
+        ' . $title_styles . ';
+    }
+';
+/*--- Event Description - CSS ---*/
+$ect_output_css .= '
+    #ect-slider-wrapper .ect-slider-description .ect-event-content p{
+        ' . $ect_desc_styles . ';
+    }
+    #ect-slider-wrapper .ect-events-slider .slick-arrow {
+        color: ' . esc_attr($ect_desc_color) . ';
+    }
+';
+/*--- Event Venue Style - CSS ---*/
+$ect_output_css .= '
+    #ect-slider-wrapper .ect-slider-venue{
+        ' . $ect_venue_styles . ';
+    }
+    #ect-slider-wrapper .ect-slider-cost,
+    #ect-slider-wrapper .ect-slider-cost .ect-ticket-info span {
+        color:' . esc_attr($ect_title_color) . ';
+        font-size:' . esc_attr($ect_title_font_size) . 'px;
+        font-family: ' . $ect_title_font_famiily . ';
+    }
+    #ect-slider-wrapper .ect-slider-venue a{
+        color: ' . esc_attr(Ecttinycolor($ect_venue_color)->darken(6)->toString()) . ';
+        font-family: ' . $ect_venue_font_famiily . ';
+    }
+';
+/*--- Event Dates Styles - CSS ---*/
+$ect_output_css .= '
+    #ect-slider-wrapper .ect-slider-datearea .ect-slider-date-full {
+        color: ' . esc_attr($ect_desc_color) . ';
+    }
+    #ect-slider-wrapper .ect-simple-event .ect-share-wrapper i.ect-icon-share:before {
+        background: ' . esc_attr($main_skin_color) . ';
+    }
+    #ect-slider-wrapper .ect-featured-event .ect-share-wrapper i.ect-icon-share:before {
+        background: ' . esc_attr($featured_event_skin_color) . ';
+    }
+    #ect-slider-wrapper .ect-simple-event .ect-share-wrapper .ect-social-share-list a:hover {
+        color: ' . esc_attr($main_skin_color) . ';
+    }
+    #ect-slider-wrapper .ect-featured-event .ect-share-wrapper .ect-social-share-list a:hover {
+        color: ' . esc_attr($featured_event_skin_color) . ';
+    }
+';
+$ect_output_css .= '
+    #ect-slider-wrapper .ect-slider-date,
+    #ect-slider-wrapper .ect-date-area span{
+        ' . $ect_date_style . ';
+    }
+';
+if ($ect_date_styles['font-size'] > '20') {
+    $ect_output_css .= '
+        #ect-slider-wrapper .ect-slider-date,
+        #ect-slider-wrapper .ect-date-area span{
+            font-size:20px;
+        }
     ';
-    /*--- Event Dates Styles - CSS ---*/
-    $ect_output_css.='#ect-slider-wrapper .ect-slider-date{'.$ect_date_style.'}
-    #ect-slider-wrapper .ect-share-wrapper .ect-social-share-list a{
-	color: '.$main_skin_color.';
 }
-#ect-slider-wrapper .ect-share-wrapper i.ect-icon-share:before {
-	background: '.$main_skin_color.';
-}';
+$ect_output_css .= '
+    #ect-slider-wrapper .ect-simple-event .ect-date-area.slider-view-schedule span{
+        color: ' . esc_attr($main_skin_color) . ';
+    }
+    #ect-slider-wrapper .ect-featured-event:not(.style-1) .ect-date-area.slider-view-schedule span{
+        color: ' . esc_attr($featured_event_skin_color) . ';
+    }
+';
+$ect_output_css .= '
+    #ect-slider-wrapper .ect-featured-event .ect-slider-readmore a{
+        background: ' . esc_attr($featured_event_skin_color) . ';
+        color: ' . esc_attr($featured_event_font_color) . ' !important;
+    }
+    #ect-slider-wrapper .ect-simple-event .ect-slider-readmore a{
+        background: ' . esc_attr($main_skin_color) . ';
+        color: ' . esc_attr($main_skin_alternate_color) . ' !important;
+    }
+';
+/**------------------------------------Share css------------------------------ */
+$ect_output_css .= '
+    .ect-slider-event.ect-featured-event .ect-share-wrapper .ect-social-share-list a:hover{
+        color: ' . esc_attr($featured_event_skin_color) . ';
+    }
+    .ect-slider-event.ect-simple-event .ect-share-wrapper .ect-social-share-list a:hover{
+        color: ' . esc_attr($main_skin_color) . ';
+    }
+';

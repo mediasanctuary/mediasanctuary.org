@@ -11,16 +11,16 @@ jobs:
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
+              with:
+                node-version: 'lts/Jod'
             - name: Install dependencies
               run: |
                   cd wp-content/themes/mediasanctuary
                   npm install
-
             - name: Build
               run: |
                   cd wp-content/themes/mediasanctuary
                   npm run build
-
             - name: Sync
               env:
                   dest: "devmediasan@claudette.mayfirst.org:/home/members/nyma/sites/dev.mediasanctuary.org/web/wp-content/"
@@ -36,4 +36,6 @@ jobs:
                     --human-readable \
                     --filter='P uploads' \
                     --exclude wp-content/uploads \
+                    --exclude deploy_key \
                     ./wp-content/ ${{env.dest}}
+                  rm deploy_key

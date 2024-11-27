@@ -1,6 +1,6 @@
-@import 'introduction';
-@import 'features';
-@import 'progressbar';
-@import 'testimonials';
-@import 'accordion';
-@import 'personprofile';
+@use 'introduction' as *;
+@use 'features' as *;
+@use 'progressbar' as *;
+@use 'testimonials' as *;
+@use 'accordion' as *;
+@use 'personprofile' as *;

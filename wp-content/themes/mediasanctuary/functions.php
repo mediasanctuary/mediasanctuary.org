@@ -273,9 +273,9 @@ function social_meta_tags() {
 
 
     echo "\n";
-		echo '<title>'.$title.'</title>' . "\n";
-		echo '<meta name="description" content="'.$description.'"/>' . "\n";
-		echo '<meta property="og:title" content="'.$title.'">' . "\n";
+    echo '<title>'.$title.'</title>' . "\n";
+    echo '<meta name="description" content="'.$description.'"/>' . "\n";
+    echo '<meta property="og:title" content="'.$title.'">' . "\n";
     echo '<meta property="og:description" content="'.$description.'">' . "\n";
     echo '<meta property="og:image" content="'.$thumb_url.'">' . "\n";
     echo '<meta property="og:url" content="'.$url.'">' . "\n";
@@ -335,3 +335,152 @@ add_action('pre_get_posts', function($query) {
 	}
 	return $query;
 });
+
+function audio_player() {
+	global $post;
+
+	if (empty($post)) {
+		return;
+	}
+
+	$sources = [];
+	$feed_import_link = '';
+	$soundcloud_link = '';
+	$internet_archive_link = '';
+
+	$feed_import_audio = get_post_meta($post->ID, 'feed_import_audio', true);
+	if (! empty($feed_import_audio)) {
+		$sources[] = $feed_import_audio;
+	}
+
+	$feed_import_link = get_post_meta($post->ID, 'feed_import_link', true);
+	if (! empty($feed_import_link)) {
+		$feed_import_link = "<a href=\"$feed_import_link\" class=\"soundcloud-podcast__link\">Listen on SoundCloud</a>";
+	}
+
+	$soundcloud_id = get_post_meta($post->ID, 'soundcloud_podcast_id', true);
+	if (! empty($soundcloud_id)) {
+		$sources[] = "/wp-json/soundcloud-podcast/v1/stream/$soundcloud_id";
+	}
+	$soundcloud_url = get_post_meta($post->ID, 'soundcloud_podcast_url', true);
+	if (! empty($soundcloud_url)) {
+		$soundcloud_link = "<a href=\"$soundcloud_url\" class=\"soundcloud-podcast__link\">Listen on SoundCloud</a>";
+	}
+
+	$internet_archive_id = get_post_meta($post->ID, 'internet_archive_id', true);
+	if (! empty($internet_archive_id) && $internet_archive_id != -1) {
+		$internet_archive_id = str_replace('https://archive.org/download/', '', $internet_archive_id);
+		$internet_archive_link = "<a href=\"https://archive.org/details/$internet_archive_id\" class=\"soundcloud-podcast__link\">Listen on Internet Archive</a>";
+		if (strpos($internet_archive_id, '/') == false) {
+			$internet_archive_id = "$internet_archive_id/$internet_archive_id.mp3";
+		}
+		$internet_archive_id = preg_replace('/\.wav$/', '.mp3', $internet_archive_id);
+		$sources[] = "https://archive.org/download/$internet_archive_id";
+	}
+
+	if (empty($sources)) {
+		return;
+	}
+
+	$source_elements = '';
+	foreach ($sources as $src) {
+		$source_elements .= "<source src=\"$src\" type=\"audio/mpeg\"/>\n";
+	}
+
+	echo <<<END
+<div class="soundcloud-podcast">
+	<audio controls class="soundcloud-podcast__player">
+		$source_elements
+	</audio>
+	$feed_import_link
+	$internet_archive_link
+	$soundcloud_link
+</div>
+END;
+}
+
+add_filter('feed_import_existing_query', function($query, $data) {
+	// e.g., tag:soundcloud,2010:tracks/1964923891
+	$guid_parts = explode('/', $data['guid']);
+	$soundcloud_id = $guid_parts[1];
+	return [
+		'post_type' => 'post',
+		'post_status' => 'any',
+		'meta_query' => [
+			'relation' => 'OR',
+			[
+				'key' => 'feed_import_guid',
+				'value' => $data['guid'],
+			], [
+				'key' => 'soundcloud_podcast_id',
+				'value' => $soundcloud_id,
+			], [
+				'key' => 'soundcloud_podcast_url',
+				'value' => $data['link'],
+			],
+		]
+	];
+}, 10, 2);
+
+add_filter('feed_import_post_category', function($category, $post) {
+	if (preg_match('/^HMM/i', $post->data['title'])) {
+		return 'Hudson Mohawk Magazine Episodes';
+	}
+	return 'Stories';
+}, 10, 2);
+
+function feed_import_post_date($date, $post) {
+	$category = $post->category();
+	$four_days = 60 * 60 * 24 * 4;
+	$timezone = $date->getTimezone();
+
+	if ($category == 'Stories' &&
+		current_time('u') - $date->getTimestamp() < $four_days) {
+		// If the track's timestamp is within 4 days, we should schedule
+		// it for the next weekday at 6pm.
+		$date = null;
+	}
+
+	if (empty($date)) {
+		$schedule_at = 'Today 6pm';
+
+		// If it's after Friday at 7pm, schedule for Monday at 6pm.
+		if (current_time('w') == 5 && current_time('H') > 19 ||
+		    current_time('w') == 6 ||
+		    current_time('w') == 0) {
+			$schedule_at = 'Monday 6pm';
+		}
+
+		$date = new \DateTime($schedule_at, $timezone);
+	}
+
+	return $date;
+}
+add_filter('feed_import_post_date', 'feed_import_post_date', 10, 2);
+add_filter('feed_import_post_date_gmt', 'feed_import_post_date', 10, 2);
+
+add_filter('feed_import_post_status', function($status, $post) {
+	$date = $post->date();
+	if ($date > current_time('Y-m-d H:i:s')) {
+		return 'future';
+	} else {
+		return 'publish';
+	}
+}, 10, 2);
+
+add_action('feed_import_post_saved', function($post, $action) {
+	if (! defined('SLACK_WEBHOOK')) {
+		return false;
+	}
+	$edit_url = home_url("/wp-admin/post.php?post=$post->id&action=edit");
+	$view_url = get_permalink($post->id);
+	$payload = [
+		'type' => 'mrkdwn',
+		'text' => "$action <$view_url|{$post->title()}> from <{$post->data['link']}|soundcloud.com> (<$edit_url|edit>)"
+	];
+	$rsp = wp_remote_post(SLACK_WEBHOOK, [
+		'body' => [
+			'payload' => json_encode($payload)
+		]
+	]);
+}, 10, 2);

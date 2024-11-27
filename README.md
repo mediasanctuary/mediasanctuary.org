@@ -8,7 +8,7 @@ This is a WordPress site, the theme `mediasanctuary` and the plugins it depends 
 
 ## Developer dependencies
 
-* [node.js](https://nodejs.org/) v16
+* [node.js](https://nodejs.org/) v22
 * [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
 ## How to run locally

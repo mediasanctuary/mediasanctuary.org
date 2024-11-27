@@ -104,7 +104,10 @@ tribe.filterBar.filterDropdowns = {};
 		$dropdownInput
 			.on( 'change', { target: $dropdownInput, container: $container }, obj.handleDropdownChange )
 			.data( 'select2' ).$container.addClass( 'select2-container--open' );
+		// This will autoselect first option - we don't want that...
 		$dropdownInput.data( 'select2' ).trigger( 'query', {} );
+		// ... so now we "close" to unselect the first option.
+		$dropdownInput.data( 'select2' ).trigger( 'close',{});
 	};
 
 	/**

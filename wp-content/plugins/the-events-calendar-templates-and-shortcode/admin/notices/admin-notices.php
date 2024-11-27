@@ -120,7 +120,7 @@ if (!class_exists('ect_admin_notices')):
     	 * @return void
     	 */
     	public function ect_load_script() {    	
-            wp_register_style( 'ect-feedback-notice-styles', ECT_PRO_PLUGIN_URL.'assets/css/ect-admin-notices.css',array(),ECT_VERSION,'all' );
+            wp_register_style( 'ect-feedback-notice-styles', ECT_PRO_PLUGIN_URL.'assets/css/ect-admin-notices.css',array(),ECT_PRO_VERSION,'all' );
             wp_enqueue_style( 'ect-feedback-notice-styles' );
         }
 

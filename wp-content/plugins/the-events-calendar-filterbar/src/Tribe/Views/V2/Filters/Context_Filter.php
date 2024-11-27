@@ -215,6 +215,17 @@ trait Context_Filter {
 		 */
 		$map = apply_filters( 'tribe_events_filter_bar_option_key_map', $map );
 
+		add_filter(
+			'tec_views_v2_subscribe_links_canonical_args',
+			function ( $canonical_args ) use ( $map ) {
+				foreach ( $map as $value ) {
+					$canonical_args[] = 'tribe_' . $value;
+				}
+
+				return $canonical_args;
+			}
+		);
+
 		return Arr::get( $map, $filter_class, $context_key );
 	}
 

@@ -255,8 +255,14 @@
 /* -----------------------------------------------------------------------------
  * Anchor - Event Title
  *
- * This mixin intentionally only affects the text and border _colors_
+ * This mixin intentionally only affects the text, border and background _colors_
  * to make sure they all follow the Customizer overrides.
+ * ----------------------------------------------------------------------------- */
+
+/* -----------------------------------------------------------------------------
+ * Anchor - Event Title
+ *
+ * This mixin intentionally only affects typography of the title
  * ----------------------------------------------------------------------------- */
 
 /* -----------------------------------------------------------------------------
@@ -351,6 +357,10 @@
 .tribe-filter-bar .tribe-filter-bar-c-clear-button:focus .tribe-filter-bar-c-clear-button__reset-icon path, .tribe-filter-bar .tribe-filter-bar-c-clear-button:hover .tribe-filter-bar-c-clear-button__reset-icon path {
 				stroke: var(--tec-color-icon-active);
 			}
+
+.tribe-filter-bar .tribe-filter-bar-c-clear-button:focus {
+			outline: auto;
+		}
 
 .tribe-filter-bar .tribe-filter-bar-c-clear-button__reset-icon path {
 		stroke: var(--tec-color-icon-primary);
@@ -448,7 +458,7 @@
 		}
 
 .tribe-filter-bar .tribe-filter-bar-c-dropdown .select2-results__option:focus {
-				outline: none;
+				outline: auto;
 			}
 
 .tribe-filter-bar .tribe-filter-bar-c-dropdown .select2-results__option--highlighted {
@@ -536,6 +546,10 @@
 			border: none;
 			opacity: var(--tec-opacity-icon-hover);
 			outline: none;
+		}
+
+.tribe-filter-bar .tribe-filter-bar-c-filter__toggle:focus, .tribe-filter-bar .tribe-filter-bar-c-filter--accordion .tribe-filter-bar-c-filter__toggle:focus, .tribe-filter-bar button.tribe-filter-bar-c-filter__toggle:focus, .tribe-filter-bar .tribe-filter-bar-c-filter--accordion button.tribe-filter-bar-c-filter__toggle:focus {
+			outline: auto;
 		}
 
 .tribe-filter-bar .tribe-filter-bar-c-filter__toggle-minus-icon path, .tribe-filter-bar .tribe-filter-bar-c-filter__toggle-plus-icon path {
@@ -640,7 +654,7 @@
 			}
 
 .tribe-theme-twentytwentyone .tribe-filter-bar button.tribe-filter-bar-c-pill__pill:focus {
-			outline: none;
+			outline: auto;
 			outline-offset: 0;
 		}
 
@@ -728,7 +742,7 @@
 		}
 
 .tribe-filter-bar .tribe-filter-bar-c-multiselect .select2-results__option:focus {
-				outline: none;
+				outline: auto;
 			}
 
 .tribe-filter-bar .tribe-filter-bar-c-multiselect .select2-results__option--highlighted {
@@ -776,6 +790,7 @@
 		.tribe-filter-bar .tribe-filter-bar-c-pill--button .tribe-filter-bar-c-pill__pill:focus {
 			background-color: var(--tec-color-background-secondary);
 			border-color: var(--tec-color-icon-primary);
+			outline: auto;
 		}
 
 .tribe-filter-bar .tribe-filter-bar-c-pill--button .tribe-filter-bar-c-pill__pill:active {
@@ -793,6 +808,7 @@
 .tribe-filter-bar .tribe-filter-bar-c-pill--has-selections.tribe-filter-bar-c-pill--button .tribe-filter-bar-c-pill__pill:hover,
 		.tribe-filter-bar .tribe-filter-bar-c-pill--has-selections.tribe-filter-bar-c-pill--button .tribe-filter-bar-c-pill__pill:focus {
 			background-color: var(--tec-color-background-secondary-hover);
+			outline: auto;
 		}
 
 .tribe-filter-bar .tribe-filter-bar-c-pill--has-selections.tribe-filter-bar-c-pill--button .tribe-filter-bar-c-pill__pill:active {
@@ -807,6 +823,10 @@
 .tribe-filter-bar .tribe-filter-bar-c-pill__remove-button:hover path, .tribe-filter-bar .tribe-filter-bar-c-pill__remove-button:focus path {
 				opacity: var(--tec-opacity-icon-hover);
 			}
+
+.tribe-filter-bar .tribe-filter-bar-c-pill__remove-button:focus {
+			outline: auto;
+		}
 
 .tribe-filter-bar .tribe-filter-bar-c-pill__remove-button-icon path {
 		stroke: var(--tec-color-icon-active);
@@ -898,6 +918,10 @@
 .tribe-events .tribe-events-c-events-bar__filter-button:hover,
 		.tribe-events .tribe-events-c-events-bar__filter-button:focus {
 			opacity: var(--tec-opacity-icon-hover);
+		}
+
+.tribe-events .tribe-events-c-events-bar__filter-button:focus {
+			outline: auto;
 		}
 
 .tribe-events .tribe-events-c-events-bar__filter-button:active {
@@ -1030,6 +1054,10 @@
 .tribe-filter-bar .tribe-filter-bar__filters-slider-nav-button:hover .tribe-filter-bar__filters-slider-nav-button-icon path, .tribe-filter-bar .tribe-filter-bar__filters-slider-nav-button:focus .tribe-filter-bar__filters-slider-nav-button-icon path {
 				fill: var(--tec-color-accent-secondary-hover);
 			}
+
+.tribe-filter-bar .tribe-filter-bar__filters-slider-nav-button:focus {
+			outline: auto;
+		}
 
 .tribe-filter-bar .tribe-filter-bar__filters-slider-nav-button:active .tribe-filter-bar__filters-slider-nav-button-icon path {
 				fill: var(--tec-color-accent-secondary-active);

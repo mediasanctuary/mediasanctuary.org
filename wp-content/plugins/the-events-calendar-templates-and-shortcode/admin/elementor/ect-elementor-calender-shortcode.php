@@ -2,7 +2,9 @@
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
 
 /**
  * Elementor EctElementorWidget
@@ -68,7 +70,7 @@ class EctCalendarElementorWidget extends Widget_Base {
 	 * @return array Widget categories.
 	 */
 	public function get_categories() {
-		return [ 'The Events Calendar Shortcode and Templates Addon' ];
+		return array( 'The Events Calendar Shortcode and Templates Addon' );
 	}
 
 	/**
@@ -83,7 +85,7 @@ class EctCalendarElementorWidget extends Widget_Base {
 	 * @return array Widget scripts dependencies.
 	 */
 	// public function get_script_depends() {
-	// 	return [ 'ctla' ];
+	// return [ 'ctla' ];
 	// }
 
 	/**
@@ -96,77 +98,75 @@ class EctCalendarElementorWidget extends Widget_Base {
 	 * @access protected
 	 */
 	protected function register_controls() {
-       
-		 
-		//  var_dump($ect_venue_details);
-	
+
+		// var_dump($ect_venue_details);
+
 		$this->start_controls_section(
 			'section_content',
-			[
+			array(
 				'label' => __( 'The Events Calendar Shortcode', 'ect2' ),
-			]
+			)
 		);
 		$this->add_control(
 			'ect_content_notice',
-			[
-				'label' => __( '', 'ect2' ),
-				'type' => \Elementor\Controls_Manager::RAW_HTML,
-				'raw' => '<strong style="color:red">For advanced Elementor settings please use our <a href="https://wordpress.org/plugins/events-widgets-for-elementor-and-the-events-calendar/">The Events Calendar Widgets For Elementor Plugin</a></strong>',
+			array(
+				'label'           => __( '', 'ect2' ),
+				'type'            => \Elementor\Controls_Manager::RAW_HTML,
+				'raw'             => '<strong style="color:red">For advanced Elementor settings please use our <a href="https://wordpress.org/plugins/events-widgets-for-elementor-and-the-events-calendar/">The Events Calendar Widgets For Elementor Plugin</a></strong>',
 				'content_classes' => 'cool_timeline_notice',
-			]
+			)
 		);
-        $this->add_control(
-			'date_formats',
-			[
-				'label' => __( 'Date formats', 'cool-timeline' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'd F Y',
-				'options' => [
-         
-					'd F Y' => __( 'Default (01 January 2019)', 'cool-timeline' ),
-                    'M D, Y' => __( 'Md,Y (Jan 01, 2019)', 'cool-timeline' ),
-                    'F D, Y' => __( 'Fd,Y (January 01, 2019)', 'cool-timeline' ),
-                    'D M' => __( 'dM (01 Jan))', 'cool-timeline' ),
-                  
-                    'D F' => __( 'dF (01 January)', 'cool-timeline' ),
-                    'M D' => __( 'Md (Jan 01)', 'cool-timeline' ),
-                    'F D' => __( 'Fd (January 01)', 'cool-timeline' ),
-                    'j M l' => __( 'jMl (1 Jan Monday)', 'cool-timeline' ),
-                    'd. F Y' => __( 'd.FY (01. January 2019)', 'cool-timeline' ),
-                    'd. F' => __( 'd.F (01. January)', 'cool-timeline' ),
-                    'd. M l' => __( 'd.Ml (01. Jan Monday)', 'cool-timeline' ),
-                    'M d l' => __( 'Mdl (Jan 01 Monday)', 'cool-timeline' ),
-                    'l d F' => __( 'ldF (Monday 01 January)', 'cool-timeline' ),
-                    
-                ],
-			]
-        );
-      
 		$this->add_control(
-           'catFilter',
-           [
-               'label' => __( 'Show Category Filter', 'cool-timeline' ),
-               'type' => Controls_Manager::SELECT,
-               'default' => 'true',
-               'options' => [
-                   'false' => __( 'NO', 'cool-timeline' ),
-                   'true' => __( 'Yes', 'cool-timeline' ),
-               ]
-           ]
+			'date_formats',
+			array(
+				'label'   => __( 'Date formats', 'cool-timeline' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'd F Y',
+				'options' => array(
+
+					'd F Y'  => __( 'Default (01 January 2024)', 'cool-timeline' ),
+					'M D, Y' => __( 'Md,Y (Jan 01, 2024)', 'cool-timeline' ),
+					'F D, Y' => __( 'Fd,Y (January 01, 2024)', 'cool-timeline' ),
+					'D M'    => __( 'dM (01 Jan))', 'cool-timeline' ),
+
+					'D F'    => __( 'dF (01 January)', 'cool-timeline' ),
+					'M D'    => __( 'Md (Jan 01)', 'cool-timeline' ),
+					'F D'    => __( 'Fd (January 01)', 'cool-timeline' ),
+					'j M l'  => __( 'jMl (1 Jan Monday)', 'cool-timeline' ),
+					'd. F Y' => __( 'd.FY (01. January 2024)', 'cool-timeline' ),
+					'd. F'   => __( 'd.F (01. January)', 'cool-timeline' ),
+					'd. M l' => __( 'd.Ml (01. Jan Monday)', 'cool-timeline' ),
+					'M d l'  => __( 'Mdl (Jan 01 Monday)', 'cool-timeline' ),
+					'l d F'  => __( 'ldF (Monday 01 January)', 'cool-timeline' ),
+
+				),
+			)
+		);
+
+		$this->add_control(
+			'catFilter',
+			array(
+				'label'   => __( 'Show Category Filter', 'cool-timeline' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'true',
+				'options' => array(
+					'false' => __( 'NO', 'cool-timeline' ),
+					'true'  => __( 'Yes', 'cool-timeline' ),
+				),
+			)
 		);
 
 		$this->add_control(
 			'limit',
-			[
-			    'label' => __( 'Events Limit', 'cool-timeline' ),
-			    'type' => Controls_Manager::NUMBER,
-			    'default' => '10',
-			]
+			array(
+				'label'   => __( 'Events Limit', 'cool-timeline' ),
+				'type'    => Controls_Manager::NUMBER,
+				'default' => '10',
+			)
 		);
-		
-		
-        $this->end_controls_section();
-    }
+
+		$this->end_controls_section();
+	}
 
 	/**
 	 * Render the widget output on the frontend.
@@ -178,15 +178,14 @@ class EctCalendarElementorWidget extends Widget_Base {
 	 * @access protected
 	 */
 	protected function render() {
-	$settings = $this->get_settings();
-     $date_format=isset($settings['date_formats'])?$settings['date_formats']:"default";
-     $catFilter = isset( $settings['catFilter'] )? $settings['catFilter']: 'true';
-	$eventlimit = isset( $settings['limit'] )? $settings['limit']: '10';
-	$shortcode = '[ect-calendar-layout date-format="'.$date_format.'" show-category-filter="'.$catFilter.'" limit="'.$eventlimit.'"]';
-	echo'<div class="ect-elementor-shortcode ect-free-addon">';
-	
-		
-     echo wp_kses_post($shortcode);
-     echo'</div>';
+		$settings    = $this->get_settings();
+		$date_format = isset( $settings['date_formats'] ) ? $settings['date_formats'] : 'default';
+		$catFilter   = isset( $settings['catFilter'] ) ? $settings['catFilter'] : 'true';
+		$eventlimit  = isset( $settings['limit'] ) ? $settings['limit'] : '10';
+		$shortcode   = '[ect-calendar-layout date-format="' . $date_format . '" show-category-filter="' . $catFilter . '" limit="' . $eventlimit . '"]';
+		echo '<div class="ect-elementor-shortcode ect-free-addon">';
+
+		echo wp_kses_post( $shortcode );
+		echo '</div>';
 	}
 }

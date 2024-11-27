@@ -1,3 +1,6 @@
+@use 'features' as *;
+@use 'categories' as *;
+
 .block-editor .wp-block[data-type^="acf/"]::before {
 	content: attr(data-title);
 	position: absolute;
@@ -79,6 +82,3 @@
   }
   
 }
-
-@import 'features';
-@import 'categories';

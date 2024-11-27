@@ -131,27 +131,39 @@ class Tribe__Events__Filterbar__Settings {
 		$fields = [
 			'events_filters_section_title' => [
 				'type' => 'html',
-				'html' => '<h3>' . __( 'Filters', 'tribe-events-filter-view' ) . '</h3>',
+				'html' => '<div id="tec-settings-filter-header" class="tec-settings-form__header-block">'
+					. '<h3 id="tec-events-filters-settings__title" class="tec-settings-form__section-header">'
+					. __( 'Filters', 'tribe-events-filter-view' )
+					. '</h3>'
+					. '<p class="description">' 
+					. sprintf(
+						/* translators: %1$s: singular label for events */
+						esc_html__( 'The settings below allow you to enable or disable front-end %1$s filters.', 'tribe-events-filter-view' ),
+						tribe_get_event_label_singular()
+					) . '</p>'
+					. '</div>',
 			],
-			'events_filters_section_description' => [
+			'events_filters_active_filters'       => [
 				'type' => 'html',
-				'html' => '<p class="description">' .  sprintf(
-					esc_html__( 'The settings below allow you to enable or disable front-end %s filters. Uncheck the box to hide the filter. Drag and drop active filters to re-arrange them.', 'tribe-events-filter-view' ),
-					tribe_get_event_label_singular()
-				) . '</p>
-						   <p class="description">' . __( 'Expand an active filter to edit the label and choose from a subset of input types (dropdown, select, range slider, checkbox and radio).', 'tribe-events-filter-view' ) . '</p>',
+				'display_callback' => [ $this, 'render_active_filters_box' ],
 			],
-			'events_filters-form-content-start' => array(
-				'type' => 'html',
-				'html' => '<div class="tribe-settings-form-wrap">',
-			),
 			'events_filters_available_filters' => [
 				'type' => 'html',
 				'display_callback' => [ $this, 'render_available_filters_box' ],
 			],
-			'events_filters_active_filters' => [
+			'events_filters_layout_section_title' => [
 				'type' => 'html',
-				'display_callback' => [ $this, 'render_active_filters_box' ],
+				'html' => '<div id="tec-settings-filter-settings-header" class="tec-settings-form__header-block tec-settings-form__element--rowspan-2">'
+					. '<h3 id="tec-events-filters-layout-title" class="tec-settings-form__section-header tec-settings-form__section-header--sub">'
+					. __( 'Filter Settings', 'tribe-events-filter-view' )
+					. '</h3>'
+					. '<p class="description">' 
+					. sprintf(
+						/* translators: %1$s: singular label for events */
+						esc_html__( 'The settings to the right allow you to change the layout and default state of the %1$s filters.', 'tribe-events-filter-view' ),
+						tribe_get_event_label_singular()
+					) . '</p>'
+					. '</div>',
 			],
 			'events_filters_layout' => [
 				'type' => 'radio',
@@ -173,10 +185,6 @@ class Tribe__Events__Filterbar__Settings {
 				],
 				'validation_type' => 'options',
 			],
-			'events_filters-form-content-end' => array(
-				'type' => 'html',
-				'html' => '</div>',
-			),
 		];
 		$fields = apply_filters( 'tribe-event-filters-settings-fields', $fields );
 		return $fields;

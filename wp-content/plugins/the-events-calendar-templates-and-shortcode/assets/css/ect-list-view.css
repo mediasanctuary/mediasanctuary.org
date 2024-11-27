@@ -4,7 +4,8 @@ List Common Styles
 
 #ect-events-list-content,
 .ect-list-wrapper {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
     width: 100%;
     margin: 5px auto;
     padding: 0;
@@ -19,42 +20,28 @@ List Common Styles
 .ect-list-post {
     width: 100%;
     height: 100%;
-    min-height: 180px;
+    min-height: 200px;
     box-sizing: border-box;
     word-break: break-word;
-    display: table;
+    display: flex;
     margin: 15px auto;
-}
-
-.ect-list-post.style-2 {
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 20px;
-}
-
-.ect-list-post.style-3 {
-    min-height: auto;
-    border-radius: 3px;
-    overflow: hidden;
-    margin-bottom: 20px;
+    border: 1px solid #00000020;
+    border-radius: 15px;
+    padding: 5px;
+    gap: 15px;
 }
 
 .ect-list-post-left {
     width: 30%;
-    height: 100%;
     background-size: cover;
-    display: table-cell;
     position: relative;
-    min-height: 180px;
+    min-height: 200px;
     z-index: 9;
 }
 
 .ect-list-post-right {
     width: 70%;
-    display: table-cell;
-    background: #edf3f9;
-    vertical-align: top;
-    height: 100%;
+    display: flex;
 }
 
 .ect-list-post-left:hover {
@@ -62,16 +49,16 @@ List Common Styles
     filter: brightness(95%) hue-rotate(2deg);
 }
 
-.ect-list-post-right .ect-list-venue:hover {
-    -webkit-filter: brightness(95%) hue-rotate(2deg);
-    filter: brightness(95%) hue-rotate(2deg);
-}
-
 .ect-list-img {
-    float: none;
     height: 100%;
     width: 100%;
-    background-color: #ebf0f7;
+}
+
+.ect-list-post.style-1 .ect-list-img,
+.ect-list-post.style-1 .ect-list-date {
+    min-height: 200px;
+    border-radius: 7px;
+    padding: 5px;
 }
 
 .ect-list-post a {
@@ -85,12 +72,13 @@ List Common Styles
     transition: width linear 0.5s;
     width: 35%;
     min-width: 100px;
-    display: table;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     background: rgba(224, 232, 243, 0.96);
     height: 100%;
     color: #fff;
-    vertical-align: middle;
     padding: 8px;
     box-sizing: border-box;
     position: relative;
@@ -102,18 +90,16 @@ List Common Styles
     width: 100%;
 }
 
-.ect-featured-event .ect-list-post-left .ect-list-date {
-    background: rgba(224, 40, 40, 0.90);
+.ect-list-date .ect-date-area {
+    text-align: center;
+    line-height: 92%;
+    font-size: 35px;
+    font-family: inherit;
+    /* padding-top: 14px; */
 }
 
-.ect-list-date .ect-date-area {
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 92%;
-    font-size: 38px;
-    font-family: inherit;
-    padding-top: 14px;
+.ect-list-post.style-2 .ect-list-date .ect-date-area {
+    text-align: left;
 }
 
 .ect-list-date .ect-date-area .ev-day {
@@ -124,19 +110,19 @@ List Common Styles
 }
 
 .ect-list-date .ect-date-area .ev-mo {
-    font-size: 0.45em;
+    font-size: 0.55em;
     clear: both;
     display: inline-block;
     width: 100%;
 }
 
 .ect-list-date .ect-date-area .ev-yr {
-    font-size: 0.4em;
+    font-size: 0.5em;
     clear: both;
     display: inline-block;
     width: 100%;
     position: relative;
-    top: -14px;
+    /* top: -14px; */
 }
 
 .ect-list-date .ect-date-area .ev-time {
@@ -147,19 +133,62 @@ List Common Styles
     line-height: 1.35em;
 }
 
+.ect-list-date .ect-date-area .ev-weekday {
+    font-size: 0.9em;
+    clear: both;
+    display: inline-block;
+    width: 100%;
+}
+
 #ect-events-list-content .ect-share-wrapper {
     position: absolute;
-    right: 7px;
-    bottom: 7px;
+    right: 10px;
+    top: 10px;
     z-index: 11;
+}
+
+.ect-list-post .ect-share-wrapper .ect-social-share-list {
+    width: 45px;
+    top: 0px;
+    left: -50px;
+    border: 1px solid #00000015;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0px 0px 5px -3px #B5B5B5;
+}
+
+.ect-list-post.style-3 .ect-list-img {
+    padding: 5px;
+    border-radius: 7px;
+}
+
+.ect-list-post .ect-style3-desc .ect-event-content p {
+    margin-bottom: 0px;
+}
+
+.ect-list-post .ect-share-wrapper:hover .ect-social-share-list {
+    top: 0px;
+}
+
+.ect-list-post .ect-share-wrapper .ect-social-share-list:before {
+    display: none;
+}
+
+.ect-list-post .ect-share-wrapper .ect-social-share-list a {
+    line-height: 35px;
+}
+
+#ect-events-list-content .ect-list-post .ect-share-wrapper i.ect-icon-share:before {
+    background-color: #00000000;
 }
 
 
 /*right side*/
 
 .ect-list-post-right-table {
-    display: table;
-    vertical-align: top;
+    display: flex;
     height: 100%;
     width: 100%;
 }
@@ -167,39 +196,52 @@ List Common Styles
 .ect-list-post-right .ect-list-description {
     width: 70%;
     height: 100%;
-    display: table-cell;
+    display: flex;
+    flex-direction: column;
     padding: 10px;
     box-sizing: border-box;
-    vertical-align: top;
-    border-right: 1px solid;
     position: relative;
+    justify-content: center;
+    gap: 8px;
 }
 
 .ect-list-post a.ect-events-read-more {
-    margin-top: 10px;
     display: inline-block;
 }
 
-.ect-list-post-right .ect-list-venue {
+.ect-list-wrapper .ect-list-post-right .ect-list-venue {
+    height: 100%;
+    display: flex;
+}
+
+.ect-list-wrapper .style-3 .ect-list-post-right .ect-list-venue .ect-icon {
+    width: auto;
+}
+
+.ect-list-wrapper .style-1 .ect-list-post-right .ect-list-venue {
     width: 30%;
     height: 100%;
-    display: table-cell;
-    vertical-align: top;
-    text-align: center;
-    background: #ff6a5c;
-    color: #fff;
+    flex-direction: column;
+    justify-content: center;
     padding: 10px;
+    border-radius: 7px;
+    background-color: #00000015;
+}
+
+.ect-list-wrapper .style-2 .ect-list-post-right .ect-list-venue {
+    width: 100%;
+    flex-direction: column;
+    margin-top: 10px;
 }
 
 .ect-list-post h2.ect-list-title {
     font-size: 18px;
     font-family: inherit;
-    margin-bottom: 10px;
+    margin: 0px;
     padding: 0;
 }
 
 .ect-list-post h2.ect-list-title a {
-    color: #ff6a5c;
     text-decoration: none;
     box-shadow: none;
 }
@@ -209,14 +251,17 @@ List Common Styles
     -webkit-filter: opacity(0.75);
 }
 
-.ect-list-description .ect-event-content {
+.ect-list-post .ect-event-content,
+.ect-list-post .ect-events-read-more,
+.ect-list-post .ect-rate-area {
     font-size: 13px;
     font-family: inherit;
     padding: 0;
     margin: 0;
-    display: inline-block;
+    display: flex;
     width: 100%;
     line-height: 1.6em;
+    flex-direction: column;
 }
 
 .ect-list-description .ect-event-content p {
@@ -224,6 +269,7 @@ List Common Styles
     margin: 0;
     display: inline-block;
     width: 100%;
+    line-height: 23px;
 }
 
 a.ect-event-read-more {
@@ -238,26 +284,17 @@ a.ect-event-read-more {
 }
 
 #ect-events-list-content .ect-rate-area {
-    float: right;
     display: inline-block;
-    margin-top: -22px;
-    font-size: 22px;
 }
 
-.ect-list-venue .ect-icon {
-    display: inline-block;
-    width: 100%;
-}
-
-.ect-list-venue .ect-venue-details {
-    font-size: 14px;
+.ect-venue-details {
+    font-size: 13px;
     line-height: inherit;
     text-decoration: none;
     display: inline-block;
 }
 
 .ect-list-venue .ect-venue-details .tribe-address {
-    font-size: 85%;
     width: 100%;
     display: inline-block;
 }
@@ -294,17 +331,17 @@ a.ect-event-read-more {
 }
 
 
-/*
-  Style-2 / Modern List
-*/
+/*  Style-2 / Modern List*/
 
 .modern-list-right-side {
     width: 30%;
     height: 100%;
-    display: table-cell;
-    padding: 10px;
+    display: flex;
+    padding: 10px 15px;
+    align-items: center;
     box-sizing: border-box;
-    vertical-align: middle;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .modern-list-right-side .ect-list-date,
@@ -313,32 +350,26 @@ a.ect-event-read-more {
     width: 100%;
 }
 
-.ect-list-post-right .modern-list-venue {
-    width: 100%;
-    display: inline-block;
-    margin-bottom: 10px;
-}
-
-.modern-list-venue .ect-icon {
-    font-size: 24px;
-    display: inline-block;
-    vertical-align: top;
-    width: 34px;
-}
-
-.modern-list-venue span.ect-venue-details,
-.modern-list-venue span.ect-google {
-    display: inline-block;
-    width: calc(100% - 48px);
-    vertical-align: top;
+.ect-list-post.style-2 {
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid #00000020;
+    padding: 10px;
+    border-radius: 10px;
 }
 
 #ect-events-list-content .style-2 .ect-rate-area {
-    float: left;
     width: 100%;
-    margin: 0 0 10px;
+    margin: 0px;
     display: inline-block;
-    font-weight: bold;
+}
+
+.ect-list-post.style-2 .modern-list-right-side {
+    border-radius: 0px 10px 10px 0px;
+}
+
+.ect-list-post.style-2 .ect-list-img {
+    border-radius: 10px 0px 0px 10px;
 }
 
 .ect-modern-time {
@@ -347,106 +378,157 @@ a.ect-event-read-more {
     line-height: 1.25em;
 }
 
-#ect-events-list-content .ect-load-more.style-2 .ect-load-more-btn {
-    border-radius: 8px;
-}
+
+/***      CSS for Classic List Style  ***/
 
 
-/*** 
-     CSS for Classic List Style
-  ***/
-
-.ect-clslist-event-date {
-    display: table-cell;
+/* .ect-clslist-event-date {
+    display: flex;
     width: 160px;
     text-align: center;
-    vertical-align: middle;
     padding: 10px;
     background: rgba(255, 106, 92, 0.90);
     font-size: 28px;
     position: relative;
-}
+} */
 
 .ect-clslist-time {
     display: inline-block;
-    margin-bottom: 10px;
-    font-size: 14px;
+    margin: 0px;
+    font-size: 13px;
     width: 100%;
 }
 
-.ect-clslist-event-info {
-    background: #f3fbf1;
-    display: table-cell;
+
+/* .ect-clslist-event-info {
+    display: flex;
     width: calc(100% - 340px);
-    vertical-align: middle;
     padding: 10px 25px;
     text-align: left;
-}
+} */
 
 .ect-clslist-event-details {
     background: #f3fbf1;
-    display: table-cell;
+    display: flex;
     width: 180px;
     text-align: center;
     position: relative;
-}
-
-.ect-clslist-event-details a.tribe-events-read-more {
-    display: flex;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    text-align: center;
-    vertical-align: middle;
     align-items: center;
-    justify-content: center;
-    text-transform: uppercase;
-    font-size: 14px;
-    box-shadow: none;
-    font-weight: bold;
 }
 
-.ect-clslist-inner-container .ect-list-venue .ect-icon {
-    width: auto;
+.style-3 .ect-list-post-right .ect-list-description {
+    width: 100%;
+}
+
+.style-3 i.ect-icon-location {
     vertical-align: top;
+    font-size: 13px;
 }
 
 .ect-clslist-inner-container i.ect-icon-bell-alt,
 .ect-clslist-inner-container i.ect-icon-clock,
 .ect-clslist-inner-container i.ect-icon-location {
-    min-width: 30px;
+    min-width: auto;
     display: inline-block;
-    text-align: center;
     min-height: 20px;
-    vertical-align: middle;
 }
 
-.ect-clslist-inner-container .ect-venue-details {
-    width: calc(100% - 35px);
+.ect-list-post.style-3 .ect-clslist-inner-container i:before {
+    margin-left: 0px;
+}
+
+.ect-list-post.style-3 {
+    min-height: auto;
+    overflow: hidden;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+
+/* .ect-list-post.style-3 .ect-clslist-inner-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+} */
+
+.ect-list-post.style-3 .ect-list-post-left {
+    overflow: hidden;
+}
+
+.ect-list-post.style-3 .ect-list-post-left .ect-list-date {
+    width: 100%;
+    opacity: 0.95;
+    border-radius: 7px;
+}
+
+.ect-list-post.style-3 .ect-list-post-left:hover {
+    border-radius: 7px;
 }
 
 #ect-events-list-content .style-3 .ect-rate-area {
-    margin-top: -30px;
+    margin-top: 0px;
 }
 
-#ect-events-list-content .ect-load-more.style-3 .ect-load-more-btn {
-    border-radius: 3px;
+.ect-list-post.style-3 .ect-list-post-left .ect-list-date .ect-date-area {
+    width: calc(100% - 50px);
+    min-height: calc(100% - 50px);
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    border-radius: 7px;
+    padding: 14px 0px;
+}
+
+.ect-list-post.style-3 .ect-clslist-event-details {
+    box-shadow: unset;
+    background: #ffffff00;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.ect-list-post.style-3 .ect-list-post-right {
+    background: #f4fcff00;
+}
+
+.ect-list-post.style-3 .ect-list-post-left .ect-list-date:hover {
+    background: #ff000000;
+}
+
+.ect-list-post.style-3 .ect-list-post-left .ect-list-date:hover .ect-date-area {
+    display: none;
+}
+
+.ect-list-post.style-3 .ect-list-post-left .ect-list-img:hover {
+    transition-duration: 1s;
+    transform: scale(1.5);
 }
 
 
-/*
-  Media Query 
-*/
+/*  Media Query */
 
 @media only screen and (max-width: 790px) {
     .ect-list-post {
         margin-bottom: 35px;
+        flex-direction: column;
+    }
+    .ect-list-wrapper .style-1 .ect-list-post-right .ect-list-venue {
+        width: 100%;
+    }
+    .ect-list-post a.ect-events-read-more,
+    .ect-list-post .ect-list-title,
+    .ect-list-post .ect-clslist-time,
+    .ect-list-post .ect-style3-desc .ect-event-content p,
+    .ect-list-date .ect-date-area {
+        text-align: center;
     }
     .ect-list-post-left .ect-list-date {
         width: 100%;
-        position: absolute;
         top: inherit;
         bottom: 0;
     }
@@ -460,26 +542,35 @@ a.ect-event-read-more {
         top: 0;
         margin-left: 5px;
     }
+    .ect-list-post.style-2 .ect-list-date .ect-date-area .ev-day {
+        font-size: 0.55em;
+    }
     .ect-list-date .ect-date-area .ev-time {
         text-align: left;
         margin-left: 5px;
     }
-    #ect-events-list-content .ect-share-wrapper .ect-social-share-list {
-        left: inherit;
-        right: 0;
+    .ect-list-post.style-1 .ect-list-date .ect-date-area,
+    .ect-list-post.style-1 .ect-list-date .ev-time {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .ect-list-post.style-2 .ect-list-date .ect-date-area .ev-time {
+        text-align: center;
+    }
+    .modern-list-right-side .ect-list-date,
+    .modern-list-right-side .ect-list-date .ect-date-area {
+        display: flex;
+        justify-content: center;
+        padding-top: 0px;
+        flex-wrap: wrap;
+    }
+    .ect-event-category ul.tribe_events_cat {
+        justify-content: center;
     }
     #ect-events-list-content .ect-share-wrapper .ect-social-share-list:before {
         left: inherit;
         right: 6px;
-    }
-    #ect-events-list-content .style-3 .ect-share-wrapper .ect-social-share-list {
-        top: 42px;
-    }
-    #ect-events-list-content .style-3 .ect-share-wrapper .ect-social-share-list:before {
-        bottom: inherit;
-        border-bottom-color: #fff;
-        border-top-color: transparent;
-        top: -20px;
     }
     .ect-list-post .ect-list-post-right .ect-list-description {
         border-right: 0;
@@ -490,14 +581,20 @@ a.ect-event-read-more {
     .ect-list-post-left,
     .ect-list-post-right,
     .ect-list-post-right-table,
-    .ect-list-venue {
+    .ect-list-venue:not(.style-3) {
         display: block;
         width: 100%;
         overflow: hidden;
         height: auto;
+        text-align: center;
+    }
+    .ect-list-post.style-3 .ect-list-venue {
+        text-align: left;
+        width: 100%;
+        display: flex;
+        justify-content: center;
     }
     .ect-list-post-right .ect-list-venue {
-        display: block;
         width: 100%;
         overflow: hidden;
         height: auto;
@@ -507,8 +604,11 @@ a.ect-event-read-more {
     }
     .ect-list-post-right .ect-list-description,
     .modern-list-right-side {
-        display: inline-block;
+        align-items: center;
         width: 100%;
+    }
+    .ect-list-description .ect-event-content {
+        align-items: center;
     }
     .ect-modern-time {
         display: inline-block;
@@ -522,32 +622,53 @@ a.ect-event-read-more {
         position: relative;
         padding: 10px;
     }
+    .ect-list-post.style-3 .ect-clslist-event-details {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
     #ect-events-list-content .style-1 .ect-rate-area {
         float: left;
         margin-top: 0;
     }
     #ect-events-list-content .style-3 .ect-rate-area {
         margin-top: 10px;
+        text-align: center;
     }
-    
+    /* .ect-clslist-inner-container .ect-venue-details {
+        width: 100%;
+    } */
+    .ect-list-post.style-3 .ect-list-post-left .ect-list-date {
+        min-height: 210px;
+    }
+    .ect-list-post.style-3 {
+        position: relative;
+    }
 }
 
 .ect-list-post-left span.ect-custom-schedule {
-    display: table-cell;
+    display: flex;
     text-align: center;
-    vertical-align: middle;
     line-height: 92%;
     font-size: 38px;
     font-family: inherit;
     padding-top: 14px;
-}
-.ect-style3-desc a.ect-events-read-more {
-    display: none;
+    align-items: center;
 }
 
-/**
-* style 4
-*/
+.ect-list-post.style-2 .ect-list-img,
+.ect-list-post.style-2 .modern-list-right-side {
+    border-radius: 10px;
+}
+
+.ect-list-post.style-2 .ect-list-description {
+    border-bottom: none;
+    gap: 8px;
+}
+
+
+/*** style 4*/
+
 .style-4 .ect-list-schedule {
     background: white;
     border: 1px solid #C5C5C5;
@@ -559,44 +680,86 @@ a.ect-event-read-more {
     bottom: 0;
 }
 
-  .ect-list-schedule-wrap {
-    /* padding: 6px; */
+.ect-list-schedule-wrap {
     align-items: center;
     border: 1px solid #C5C5C5;
     display: flex;
     flex-direction: column;
-    /* height: 3.063rem; */
     justify-content: center;
-    /* width: 3.063rem; */
-  }
-  .ect-list-schedule .ev-mo {
+}
+
+.ect-list-schedule .ev-mo {
     color: #FA5A41;
     font-size: 0.625rem;
     letter-spacing: 0.15em;
     line-height: 0.9;
-    /* text-transform: uppercase; */
-  }
-  .ect-list-schedule .ev-day {
+}
+
+.ect-list-schedule .ev-day {
     font-size: 1.5rem;
     line-height: 1;
-  }
-  .ect-grid-image-style4{
-    display: inline-block;
-    /* height: 250px;
-    overflow: hidden; */
+}
+
+.ect-grid-image-style4 {
     width: 100%;
     position: relative;
-  } 
-  .ect-list-schedule span {
+}
+
+.ect-list-schedule span {
     display: block;
     text-align: center;
-  }
-  
-  #ect-events-list-content .ect-share-style-4 .ect-share-wrapper {
+}
+
+#ect-events-list-content .ect-share-style-4 .ect-share-wrapper {
     right: unset;
     left: 11px;
 }
 
 #ect-events-list-content .style-4 .ect-rate-area {
     float: none;
+}
+
+.ect-list-post.style-1:hover .ect-start-date,
+.ect-list-post.style-1:hover .ect-end-date {
+    display: flex;
+}
+
+.ect-list-post.style-1 .ect-startend-date {
+    width: 50%;
+}
+
+.ect-list-post.style-1:hover .ect-sed-main {
+    display: flex;
+}
+
+.ect-list-post.style-2 .ect-start-date,
+.ect-list-post.style-2 .ect-end-date {
+    display: flex;
+}
+
+.ect-list-post.style-2 .ect-sed-main {
+    display: flex;
+    width: 60%;
+    gap: 5px;
+}
+
+.ect-list-post.style-2 .ect-sed-seperator {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+.ect-list-post.style-2 .ect-startend-date {
+    width: 80%;
+}
+
+.ect-list-post.style-3 .ect-start-date,
+.ect-list-post.style-3 .ect-end-date {
+    display: flex;
+    width: 90%;
+    justify-content: center;
+}
+
+.ect-list-post.style-3 .ect-sed-main {
+    display: flex;
 }

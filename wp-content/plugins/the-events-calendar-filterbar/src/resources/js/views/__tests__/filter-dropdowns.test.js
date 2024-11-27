@@ -174,7 +174,7 @@ describe( 'Filter Dropdowns', () => {
 			expect( global.tribe_dropdowns.dropdown.mock.calls.length ).toBe( 1 );
 			expect( $dropdownInput.on.mock.calls.length ).toBe( 1 );
 			expect( addClass.mock.calls.length ).toBe( 1 );
-			expect( trigger.mock.calls.length ).toBe( 1 );
+			expect( trigger.mock.calls.length ).toBe( 2 );
 			expect( $dropdownInput.on.mock.calls[ 0 ][ 0 ] ).toBe( 'change' );
 		} );
 	} );
