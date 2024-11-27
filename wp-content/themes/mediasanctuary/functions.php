@@ -320,8 +320,19 @@ function is_story_post($post) {
 			return true;
 		}
 	}
+	$special_episode = get_field('special_episode', $post);
+	if (!empty($special_episode)) {
+		return true;
+	}
 	return false;
 }
+
+add_filter('the_title', function($title, $post) {
+	if (get_field('special_episode', $post)) {
+		return get_field('special_episode_title', $post);
+	}
+	return $title;
+}, 10, 2);
 
 add_action('pre_get_posts', function($query) {
 	if ($query->is_main_query() && $query->get('post_type') == 'peoplepower') {
@@ -358,13 +369,15 @@ function audio_player() {
 		$feed_import_link = "<a href=\"$feed_import_link\" class=\"soundcloud-podcast__link\">Listen on SoundCloud</a>";
 	}
 
-	$soundcloud_id = get_post_meta($post->ID, 'soundcloud_podcast_id', true);
-	if (! empty($soundcloud_id)) {
-		$sources[] = "/wp-json/soundcloud-podcast/v1/stream/$soundcloud_id";
-	}
-	$soundcloud_url = get_post_meta($post->ID, 'soundcloud_podcast_url', true);
-	if (! empty($soundcloud_url)) {
-		$soundcloud_link = "<a href=\"$soundcloud_url\" class=\"soundcloud-podcast__link\">Listen on SoundCloud</a>";
+	if (empty($feed_import_link)) {
+		$soundcloud_id = get_post_meta($post->ID, 'soundcloud_podcast_id', true);
+		if (! empty($soundcloud_id)) {
+			$sources[] = "/wp-json/soundcloud-podcast/v1/stream/$soundcloud_id";
+		}
+		$soundcloud_url = get_post_meta($post->ID, 'soundcloud_podcast_url', true);
+		if (! empty($soundcloud_url)) {
+			$soundcloud_link = "<a href=\"$soundcloud_url\" class=\"soundcloud-podcast__link\">Listen on SoundCloud</a>";
+		}
 	}
 
 	$internet_archive_id = get_post_meta($post->ID, 'internet_archive_id', true);
