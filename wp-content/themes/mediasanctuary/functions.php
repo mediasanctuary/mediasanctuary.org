@@ -320,10 +320,6 @@ function is_story_post($post) {
 			return true;
 		}
 	}
-	$special_episode = get_field('special_episode', $post);
-	if (!empty($special_episode)) {
-		return true;
-	}
 	return false;
 }
 
@@ -435,19 +431,23 @@ add_filter('feed_import_existing_query', function($query, $data) {
 	];
 }, 10, 2);
 
-add_filter('feed_import_post_category', function($category, $post) {
+add_filter('feed_import_post_categories', function($categories, $post) {
 	if (preg_match('/^HMM/i', $post->data['title'])) {
-		return 'Hudson Mohawk Magazine Episodes';
+		$categories = ['Hudson Mohawk Magazine Episodes'];
+		if (get_field('special_episode', $post->id)) {
+			$categories[] = 'Stories';
+		}
+		return $categories;
 	}
-	return 'Stories';
+	return ['Stories'];
 }, 10, 2);
 
 function feed_import_post_date($date, $post) {
-	$category = $post->category();
+	$categories = $post->categories();
 	$four_days = 60 * 60 * 24 * 4;
 	$timezone = $date->getTimezone();
 
-	if ($category == 'Stories' &&
+	if (in_array('Stories', $categories) &&
 		current_time('u') - $date->getTimestamp() < $four_days) {
 		// If the track's timestamp is within 4 days, we should schedule
 		// it for the next weekday at 6pm.
