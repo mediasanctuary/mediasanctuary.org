@@ -328,7 +328,7 @@ function is_story_post($post) {
 }
 
 add_filter('the_title', function($title, $post) {
-	if (get_field('special_episode', $post)) {
+	if (!is_admin() && get_field('special_episode', $post)) {
 		return get_field('special_episode_title', $post);
 	}
 	return $title;
