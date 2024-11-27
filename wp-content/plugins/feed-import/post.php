@@ -169,19 +169,22 @@ class Post {
 		return $date->format('Y-m-d H:i:s');
 	}
 
-	function category() {
-		return apply_filters('feed_import_post_category', '', $this);
+	function categories() {
+		// Returns an array of category names.
+		return apply_filters('feed_import_post_categories', [], $this);
 	}
 
 	function post_category() {
 		// The wp_insert_post and wp_update_post functions expect an array of
-		// term IDs, so we convert a more useful string to that format at the
-		// very last minute.
-		if (empty($this->category())) {
+		// term IDs, so we convert our category names to term IDs at the very
+		// last minute.
+		if (empty($this->categories())) {
 			return [];
 		}
-		$term = get_term_by('name', $this->category(), 'category');
-		return [$term->term_id];
+		return array_map(function($name) {
+			$term = get_term_by('name', $name, 'category');
+			return $term->term_id;
+		}, $this->categories());
 	}
 
 	function attach_image() {

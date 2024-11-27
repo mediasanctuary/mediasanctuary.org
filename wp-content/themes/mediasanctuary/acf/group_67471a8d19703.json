@@ -8,7 +8,7 @@
             "name": "special_episode",
             "aria-label": "",
             "type": "true_false",
-            "instructions": "",
+            "instructions": "Make sure to add special episodes to the 'Stories' category.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -16,7 +16,7 @@
                 "class": "",
                 "id": ""
             },
-            "message": "Special Episode (display with stories)",
+            "message": "This is a special episode",
             "default_value": 0,
             "allow_in_bindings": 0,
             "ui_on_text": "",
@@ -29,7 +29,7 @@
             "name": "special_episode_title",
             "aria-label": "",
             "type": "text",
-            "instructions": "",
+            "instructions": "Override the 'HMM_MM-DD-YYYY' title.",
             "required": 0,
             "conditional_logic": [
                 [
