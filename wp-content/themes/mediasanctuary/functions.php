@@ -467,3 +467,19 @@ add_filter('feed_import_post_status', function($status, $post) {
 		return 'publish';
 	}
 }, 10, 2);
+
+add_action('feed_import_post_saved', function($post) {
+	if (! defined('SLACK_WEBHOOK')) {
+		return false;
+	}
+	$edit_url = home_url("/wp-admin/post.php?post=$post->id&action=edit");
+	$payload = [
+		'type' => 'mrkdwn',
+		'text' => "Imported <$edit_url|{$post->title()}> from <{$post->data['link']}|soundcloud.com>";
+	];
+	$rsp = wp_remote_post(SLACK_WEBHOOK, [
+		'body' => [
+			'payload' => json_encode($payload)
+		]
+	]);
+});
