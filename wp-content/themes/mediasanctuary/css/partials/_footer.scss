@@ -164,7 +164,7 @@ footer {
     margin-top: 1.5em;
     li {
       display: inline-block;
-      max-width: 200px;
+      max-width: calc(50% - 10px);
       margin-right: 5px;
       margin-bottom: 12px;
       img {
