@@ -75,33 +75,18 @@
         }
       }
     }
-  } 
-  
-}
-
-footer {
-  background: #3A3C3C;
-  color:#FFF;
-  padding: 60px 0;
-  font-size: 16px;
-  line-height: 1.8;  
-  
-  a {
-    color: $c-faded-brick;      
-    &:hover {
-      color: $c-robin-egg;      
-    }
   }
 
-  p, address {
-    padding: 0;
-  }
-  
   .social {
     display: flex;
     flex-wrap: wrap;
+    margin-top: 1.5em;
     li {
       margin: 5px;
+
+      &:first-of-type {
+        margin-left: 0;
+      }
       
       a {
         display: block;
@@ -151,6 +136,41 @@ footer {
           background-color: rgba(0,0,0,.5);
         }
         
+      }
+    }
+  }
+  
+}
+
+footer {
+  background: #3A3C3C;
+  color:#FFF;
+  padding: 60px 0;
+  font-size: 16px;
+  line-height: 1.8;  
+  
+  a {
+    color: $c-faded-brick;      
+    &:hover {
+      color: $c-robin-egg;      
+    }
+  }
+
+  p, address {
+    padding: 0;
+  }
+
+  ul.sponsors {
+    margin-top: 1.5em;
+    li {
+      display: inline-block;
+      max-width: 200px;
+      margin-right: 5px;
+      margin-bottom: 12px;
+      img {
+        vertical-align: top;
+        width: 100%;
+        height: auto;
       }
     }
   }
