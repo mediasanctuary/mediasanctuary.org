@@ -64,7 +64,7 @@
                 <li><img src="<?php asset_url('img/sponsors/nysca.jpg'); ?>" alt="New York State Council on the Arts"></li>
                 <li><img src="<?php asset_url('img/sponsors/dec.jpg'); ?>" alt="New York State Department of Environmental Conservation"></li>
                 <li><img src="<?php asset_url('img/sponsors/community.jpg'); ?>" alt="The Community Foundation for the Greater Capital Region"></li>
-                <li><img src="<?php asset_url('img/sponsors/iear.jpg'); ?>" alt="iEAR Presents!"></li>
+                <li><img src="<?php asset_url('img/sponsors/iear2.jpg'); ?>" alt="iEAR Presents!"></li>
                 <li><img src="<?php asset_url('img/sponsors/stewarts.jpg'); ?>" alt="Stewart’s Shops"></li>
               </ul>
             </p>
