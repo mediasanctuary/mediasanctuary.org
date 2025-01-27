@@ -36,13 +36,14 @@
 			// ]
 		]);
 
-		$count = 0;
+		if (count($events) > 3) {
+			$events = array_slice($events, 0, 3);
+		}
 		foreach ( $events as $post ) {
 			setup_postdata( $post );
 			if ( get_post_meta($post->ID, '_tribe_events_status', true ) == 'canceled' ) {
 				continue;
 			}
-			$count++;
 
 			$thumb_url = get_asset_url('img/default.jpg');
 			if ( has_post_thumbnail() ) {
@@ -61,7 +62,6 @@
 					<h5><?php echo $post->post_title;?></h5>
 				</a>
 			</li>
-			<?php if ($count == 3) { break; } ?>
 
 	  <?php }  ?>
 		</ul>
