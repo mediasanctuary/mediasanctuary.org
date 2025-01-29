@@ -93,7 +93,7 @@ if ( ! class_exists( 'Tribe__Events__Pro__Main' ) ) {
 		/**
 		 * The Events Calendar Pro Version
 		 */
-		const VERSION = '7.3.0';
+		const VERSION = '7.3.2';
 
 		/**
 		 * The Events Calendar Required Version

@@ -690,48 +690,104 @@
     /**
 * Style 4 Css
 */
-    
-    .ect-date-schedule {
-        background: white;
-        border: 1px solid #C5C5C5;
-        padding: 2px;
-        position: absolute;
-        bottom: -1rem;
-        right: 1rem;
-    }
-    
-    .ect-date-schedule-wrap {
-        padding: 6px;
-        align-items: center;
-        border: 1px solid #C5C5C5;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    
-    .ect-date-schedule .ev-mo {
-        color: #FA5A41;
-        font-size: 0.625rem;
-    }
-    
-    .ect-date-schedule .ev-day {
-        font-size: 1.5rem;
-    }
-    
-    .ect-grid-image-style4 {
-        display: inline-block;
+
+.ect-grid-event.style-4{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+.ect-grid-event.style-4 .ect-grid-event-area{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: #fff;
+    box-shadow: 0px 10px 30px 5px rgba(0, 0, 0, 0.05);
+    border: 1px solid #00000000;
+    border-radius: 6px;
+    padding: 15px;
+}
+.ect-grid-event.style-4 .ect-grid-post-image{
+    width: 100%;
+    position: relative;
+}       
+.ect-grid-event.style-4 .ect-grid-post-image img{
+    object-fit: cover;
+    width: 100%;
+    height: 250px;
+    min-height: 250px;
+    border-radius: 6px;
+}
+.ect-grid-event.style-4 .ect-grid-post-image .ect-date-highlight{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+.ect-grid-event.style-4 .ect-grid-post-image .ect-date-highlight .ect-date-area{
+    padding: 10px 20px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+.ect-grid-event.style-4 .ect-grid-post-image .ect-date-highlight .ect-date-area .ev-day{
+    font-size: 20px;
+    font-weight: 500;
+}
+.ect-grid-event.style-4 .ect-grid-post-image .ect-date-highlight .ect-date-area .ev-mo{
+    font-size: 22px;
+    font-weight: 700;
+}
+.ect-grid-event.style-4 .ect-event-category{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+.ect-grid-event.style-4 .ect-event-category{
+    border-radius: 4px;
+    font-size: 12px;
+    /* padding: 3px 12px; */
+}
+.ect-grid-event.style-4 .ect-grid-post-content{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+}
+.ect-grid-event.style-4 .ect-grid-post-content .ect-category-time{
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    /* align-items: center; */
+}
+.ect-grid-event.style-4 .ect-grid-post-content .ect-event-schedule{
+    font-size: 17px;
+    margin-top: 1px;
+    display: flex;
+}
+.ect-grid-event.style-4 .ect-readmore-cost{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.ect-grid-event.style-4 .ect-readmore-cost .ect-readmore {
+    padding: 10px 15px;
+    border-radius: 4px;
+}
+#ect-grid-wrapper .ect-grid-event.style-4 .ect-share-wrapper{
+    top: 12px;
+} 
+@media only screen and (max-width: 767px){
+    /* .ect-grid-event.style-4{
         width: 100%;
-        position: relative;
+        padding: 0 20px;
+    } */
+    .ect-grid-event.style-4 .ect-grid-post-image,
+    .ect-grid-event.style-4 .ect-grid-post-content {
+        width: 100%;
     }
-    
-    .ect-date-schedule span {
-        display: block;
-        text-align: center;
-    }
-    
-    #ect-grid-wrapper .ect-share-wrapper-style-4 .ect-share-wrapper {
-        left: 10px;
-    }
+} 
     /* masonry template max width*/
     
     .ect-masonry-template-cont {

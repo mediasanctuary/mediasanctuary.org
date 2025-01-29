@@ -3,9 +3,9 @@
 Contributors: theeventscalendar, borkweb, bordoni, brianjessee, aguseo, camwynsp, GeoffBel, geoffgraham, jentheo, leahkoerper, lucatume, neillmcshea, paulskim, vicskf, zbtirrell, juanfra
 Tags: events, calendar, event, venue, organizer, dates, date, google maps, conference, workshop, concert, meeting, seminar, summit, class, the events calendar, widget, pro, filters, categories, sort, tags, taxonomy, find, search
 Donate link: http://evnt.is/29
-Stable tag: 5.5.7
-Requires at least: 6.3
-Tested up to: 6.6
+Stable tag: 5.5.8
+Requires at least: 6.5
+Tested up to: 6.7.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -195,7 +195,12 @@ Our Premium Plugins:
 
 == Changelog ==
 
-= [5.5.7] 2024-09-25 =
+= [5.5.8] 2024-12-17 =
+
+* Feature - Added the filter `tec_events_filter_filters_category_get_terms_args` to allow adjusting the parameters of categories available when searching. [FBAR-340]
+* Language - 0 new strings added, 4 updated, 0 fuzzied, and 0 obsoleted.
+
+= [5.5.7] 2024-09-26 =
 
 * Version - Events Filterbar 5.5.7 is only compatible with The Events Calendar 6.7.0 and higher.
 * Feature - New and improved settings layout and styles. [TEC-5124]

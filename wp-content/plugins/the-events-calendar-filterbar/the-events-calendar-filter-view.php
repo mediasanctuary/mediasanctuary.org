@@ -2,7 +2,7 @@
 /**
  * Plugin Name: The Events Calendar: Filter Bar
  * Description: Creates an advanced filter panel on the frontend of your events list views.
- * Version: 5.5.7
+ * Version: 5.5.8
  * Requires at least: 6.3
  * Requires PHP: 7.4
  * Author: The Events Calendar

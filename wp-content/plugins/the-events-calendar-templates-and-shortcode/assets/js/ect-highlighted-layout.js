@@ -121,32 +121,51 @@
                 observer.observe(contentDiv, { childList: true, subtree: true });
             // Function to bind click event listeners to icons
             function ecticonClickEvent() {
+                const allAccordions = wrapper.find('.ect-highlighted-right');
                 const allIcons = wrapper.find('.ect-icon-up-double, .ect-icon-down-double');
                 const footers = wrapper[0].querySelectorAll('.ect-footer');
+            
                 // Clear previous click bindings
+                allAccordions.off('click');
                 allIcons.off('click');
-                allIcons.each((i, icon) => {
-                    $(icon).on('click', () => {
-                        ectstopAnimation(); // Stop animation on each click
-                        if ($(icon).hasClass('ect-icon-down-double')) {
-                            // Show the corresponding footer for down-double icon
-                            footers.forEach(ecthideFooter);  // Hide all footers
-                            ectshowFooter(footers[i]);
-                            ectupdateIconAndSelection(footers[i], true);
-                            ectrunAnimation(footers, i); // Restart animation from this index
-                        } else if ($(icon).hasClass('ect-icon-up-double')) {
-                            // Hide current footer and show next footer
-                            ecthideFooter(footers[i]);
-                            ectupdateIconAndSelection(footers[i], false);
-                            // Show the next footer or loop to start
-                            const nextIndex = (i + 1) % footers.length;
-                            ectshowFooter(footers[nextIndex]);
-                            ectupdateIconAndSelection(footers[nextIndex], true);
-                            ectrunAnimation(footers, nextIndex); // Restart animation from the next index
-                        }
+            
+                // Function to handle toggle logic
+                function ectToggleFooter(index) {
+                    ectstopAnimation(); // Stop animation on each click
+                    const icon = $(allIcons[index]);
+                    if (icon.hasClass('ect-icon-down-double')) {
+                        // Show the corresponding footer
+                        footers.forEach(ecthideFooter); // Hide all footers
+                        ectshowFooter(footers[index]);
+                        ectupdateIconAndSelection(footers[index], true);
+                        ectrunAnimation(footers, index); // Restart animation from this index
+                    } else if (icon.hasClass('ect-icon-up-double')) {
+                        // Hide the current footer
+                        ecthideFooter(footers[index]);
+                        ectupdateIconAndSelection(footers[index], false);
+                        // Show the next footer or loop to the start
+                        const nextIndex = (index + 1) % footers.length;
+                        ectshowFooter(footers[nextIndex]);
+                        ectupdateIconAndSelection(footers[nextIndex], true);
+                        ectrunAnimation(footers, nextIndex); // Restart animation from the next index
+                    }
+                }
+            
+                // Attach click event to the entire accordion
+                allAccordions.each((i, accordion) => {
+                    $(accordion).on('click', () => {
+                        ectToggleFooter(i);
                     });
                 });
-            }
+            
+                // Attach click event to the icons explicitly
+                allIcons.each((i, icon) => {
+                    $(icon).on('click', (e) => {
+                        e.stopPropagation(); // Prevent accordion click event from firing
+                        ectToggleFooter(i);
+                    });
+                });
+            }             
             // Bind click events initially
             ecticonClickEvent();
             // Handle category filtering with AJAX
@@ -183,14 +202,18 @@
                             });
                             // Select and remove the div with class 'ect-right'
                             const ectRightDiv = wrapper[0].querySelector('.ect-right');
-                            ectRightDiv.classList.remove("ect-img-hide");
-                            ectRightDiv.classList.add("ect-img-show");
+                            if (ectRightDiv && wrapper.data('style') !== 4) {
+                                ectRightDiv.classList.remove("ect-img-hide");
+                                ectRightDiv.classList.add("ect-img-show");
+                            }
                         } else {
                             contentDiv.html(response.noEvents);
                             // Select and remove the div with class 'ect-right'
                             const ectRightDiv = wrapper[0].querySelector('.ect-right');
-                            ectRightDiv.classList.remove("ect-img-show");
-                            ectRightDiv.classList.add("ect-img-hide");
+                            if (ectRightDiv && wrapper.data('style') !== 4) {
+                                ectRightDiv.classList.remove("ect-img-show");
+                                ectRightDiv.classList.add("ect-img-hide");
+                            }
                         }
                     },
                     error(xhr, status, error) {

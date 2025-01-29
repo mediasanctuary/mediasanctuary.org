@@ -65,6 +65,20 @@ switch ($style) {
         }
         ';
         break;
+    case 'style-4':
+            /*--- Main Event Skin Color - CSS ---*/
+            $ect_output_css .= '
+            #ect-slider-wrapper .ect-slider-event.style-4.ect-simple-event .ect-slider-event-area {
+                background: ' . esc_attr($thisPlugin::ect_hex2rgba($main_skin_color, .20)) . ';
+            }
+            ';
+            /*--- Featured Event Skin Color - CSS ---*/
+            $ect_output_css .= '
+            #ect-slider-wrapper .ect-slider-event.style-4.ect-featured-event .ect-slider-event-area {
+                background: ' . esc_attr($thisPlugin::ect_hex2rgba($featured_event_skin_color, .20)) . ';
+            }
+            ';
+        break;
 }
 /*--- Event Background Color - CSS ---*/
 $ect_output_css .= '
@@ -94,6 +108,8 @@ $ect_output_css .= '
 ';
 /*--- Event Venue Style - CSS ---*/
 $ect_output_css .= '
+    #ect-slider-wrapper .ect-slider-venue-style-4 a,
+    #ect-slider-wrapper .ect-slider-venue-style-4, 
     #ect-slider-wrapper .ect-slider-venue{
         ' . $ect_venue_styles . ';
     }

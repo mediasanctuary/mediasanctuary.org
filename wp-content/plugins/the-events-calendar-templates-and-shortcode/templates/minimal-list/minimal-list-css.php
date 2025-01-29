@@ -105,6 +105,38 @@ switch ($style) {
         }
         ';
         break;
+        case "style-4":
+        $ect_output_css .= '.ect-minimal-list-wrapper .style-4 .ect-event-readmore-cost .ect-readmore a{
+            background: ' . esc_attr($main_skin_color) . ';
+        }';
+        $ect_output_css .= '.ect-minimal-list-wrapper .style-4 .ect-event-date-tag .ect-event-datetimes{
+            color: ' . esc_attr($main_skin_color) . ';
+        }';
+        $ect_output_css .= '.ect-minimal-list-wrapper .style-4 .ect-event-readmore-cost .ect-readmore a{
+            color: ' . esc_attr($main_skin_alternate_color) . ';
+        }
+        ';
+        $ect_output_css .= '.ect-minimal-list-wrapper .style-4.ect-featured-event  .ect-event-readmore-cost .ect-readmore a{
+            background: ' . esc_attr($featured_event_skin_color) . ';
+        }';
+        $ect_output_css .= '.ect-minimal-list-wrapper .style-4.ect-featured-event  .ect-event-date-tag .ect-event-datetimes{
+            color: ' . esc_attr($featured_event_skin_color) . ';
+        }';
+        $ect_output_css .= '.ect-minimal-list-wrapper .style-4.ect-featured-event  .ect-event-readmore-cost .ect-readmore a{
+            color: ' . esc_attr($featured_event_font_color) . ';
+        }
+        ';
+        $ect_output_css .= '.ect-minimal-list-wrapper .style-4 .ect-event-content .ect-events-title a,
+        .ect-minimal-list-wrapper .style-4 .ect-event-readmore-cost .ect-minimal-cost{
+            ' . $title_styles . '
+        }';
+        $ect_output_css .= '.ect-minimal-list-wrapper .style-4 .ect-event-schedule{
+            font-family: ' . $ect_date_font_family . ';
+            color: ' . esc_attr(Ecttinycolor($ect_title_color)->lighten(10)->toString()) . ';
+            font-style:' . esc_attr($ect_date_font_style) . ';
+            line-height:' . esc_attr($ect_date_line_height) . ';
+        }';
+        break;
 }
 
 $ect_output_css .= '

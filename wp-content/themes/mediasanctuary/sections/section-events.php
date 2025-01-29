@@ -14,26 +14,8 @@
 		<ul class="posts__list three-col">
 	  <?php
 		global $post;
-		$events = tribe_get_events( [
-			'posts_per_page' => 10,
-			'start_date'     => 'now',
-			'post_status'    => 'publish',
-			// This commented out query *should* work, but for some mysterious
-			// reason creates an infinite loop condition. Instead we will query
-			// for more posts than we need and break after 3.
-			// 'meta_query'     => [
-			// 	[
-			// 		'key'       => '_tribe_events_status',
-			// 		'value'     => '',
-			// 		'compare'   => 'NOT EXISTS'
-			// 	],
-			// 	'relation' => 'OR',
-			// 	[
-			// 		'key'       => '_tribe_events_status',
-			// 		'value'     => 'canceled',
-			// 		'compare'   => '!='
-			// 	]
-			// ]
+		$events = tribe_get_events([
+			'ends_after' => 'now'
 		]);
 
 		if (count($events) > 3) {

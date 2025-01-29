@@ -322,74 +322,32 @@ span.ect-icon i:before {
 
 
 /*|-----------------------------| Style-4|-----------------------------*/
-
-.ect-accordion-event-year {
-    height: auto;
+.ect-accordion-event.style-4{
+    border: 1px solid #00000020;
+    border-radius: unset;
+    padding: 15px 0 0;
 }
-
-.ect-accordion-event-year:focus {
-    outline: none !IMPORTANT;
+.ect-accordion-event.style-4 .ect-accordion-header{
+    margin-bottom: 15px;
 }
-
-.ect-accordion-arrows {
-    display: inline-block;
-    position: absolute;
-    width: 70px;
-    right: 0;
-    top: 0;
-    z-index: 8;
-}
-
-.ect-accordn-slick-prev,
-.ect-accordn-slick-next {
-    width: 30px;
-    height: 30px;
-    display: inline-block !IMPORTANT;
-    cursor: pointer;
-    overflow: hidden;
-    background: #ddd;
-    padding: 0;
-    margin: 0 1px;
-}
-
-.ect-accordion-view span.month-year-box {
-    display: inline-block;
-    width: calc(100% - 75px);
-    text-align: right;
-}
-
-.ect-accordion-view span.month-year-box span {
-    font-size: 0.8em;
-    display: inline-block;
-    vertical-align: top;
-}
-
-.style-4 .ect-accordion-date span.ev-day {
-    color: #00445e;
-    font-size: 28px;
-    font-weight: bold;
-    font-style: normal;
-    line-height: 1em;
-    padding: 7px;
-}
-
-.style-4 .ect-accordion-date span.ev-mo,
-.style-4 .ect-accordion-date span.ev-yr {
-    font-size: 18px;
-    font-weight: 600;
+.ect-accordion-event.style-4 .ect-accordion-footer{
+    padding: 18px 25px;
     position: relative;
-    top: 0;
 }
-
-.style-4 .ect-accordion-date span.ev-mo {
-    font-size: 21px;
-    top: 0;
+.ect-accordion-event.style-4 .ect-accordion-date-full{
+    margin-top: 12px;
 }
-
-.style-4 h3.ect-accordion-title {
-    color: #00445e;
+.ect-accordion-event.style-4 .ect-share-wrapper{
+    top: 23px;
+    right: 23px;
 }
-
+.ect-accordion-event.style-4 .ect-accordion-content,
+.ect-accordion-event.style-4 .ect-accordion-cost{
+    margin-top: 10px;
+}
+#ect-accordion-wrapper .style-4 .ect-date-area.accordion-view-schedule {
+    color: #383838;
+}
 
 /*|-----------------------------| Responsive media querys|-----------------------------*/
 
@@ -426,9 +384,10 @@ span.ect-icon i:before {
     }
     .style-4 .ect-accordion-header-right {
         width: 100%;
+        padding: 0 15px;
     }
     .style-4 .ect-date-area.accordion-view-schedule {
         margin-bottom: 20px;
-        border-bottom: 1px solid #e6e0e0;
+        /* border-bottom: 1px solid #e6e0e0; */
     }
 }

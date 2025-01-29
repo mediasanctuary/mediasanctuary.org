@@ -462,56 +462,100 @@ a {
 
 /*** Style 4 Css*/
 
-.ect-date-schedule {
-    background: white;
-    border: 1px solid #C5C5C5;
-    padding: 2px;
-    position: absolute;
-    bottom: -1rem;
-    right: 1rem;
-}
-
-.ect-date-schedule-wrap {
-    padding: 6px;
-    align-items: center;
-    border: 1px solid #C5C5C5;
+.ect-carousel-event.style-4 .ect-carousel-event-area{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    gap: 15px;
+    background-color: #fff;
+    border: 1px solid #00000020;
+    border-radius: 6px;
+    padding: 15px 15px 20px;
 }
-
-.ect-date-schedule .ev-mo {
-    color: #FA5A41;
-    font-size: 0.625rem;
-    letter-spacing: 0.15em;
-    line-height: 0.9;
-}
-
-.ect-date-schedule .ev-day {
-    font-size: 1.5rem;
-    line-height: 1;
-}
-
-.ect-grid-image-style4 {
-    display: inline-block;
+.ect-carousel-event.style-4 .ect-carousel-image{
     width: 100%;
     position: relative;
-}
-
-.ect-date-schedule span {
-    /* display: block; */
-    text-align: center;
-}
-
-.ect-carousel-image-style-4 {
-    display: inline-block;
+    border-radius: 6px;
+}       
+.ect-carousel-event.style-4 .ect-carousel-image img{
+    object-fit: cover;
     width: 100%;
-    position: relative;
+    height: 250px;
+    min-height: 250px;  
 }
-
-#ect-carousel-wrapper .ect-share-wrapper-style-4 .ect-share-wrapper {
+.ect-carousel-event.style-4 .ect-carousel-image .ect-date-highlight{
+    position: absolute;
+    top: 10px;
     left: 10px;
 }
+#ect-carousel-wrapper .ect-carousel-event.style-4 .ect-share-wrapper{
+    top: 12px;
+}
+.ect-carousel-event.style-4 .ect-carousel-image .ect-date-highlight .ect-date-area{
+    padding: 10px 20px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+.ect-carousel-event.style-4 .ect-carousel-image .ect-date-highlight .ect-date-area .ev-day{
+    font-size: 20px;
+    font-weight: 500;
+}
+.ect-carousel-event.style-4 .ect-carousel-image .ect-date-highlight .ect-date-area .ev-mo{
+    font-size: 22px;
+    font-weight: 700;
+}
+.ect-carousel-event.style-4 .ect-event-category{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+.ect-carousel-event.style-4 .ect-event-category{
+    border-radius: 4px;
+    font-size: 12px;
+}
+.ect-carousel-event.style-4 .ect-carousel-post-content{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.ect-carousel-event.style-4 .ect-carousel-post-content .ect-category-time{
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+.ect-carousel-event.style-4 .ect-carousel-post-content .ect-event-schedule{
+    font-size: 15px;
+    margin-top: 1px;
+    display: flex;
+}
+.ect-carousel-event.style-4 .ect-readmore-cost{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+.ect-carousel-event.style-4 .ect-readmore-cost .ect-readmore{
+    width: 49%;
+    padding: 10px 15px;
+    border-radius: 4px;
+    text-align: center;
+}
+.ect-carousel-event.style-4 .ect-readmore-cost .ect-carousel-cost{
+    width: 49%;
+}
+@media only screen and (max-width: 767px){
+    .ect-carousel-event.style-4{
+        width: 100%;
+        padding: 0 20px;
+    }
+    .ect-carousel-event.style-4 .ect-carousel-image,
+    .ect-carousel-event.style-4 .ect-carousel-post-content {
+        width: 100%;
+    }
+} 
 
 
 /* Media Query Start Here */
@@ -520,5 +564,13 @@ a {
     #ect-carousel-wrapper .ect-carousel-date,
     #ect-carousel-wrapper .ect-carousel-date span {
         font-size: 14px;
+    }
+    .ect-carousel-event.style-4 .ect-readmore-cost{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .ect-carousel-event.style-4 .ect-readmore-cost .ect-readmore,
+    .ect-carousel-event.style-4 .ect-readmore-cost .ect-carousel-cost{
+        width: auto;
     }
 }

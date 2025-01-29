@@ -35,54 +35,9 @@ class ECT_Settings {
 		$this->settings_api->add_registration_page();
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_settings_scripts' ) );
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
-
-			$this->settings_api->add_section( $this->PREFIX . '_license_registration', __( 'Events Shortcodes & Templates Pro', 'cmb2' ) );
-			$this->settings_api->add_field(
-				$this->PREFIX . '_license_registration',
-				array(
-					array(
-						'name'          => $this->PREFIX . '-purchase-code',
-						'id'            => $this->PREFIX . '-purchase-code',
-						'class'         => $this->PREFIX . '-settings-field required',
-						'label'         => 'Enter License Key',
-						// 'desc'  => $this->save_purchase_code(),
-						  'placeholder' => __( 'Your Purchase /License Code', 'cmb2' ),
-						'type'          => 'text',
-						'default'       => '',
-					),
-					array(
-						'name'        => $this->PREFIX . '-client-emailid',
-						'id'          => $this->PREFIX . '-client-emailid',
-						'class'       => $this->PREFIX . '-settings-field required',
-						'label'       => 'Enter Email Id',
-						'desc'        => $this->save_purchase_code(),
-						'placeholder' => get_option( 'admin_email' ),
-						'type'        => 'text',
-						'default'     => get_option( 'admin_email' ),
-					),
-					array(
-						'name'    => $this->PREFIX . '-validate-purchase-code',
-						'id'      => $this->PREFIX . '-validate-purchase-code',
-						'class'   => $this->PREFIX . '-settings-field',
-						'desc'    => $this->ValidatePurchase(),
-						'type'    => 'html',
-						'default' => '',
-					),
-					array(
-						'name'    => $this->PREFIX . '-find-purchase-code',
-						'id'      => $this->PREFIX . '-find-purchase-code',
-						'class'   => $this->PREFIX . '-settings-field',
-						'label'   => 'Important Points',
-						'desc'    => $this->find_purchase_code(),
-						'type'    => 'html',
-						'default' => '',
-					),
-				)
-			);
-
-			add_action( 'admin_notices', array( $this, 'admin_registration_notice' ) );
-
-			add_action( 'wp_ajax_' . $this->PREFIX . '_uninstall_license', array( $this, 'uninstall_license' ) );
+		add_action( 'init', array( $this, 'license_registration') );
+		add_action( 'admin_notices', array( $this, 'admin_registration_notice' ) );
+		add_action( 'wp_ajax_' . $this->PREFIX . '_uninstall_license', array( $this, 'uninstall_license' ) );
 
 	}
 
@@ -96,7 +51,51 @@ class ECT_Settings {
 			$this->settings_api->admin_init();
 	}
 
-
+	public function license_registration(){
+		$this->settings_api->add_section( $this->PREFIX . '_license_registration', __( 'Events Shortcodes & Templates Pro', 'cmb2' ) );
+		$this->settings_api->add_field(
+			$this->PREFIX . '_license_registration',
+			array(
+				array(
+					'name'          => $this->PREFIX . '-purchase-code',
+					'id'            => $this->PREFIX . '-purchase-code',
+					'class'         => $this->PREFIX . '-settings-field required',
+					'label'         => 'Enter License Key',
+					// 'desc'  => $this->save_purchase_code(),
+					  'placeholder' => __( 'Your Purchase /License Code', 'cmb2' ),
+					'type'          => 'text',
+					'default'       => '',
+				),
+				array(
+					'name'        => $this->PREFIX . '-client-emailid',
+					'id'          => $this->PREFIX . '-client-emailid',
+					'class'       => $this->PREFIX . '-settings-field required',
+					'label'       => 'Enter Email Id',
+					'desc'        => $this->save_purchase_code(),
+					'placeholder' => get_option( 'admin_email' ),
+					'type'        => 'text',
+					'default'     => get_option( 'admin_email' ),
+				),
+				array(
+					'name'    => $this->PREFIX . '-validate-purchase-code',
+					'id'      => $this->PREFIX . '-validate-purchase-code',
+					'class'   => $this->PREFIX . '-settings-field',
+					'desc'    => $this->ValidatePurchase(),
+					'type'    => 'html',
+					'default' => '',
+				),
+				array(
+					'name'    => $this->PREFIX . '-find-purchase-code',
+					'id'      => $this->PREFIX . '-find-purchase-code',
+					'class'   => $this->PREFIX . '-settings-field',
+					'label'   => 'Important Points',
+					'desc'    => $this->find_purchase_code(),
+					'type'    => 'html',
+					'default' => '',
+				),
+			)
+		);
+	}
 	function find_purchase_code() {
 		$html = '
 		<h4 class="cool-license-q">Q1) Where can I find my license key?</h4>

@@ -105,42 +105,56 @@ switch ($style) {
         break;
     default:
         /*--- Main Skin Color - CSS ---*/
-        $ect_output_css .= '.ect-list-post.style-4 .ect-list-schedule,
-          .ect-list-post .style-4 .ect-list-schedule-wrap{
+        $ect_output_css .= '.ect-list-wrapper .style-4 .ect-list-post-left .ect-date-highlight .ect-date-area,
+        .ect-list-wrapper .style-4 .ect-readmore-cost .ect-readmore{
                background: ' . esc_attr($main_skin_color) . ';
           }';
+          $ect_output_css .= '.ect-list-wrapper .ect-list-post.style-4:hover{
+               background: ' . esc_attr($thisPlugin::ect_hex2rgba($main_skin_color, .20)) . ';
+          }';
         /*--- Featured Event Color - CSS ---*/
-        $ect_output_css .= '.ect-list-post.ect-featured-event.style-4 .ect-list-schedule,
-     .ect-list-post.ect-featured-event.style-4 .ect-list-schedule-wrap{
-          border-color:' . esc_attr(Ecttinycolor($featured_event_skin_color)->darken(7)->toString()) . ';
+        $ect_output_css .= '.ect-list-wrapper .style-4.ect-featured-event .ect-list-post-left .ect-date-highlight .ect-date-area,
+        .ect-list-wrapper .style-4.ect-featured-event .ect-readmore-cost .ect-readmore{
           background: ' . esc_attr($featured_event_skin_color) . ';
-     }
-     ';
+          }
+          ';
+          $ect_output_css .= '.ect-list-wrapper .ect-list-post.style-4.ect-featured-event:hover{
+            background: ' . esc_attr($thisPlugin::ect_hex2rgba($featured_event_skin_color, .20)) . ';
+            }
+            ';
         /*--- Featured Event Font Color - CSS ---*/
-        $ect_output_css .= '
-     .ect-list-post.ect-featured-event.style-4 .ect-list-schedule-wrap span{
+        $ect_output_css .= '.ect-list-wrapper .style-4.ect-featured-event .ect-readmore-cost .ect-readmore a,
+     .ect-list-wrapper .style-4.ect-featured-event .ect-list-post-left .ect-date-highlight .ect-date-area{
           color: ' . esc_attr($featured_event_font_color) . ';
      }
      ';
-        // Date
-        $ect_output_css .= '.ect-list-post.style-4 .ect-list-schedule-wrap span {
-          ' . $ect_date_style . ';
+     /*--- Event date - CSS ---*/
+     if ($ect_date_color === '#ffffff') {
+          $ect_output_css .= '
+          .ect-list-wrapper .ect-list-post.style-4 .ect-list-post-right .ect-event-schedule{
+               color: ' . esc_attr($ect_title_color) . ';
+          }
+          ';
+     } else {
+          $ect_output_css .= '
+          .ect-list-wrapper .ect-list-post.style-4 .ect-list-post-right .ect-event-schedule{
+               color: ' . esc_attr($ect_date_color) . ';
+          }
+          ';
      }
-     .ect-list-post.style-4 .ect-list-schedule-wrap,.ect-list-post.style-4 .ect-list-schedule,.ect-slider-event.style-4 .ect-date-schedule{
-          border-color:  ' . esc_attr($ect_date_color) . ';
-     }
-     ';
         break;
 }
 // Common Css For all list styles
 /*--- Main Skin Color - CSS ---*/
-$ect_output_css .= '.ect-list-post .ect-list-img {
+$ect_output_css .= '.ect-list-post:not(.style-4) .ect-list-img {
      background-color: ' . esc_attr(Ecttinycolor($main_skin_color)->darken(3)->toString()) . ';
 }
 
 ';
 /*--- Main Skin Alternate Color - CSS ---*/
 $ect_output_css .= '
+.ect-list-wrapper .style-4 .ect-list-post-left .ect-date-highlight .ect-date-area,
+.ect-list-wrapper .style-4 .ect-readmore-cost .ect-readmore a,
 .ect-list-post.ect-simple-event .ect-list-date .ect-date-area,
 .ect-list-post.ect-simple-event .ect-list-date span.ect-custom-schedule,
 .ect-list-post.ect-simple-event .ect-list-post-left .ect-list-date .ect-date-area,
@@ -150,7 +164,7 @@ $ect_output_css .= '
 ';
 /*--- Featured Event Color - CSS ---*/
 $ect_output_css .= '
-.ect-list-post.ect-featured-event .ect-list-img {
+.ect-list-post:not(.style-4).ect-featured-event .ect-list-img {
      background-color: ' . esc_attr(Ecttinycolor($featured_event_skin_color)->lighten(3)->toString()) . ';
 }
 ';
@@ -198,7 +212,7 @@ $ect_output_css .= '.ect-list-post h2.ect-list-title,
 ';
 /*--- Event Description - CSS ---*/
 $ect_output_css .= '
-
+.ect-list-wrapper .style-4 .ect-list-post-right .ect-event-content p,
 .ect-list-post .ect-list-post-right .ect-list-description .ect-event-content p{
      ' . $ect_desc_styles . ';
 }
@@ -208,7 +222,11 @@ $ect_output_css .= '
 ';
 
 /*--- Event Venue Color - CSS ---*/
-$ect_output_css .= '.ect-list-post .ect-list-venue .ect-venue-details,
+$ect_output_css .= '
+     .ect-list-post.style-4 .ect-list-venue-style-4,
+     .ect-list-post.style-4 .ect-list-venue-style-4 a,
+     .ect-list-post .ect-list-venue .ect-venue-details a,
+     .ect-list-post .ect-list-venue .ect-venue-details,
      .ect-list-post .ect-list-venue .ect-google a{
                ' . $ect_venue_styles . ';
      }

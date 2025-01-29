@@ -3,8 +3,8 @@
 Contributors: theeventscalendar, stellarwp, borkweb, bordoni, brianjessee, aguseo, camwynsp, jentheo, leahkoerper, lucatume, neillmcshea, vicskf, zbtirrell
 Tags: events, calendar, event, schedule, organizer
 Donate link: https://evnt.is/29
-Stable tag: 6.8.2.1
-Requires at least: 6.3
+Stable tag: 6.9.1
+Requires at least: 6.5
 Tested up to: 6.7.1
 Requires PHP: 7.4
 License: GPLv2 or later
@@ -232,10 +232,51 @@ Remember to always make a backup of your database and files before updating!
 
 == Changelog ==
 
+= [6.9.1] 2025-01-22 =
+
+* Security - Ensure Elementor HTML tags are properly escaped to avoid potential Stored Cross Site Scripting. [SVUL-13]
+* Tweak - Moved Action Scheduler loading into Common instead of TEC. [TEC-5345]
+* Tweak - Updated Telemetry heading under Settings > Debugging. [TEC-5335]
+* Tweak - Re-added filter: `tec_views_v2_subscribe_links_{$slug}_label`
+* Tweak - Tweak - Removed duplicate filter: `tec_views_v2_single_subscribe_links_{$slug}_label`
+* Tweak - Changed views: `integrations/elementor/widgets/event-calendar-link`, `integrations/elementor/widgets/event-datetime/range-separator`, `v2/components/loader`, `v2/components/messages`
+* Fix - Added check to `disable_blocks_on_display` for if `$content` is `null`. [TEC-5343]
+* Fix - Ensure Aggregator translations are not loaded before init. [TEC-5341]
+* Fix - Fixes edge cases where the nonce_user_logged_out hook was returning a value when the user was logged out, causing the nonce validation to fail. [TEC-5340]
+* Fix - Fix the filter name `tec_views_v2_subscribe_links_{$slug}_label` which was accidentally changed in a previous release. [TEC-5342]
+* Fix - Re-add logic to add page template options from theme to Display Settings. [TEC-5337]
+* Fix - Update Tribe__Events__Aggregator__Errors to ensure we don't load translations before `init`. [TEC-5341]
+* Fix - Update uses of unload_textdomain to ensure they allow JIT loading of translations afterwards. [TEC-5341]
+* Accessibility - Updated the event search page to handle search results better for screen readers, with alerts noting the results of the search.[TEC-5175]
+* Language - 3 new strings added, 84 updated, 0 fuzzied, and 2 obsoleted.
+
+= [6.9.0] 2024-12-17 =
+
+* Feature - Added new Onboarding Wizard and First Time Setup admin page for new installs. [TEC-5285]
+* Fix - When importing events from Google Calendar when using Events Calendar Pro with a custom Google Maps API key, Provinces/States for non-US countries are now saved to the correct field. [ECP-1877]
+* Fix - When using "Move to trash events older than", trashed imported events are now ignored. [TEC-5319]
+* Fix - Changed `format` method to `format_i18n` to allow for translations of dates in the TEC Elementor Widget. [TEC-5323]
+* Fix - Correct template override path to match docblocks for `event-export` directory. [TEC-5326]
+* Fix - Correct application of upsell classes in settings page.
+* Tweak - Fix the integration with TEC Tweaks to avoid a fatal error when using the extension. [TEC-5316]
+* Tweak - Updated the docblock for the `tribe_get_previous_events_link`, `tribe_get_next_event_link`, and `tribe_get_gridview_link` functions.
+* Tweak - Improved documentation for the `tribe_the_next_event_link`, `tribe_the_prev_event_link`, and `tribe_get_events_link` functions.
+* Tweak - Update docblocks in the `Tribe__Events__Importer__File_Importer_Events` class.
+* Tweak - Added filters: `tec_events_onboarding_wizard_permissions`, `tec_events_onboarding_wizard_handle`, `tec_events_onboarding_wizard_country_list`, `tec_events_onboarding_wizard_timezone_list`, `tec_events_onboarding_wizard_currencies_list`, `tribe_events_onboarding_wizard_initial_data`, `tec_events_admin_notice_event_tickets_should_display`, `tec_events_admin_notice_utc_timezone_should_display`, `tec_events_settings_should_filter_page_logo_source`
+* Tweak - Changed views: `integrations/elementor/widgets/event-export`, `integrations/elementor/widgets/event-export/list-item`
+* Language - 87 new strings added, 156 updated, 2 fuzzied, and 0 obsoleted.
+
+= [6.8.3] 2024-12-05 =
+
+* Feature - In-App Notifications system. [TEC-5165]
+* Tweak - Added actions: `tec_ian_icon`
+* Language - 0 new strings added, 118 updated, 0 fuzzied, and 1 obsoleted.
+
 = [6.8.2.1] 2024-11-21 =
 
 * Tweak - Introduced filter `tec_events_rest_api_password_protected_fields` which can be used to control which event fields should be hidden in the REST API for password protected events. [SVUL-8]
 * Security - Hide content fields from the archive REST endpoint for password protected events. [SVUL-8]
+* Fix - Prevent notices on `_load_textdomain_just_in_time` due to Aggregator and Export links code.
 
 = [6.8.2] 2024-11-19 =
 

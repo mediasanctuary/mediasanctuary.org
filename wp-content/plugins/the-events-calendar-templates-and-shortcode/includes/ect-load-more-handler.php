@@ -62,9 +62,7 @@ if ( $all_events ) {
 		}
 		// Setup an array of venue details for use later in the template
 		if ( $settings['hide_venue'] !== 'yes' && tribe_has_venue( $event_id ) ) {
-			if ( $template == 'default' && $style == 'style-4' ) {
-				$venue_details_html .= '<div class="modern-list-venue">';
-			} elseif ( $template == 'classic-list' || $template == 'modern-list' || ( $template == 'default' && $style != 'style-4' ) ) {
+			if ( $template == 'classic-list' || $template == 'modern-list' || $template == 'default' ) {
 				$venue_details_html .= '<div class="ect-list-venue ' . $template . '-venue">';
 			} else {
 				$venue_details_html .= '<div class="' . $template . '-venue">';
