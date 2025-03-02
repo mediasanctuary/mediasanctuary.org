@@ -238,10 +238,19 @@ class EventsShortcodePro {
 			$ect_args['start_date'] = $attribute['start_date'];
 		}
 		if ( ! empty( $attribute['end_date'] ) ) {
-			$enddate = new DateTime( sanitize_text_field( $attribute['end_date'] ) );
-    		$end_date_modify = $enddate->modify('+1 day');
-			$end_date = $end_date_modify->format('Y-m-d H:i:s');
-			$ect_args['end_date'] = $end_date;
+			$end_date_raw = sanitize_text_field( $attribute['end_date'] );
+		
+			// Check if the end_date is a valid date
+			try {
+				$enddate = new DateTime( $end_date_raw );
+				$end_date_modify = $enddate->modify('+1 day');
+				$end_date = $end_date_modify->format('Y-m-d H:i:s');
+				$ect_args['end_date'] = $end_date;
+			} catch (Exception $e) {
+				// Handle invalid date case
+				$ect_args['end_date'] = null; // Or set default value
+				error_log('Invalid end_date provided: ' . $end_date_raw);
+			}
 		}
 		$grid_style       = $attribute['style'];
 		$ect_grid_columns = $attribute['columns'];
@@ -253,9 +262,6 @@ class EventsShortcodePro {
 			Fetch Events data
 		*/
 		$excludePosts = array();
-		if ( $template == 'accordion-view' && $style == 'style-4' ) {
-			$ect_args['posts_per_page'] = -1;
-		}
 		$all_events                 = tribe_get_events( $ect_args );
 		$ect_args['posts_per_page'] = -1;
 		$total_events               = count( tribe_get_events( $ect_args ) );
@@ -440,24 +446,8 @@ class EventsShortcodePro {
 			}
 			$output .= '<div id="ect-accordion-wrapper" class="ect-accordion-view ' . $style . ' ect-cat-' . $catCls . '">';
 			$output .= '<div class="ect-accordion-container">';
-			if ( $style == 'style-4' ) {
-				$arrows  = '';
-				$arrows .= '<div class="ect-accordion-arrows ect-accordion-' . $slider_pp_id . '">
-                <div class="ect-accordn-slick-prev ect-accordn-slick-prev-' . $slider_pp_id . '"><i class="ect-icon-left"></i></div>
-                <div class="ect-accordn-slick-next ect-accordn-slick-next-' . $slider_pp_id . '"><i class="ect-icon-right"></i></div>
-                </div>';
-				$output .= $arrows;
-				$output .= '<section id="' . $slider_pp_id . '" class="ect-accordion-view ect-events-accordion">';
 				$output .= $events_html;
-				if ( end( $all_events ) ) {
-					$output .= '</div><!--close end element div!-->';
-				}
-				$output .= '</section>';
-			} else {
-				$output .= $events_html;
-			}
 			$output .= '</div>';
-			if ( $style != 'style-4' ) {
 				if ( $all_events && $total_events > $attribute['limit'] ) {
 					$settings = array(
 						'hide_venue'       => $hide_venue,
@@ -476,7 +466,6 @@ class EventsShortcodePro {
                 </section>
                 <script type="application/json" id="ect-query-arg">' . json_encode( $ect_args ) . '</script></div>';
 				}
-			}
 			$output .= '</div>';
 			if ( $attribute['filterbar'] === 'yes' ) {
 				$output .= '</div>';
@@ -577,15 +566,17 @@ class EventsShortcodePro {
 			if($showfilterbar === 'yes'){
 				$output .= '	</div>';
 			}
+			if($style !== 'style-4'){
 			$output .= '<div class="ect-right">
 									<div class="ect-highlighted-img">
 										<a id="ect-featured-event-link" href="#">
 											<img id="ect-featured-event-image-right">
 										</a>
 									</div>
-								</div>
-							</div>
-						</div>';
+								</div>';
+			}
+			$output .= '</div>
+					</div>';
 					
 			if ( $attribute['filterbar'] === 'yes' ) {
 				$output .= '</div>';

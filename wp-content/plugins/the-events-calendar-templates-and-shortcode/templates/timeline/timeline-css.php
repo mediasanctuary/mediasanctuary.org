@@ -49,32 +49,20 @@ switch ($style) {
     case 'style-3':
         break;
     default:
-        $ect_output_css .= '
-    #event-timeline-wrapper .ect-timeline-post.ect-featured-event.style-4 .timeline-content p{
-        color:' . esc_attr($featured_event_font_color) . ';
-    }
-    #event-timeline-wrapper.style-4 h2.content-title
-    {
-        background: ' . esc_attr($event_desc_bg_color) . ';
-    }
-    #event-timeline-wrapper .ect-timeline-post.style-4 .timeline-content:before{
-        border: 2px solid ' . esc_attr($event_desc_bg_color) . ';
-    }
-    #event-timeline-wrapper .ect-timeline-post .timeline-dots-style-4{
-        background-color:' . esc_attr($event_desc_bg_color) . ';
-    }
-    #event-timeline-wrapper .ect-timeline-year-style-4 {
-        -webkit-box-shadow: 0 0 0 4px white, 0 0 0 8px ' . esc_attr(Ecttinycolor($event_desc_bg_color)->darken(5)->toString()) . ';
-        box-shadow: 0 0 0 4px white, 0 0 0 8px ' . esc_attr(Ecttinycolor($event_desc_bg_color)->darken(5)->toString()) . ';
-    }
-    #event-timeline-wrapper .ect-timeline-post.ect-featured-event.style-4 .ect-date-area {
-        ' . $ect_date_style . '
-    }
-    #event-timeline-wrapper .ect-timeline-year-style-4 .year-placeholder span{
-    font-family: ' . $ect_date_font_family . ';
-    color: ' . esc_attr($ect_date_color) . ';
-    }
-   ';
+    $ect_output_css .= '#event-timeline-wrapper .ect-timeline-post.ect-simple-event .timeline-content{
+                            background: ' . esc_attr($thisPlugin::ect_hex2rgba($main_skin_color, .20)) . ';
+                            color: ' . esc_attr($main_skin_color) . ';
+                        }
+                        #event-timeline-wrapper .ect-timeline-post.ect-simple-event .ect-timeline-venue .ect-icon-location{
+                        color: ' . esc_attr($main_skin_color) . ';
+                        }
+                        #event-timeline-wrapper .ect-timeline-post.ect-featured-event .ect-timeline-venue .ect-icon-location{
+                        color: ' . esc_attr($featured_event_skin_color) . ';
+                        }
+                        #event-timeline-wrapper .ect-timeline-post.ect-featured-event .timeline-content{
+                           background: ' . esc_attr($thisPlugin::ect_hex2rgba($featured_event_skin_color, .20)) . ';
+                        }
+                        ';
         break;
 }
 // for event border
@@ -168,10 +156,11 @@ $ect_output_css .= '
 }
 ';
 // Timeline Venue Styles ( Timeline )
-$ect_output_css .= '#event-timeline-wrapper .timeline-view-venue
-{
-    ' . $ect_venue_styles . '
-}
+$ect_output_css .= '#event-timeline-wrapper .ect-timeline-venue a,
+                    #event-timeline-wrapper .ect-timeline-venue,
+                    #event-timeline-wrapper .timeline-view-venue{
+                        ' . $ect_venue_styles . '
+                    }
 #event-timeline-wrapper .ect-rate-area .ect-rate {
     font-size: ' . esc_attr($ect_title_font_size) . 'px;
     font-family: ' . $ect_title_font_famiily . ';

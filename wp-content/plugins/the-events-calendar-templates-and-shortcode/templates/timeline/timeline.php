@@ -24,14 +24,9 @@ if ($i % 2 == 0) {
     $even_odd = 'odd';
 }
 
-if ($timeline_style == 'style-1' || $timeline_style == 'style-4') {
+if ($timeline_style == 'style-1') {
     if (!empty($events_date_header) && $timeline_style == 'style-1') {
         $events_html .= '<div class="ect-timeline-year">
-                        <div class="year-placeholder">' . $events_date_header . '</div>
-                        </div>';
-    }
-    if (!empty($events_date_header) && $timeline_style == 'style-4') {
-        $events_html .= '<div class="ect-timeline-year-' . esc_attr($timeline_style) . '">
                         <div class="year-placeholder">' . $events_date_header . '</div>
                         </div>';
     }
@@ -40,9 +35,6 @@ if ($timeline_style == 'style-1' || $timeline_style == 'style-4') {
 
     if ($timeline_style == 'style-1') {
         $events_html .= '<div class="timeline-dots"></div>';
-    }
-    if ($timeline_style == 'style-4') {
-        $events_html .= '<div class="timeline-dots-' . esc_attr($timeline_style) . '"></div>';
     }
     $events_html .= '<div class="timeline-content ' . esc_attr($even_odd) . '">';
     $events_html .= '<div class="ect-timeline-header">';
@@ -118,7 +110,80 @@ if ($timeline_style == 'style-1' || $timeline_style == 'style-4') {
         </div></div>';
     $events_html .= '</div>';
     $events_html .= '</div>';
-} else {
+} else if($timeline_style == 'style-4'){
+    if (!empty($events_date_header)) {
+        $events_html .= '<div class="ect-timeline-year">
+                        <div class="year-placeholder">' . $events_date_header . '</div>
+                        </div>';
+    }
+    $events_html .= '<div id="event-' . esc_attr($event_id) . '"' .$cat_colors_attr. ' class="ect-timeline-post even ' . esc_attr($event_type) . ' ' . esc_attr($timeline_style) . '">';
+    $events_html .= '<div class="timeline-dots"></div>';
+    $events_html .= '<div class="timeline-content even">';
+    $events_html .= '<div class="ect-timeline-header">';
+    if ($ev_post_img) {
+        $events_html .= '<a class="timeline-ev-img" href="' . esc_url(tribe_get_event_link($event_id)) . '"><img src="' . esc_url($ev_post_img) . '" alt="' . esc_attr(get_the_title($event_id)) . '"/></a>';
+    }
+    $events_html .= wp_kses_post($event_schedule);
+    if ($socialshare == 'yes') {
+        $events_html .= ect_pro_share_button($event_id);
+    }
+    $events_html .= '</div>';
+    $events_html .= '<div class="ect-timeline-main-content">';
+    if (!empty($ect_cate)) {
+        $events_html .= '<div class="ect-event-category ect-timeline-categories">';
+        $events_html .= wp_kses_post($ect_cate);
+        $events_html .= '</div>';
+    }
+    $events_html .= '<div class="ect-timeline-title"><h2 class="content-title">' . wp_kses_post($event_title) . '</h2></div>';
+    if ($show_description == 'yes' || $show_description == '') {
+        $events_html .= wp_kses_post($event_content);
+    }
+    // Check if venue exists and display its details
+    if($hide_venue == 'no'){
+        if (tribe_has_venue($event_id)) {
+            // Fetching venue details
+            $venue_name = tribe_get_venue($event_id); // Venue name
+            $venue_address = tribe_get_address($event_id); // Address
+            $venue_city = tribe_get_city($event_id); // City
+            $venue_state = tribe_get_stateprovince( $event_id ); // State
+            $venue_country = tribe_get_country($event_id); // Country
+            $venue_zip = tribe_get_zip($event_id); // ZIP/Postal Code
+            $google_map_link = tribe_get_map_link($event_id); // Google Map Link
+            
+
+            // Generate venue link
+            $venue_link = tribe_get_venue_link($event_id);
+        
+            // Make venue name a clickable link
+            if (!empty($venue_name) && !empty($venue_link)) {
+                $venue_name =$venue_link;
+            }
+        
+            // Constructing a single-line venue details string
+            $venue_details = trim(implode(', ', array_filter([$venue_name, $venue_address, $venue_city, $venue_state, $venue_zip, $venue_country])));
+            
+            // Adding the venue details to the HTML
+            if (!empty($venue_details)) {
+                // Adding Google Map link if available
+                if (!empty($google_map_link)) {
+                    $venue_details .= '<a href="' . esc_url($google_map_link) . '" target="_blank" rel="nofollow noopener">'. __(' + Google Map', 'ect') .'</a>';
+                }
+                $events_html .= '<div class="ect-timeline-venue">';
+                $events_html .= '<i class="ect-icon-location"></i> ' . wp_kses_post($venue_details);
+                $events_html .= '</div>';
+            }
+        }
+    }
+    $events_html .= '<div class="ect-cost-readme">';
+    if (tribe_get_cost($event_id, true)) {
+        $events_html .= wp_kses_post($ev_cost);
+    }
+    $events_html .= '<div class="ect-lslist-event-detail">
+        <a href="' . esc_url(tribe_get_event_link($event_id)) . '" title="' . esc_attr(get_the_title($event_id)) . '" rel="bookmark">' . esc_html($events_more_info_text) . '</a>
+        </div></div></div>';
+    $events_html .= '</div>';
+    $events_html .= '</div>';
+}  else {
     if (!empty($events_date_header)) {
         $events_html .= '<div class="ect-timeline-year">
                         <div class="year-placeholder">' . $events_date_header . '</div>

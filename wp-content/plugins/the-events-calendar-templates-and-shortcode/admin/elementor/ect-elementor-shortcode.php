@@ -219,14 +219,15 @@ class EctElementorWidget extends Widget_Base {
 		$this->add_control(
 			'style',
 			array(
-				'label'     => __( 'Template Style', 'cool-timeline' ),
+				'label'     => __( 'Template Style', 'ect' ),
 				'type'      => Controls_Manager::SELECT,
 				'default'   => 'style-1',
 				'condition' => array( 'template!' => 'advance-list' ),
 				'options'   => array(
-					'style-1' => __( 'Style 1', 'cool-timeline' ),
-					'style-2' => __( 'Style 2', 'cool-timeline' ),
-					'style-3' => __( 'Style 3', 'cool-timeline' ),
+					'style-1' => __( 'Style 1', 'ect' ),
+					'style-2' => __( 'Style 2', 'ect' ),
+					'style-3' => __( 'Style 3', 'ect' ),
+					'style-4' => __( 'Style 4', 'ect' ),
 
 				),
 

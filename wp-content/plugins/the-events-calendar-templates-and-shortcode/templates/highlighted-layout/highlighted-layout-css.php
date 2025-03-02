@@ -63,6 +63,41 @@ if($style === "style-1" || $style === "style-3"){
           
      ';
 
+} else {
+     if($style === "style-4"){
+          $ect_output_css .= '.ect-show-events .ect-simple-event .ect-highlighted-accordion.active .ect-calendar.ect-selected {
+               background-color: '. $main_skin_color. ';
+               }
+               .ect-show-events .ect-featured-event .ect-highlighted-accordion.active .ect-calendar.ect-selected {
+                         background-color: '. $featured_event_skin_color .';
+               }';
+          $ect_output_css .= '.ect-show-events .ect-simple-event .ect-calendar {
+                    background-color: '. $ect_title_color .';
+               }
+               .ect-show-events .ect-featured-event .ect-calendar {
+                    background-color: '. $ect_title_color .';
+               }';
+          $ect_output_css .= '.ect-highlighted-wrapper.style-4 .ect-show-events .ect-simple-event .ect-highlighted-accordion .ect-highlighted-date{
+                    background-color: '. $main_skin_color. ';
+                    color:  '.$main_skin_alternate_color.';
+               }
+               .ect-highlighted-wrapper.style-4 .ect-show-events .ect-featured-event .ect-highlighted-accordion .ect-highlighted-date{
+                    background-color: '. $featured_event_skin_color .';
+                     color:  '.$featured_event_font_color.';
+               }';
+          $ect_output_css .= '
+               .ect-highlighted-wrapper.style-4 .ect-calendar{
+                    color : '. $ect_date_color .';
+               }
+               .ect-highlighted-wrapper.style-4 .ect-featured-event .ect-calendar.ect-selected{
+                    color : ' . $featured_event_font_color . ';
+               }
+               .ect-highlighted-wrapper.style-4 .ect-simple-event .ect-calendar.ect-selected{
+                    color : ' . $main_skin_alternate_color . ';
+               }
+               
+          ';
+     }
 }
 /*---- Background color -----*/
 $ect_output_css .= '.ect-highlighted-wrapper .ect-right{
@@ -90,16 +125,18 @@ $ect_output_css .= '
     background-color: '. $featured_event_skin_color .';
 }';
 /*--- Event Title - CSS ---*/
-$ect_output_css .= '.ect-highlighted-wrapper .ect-show-events .ect-event-details .ect-highlighted-title a,
-                    .ect-highlighted-wrapper .ect-show-events .ect-event-details .ect-read-more {
+$ect_output_css .= '.ect-highlighted-wrapper .ect-show-events .ect-event-details .ect-highlighted-title{
      ' . $title_styles . ';
      }';
 /*--- Event description - CSS ---*/
-$ect_output_css .= '.ect-highlighted-wrapper .ect-show-events .ect-event-details .ect-description {
+$ect_output_css .= '.ect-highlighted-wrapper .ect-show-events .ect-event-details .ect-description,
+                    .ect-highlighted-wrapper .ect-show-events .ect-event-details .ect-read-more {
      '. $ect_desc_styles.';
      }';
 /*--- Event Venue - CSS ---*/
-$ect_output_css .= '.ect-highlighted-wrapper .ect-show-events .ect-event-details .ect-highlighted-venue,
+$ect_output_css .= '.ect-highlighted-wrapper .ect-show-events .ect-event-details .ect-highlighted-venue a,
+                    .ect-highlighted-wrapper .ect-show-events .ect-event-details .ect-highlighted-venue .ect-venue-details a,
+                    .ect-highlighted-wrapper .ect-show-events .ect-event-details .ect-highlighted-venue,
                     .ect-highlighted-wrapper .ect-show-events .ect-event-details .ect-highlighted-venue .ect-google a{
      '.$ect_venue_styles.';
      }';

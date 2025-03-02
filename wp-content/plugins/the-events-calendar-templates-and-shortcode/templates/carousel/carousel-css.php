@@ -95,21 +95,45 @@ switch ($style) {
 
         break;
     default:
-        /*--- Featured Event Color - CSS ---*/
-        $ect_output_css .= '
-#ect-carousel-wrapper .ect-featured-event.style-4 .ect-date-schedule{
-     border-color: ' . esc_attr(Ecttinycolor($featured_event_skin_color)->darken(7)->toString()) . ';
-	background: ' . esc_attr($featured_event_skin_color) . ';
-	box-shadow : inset 0px 0px 12px 2px ' . esc_attr(Ecttinycolor($featured_event_skin_color)->darken(3)->toString()) . ';;
-}
-
-#ect-carousel-wrapper .ect-featured-event.style-4 .ect-date-schedule-wrap span{
-     color: ' . esc_attr($featured_event_font_color) . ';
-}
-#ect-carousel-wrapper .style-4 .ect-date-schedule,#ect-carousel-wrapper .style-4 .ect-date-schedule-wrap{
-     border-color: ' . esc_attr($ect_date_color) . ';
-}
-';
+                     /*--- Non Featured Event CSS ---*/
+     $ect_output_css .= '#ect-carousel-wrapper .ect-carousel-event.style-4 .ect-carousel-image .ect-date-highlight .ect-date-area,
+                         #ect-carousel-wrapper .ect-carousel-event.style-4 .ect-readmore-cost .ect-readmore{
+                              background: ' . esc_attr($main_skin_color) . ';
+                         }';
+     $ect_output_css .= '#ect-carousel-wrapper .ect-carousel-event.style-4 .ect-carousel-event-area:hover{
+                              background: ' . esc_attr($thisPlugin::ect_hex2rgba($main_skin_color, .20)) . ';
+                         }';
+     $ect_output_css .= '#ect-carousel-wrapper .ect-carousel-event.style-4 .ect-carousel-image .ect-date-highlight .ect-date-area,
+                         #ect-carousel-wrapper .ect-carousel-event.style-4 .ect-readmore-cost .ect-readmore a{
+                              color: '. esc_attr($main_skin_alternate_color) .';
+                         }';
+                      
+                       /*--- Featured Event CSS ---*/
+     $ect_output_css .= '#ect-carousel-wrapper .ect-carousel-event.style-4.ect-featured-event .ect-carousel-image .ect-date-highlight .ect-date-area,
+                         #ect-carousel-wrapper .ect-carousel-event.style-4.ect-featured-event .ect-readmore-cost .ect-readmore{
+                              background: ' . esc_attr($featured_event_skin_color) . ';
+                         }';
+     $ect_output_css .= '#ect-carousel-wrapper .ect-featured-event.style-4.ect-featured-event .ect-carousel-event-area:hover{
+                              background: ' . esc_attr($thisPlugin::ect_hex2rgba($featured_event_skin_color, .20)) . ';
+                         }';
+     $ect_output_css .= '#ect-carousel-wrapper .ect-carousel-event.style-4.ect-featured-event .ect-carousel-image .ect-date-highlight .ect-date-area,
+                         #ect-carousel-wrapper .ect-carousel-event.style-4.ect-featured-event .ect-readmore-cost .ect-readmore a{
+                              color: ' . esc_attr($featured_event_font_color) . ';
+                         }';
+                         /*--- Event date - CSS ---*/
+                       if ($ect_date_color === '#ffffff') {
+                         $ect_output_css .= '
+                            #ect-carousel-wrapper .ect-carousel-event.style-4 .ect-carousel-post-content .ect-event-schedule{
+                                 color: ' . esc_attr($ect_title_color) . ';
+                            }
+                            ';
+                     } else {
+                         $ect_output_css .= '
+                            #ect-carousel-wrapper .ect-carousel-event.style-4 .ect-carousel-post-content .ect-event-schedule{
+                                 color: ' . esc_attr($ect_date_color) . ';
+                            }
+                            ';
+                     }
         break;
 }
 /*--- Main Skin Color - CSS ---*/
@@ -169,6 +193,8 @@ $ect_output_css .= '
 $venue_font_size = $ect_venue_font_size + 6;
 /*--- Event Venue Color - CSS ---*/
 $ect_output_css .= '
+#ect-carousel-wrapper .ect-carousel-venue-style-4 a,
+#ect-carousel-wrapper .ect-carousel-venue-style-4,
 #ect-carousel-wrapper .ect-carousel-venue{
      ' . $ect_venue_styles . '
 }
@@ -225,7 +251,7 @@ if ($main_skin_alternate_color === '') {
 /*--- Event readmore Styles - CSS ---*/
 
 if ($ect_date_styles['font-size'] > '17') {
-    $ect_output_css .= '
+    $ect_output_css .= '#ect-carousel-wrapper .ect-carousel-event.style-4 .ect-carousel-post-content .ect-event-schedule,
           #ect-carousel-wrapper .ect-carousel-date,
           #ect-carousel-wrapper .ect-carousel-area span{
                font-size:17px;

@@ -307,6 +307,7 @@ if ( ! class_exists( 'ECTProSettings' ) ) {
       <li><strong>style-1</strong></li>
       <li><strong>style-2</strong></li>
       <li><strong>style-3</strong></li>
+	  <li><strong>style-4</strong></li>
       </ul></td></tr>
 
       <tr style="border:1px solid #ddd"><td style="border:1px solid #ddd">category</td>

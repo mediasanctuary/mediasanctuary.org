@@ -186,7 +186,7 @@ class EctProStyles
         $ect_date_font_size = !empty($ect_date_styles['font-size']) ? $ect_date_styles['font-size'] : '20px';
         $ect_date_color = !empty($ect_date_styles['color']) ? $ect_date_styles['color'] : '#00445e';
         $ect_date_font_weight = !empty($ect_date_styles['font-weight']) ? $ect_date_styles['font-weight'] : 'bold';
-        $ect_date_font_style = !empty($ect_date_styles['font-style']) ? $ect_date_styles['font-style'] : '';
+        $ect_date_font_style = !empty($ect_date_styles['font-style']) ? $ect_date_styles['font-style'] : 'normal';
         $ect_date_line_height = !empty($ect_date_styles['line-height']) ? $ect_date_styles['line-height'] : '1';
         $all_saved_ff['date_family'] = str_replace(' ', '+', $ect_date_font_family);
         $all_saved_ff['venue_family'] = str_replace(' ', '+', $ect_venue_font_famiily);
@@ -203,10 +203,6 @@ class EctProStyles
             span.tribe-tickets-left {
                 color:  ' . Ecttinycolor($main_skin_alternate_color)->darken(5)->toString() . ';
             }
-            .ect-load-more:before,
-			.ect-load-more:after {
-				background: ' . Ecttinycolor($main_skin_alternate_color)->lighten(20)->toString() . ';
-			}
             div[id*="event-"].ect-simple-event .ect-event-category ul.tribe_events_cat li a{
                 color: ' . $main_skin_color . ';
                 border-color: ' . $main_skin_color . ';

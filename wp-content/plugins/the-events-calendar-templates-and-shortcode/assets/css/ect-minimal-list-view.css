@@ -251,6 +251,81 @@ a.ect-event-url:hover {
 
 /** ------------------ style 3 css Style end here -------------------- **/
 
+/** ------------------ style 4 style start here -------------------- **/
+.ect-minimal-list-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+.ect-minimal-list-wrapper .ect-minimal-list-post.style-4 .ect-minimal-left-wrapper{
+    width: 30%;
+    display: flex;
+    gap: 8px;
+}
+.ect-minimal-list-wrapper .ect-minimal-list-post.style-4 .ect-minimal-right-wrapper{
+    width: 70%;
+    display: flex;
+    gap: 8px;
+}
+.ect-minimal-list-wrapper .ect-minimal-list-post.style-4{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #00000020;
+    padding-bottom: 20px;
+} 
+.ect-minimal-list-wrapper .ect-minimal-list-post.style-4 .ect-event-date-tag{
+    width: 30%;
+}
+.ect-minimal-list-wrapper .ect-minimal-list-post.style-4 .ect-event-date-tag .ect-event-datetimes{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.ect-minimal-list-wrapper .ect-minimal-list-post.style-4 .ect-event-img{
+    width: 70%;
+}
+.ect-minimal-list-wrapper .ect-minimal-list-post.style-4 .ect-event-img img{
+    object-fit: cover;
+    width: 100%;
+    height: 80px;
+    min-height: 80px;
+    border-radius: 6px;
+}
+.ect-minimal-list-wrapper .ect-minimal-list-post.style-4 .ect-event-content{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.ect-minimal-list-wrapper .ect-minimal-list-post.style-4 .ect-event-readmore-cost{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.ect-minimal-list-wrapper .ect-minimal-list-post.style-4 .ect-event-readmore-cost .ect-readmore a{
+    padding: 10px 15px;
+    border-radius: 6px;
+}
+.ect-minimal-list-wrapper .ect-minimal-list-post.style-4 span.ev-day{
+    font-weight: 700;
+    font-size: 24px;
+}
+.ect-minimal-list-wrapper .ect-minimal-list-post.style-4 span.ev-mo{
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.ect-minimal-list-wrapper .style-4 .ect-event-content .ect-events-title h4{
+    font-size: 14px !important;
+    margin: 0 !important;
+}
+
+/** ------------------ style 4 css Style end here -------------------- **/
 
 /* ------------------- Tool Tip Style Start here ------------ */
 
@@ -377,7 +452,7 @@ span.ect-labels-postponed {
 
 /*----- Media Query Style Start Here ------*/
 
-@media(max-width:425px) {
+@media(max-width:430px) {
     .ect-event-date-tag {
         width: 20%;
     }
@@ -390,6 +465,40 @@ span.ect-labels-postponed {
     }
     .ect-left-wrapper {
         width: 22%;
+    }
+    /* .ect-minimal-list-wrapper .ect-minimal-list-post.style-4{
+        flex-wrap: wrap;
+    } */
+    /* .ect-minimal-list-wrapper .ect-minimal-list-post.style-4 .ect-minimal-left-wrapper{
+        width: 60%;
+    } */
+    .ect-minimal-list-wrapper .ect-minimal-list-post.style-4 .ect-minimal-right-wrapper{
+        /* width: 100%; */
+        flex-direction: column;
+    }
+    .ect-minimal-list-wrapper .ect-minimal-list-post.style-4 .ect-event-content{
+        width: 100%;
+    }
+    .ect-minimal-list-wrapper .ect-minimal-list-post.style-4 .ect-event-readmore-cost{
+        width: 100%;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+    .ect-minimal-list-wrapper .ect-minimal-list-post.style-4 .ect-event-readmore-cost .ect-readmore a{
+        font-size: 11px;
+    }
+    .ect-minimal-list-wrapper .style-4 .ect-event-content .ect-events-title a,
+    .ect-minimal-list-wrapper .style-4 .ect-event-readmore-cost .ect-minimal-cost{
+        font-size: 15px !important;
+    }
+    .ect-minimal-list-wrapper .ect-minimal-list-post.style-4 span.ev-day{
+        font-size: 20px;
+    }
+    .ect-minimal-list-wrapper .ect-minimal-list-post.style-4 .ect-event-date-tag{
+        width: 45%;
+    }
+    .ect-minimal-list-wrapper .style-4 .ect-event-readmore-cost .ect-minimal-cost{
+        font-size: 14px !important;
     }
 }
 
@@ -411,6 +520,12 @@ span.ect-labels-postponed {
     .ect-right-wrapper {
         width: 65%;
     }
+    .ect-minimal-list-wrapper{
+        padding: 0 20px;
+    }
+    .ect-minimal-list-wrapper .style-4 .ect-event-readmore-cost .ect-minimal-cost{
+        font-size: 14px !important;
+    }
 }
 
 @media(min-width:1200px) {
@@ -428,5 +543,21 @@ span.ect-labels-postponed {
     .ect-right-wrapper,
     #ect-minimal-list-wrp .ect-event-details {
         width: 82%;     
+    }
+}
+@media(min-width:1024px)and (max-width:1200px ) {
+    .ect-minimal-list-wrapper .ect-minimal-list-post.style-4 .ect-event-readmore-cost .ect-readmore{
+        font-size: 9px;
+    }
+    .ect-minimal-list-wrapper .style-4 .ect-event-content .ect-events-title a,
+    .ect-minimal-list-wrapper .style-4 .ect-event-schedule,
+    .ect-minimal-list-wrapper .style-4 .ect-event-readmore-cost .ect-minimal-cost{
+        font-size: 14px !important;
+    }
+    .ect-minimal-list-wrapper .ect-minimal-list-post.style-4 span.ev-day{
+        font-size: 20px;
+    }
+    .ect-minimal-list-wrapper .ect-minimal-list-post.style-4 .ect-event-date-tag{
+        width: 45%;
     }
 }

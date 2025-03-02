@@ -151,6 +151,7 @@ if ( ! class_exists( 'ECT_event_shortcode' ) ) {
 									'style-1' => 'Style 1',
 									'style-2' => 'Style 2',
 									'style-3' => 'Style 3',
+									'style-4' => 'Style 4',
 								),
 								'dependency' => array(
 									'template',

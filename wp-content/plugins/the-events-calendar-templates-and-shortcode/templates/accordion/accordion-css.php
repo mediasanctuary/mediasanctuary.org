@@ -124,11 +124,64 @@ switch ($style) {
 		}
           ';
         break;
+        /** STYLE-4 */
     default:
-        $ect_output_css .= '#ect-accordion-wrapper.ect-accordion-view.style-4 span.month-year-box {
-	color: ' . esc_attr($main_skin_color) . ';
-     }
-     ';
+    $ect_output_css .= '
+          #ect-accordion-wrapper .ect-simple-event.style-4 {
+               border-color: ' . esc_attr(Ecttinycolor($main_skin_color)->darken(7)->toString()) . ';
+               background: ' . esc_attr($event_desc_bg_color) . ';
+          }
+          #ect-accordion-wrapper .ect-accordion-event.style-4.ect-simple-event .ect-accordion-footer {
+               background: ' . esc_attr($thisPlugin::ect_hex2rgba($main_skin_color, .20)) . ';
+          }
+          #ect-accordion-wrapper .ect-simple-event.style-4.active-event .ect-accordion-header:after {
+               color: ' . esc_attr(Ecttinycolor($main_skin_color)->darken(12)->toString()) . ';
+          }
+          #ect-accordion-wrapper .ect-featured-event.style-4.active-event .ect-share-wrapper i.ect-icon-share:before,
+          #ect-accordion-wrapper .ect-featured-event.style-4.active-event .ect-accordion-content a.ect-events-read-more{
+               background: ' . esc_attr($featured_event_skin_color) . ';
+          }
+          ';
+
+          if ($ect_date_color === '#ffffff' && $event_desc_bg_color === '#ffffff') {
+               $ect_output_css .= '
+               #ect-accordion-wrapper .style-4 .ect-date-area.accordion-view-schedule{
+                    color: ' . esc_attr($ect_title_color) . ';
+               }
+               ';
+          } else {
+               $ect_output_css .= '
+               #ect-accordion-wrapper .style-4 .ect-date-area.accordion-view-schedule{
+                    color: ' . esc_attr($ect_date_color) . ';
+               }
+               ';
+          }
+
+          /*--- Featured Event Color - CSS ---*/
+          $ect_output_css .= '
+          #ect-accordion-wrapper .ect-featured-event.style-4 {
+               border-color: ' . esc_attr(Ecttinycolor($featured_event_skin_color)->lighten(7)->toString()) . ';
+               background-color: ' . esc_attr($event_desc_bg_color) . ';
+          }
+          #ect-accordion-wrapper .ect-accordion-event.style-4.ect-featured-event .ect-accordion-footer {
+               background: ' . esc_attr($thisPlugin::ect_hex2rgba($featured_event_skin_color, .20)) . ';
+          }
+          #ect-accordion-wrapper .ect-featured-event.style-4.active-event .ect-accordion-header:after {
+               color: ' . esc_attr(Ecttinycolor($featured_event_skin_color)->darken(12)->toString()) . ';
+          }
+          #ect-accordion-wrapper .ect-featured-event.active-event .ect-accordion-header:after
+          {
+               color: ' . esc_attr(Ecttinycolor($featured_event_skin_color)->darken(12)->toString()) . ';
+          }
+          #ect-accordion-wrapper .ect-featured-event .ect-accordion-header:after
+          {
+               color: ' . esc_attr(Ecttinycolor($featured_event_skin_color)->darken(12)->toString()) . ';
+          }
+             
+          #ect-accordion-wrapper .style-4 .ect-accordion-date-full {
+               color:'. esc_attr(Ecttinycolor($ect_venue_color)->darken(5)->toString()) . ';
+          }
+          ';
         break;
 }
 
@@ -184,6 +237,7 @@ $ect_output_css .= '
 ';
 /*--- Event Venue Color - CSS ---*/
 $ect_output_css .= '
+#ect-accordion-wrapper .ect-accordion-venue a, 
 #ect-accordion-wrapper .ect-accordion-venue {
      ' . $ect_venue_styles . '
 }

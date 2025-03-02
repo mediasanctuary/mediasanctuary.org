@@ -176,7 +176,9 @@
                                 slickCarousel.slick("slickRemove"); // Destroy existing slick instance
                                 contentdiv.html(response.content);
                                 slickCarousel.slick("slickAdd"); // Reinitialize slick
-                                slickCarousel.slick("slickSetOption", "autoplay", true, true);
+                                const autoplayOption1 = attribute['autoplay'] === 'true';
+                                const autoplayOption  = attribute['autoplay'] === 'true';
+                                slickCarousel.slick("slickSetOption", "autoplay", autoplayOption1, autoplayOption);
                             }
                         } else if (response.template === 'masonry-view') {
                             if (contentdiv.length === 0) {
@@ -244,7 +246,7 @@
                         if (response.template === 'highlighted-layout') {
                          // Select and remove the div with class 'ect-right'
                          const ectRightDiv = wrapper[0].querySelector('.ect-right');
-                         if(ectRightDiv){
+                         if (ectRightDiv && wrapper.data('style') !== 4) {
                             ectRightDiv.classList.remove("ect-img-hide");
                             ectRightDiv.classList.add("ect-img-show");
                          }
@@ -255,7 +257,7 @@
                             if (response.template === 'highlighted-layout') {
                             // Select and remove the div with class 'ect-right'
                             const ectRightDiv = wrapper[0].querySelector('.ect-right');
-                            if(ectRightDiv){
+                            if (ectRightDiv && wrapper.data('style') !== 4) {
                                 ectRightDiv.classList.remove("ect-img-show");
                                 ectRightDiv.classList.add("ect-img-hide");
                             }

@@ -125,7 +125,7 @@ namespace ECTREG;
 			if( !function_exists('get_plugin_data') ){
 				require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 			}
-			$data=get_plugin_data($this->pluginFile);
+			$data=get_plugin_data($this->pluginFile, true, false);
 			if(isset($data['Version'])){
 				return $data['Version'];
 			}

@@ -72,9 +72,7 @@ if ( $all_events ) {
 			// $venue_details_html.='<div class="'.$template.'-venue">';
 			// }
 
-			if ( $template == 'default' && $style == 'style-4' ) {
-				$venue_details_html .= '<div class="modern-list-venue">';
-			} elseif ( $template == 'classic-list' || $template == 'modern-list' || ( $template == 'default' && $style != 'style-4' ) ) {
+			if ( $template == 'classic-list' || $template == 'modern-list' ||  $template == 'default' ) {
 				$venue_details_html .= '<div class="ect-list-venue ' . $template . '-venue">';
 			} else {
 				$venue_details_html .= '<div class="' . $template . '-venue">';

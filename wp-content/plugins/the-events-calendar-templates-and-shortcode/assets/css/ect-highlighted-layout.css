@@ -62,7 +62,7 @@
     width: 2px;
     top: 30px;
     height: 100%;
-    z-index: -1;
+    /* z-index: -1; */
 }
 .ect-highlighted-wrapper .ect-event-details{
     margin-left: 45px;
@@ -183,7 +183,7 @@
     top: 30px;
     /* left: -30px; */
     height: 100%;
-    z-index: -1;
+    /* z-index: -1; */
 }
 .ect-highlighted-wrapper.style-2 .ect-calendar {
     border-radius: 50%;
@@ -330,6 +330,38 @@ ul.ect-categories li {
     display: none;
 }
 
+/* STYLE 4 CSS*/
+.ect-highlighted-wrapper.style-4{
+    margin-left: 26px;
+}
+.ect-highlighted-wrapper.style-4 .ect-show-events{
+    width: 100%;
+    gap: 25px;
+}
+.ect-highlighted-wrapper.style-4 .ect-event-details{
+    padding-top: 0;
+}
+.ect-highlighted-wrapper.style-4 .ect-highlighted-accordion::before,
+.ect-highlighted-wrapper.style-4 .ect-highlighted-accordion::after{
+    top: 25px;
+}
+.ect-highlighted-wrapper.style-4 .ect-show-events .ect-highlighted-accordion .ect-highlighted-date{
+    display: flex;
+    width: fit-content;
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 3px 8px;
+}
+.ect-highlighted-wrapper.style-4 .ect-calendar {
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    /* padding: 4px 15px; */
+    position: absolute;
+    left: -11px;
+    z-index: 2;
+}
+
 @media only screen and (max-width: 767px) {
     .ect-highlighted-wrapper.style-2 .ect-highlighted-event{
         flex-direction: column;
@@ -351,5 +383,8 @@ ul.ect-categories li {
     .ect-highlighted-template-cont{
         width: 100%;
         padding: 0 30px;
+    }
+    .ect-highlighted-wrapper.style-4{
+        margin-left: 0;
     }
 }

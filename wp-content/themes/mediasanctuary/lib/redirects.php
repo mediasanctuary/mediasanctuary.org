@@ -5,6 +5,10 @@ function setup_redirects() {
 	// Check a configured list of redirects and if the current path matches
 	// the 'from_path' field, redirect to the 'redirect_to' field.
 
+	if (!function_exists('get_field')) {
+		return;
+	}
+
 	$redirects = get_field('redirects', 'options');
 	$url = parse_url($_SERVER['REQUEST_URI']);
 	$path = normalize_path($url['path']);

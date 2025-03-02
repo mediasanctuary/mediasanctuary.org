@@ -103,36 +103,46 @@ switch ($style) {
 
         break;
     default:
-        $ect_output_css .= '#ect-grid-wrapper .style-4 .ect-date-area-wrap,
-#ect-grid-wrapper .style-4 .ect-date-area{
-     border-color: ' . esc_attr($ect_date_color) . ';
-}
-
-#ect-grid-wrapper .ect-featured-event.style-4 .ect-grid-event-area {
-     border-color: ' . esc_attr(Ecttinycolor($featured_event_skin_color)->darken(7)->toString()) . ';
-     background: ' . esc_attr($featured_event_skin_color) . ';
-     box-shadow : inset 0px 0px 12px 2px ' . esc_attr(Ecttinycolor($featured_event_skin_color)->darken(3)->toString()) . ';
-}
-';
-        /*--- Featured Event Font Color - CSS ---*/
-        $ect_output_css .= '
-#ect-grid-wrapper .ect-featured-event .ect-grid-date,
-#ect-grid-wrapper .ect-featured-event.style-4 .ect-grid-title h4,
-#ect-grid-wrapper .ect-featured-event.style-4 .ect-grid-title h4 a,
-#ect-grid-wrapper .ect-featured-event.style-4 .ect-date-area-wrap span,
-#ect-grid-wrapper .ect-featured-event.style-4 .ect-grid-venue,
-#ect-grid-wrapper .ect-featured-event.style-4 .ect-grid-cost{
-     color: ' . esc_attr($featured_event_font_color) . ';
-}
-#ect-grid-wrapper .ect-featured-event.style-4 .ect-grid-venue a,
-#ect-grid-wrapper .ect-featured-event.style-4 .ect-grid-readmore a{
-     color: ' . esc_attr(Ecttinycolor($featured_event_font_color)->darken(5)->toString()) . ';
-}
-#ect-grid-wrapper .ect-featured-event.style-4 .ect-grid-venue a,
-#ect-grid-wrapper .ect-featured-event.style-4 .ect-grid-readmore a{
-     color: ' . esc_attr(Ecttinycolor($featured_event_font_color)->darken(5)->toString()) . ';
-}';
-
+                         /*--- Non Featured Event CSS ---*/
+    $ect_output_css .= '#ect-grid-wrapper .ect-grid-event.style-4 .ect-grid-post-image .ect-date-highlight .ect-date-area,
+                        #ect-grid-wrapper .ect-grid-event.style-4 .ect-readmore-cost .ect-readmore{
+                              background: ' . esc_attr($main_skin_color) . ';
+                         }';
+     $ect_output_css .= '#ect-grid-wrapper .ect-grid-event.style-4 .ect-grid-event-area:hover{
+                              background: ' . esc_attr($thisPlugin::ect_hex2rgba($main_skin_color, .20)) . ';
+                         }';
+     $ect_output_css .= '#ect-grid-wrapper .ect-grid-event.style-4 .ect-grid-post-image .ect-date-highlight .ect-date-area,
+                         #ect-grid-wrapper .ect-grid-event.style-4 .ect-readmore-cost .ect-readmore a{
+                              color: '. esc_attr($main_skin_alternate_color) .';
+                          }';
+                         
+                          /*--- Featured Event CSS ---*/
+     $ect_output_css .= '#ect-grid-wrapper .ect-grid-event.style-4.ect-featured-event .ect-grid-post-image .ect-date-highlight .ect-date-area,
+                         #ect-grid-wrapper .ect-grid-event.style-4.ect-featured-event .ect-readmore-cost .ect-readmore{
+                             background: ' . esc_attr($featured_event_skin_color) . ';
+                         }';
+     $ect_output_css .= '#ect-grid-wrapper .ect-featured-event.style-4.ect-featured-event .ect-grid-event-area:hover{
+                              background: ' . esc_attr($thisPlugin::ect_hex2rgba($featured_event_skin_color, .20)) . ';
+                          }';
+     $ect_output_css .= '#ect-grid-wrapper .ect-grid-event.style-4.ect-featured-event .ect-grid-post-image .ect-date-highlight .ect-date-area,
+                         #ect-grid-wrapper .ect-grid-event.style-4.ect-featured-event .ect-readmore-cost .ect-readmore a{
+                              color: ' . esc_attr($featured_event_font_color) . ';
+                          }';
+                           /*--- Event date - CSS ---*/
+                       if ($ect_date_color === '#ffffff') {
+                              $ect_output_css .= '
+                              #ect-grid-wrapper .ect-grid-event.style-4 .ect-grid-post-content .ect-event-schedule{
+                                   color: ' . esc_attr($ect_title_color) . ';
+                              }
+                              ';
+                         } else {
+                              $ect_output_css .= '
+                              #ect-grid-wrapper .ect-grid-event.style-4 .ect-grid-post-content .ect-event-schedule{
+                                   color: ' . esc_attr($ect_date_color) . ';
+                              }
+                              ';
+                         }
+                          
         break;
 }
 /**------------------------------------Share css------------------------------ */
@@ -199,6 +209,8 @@ $venue_font_size = $ect_venue_font_size + 6;
 
 /*--- Event Venue Color - CSS ---*/
 $ect_output_css .= '
+#ect-grid-wrapper .ect-grid-venue-style-4 a,
+#ect-grid-wrapper .ect-grid-venue-style-4,
 #ect-grid-wrapper .ect-grid-venue{
      ' . $ect_venue_styles . ';
 }

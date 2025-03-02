@@ -107,7 +107,7 @@
                                         { text: 'Style 1', value: 'style-1' },
                                         { text: 'Style 2', value: 'style-2' },
                                         { text: 'Style 3', value: 'style-3' },
-                                        // { text: 'Style 4', value: 'style-4' },
+                                        { text: 'Style 4', value: 'style-4' },
                                     ]
                                 
                                 },

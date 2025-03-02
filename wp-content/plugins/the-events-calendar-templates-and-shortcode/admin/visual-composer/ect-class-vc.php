@@ -140,6 +140,7 @@ if (!class_exists('EctVCAddon')) {
                                 __( "Style 1",'ect2' ) => "style-1",
                                 __( "Style 2",'ect2') => "style-2",
                                 __( "Style 3",'ect2') => "style-3",
+                                __( "Style 4",'ect2') => "style-4",
                                
                             );
 

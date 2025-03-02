@@ -1,8 +1,8 @@
 ﻿=== Events Shortcode Pro ===
 Requires at least: 5.0
-Tested up to: 6.7
+Tested up to: 6.7.1
 Requires PHP: 7.2
-Version: 3.2.1
+Version: 3.3.0
 License: GPLv3
 
 
@@ -28,6 +28,14 @@ When you purchase this premium plugin it includes a license key, you need to add
 
 
 == Changelog ==
+Version 3.3.0 | 17 December 2024
+Added: New Design for every template.
+Fixed: Console error related to venue in minimal list.
+Fixed: Slider auto play functionality when using filter bar.
+Fixed: Load Textdomain issue.
+Improved: CSS files to remove conflict with website CSS.
+Improved: Highlighted layout designs clickable functionality.
+
 Version 3.2.1 | 20 November 2024
 Added: Events Shortcode Gutenberg block.
 

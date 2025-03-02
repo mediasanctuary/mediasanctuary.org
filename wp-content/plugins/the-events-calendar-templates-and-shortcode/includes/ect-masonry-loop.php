@@ -79,8 +79,8 @@ if ( $all_events ) {
 					<div>';
 					$venue_details_html .= implode( ',', $venue_details );
 					$venue_details_html .= '</div>';
-				if ( tribe_get_map_link() ) {
-					$venue_details_html .= '<span class="ect-google">' . tribe_get_map_link_html() . '</span>';
+				if ( tribe_get_map_link($event_id) ) {
+					$venue_details_html .= '<span class="ect-google">' . tribe_get_map_link_html($event_id) . '</span>';
 				}
 					$venue_details_html .= '</span>';
 			endif;

@@ -16,44 +16,63 @@ class Tribe__Events__Filterbar__Filters__Category extends Tribe__Events__Filterb
 	}
 
 	protected function get_values() {
-		$terms = array();
+		$terms = [];
 
-		// Load all available event categories
-		$source = get_terms( Tribe__Events__Main::TAXONOMY, array( 'orderby' => 'name', 'order' => 'ASC' ) );
+		$args = [
+			'taxonomy'   => Tribe__Events__Main::TAXONOMY,
+			'orderby'    => 'name',
+			'order'      => 'ASC',
+			'number'     => 200,
+			'hide_empty' => true,
+		];
+
+		/**
+		 * Filter the args of displaying categories.
+		 *
+		 * @since 5.5.8
+		 *
+		 * @param array $args   The arguments passed to the `get_terms()` query when filtering for categories.
+		 * @param self  $filter The instance of the filter that we are filtering the args for.
+		 */
+		$args = (array) apply_filters( 'tec_events_filter_filters_category_get_terms_args', $args, $this );
+
+		// Load all available event categories.
+		$source = get_terms( $args );
+
 		if ( empty( $source ) || is_wp_error( $source ) ) {
-			return array();
+			return [];
 		}
 
-		// Preprocess the terms
+		// Preprocess the terms.
 		foreach ( $source as $term ) {
 			$terms[ (int) $term->term_id ] = $term;
 			$term->parent                  = (int) $term->parent;
 			$term->depth                   = 0;
-			$term->children                = array();
+			$term->children                = [];
 		}
 
-		// Initially copy the source list of terms to our ordered list
+		// Initially copy the source list of terms to our ordered list.
 		$ordered_terms = $terms;
 
 		// Re-order!
 		foreach ( $terms as $id => $term ) {
-			// Skip root elements
+			// Skip root elements.
 			if ( 0 === $term->parent ) {
 				continue;
 			}
 
-			// Reposition child terms within the ordered terms list
+			// Reposition child terms within the ordered terms list.
 			unset( $ordered_terms[ $id ] );
 			$term->depth                             = $this->get_depth( $term );
 			$terms[ $term->parent ]->children[ $id ] = $term;
 		}
 
-		// Finally flatten out and return
+		// Finally flatten out and return.
 		return $this->flattened_term_list( $ordered_terms );
 	}
 
 	/**
-	 * Get Term Depth
+	 * Get Term Depth.
 	 *
 	 * @since 4.5
 	 *
@@ -70,12 +89,11 @@ class Tribe__Events__Filterbar__Filters__Category extends Tribe__Events__Filterb
 		if ( 0 == $term->parent ) {
 			return $level;
 		} else {
-			$level++;
+			++$level;
 			$term = get_term_by( 'id', $term->parent, Tribe__Events__Main::TAXONOMY );
 
 			return $this->get_depth( $term, $level );
 		}
-
 	}
 
 	/**
@@ -89,13 +107,13 @@ class Tribe__Events__Filterbar__Filters__Category extends Tribe__Events__Filterb
 	 * @return array
 	 */
 	protected function flattened_term_list( array $term_items, array $existing_list = null ) {
-		// Pull in the existing list when called recursively
-		$flat_list = is_array( $existing_list ) ? $existing_list : array();
+		// Pull in the existing list when called recursively.
+		$flat_list = is_array( $existing_list ) ? $existing_list : [];
 
-		// Add each item - including nested items - to the flattened list
+		// Add each item - including nested items - to the flattened list.
 		foreach ( $term_items as $term ) {
 
-			$has_child = ! empty( $term->children ) ? ' has-child closed' : '';
+			$has_child        = ! empty( $term->children ) ? ' has-child closed' : '';
 			$parent_child_cat = '';
 			if ( ! $term->parent && $has_child ) {
 				$parent_child_cat = ' parent-' . absint( $term->term_id );
@@ -105,17 +123,17 @@ class Tribe__Events__Filterbar__Filters__Category extends Tribe__Events__Filterb
 				$parent_child_cat = ' child-' . absint( $term->parent );
 			}
 
-			$flat_list[] = array(
+			$flat_list[] = [
 				'name'  => $term->name,
 				'depth' => $term->depth,
 				'value' => $term->term_id,
-				'data'  => array( 'slug' => $term->slug ),
+				'data'  => [ 'slug' => $term->slug ],
 				'class' =>
 					esc_html( $this->set_category_class( $term->depth ) ) .
 					'tribe-events-category-' . $term->slug .
 					$parent_child_cat .
 					$has_child,
-			);
+			];
 
 			if ( ! empty( $term->children ) ) {
 				$child_items = $this->flattened_term_list( $term->children, $existing_list );
@@ -127,7 +145,7 @@ class Tribe__Events__Filterbar__Filters__Category extends Tribe__Events__Filterb
 	}
 
 	/**
-	 * Return class based on dept of the event category
+	 * Return class based on dept of the event category.
 	 *
 	 * @param $depth
 	 *
@@ -144,7 +162,7 @@ class Tribe__Events__Filterbar__Filters__Category extends Tribe__Events__Filterb
 		}
 
 		/**
-		 * Filter the event category class based on the term depth for the Filter Bar
+		 * Filter the event category class based on the term depth for the Filter Bar.
 		 *
 		 * @param string $class class as a string
 		 * @param int    $depth numeric value of the depth, parent is 0
@@ -165,11 +183,11 @@ class Tribe__Events__Filterbar__Filters__Category extends Tribe__Events__Filterb
 	 * @param WP_Query $query
 	 */
 	protected function pre_get_posts( WP_Query $query ) {
-		$new_rules      = array();
+		$new_rules      = [];
 		$existing_rules = (array) $query->get( 'tax_query' );
 		$values         = (array) $this->currentValue;
 
-		// if select display and event category has children get all those ids for query
+		// If select display and event category has children get all those ids for query.
 		if ( 'select' === $this->type ) {
 
 			$categories = get_categories(
@@ -216,21 +234,21 @@ class Tribe__Events__Filterbar__Filters__Category extends Tribe__Events__Filterb
 		$nest = apply_filters( 'tribe_events_filter_nest_taxonomy_queries', version_compare( $GLOBALS['wp_version'], '4.1', '>=' ) );
 
 		if ( $nest ) {
-			$new_rules = array(
+			$new_rules = [
 				__CLASS__ => $new_rules,
-			);
+			];
 		}
 
 		$tax_query = array_merge_recursive( $existing_rules, $new_rules );
 
-		// Apply the relationship (we leave this late, or the recursive array merge would potentially cause duplicates)
+		// Apply the relationship (we leave this late, or the recursive array merge would potentially cause duplicates).
 		if ( ! empty( $relationship ) && $nest ) {
 			$tax_query[ __CLASS__ ]['relation'] = $relationship;
 		} elseif ( ! empty( $relationship ) ) {
 			$tax_query['relation'] = $relationship;
 		}
 
-		// Apply our new meta query rules
+		// Apply our new meta query rules.
 		$query->set( 'tax_query', $tax_query );
 	}
 }

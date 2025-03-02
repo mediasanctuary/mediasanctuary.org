@@ -565,24 +565,6 @@ a.ect-share-link i:before {
     vertical-align: middle;
 }
 
-.ect-load-more:before,
-.ect-load-more:after {
-    content: "";
-    width: 38%;
-    height: 2px;
-    position: absolute;
-    top: 50%;
-    z-index: 1;
-}
-
-.ect-load-more:before {
-    left: 0;
-}
-
-.ect-load-more:after {
-    right: 0;
-}
-
 span.ect-ticket-info {
     font-size: 0.75em;
     display: inline-block;
@@ -669,11 +651,6 @@ span.ect-ticket-info a:hover {
 */
 
 @media only screen and (max-width: 640px) {
-    .ect-load-more:before,
-    .ect-load-more:after {
-        content: "";
-        width: 25%;
-    }
     .ect-event-category ul.tribe_events_cat {
         gap: 10px;
     }
