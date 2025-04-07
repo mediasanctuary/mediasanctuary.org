@@ -1,4 +1,5 @@
 @use '../global/colors' as *;
+@use '../global/breakpoints' as *;
 
 /* Post -- Move to New CSS
 ---------------------------------------------------------- */
@@ -60,6 +61,14 @@ body.single #content {
 		list-style: decimal;
 		margin-left: 1em;
 	}
+
+  blockquote {
+    padding-left: 2em;
+
+    @include breakpoint(md) {
+      padding-left: 4em;
+    }
+  }
 }
 
 .post--single, .single {
