@@ -59,15 +59,6 @@
           </div>
           <div class="col w55">									      		
             <p>Over the years our programs have been made possible by the National Endowment for the Arts, the NY State Council on the Arts with the support of the office of the Governor and the NY State Legislature, NYS Department of Environmental Conservation, local and national foundations, and <a href="https://www.mediasanctuary.org/get-involved/donate/">Sanctuary Sustainers</a>. See a full list of our <a href="https://www.mediasanctuary.org/about/supporters/">supporters and friends</a>.</p>
-              <ul class="sponsors">
-                <li><img src="<?php asset_url('img/sponsors/nea.jpg'); ?>" alt="National Endowment for the Arts"></li>
-                <li><img src="<?php asset_url('img/sponsors/nysca.jpg'); ?>" alt="New York State Council on the Arts"></li>
-                <li><img src="<?php asset_url('img/sponsors/dec.jpg'); ?>" alt="New York State Department of Environmental Conservation"></li>
-                <li><img src="<?php asset_url('img/sponsors/community.jpg'); ?>" alt="The Community Foundation for the Greater Capital Region"></li>
-                <li><img src="<?php asset_url('img/sponsors/iear.jpg'); ?>" alt="iEAR Presents!"></li>
-                <li><img src="<?php asset_url('img/sponsors/stewarts.jpg'); ?>" alt="Stewart’s Shops"></li>
-              </ul>
-            </p>
           </div>
         </div>
       </div>
