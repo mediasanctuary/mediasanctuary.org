@@ -23,7 +23,7 @@ jobs:
 
             - name: Sync
               env:
-                  dest: "mswww@claudette.mayfirst.org:/home/members/nyma/sites/new.mediasanctuary.org/web/wp-content/"
+                  dest: "mswww@shell.mayfirst.org:~/web/wp-content/"
               run: |
                   echo "${{secrets.PROD_DEPLOY_KEY}}" > deploy_key
                   chmod 600 ./deploy_key
