@@ -43,9 +43,6 @@ if ( $has_ical ) {
 
 ?>
 
-
-<p class="accessibility">We are committed to lowering the barriers to access for events at The Sanctuary for Independent Media. For people who are hard of hearing or deaf, blind or low-vision, or whose physical limitations can interfere with a satisfying experience, <a href="/contact/">let us know</a> as soon as possible, and we will do our best to accommodate your needs.</p>
-
 <div class="tribe-block tribe-block__events-link">
 
 	<div class="post--single">
