@@ -24,11 +24,13 @@ class Tribe__Events__Pro__Recurrence__Queue_Realtime {
 	/**
 	 * The Queue_Realtime constructor method.
 	 *
+	 * @since 7.8.0 Made $queue, $ajax_operations and $queue_processor explicitly nullable.
+	 *
 	 * @param Tribe__Events__Pro__Recurrence__Queue|null           $queue An optional Recurrence Queue instance.
 	 * @param Tribe__Events__Ajax__Operations|null                 $ajax_operations An optional Ajax Operations instance.
 	 * @param Tribe__Events__Pro__Recurrence__Queue_Processor|null $queue_processor An optional Queue_Processor instance.
 	 */
-	public function __construct( Tribe__Events__Pro__Recurrence__Queue $queue = null, Tribe__Events__Ajax__Operations $ajax_operations = null, Tribe__Events__Pro__Recurrence__Queue_Processor $queue_processor = null ) {
+	public function __construct( ?Tribe__Events__Pro__Recurrence__Queue $queue = null, ?Tribe__Events__Ajax__Operations $ajax_operations = null, ?Tribe__Events__Pro__Recurrence__Queue_Processor $queue_processor = null ) {
 		add_action( 'admin_head-post.php', array( $this, 'post_editor' ) );
 		add_action( 'wp_ajax_tribe_events_pro_recurrence_realtime_update', array( $this, 'ajax' ) );
 

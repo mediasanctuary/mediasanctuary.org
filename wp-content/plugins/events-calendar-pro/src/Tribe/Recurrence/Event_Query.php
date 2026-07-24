@@ -19,9 +19,11 @@ class Tribe__Events__Pro__Recurrence__Event_Query {
 	 *
 	 * @see Tribe__Events__Pro__Main::pre_get_posts()
 	 *
+	 * @since 7.8.0 Made $query explicitly nullable.
+	 *
 	 * @param WP_Query $query
 	 */
-	public function __construct( WP_Query $query = null ) {
+	public function __construct( ?WP_Query $query = null ) {
 		if ( $query instanceof WP_Query ) {
 			$this->query = $query;
 			$this->slug = $query->get( 'name' );

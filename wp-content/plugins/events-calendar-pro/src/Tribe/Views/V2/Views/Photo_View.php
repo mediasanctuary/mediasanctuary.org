@@ -278,12 +278,13 @@ class Photo_View extends View {
 	 * {@inheritDoc}
 	 *
 	 * @since 4.9.3
+	 * @since 7.8.0 Made $context explicitly nullable.
 	 *
 	 * @param Context|null $context A context to use to setup the args, or `null` to use the View Context.
 	 *
 	 * @return array The arguments, ready to be set on the View repository instance.
 	 */
-	protected function setup_repository_args( \Tribe__Context $context = null ) {
+	protected function setup_repository_args( ?\Tribe__Context $context = null ) {
 		if ( is_null( $context ) ) {
 			$context = $this->context;
 		}

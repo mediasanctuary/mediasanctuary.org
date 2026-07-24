@@ -15,11 +15,17 @@
  * @var array<array> $filters                      Filters available for filter bar.
  * @var string       $breakpoint_pointer           String we use as pointer to the current view we are setting up with breakpoints.
  * @var boolean      $mobile_initial_state_control Control the mobile initial state via JS if `true`, do not control if `false`.
+ * @var boolean      $manual_apply                Whether to show an explicit Apply button instead of auto-submitting on change.
  *
  * @version 5.0.0.1
+ * @version 5.6.6
  */
 
 $classes = [ 'tribe-filter-bar', "tribe-filter-bar--$layout" ];
+
+if ( ! empty( $manual_apply ) ) {
+	$classes[] = 'tribe-filter-bar--manual-apply';
+}
 
 if ( 'closed' === $filterbar_state ) {
 	$aria_hidden = 'true';
@@ -62,7 +68,13 @@ $description_id = "tribe-filter-bar__form-description--$breakpoint_pointer";
 			class="tribe-filter-bar__form-description tribe-common-a11y-visual-hide"
 			id="<?php echo esc_attr( $description_id ); ?>"
 		>
-			<?php esc_html_e( 'Changing any of the form inputs will cause the list of events to refresh with the filtered results.', 'tribe-events-filter-view' ); ?>
+			<?php
+			if ( ! empty( $manual_apply ) ) {
+				esc_html_e( 'After choosing filters, select Apply to update the list of events.', 'tribe-events-filter-view' );
+			} else {
+				esc_html_e( 'Changing any of the form inputs will cause the list of events to refresh with the filtered results.', 'tribe-events-filter-view' );
+			}
+			?>
 		</p>
 
 		<?php $this->template( 'filter-bar/selections', [ 'selected_filters' => $selected_filters ] ); ?>
@@ -72,6 +84,12 @@ $description_id = "tribe-filter-bar__form-description--$breakpoint_pointer";
 		<?php $this->template( 'filter-bar/filters', [ 'layout' => $layout, 'filters' => $filters ] ); ?>
 
 		<?php $this->template( 'filter-bar/filters-slider', [ 'layout' => $layout, 'filters' => $filters ] ); ?>
+
+		<?php
+		if ( ! empty( $manual_apply ) ) {
+			$this->template( 'filter-bar/apply' );
+		}
+		?>
 
 	</form>
 </div>

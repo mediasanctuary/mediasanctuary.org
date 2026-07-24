@@ -9,7 +9,10 @@
  *
  * @link http://evnt.is/1aiy
  *
- * @version 5.7.0
+ * @version 7.7.10
+ *
+ * @since 5.7.0
+ * @since 7.7.10 Adjust tags to use unordered lists for accessibility.
  *
  * @var \Tribe\Utils\Date_I18n_Immutable $group_date      The date for the date group.
  * @var array                            $events_for_date The array of events for the date group.
@@ -26,13 +29,13 @@ if ( 1 < count( $events_for_date ) ) {
 $first_event = current( $events_for_date );
 $this->setup_postdata( $first_event );
 ?>
-<div <?php tribe_classes( $container_classes ); ?>>
+<li <?php tec_classes( $container_classes ); ?>>
 	<?php $this->template( 'summary/date-group/date-tag', [ 'event' => $first_event, 'group_date' => $group_date ] ); ?>
-	<div class="tribe-common-g-col tribe-events-pro-summary__event-wrapper">
+	<ul class="tribe-common-g-col tribe-events-pro-summary__event-wrapper" role="presentation">
 		<?php foreach ( $events_for_date as $event ) : ?>
 			<?php $this->setup_postdata( $event ); ?>
 			<?php $this->template( 'summary/date-group/event', [ 'event' => $event, 'group_date' => $group_date ] ); ?>
 		<?php endforeach; ?>
-	</div>
+	</ul>
+</li>
 
-</div>

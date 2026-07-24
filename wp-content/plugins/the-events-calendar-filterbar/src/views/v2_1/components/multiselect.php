@@ -9,32 +9,35 @@
  *
  * @link http://evnt.is/1aiy
  *
- * @var string       $value   Value for the multiselect.
+ * @var string       $value   Value for the multiselect (used only for the has-selection class).
  * @var string       $id      ID of the multiselect.
  * @var string       $name    Name attribute for the multiselect.
- * @var array<array> $options Options for the multiselect.
+ * @var array<array> $options Options for the multiselect, each with `text`, `id`, `selected`.
  *
- * @version 5.0.0
- *
+ * @version 5.6.6
  */
+
 $classes = [ 'tribe-filter-bar-c-multiselect' ];
 if ( ! empty( $value ) ) {
 	$classes[] = 'tribe-filter-bar-c-multiselect--has-selection';
 }
 ?>
 <div <?php tribe_classes( $classes ); ?>>
-	<input
+	<select
 		class="tribe-filter-bar-c-multiselect__input"
 		data-js="tribe-filter-bar-c-multiselect-input"
 		id="<?php echo esc_attr( $id ); ?>"
 		name="<?php echo esc_attr( $name ); ?>"
-		type="hidden"
-		value="<?php echo esc_attr( $value ); ?>"
-		data-allow-html
 		data-dropdown-css-width="false"
-		data-options="<?php echo esc_attr( wp_json_encode( $options ) ); ?>"
 		data-attach-container
 		multiple
 		style="width: 100%;" <?php /* This is required for selectWoo styling to prevent select box overflow */ ?>
-	/>
+	>
+		<?php foreach ( $options as $option ) : ?>
+			<option
+				value="<?php echo esc_attr( $option['id'] ); ?>"
+				<?php selected( ! empty( $option['selected'] ) ); ?>
+			><?php echo esc_html( $option['text'] ); ?></option>
+		<?php endforeach; ?>
+	</select>
 </div>

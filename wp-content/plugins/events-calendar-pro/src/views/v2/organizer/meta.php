@@ -9,8 +9,10 @@
  *
  * @link    https://evnt.is/1aiy
  *
- * @version 6.2.0
  * @since   6.2.0 Significantly reworked the logic to support the updated organizer meta and featured image rendering.
+ * @since 7.7.3 Added post password protection.
+ *
+ * @version 7.7.3
  *
  * @var WP_Post $organizer The organizer post object.
  *
@@ -29,6 +31,8 @@ $has_content  = ! empty( $content );
 $has_details  = ! empty( $url ) || ! empty( $email ) || ! empty( $phone );
 $has_taxonomy = ! empty( $categories );
 
+$password_required = post_password_required( $organizer->ID );
+
 if ( ! $has_content && ! $has_details && ! $has_featured_image && ! $has_taxonomy ) {
 	return;
 }
@@ -41,20 +45,41 @@ $classes['tribe-events-pro-organizer__meta--has-taxonomy']       = $has_taxonomy
 $conditionals = compact( 'has_content', 'has_details', 'has_featured_image', 'has_taxonomy' );
 $template_vars = array_merge( [ 'organizer' => $organizer, ], $conditionals )
 ?>
-<div <?php tribe_classes( $classes ); ?>>
+<div <?php tec_classes( $classes ); ?>>
 	<div class="tec-events-c-view-box-border">
 		<?php $this->template( 'organizer/meta/featured-image', $template_vars ); ?>
 
 		<?php if ( $has_content || $has_details || $has_taxonomy ) : ?>
-			<div <?php tribe_classes( [ 'tribe-events-pro-organizer__meta-data', 'tribe-common-g-col' => ( $has_content || $has_details || $has_taxonomy ) ] );?>>
+			<div
+				<?php
+				tec_classes(
+					[
+						'tribe-events-pro-organizer__meta-data',
+						'tribe-common-g-col' => ( $has_content || $has_details || $has_taxonomy ),
+					]
+				);
+				?>
+			>
 
-				<div <?php tribe_classes( [ 'tribe-events-pro-organizer__meta-row', 'tribe-common-g-row' => ( $has_content || $has_details || $has_taxonomy ) ] );?>>
-
-					<?php $this->template( 'organizer/meta/details', $template_vars ); ?>
-
-					<?php $this->template( 'organizer/meta/content', $template_vars ); ?>
-
-					<?php $this->template( 'organizer/meta/categories', $template_vars ); ?>
+				<div
+					<?php
+					tec_classes(
+						[
+							'tribe-events-pro-organizer__meta-row' => ! $password_required,
+							'tribe-common-g-row' => ( $has_content || $has_details || $has_taxonomy ),
+						]
+					);
+					?>
+				>
+				<?php
+				if ( ! $password_required ) {
+					$this->template( 'organizer/meta/details', $template_vars );
+				}
+				$this->template( 'organizer/meta/content', $template_vars );
+				if ( ! $password_required ) {
+					$this->template( 'organizer/meta/categories', $template_vars );
+				}
+				?>
 
 				</div>
 

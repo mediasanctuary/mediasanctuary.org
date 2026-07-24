@@ -9,9 +9,11 @@
  *
  * @link    https://evnt.is/1aiy
  *
- * @version 6.2.0
  * @since   5.0.1
  * @since   6.2.0 Significantly reworked the logic to support the updated venue meta and featured image rendering.
+ * @since 7.7.3 Added post password protection.
+ *
+ * @version 7.7.3
  *
  * @var WP_Post $venue       The venue post object.
  * @var bool    $enable_maps Boolean on whether maps are enabled.
@@ -33,6 +35,8 @@ $has_featured_image = $venue->thumbnail->exists;
 $has_taxonomy       = ! empty( $categories );
 $has_map            = ( $enable_maps && $show_map );
 
+$password_required = post_password_required( $venue->ID );
+
 if ( ! $has_content && ! $has_details && ! $has_featured_image && ! $has_taxonomy && ! $has_map ) {
 	return;
 }
@@ -46,24 +50,47 @@ $conditionals = compact( 'has_content', 'has_details', 'has_featured_image', 'ha
 $template_vars = array_merge( [ 'venue' => $venue, ], $conditionals )
 
 ?>
-<div <?php tribe_classes( $classes ); ?>>
+<div <?php tec_classes( $classes ); ?>>
 	<div class="tec-events-c-view-box-border">
 
-		<div <?php tribe_classes( [ 'tribe-events-pro-venue__meta-row', 'tribe-common-g-row' => ( $has_content || $has_details || $has_taxonomy || ( $has_map && $has_featured_image ) ) ] ); ?>>
+		<div
+			<?php
+			tec_classes(
+				[
+					'tribe-events-pro-venue__meta-row' => ! $password_required,
+					'tribe-common-g-row' => ( $has_content || $has_details || $has_taxonomy || ( $has_map && $has_featured_image ) ),
+				]
+			);
+			?>
+		>
 
-			<div <?php tribe_classes( [ 'tribe-events-pro-venue__meta-data', 'tribe-common-g-col' => ( $has_content || $has_details || $has_taxonomy || ( $has_map && $has_featured_image ) ) ] ); ?>>
+			<div
+				<?php
+				tec_classes(
+					[
+						'tribe-events-pro-venue__meta-data',
+						'tribe-common-g-col' => ( $has_content || $has_details || $has_taxonomy || ( $has_map && $has_featured_image ) ),
+					]
+				);
+				?>
+			>
 
-				<?php $this->template( 'venue/meta/featured-image', $template_vars ); ?>
+			<?php
+			if ( ! $password_required ) {
+				$this->template( 'venue/meta/featured-image', $template_vars );
 
-				<?php $this->template( 'venue/meta/details', $template_vars ); ?>
+				$this->template( 'venue/meta/details', $template_vars );
+			}
+				$this->template( 'venue/meta/content', $template_vars );
 
-				<?php $this->template( 'venue/meta/content', $template_vars ); ?>
-
-				<?php $this->template( 'venue/meta/categories', $template_vars ); ?>
+			if ( ! $password_required ) {
+				$this->template( 'venue/meta/categories', $template_vars );
+			}
+			?>
 
 			</div>
 
-			<?php if ( $enable_maps && $show_map ) : ?>
+			<?php if ( ! $password_required && $enable_maps && $show_map ) : ?>
 				<div class="tribe-events-pro-venue__meta-map tribe-common-g-col">
 					<?php $this->template( 'venue/meta/map', $template_vars ); ?>
 				</div>

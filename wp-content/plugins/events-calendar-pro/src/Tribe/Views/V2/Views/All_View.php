@@ -127,8 +127,10 @@ class All_View extends List_View {
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @since 7.8.0 Made $context explicitly nullable.
 	 */
-	protected function setup_repository_args( Context $context = null ) {
+	protected function setup_repository_args( ?Context $context = null ) {
 		$args = parent::setup_repository_args( $context );
 
 		$context = null !== $context ? $context : $this->context;

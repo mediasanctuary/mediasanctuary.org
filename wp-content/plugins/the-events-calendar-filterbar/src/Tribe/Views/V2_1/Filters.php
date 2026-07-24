@@ -30,6 +30,7 @@ class Filters {
 		$template_vars['filters']                      = $this->get_filters( $context, $template_vars['breakpoint_pointer'] );
 		$template_vars['selected_filters']             = $this->get_selected_filters( $template_vars['filters'], $context, $template_vars['breakpoint_pointer'] );
 		$template_vars['mobile_initial_state_control'] = $this->get_mobile_initial_state_control( $template_vars['layout'], $context );
+		$template_vars['manual_apply']                 = $this->get_apply_button_setting();
 
 		return $template_vars;
 	}
@@ -71,6 +72,26 @@ class Filters {
 		$value   = (string) tribe_get_option( 'events_filters_layout', $default );
 
 		return esc_attr( in_array( $value, $allowed ) ? $value : $default );
+	}
+
+	/**
+	 * Whether the manual "Apply" button is enabled for the Filter Bar.
+	 *
+	 * @since 5.6.6
+	 *
+	 * @return bool Whether selecting a filter should stage the change behind an Apply button.
+	 */
+	public function get_apply_button_setting() {
+		$manual_apply = tribe_is_truthy( tribe_get_option( 'events_filters_apply_button', false ) );
+
+		/**
+		 * Allows filtering of whether the Filter Bar should stage selections behind an Apply button.
+		 *
+		 * @since 5.6.6
+		 *
+		 * @param bool $manual_apply Whether selecting a filter should stage the change behind an Apply button.
+		 */
+		return apply_filters( 'tribe_events_filter_bar_views_v2_1_apply_button', $manual_apply );
 	}
 
 	/**

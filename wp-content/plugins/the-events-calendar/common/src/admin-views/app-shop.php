@@ -8,6 +8,9 @@ use TEC\Common\Admin\Conditional_Content\Black_Friday;
  * $main, $products, $bundles, $extensions must be defined before loading this file.
  */
 
+// No direct access.
+defined( 'ABSPATH' ) || exit;
+
 $all_products = [
 	'for-sale'  => [],
 	'installed' => [],
@@ -24,10 +27,18 @@ use Tribe\Admin\Troubleshooting;
 ?>
 
 <div id="tribe-app-shop">
-
-	<?php
+	<div class="tribe-notice-wrap">
+		<?php
+		/**
+		 * Trigger the conditional content header notice.
+		 *
+		 * @since 6.8.2
+		 */
+		do_action( 'tec_conditional_content_header_notice' );
 		tribe( Troubleshooting::class )->admin_notice( 'app-shop' );
-	?>
+		?>
+		<div class="wp-header-end"></div>
+	</div>
 
 	<div class="tribe-header">
 		<div class="content-wrapper">
@@ -42,7 +53,6 @@ use Tribe\Admin\Troubleshooting;
 				<li class="selected" data-tab="tribe-all-solutions"><?php esc_html_e( 'All Solutions', 'tribe-common' ); ?></li>
 				<li data-tab="tribe-bundles"><?php esc_html_e( 'Save with Bundles', 'tribe-common' ); ?></li>
 				<li data-tab="tribe-extensions"><?php esc_html_e( 'Extensions', 'tribe-common' ); ?></li>
-				<li data-tab="tribe-stellar"><?php esc_html_e( 'Stellar Discounts', 'tribe-common' ); ?></li>
 			</ul>
 		</div>
 	</div>
@@ -54,9 +64,6 @@ use Tribe\Admin\Troubleshooting;
 			alt="<?php esc_attr_e( 'Shapes and lines for visual interest', 'tribe-common' ); ?>"
 		/>
 		<div class="content-wrapper">
-
-			<?php tribe( Black_Friday::class )->render_wide_banner_html(); ?>
-
 			<div class="addon-grid">
 				<?php foreach ( $all_products as $pr_status => $some_products ) : ?>
 					<?php if ( 'for-sale' == $pr_status ) : ?>
@@ -201,55 +208,6 @@ use Tribe\Admin\Troubleshooting;
 
 			</div>
 
-		</div>
-	</div>
-
-	<div id="tribe-stellar" class="tribe-content" style="display: none;">
-		<img
-			class="tribe-events-admin-graphic"
-			src="<?php echo esc_url( tribe_resource_url( 'images/header/all-solutions.jpg', false, null, $main ) ); ?>"
-			alt="<?php esc_attr_e( 'Shapes and lines for visual interest', 'tribe-common' ); ?>"
-		/>
-		<div class="content-wrapper">
-			<div class="stellar-logo">
-				<img src="<?php echo esc_url( tribe_resource_url( 'images/shop/stellar-logo.png', false, null, $main ) ); ?>" />
-			</div>
-
-			<div class="stellar-discounts-description">
-				<p><?php esc_html_e( 'Stellar is a collective of WordPress innovators, and home to WordPress products done right.', 'tribe-common' ); ?></p>
-			</div>
-
-			<div class="stellar-discounts-coupon-callout">
-				<p>
-					<?php
-					/* translators: %s is the coupon code */
-					printf( wp_kses( __( '$25 towards any Stellar product using code <u>%s</u>', 'tribe-common' ), [ 'u' => [] ] ), 'Stellar25' );
-					?>
-				</p>
-			</div>
-
-			<div class="stellar-brand-grid addon-grid">
-				<?php foreach ( $stellar_brands as $stellar_brand ) : ?>
-					<div class="stellar-brand">
-						<div class="stellar-brand__image">
-							<a href="<?php echo esc_url( $stellar_brand->link ); ?>" target="_blank"><img src="<?php echo esc_url( tribe_resource_url( $stellar_brand->image, false, null, $main ) ); ?>" /></a>
-						</div>
-
-						<div class="stellar-brand__logo">
-							<img src="<?php echo esc_url( tribe_resource_url( $stellar_brand->logo, false, null, $main ) ); ?>" />
-						</div>
-
-						<div class="stellar-brand__content">
-							<h3 class="stellar-brand__title"><?php echo esc_html( $stellar_brand->title ); ?></h3>
-							<p class="stellar-brand__description"><?php echo esc_html( $stellar_brand->description ); ?></p>
-						</div>
-
-						<a class="button stellar-brand__link" href="<?php echo esc_url( $stellar_brand->link ); ?>" target="_blank" rel="noopener noreferrer">
-							<?php echo esc_html( $stellar_brand->linktext ); ?>
-						</a>
-					</div>
-				<?php endforeach; ?>
-			</div>
 		</div>
 	</div>
 

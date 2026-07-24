@@ -144,10 +144,25 @@ class Tribe__Events__Filterbar__Filters__Additional_Field extends Tribe__Events_
 
 		// Convert each element into a name/value array as expected by the calling method
 		foreach ( $values as &$single_value ) {
-			$single_value = array(
+			$single_value = [
 				'name'  => $single_value,
-				'value' => $single_value
-			);
+				'value' => $single_value,
+			];
+		}
+
+		/**
+		 * Filter whether to intersect additional field values with the field configuration.
+		 *
+		 * @since 5.5.10
+		 *
+		 * @param bool   $do_intersect Whether to intersect values with field config.
+		 * @param string $meta_key     The meta key for this additional field.
+		 */
+		$intersect = apply_filters( 'tec_events_filter_additional_field_intersect', true, $this->meta_key );
+
+		if ( $intersect ) {
+			// Make sure only those field values show, that are set up with the field.
+			$values = $this->intersect_values( $values );
 		}
 
 		/**
@@ -170,7 +185,7 @@ class Tribe__Events__Filterbar__Filters__Additional_Field extends Tribe__Events_
 	 * @param WP_Query $query
 	 */
 	protected function pre_get_posts( WP_Query $query ) {
-		$new_rules      = array();
+		$new_rules      = [];
 		$existing_rules = (array) $query->get( 'meta_query' );
 		$values         = (array) $this->currentValue;
 
@@ -178,22 +193,27 @@ class Tribe__Events__Filterbar__Filters__Additional_Field extends Tribe__Events_
 
 		$meta_key       = 'checkbox' === $custom_fields[ $this->meta_key ]['type'] ? '_' . $this->meta_key : $this->meta_key;
 
-		// AND logic: match posts where all of the supplied values have been applied
+		// AND logic: match posts where all of the supplied values have been applied.
 		if ( 'and' === $this->logic ) {
 			foreach ( $values as $single_value ) {
-				$new_rules[] = array(
-					'key'   => $meta_key,
-					'value' => $single_value,
-				);
+				$new_rules[] = [
+					'key'     => $meta_key,
+					'value'   => $this->get_value_match_variants( (string) $single_value ),
+					'compare' => 'IN',
+				];
 			}
 		}
-		// OR logic: match any posts so long as at least one value has been applied
+		// OR logic: match any posts so long as at least one value has been applied.
 		else {
-			$new_rules[] = array(
+			$variants = [];
+			foreach ( $values as $single_value ) {
+				$variants = array_merge( $variants, $this->get_value_match_variants( (string) $single_value ) );
+			}
+			$new_rules[] = [
 				'key'     => $meta_key,
-				'value'   => $values,
-				'compare' => 'IN'
-			);
+				'value'   => array_values( array_unique( $variants ) ),
+				'compare' => 'IN',
+			];
 		}
 
 		/**
@@ -219,9 +239,9 @@ class Tribe__Events__Filterbar__Filters__Additional_Field extends Tribe__Events_
 		);
 
 		if ( $nest ) {
-			$new_rules = array(
+			$new_rules = [
 				__CLASS__ => $new_rules,
-			);
+			];
 		}
 
 		$meta_query = array_merge_recursive( $existing_rules, $new_rules );
@@ -262,5 +282,82 @@ class Tribe__Events__Filterbar__Filters__Additional_Field extends Tribe__Events_
 		}
 
 		return $custom_fields;
+	}
+
+	/**
+	 * Intersects the provided values with the custom field's allowed values if applicable.
+	 *
+	 * For fields that allow multiple values (checkbox, radio, dropdown), this method:
+	 * 1. Gets the field's configured values from the custom field settings
+	 * 2. Formats them into name/value pairs
+	 * 3. Intersects them with the provided values to ensure only valid options are used
+	 *
+	 * @since 5.5.10
+	 *
+	 * @param array $values Array of values to potentially intersect.
+	 *
+	 * @return array Modified array of values after potential intersection.
+	 */
+	protected function intersect_values( array $values ): array {
+		// Retrieve the saved additional fields.
+		$additional_fields = $this->get_custom_fields();
+
+		// Retrieve the setup of the current field.
+		$field = $additional_fields[ $this->meta_key ] ?? null;
+
+		if ( null === $field ) {
+			return $values;
+		}
+
+		// Get the type of the current field.
+		$field_type = $field['type'] ?? false;
+
+		$multi_fields = [
+			'checkbox',
+			'radio',
+			'dropdown',
+		];
+
+		// Bail if the field type doesn't allow multiple values.
+		if ( ! in_array( $field_type, $multi_fields, true ) ) {
+			return $values;
+		}
+
+		// Split the field values on any combination of line endings (Windows, Unix, or legacy Mac).
+		$field_values = preg_split( '/\r\n|\n|\r/', $field['values'] );
+
+		// Format the array to match the existing array format.
+		$field_values = array_map(
+			static function ( $value ) {
+				return [
+					'name'  => $value,
+					'value' => $value,
+				];
+			},
+			$field_values
+		);
+
+		// Intersect, and keep only the values that are present in both arrays.
+		return array_intersect_key( $values, $field_values );
+	}
+
+	/**
+	 * Returns the value variants to match a selected filter value against stored meta.
+	 *
+	 * Additional field values entered through Events Calendar PRO are stored HTML-encoded
+	 * (e.g. `&amp;`), while the filter value arrives decoded (e.g. `&`). Matching both forms
+	 * lets an encoded stored value resolve without altering how values are stored.
+	 *
+	 * @since 5.6.6
+	 *
+	 * @param string $value The decoded filter value.
+	 *
+	 * @return array<string> The unique value variants to match in the meta query.
+	 */
+	protected function get_value_match_variants( string $value ): array {
+		// Match a stored value that encoded only markup entities (&, <, >), not quotes.
+		$encoded = htmlspecialchars( $value, ENT_NOQUOTES, 'UTF-8' );
+
+		return $encoded === $value ? [ $value ] : [ $value, $encoded ];
 	}
 }

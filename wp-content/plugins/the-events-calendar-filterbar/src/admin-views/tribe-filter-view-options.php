@@ -1,3 +1,9 @@
+<?php
+/**
+ * Script for the interactive functionality of the Filter Bar settings.
+ */
+
+?>
 <script>
 	jQuery( function ( $ ) {
 		var checkboxes = $( '#all_filters' ).find( 'li > label > input:checkbox' );

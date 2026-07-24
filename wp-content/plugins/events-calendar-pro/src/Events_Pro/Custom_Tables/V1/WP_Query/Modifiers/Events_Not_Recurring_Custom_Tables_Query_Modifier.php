@@ -53,12 +53,13 @@ class Events_Not_Recurring_Custom_Tables_Query_Modifier extends Base_Modifier {
 	 * {@inheritDoc}
 	 *
 	 * @since 6.2.2
+	 * @since 7.8.0 Made $query explicitly nullable.
 	 *
 	 * @param WP_Query|null $query
 	 *
 	 * @return void
 	 */
-	public function applies_to( WP_Query $query = null ): bool {
+	public function applies_to( ?WP_Query $query = null ): bool {
 		return $query && ! empty( $query->query_vars[ Query_Modifier::POST_NOT_RECURRING_QUERY_VAR ] );
 	}
 

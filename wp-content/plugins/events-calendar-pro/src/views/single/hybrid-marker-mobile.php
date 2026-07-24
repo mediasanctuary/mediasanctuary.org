@@ -32,17 +32,13 @@ $hybrid_label = tribe_get_hybrid_event_label_singular();
 
 ?>
 <div class="tribe-events-hybrid-single-marker tribe-events-hybrid-single-marker--mobile">
-	<em
-		class="tribe-events-hybrid-single-marker__icon"
-		title="<?php echo esc_attr( $hybrid_label ); ?>"
-	>
-		<?php $this->template(
+	<span class="tribe-events-hybrid-single-marker__icon" >
+		<?php
+		$this->template(
 			'v2/components/icons/hybrid',
-			[
-				'classes'    => [ 'tribe-events-hybrid-single-marker__icon-svg' ],
-				'icon_label' => $hybrid_label,
-			]
-		); ?>
-	</em>
+			[ 'classes' => [ 'tribe-events-hybrid-single-marker__icon-svg' ] ]
+		);
+		?>
+	</span>
 	<?php echo esc_html( $hybrid_label ); ?>
 </div>

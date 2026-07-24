@@ -81,6 +81,7 @@ trait With_Ical_Strings {
 	 * the RSETs will be built once and cloned after each request.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $limit_infinite_until explicitly nullable.
 	 *
 	 * @param string            $ical_string              The iCalendar format string to
 	 *                                                    build the RSET for, should not
@@ -94,7 +95,7 @@ trait With_Ical_Strings {
 	 *
 	 * @throws Exception If there's any issue building the RSET.
 	 */
-	protected function get_rset_for_ical_string_dtstart( string $ical_string, DateTimeInterface $dtstart, DateTimeImmutable $limit_infinite_until = null ): RSet_Wrapper {
+	protected function get_rset_for_ical_string_dtstart( string $ical_string, DateTimeInterface $dtstart, ?DateTimeImmutable $limit_infinite_until = null ): RSet_Wrapper {
 		$dtstart = Dates::immutable( $dtstart, null, false );
 
 		if ( $limit_infinite_until instanceof DateTimeImmutable && $this->ical_string_is_never_ending( $ical_string ) ) {
@@ -424,8 +425,9 @@ trait With_Ical_Strings {
 	 * Returns a RRULE, or EXRULE, iCalendar format string end date, if any.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $never_starts_at explicitly nullable.
 	 *
-	 * @param string                 $string          The RRULE, or EXRULE, iCalendar
+	 * @param string                 $str             The RRULE, or EXRULE, iCalendar
 	 *                                                format string to return the UNTIL
 	 *                                                limit Date for.
 	 *
@@ -437,13 +439,13 @@ trait With_Ical_Strings {
 	 *                                the RRULE, or EXRULE, limit is either not defined or of
 	 *                                the COUNT type.
 	 */
-	protected function get_rrule_end_date( string $string, DateTimeImmutable $never_starts_at = null ): ?DateTimeImmutable {
+	protected function get_rrule_end_date( string $str, ?DateTimeImmutable $never_starts_at = null ): ?DateTimeImmutable {
 
-		if ( preg_match( '/UNTIL=(?<until>\w+)/', $string, $matches ) ) {
+		if ( preg_match( '/UNTIL=(?<until>\w+)/', $str, $matches ) ) {
 			return Dates::immutable( RRule::parseDate( $matches['until'] ) );
 		}
 
-		if ( null === $never_starts_at || $this->get_rrule_count( $string ) ) {
+		if ( null === $never_starts_at || $this->get_rrule_count( $str ) ) {
 			// Either NEVER should be supported, or it's a COUNT limit.
 			return null;
 		}
@@ -514,22 +516,23 @@ trait With_Ical_Strings {
 	 * Sets, overriding its value if already present, an attribute in the iCalendar string.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $new_values explicitly nullable.
 	 *
-	 * @param string                 $string     The iCalendar format string to set the value in.
+	 * @param string                 $str        The iCalendar format string to set the value in.
 	 * @param string                 $attribute  The uppercase name of the attribute to set in the string.
 	 * @param array<string|int>|null $new_values Either a set of values to set for the attribute or
 	 *                                           `null` to remove the attribute.
 	 *
 	 * @return string The updated iCalendar format string.
 	 */
-	protected function set_ical_string_attribute( string $string, string $attribute, array $new_values = null ): string {
-		$string = $this->unset_ical_string_attribute( $string, $attribute );
+	protected function set_ical_string_attribute( string $str, string $attribute, ?array $new_values = null ): string {
+		$str = $this->unset_ical_string_attribute( $str, $attribute );
 
 		if ( empty( $new_values ) ) {
-			return $string;
+			return $str;
 		}
 
-		return rtrim( $string, ';' ) . ';' . $attribute . '=' . implode( ',', $new_values );
+		return rtrim( $str, ';' ) . ';' . $attribute . '=' . implode( ',', $new_values );
 	}
 
 	/**
@@ -773,16 +776,17 @@ trait With_Ical_Strings {
 	 * those will be overridden.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $until explicitly nullable.
 	 *
-	 * @param string                 $string The iCalendar format string to update.
+	 * @param string                 $str    The iCalendar format string to update.
 	 * @param DateTimeImmutable|null $until  The UNTIL limit to set in the RRULE entry,
 	 *                                       or `null` to remove the UNTIL limit.
 	 *
 	 * @return string The updated iCalendar format string.
 	 */
-	protected function set_ical_string_until_limit( string $string, DateTimeImmutable $until = null ): string {
+	protected function set_ical_string_until_limit( string $str, ?DateTimeImmutable $until = null ): string {
 		$rrule_line_pos = null;
-		$lines = explode( "\n", $string );
+		$lines          = explode( "\n", $str );
 
 		foreach ( $lines as $k => $line ) {
 			if ( strpos( $line, 'RRULE' ) === 0 ) {
@@ -793,7 +797,7 @@ trait With_Ical_Strings {
 
 		if ( $rrule_line_pos === null ) {
 			// The iCalendar string does not contain an RRULE, so it cannot be limited.
-			return $string;
+			return $str;
 		}
 
 		$rrule_line = $lines[ $rrule_line_pos ];

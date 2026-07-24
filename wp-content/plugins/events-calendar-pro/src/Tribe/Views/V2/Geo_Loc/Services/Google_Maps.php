@@ -1,8 +1,8 @@
 <?php
 /**
- * ${CARET}
+ * This class is used to resolve an address to coordinates using the Google Maps API.
  *
- * @since   4.7.9
+ * @since 4.7.9
  *
  * @package Tribe\Events\Views\V2\Geo_Loc\Services
  */

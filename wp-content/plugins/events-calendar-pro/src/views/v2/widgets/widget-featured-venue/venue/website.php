@@ -21,11 +21,7 @@ if ( empty( $venue->website ) ) {
 }
 ?>
 <div class="tribe-common-h7 tribe-common-h--alt tribe-events-widget-featured-venue__venue-info-group tribe-events-widget-featured-venue__venue-info-group--website">
-	<em
-		class="tribe-events-widget-featured-venue__venue-icon"
-		aria-label="<?php esc_attr_e( 'Website', 'tribe-events-calendar-pro' ); ?>"
-		title="<?php esc_attr_e( 'Website', 'tribe-events-calendar-pro' ); ?>"
-	>
+	<span class="tribe-events-widget-featured-venue__venue-icon" >
 		<?php
 		$this->template(
 			'components/icons/website',
@@ -37,7 +33,10 @@ if ( empty( $venue->website ) ) {
 			]
 		);
 		?>
-	</em>
+	</span>
+	<span class="tribe-events-widget-featured-venue__venue-icon-text tribe-common-a11y-visual-hide">
+		<?php esc_html_e( 'Website', 'tribe-events-calendar-pro' ); ?>
+	</span>
 
 	<div class="tribe-events-widget-featured-venue__venue-content tribe-events-widget-featured-venue__venue-website">
 		<a

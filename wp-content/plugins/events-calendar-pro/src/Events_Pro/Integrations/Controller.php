@@ -9,6 +9,7 @@
 
 namespace TEC\Events_Pro\Integrations;
 
+use Automattic\WooCommerce\Utilities\FeaturesUtil;
 use TEC\Common\Contracts\Provider\Controller as Controller_Base;
 
 /**
@@ -52,6 +53,9 @@ class Controller extends Controller_Base {
 		// Load plugin integration providers once the TEC integration has loaded.
 		$this->container->register_on_action( 'tec_events_elementor_loaded', Plugins\Elementor\Controller::class );
 		$this->container->register( Themes\Kadence\Provider::class );
+		$this->container->register( Plugins\WP_All_Export\Controller::class );
+
+		add_action( 'before_woocommerce_init', [ $this, 'declare_woo_hpos_support' ] );
 	}
 
 	/**
@@ -59,5 +63,20 @@ class Controller extends Controller_Base {
 	 *
 	 * @since 6.4.0
 	 */
-	public function unregister(): void {}
+	public function unregister(): void {
+		remove_action( 'before_woocommerce_init', [ $this, 'declare_woo_hpos_support' ] );
+	}
+
+	/**
+	 * Declare compatibility with WooCommerce HPOS.
+	 *
+	 * @since 7.7.6
+	 *
+	 * @return void
+	 */
+	public function declare_woo_hpos_support(): void {
+		if ( class_exists( FeaturesUtil::class ) ) {
+			FeaturesUtil::declare_compatibility( 'custom_order_tables', EVENTS_CALENDAR_PRO_FILE, true );
+		}
+	}
 }

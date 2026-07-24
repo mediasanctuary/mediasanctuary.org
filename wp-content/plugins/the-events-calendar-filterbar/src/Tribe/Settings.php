@@ -37,13 +37,18 @@ class Tribe__Events__Filterbar__Settings {
 		}
 
 		// Settings screen.
-		wp_enqueue_style(
-			'TribeEventsFilterAdmin-css',
-			Tribe__Events__Filterbar__View::instance()->pluginUrl . 'src/resources/css/filter-admin.css',
+		tec_asset(
+			Tribe__Events__Filterbar__View::instance(),
+			'tribe-events-filterbar-admin-css',
+			'css/filter-admin.css',
 			[],
-			apply_filters( 'tribe_events_filters_css_version', Tribe__Events__Filterbar__View::VERSION )
+			null,
+			[
+				'group_path' => \Tribe__Events__Filterbar__View::class,
+			]
 		);
 
+		tribe_asset_enqueue( 'tribe-events-filterbar-admin-css' );
 		tribe_asset_enqueue( 'tribe-events-filterbar-admin-settings' );
 
 	}
@@ -184,6 +189,13 @@ class Tribe__Events__Filterbar__Settings {
 					'open' => __( 'Show on initial page load', 'tribe-events-filter-view' ),
 				],
 				'validation_type' => 'options',
+			],
+			'events_filters_apply_button' => [
+				'type'            => 'checkbox_bool',
+				'label'           => __( 'Require an Apply button to submit filters', 'tribe-events-filter-view' ),
+				'tooltip'         => __( 'When enabled, visitors are able to select multiple filters before the event list updates by requiring them to click on the Apply button. Recommended for keyboard accessibility.', 'tribe-events-filter-view' ),
+				'default'         => false,
+				'validation_type' => 'boolean',
 			],
 		];
 		$fields = apply_filters( 'tribe-event-filters-settings-fields', $fields );

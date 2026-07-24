@@ -28,13 +28,14 @@ class Base extends Service_Provider {
 	 * Binds and sets up implementations.
 	 *
 	 * @since 6.0.0
+	 * @since 7.7.3 Updated 'register_post_type' action to priority 20. [CE-329]
 	 */
 	public function register() {
 		$this->container->singleton( static::class, $this );
 
 		$this->container->singleton( Series::class );
 
-		add_action( 'init', $this->container->callback( Series::class, 'register_post_type' ), 1 );
+		add_action( 'init', $this->container->callback( Series::class, 'register_post_type' ), 20 );
 		add_action( 'init', [ $this, 'flush_rewrite' ], 100 );
 
 		add_filter( 'get_user_option_meta-box-order_' . Series::POSTTYPE, [ $this, 'reorder_series_meta_boxes' ], 10, 3 );

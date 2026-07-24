@@ -7,11 +7,11 @@
  *
  * See more documentation about our views templating system.
  *
- * @since   7.2.0
+ * @since 7.2.0
  *
  * @version 7.2.0
  *
- * @link    http://evnt.is/1aiy
+ * @link http://evnt.is/1aiy
  */
 
 // Disable the admin bar on the front end.
@@ -24,7 +24,7 @@ header( 'Content-Type: ' . get_option( 'html_type' ) . '; charset=' . get_option
 <!DOCTYPE html>
 <html>
 	<head>
-		<title><?php echo esc_html_x( 'Calendar Embed Iframe', 'The title for the calendar embed iframe.', 'events-calendar-pro' ); ?></title>
+		<title><?php echo esc_html_x( 'Calendar Embed Iframe', 'The title for the calendar embed iframe.', 'tribe-events-calendar-pro' ); ?></title>
 		<?php
 
 		do_action( 'tec_events_pro_calendar_embed_iframe_head' );

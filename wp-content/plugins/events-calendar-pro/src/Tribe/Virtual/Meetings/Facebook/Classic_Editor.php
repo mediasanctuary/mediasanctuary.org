@@ -142,14 +142,19 @@ class Classic_Editor {
 					'The message to complete the Facebook setup.',
 					'tribe-events-calendar-pro'
 				),
-				'link_url'       => Settings::admin_url(),
+				'link_url'       => Settings::admin_url(
+					[
+						'tab'                                   => 'meetings',
+						'#tribe-events-virtual-facebook-credentials' => '',
+					]
+				),
 				'link_label'     => _x(
 					'Set up Facebook Live',
 					'The label of the link to setup Facebook Live.',
 					'tribe-events-calendar-pro'
 				),
 			],
-			 $echo
+			$echo
 		);
 	}
 

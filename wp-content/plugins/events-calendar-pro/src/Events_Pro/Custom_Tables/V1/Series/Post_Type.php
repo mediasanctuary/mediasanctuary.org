@@ -252,12 +252,13 @@ class Post_Type {
 	 * Detect if the provided post is of the same type as the current post type.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $post explicitly nullable.
 	 *
 	 * @param WP_Post|null $post The post object to compare against with.
 	 *
 	 * @return boolean `true` if is of $post is of the same type as the current post type, `false` otherwise.
 	 */
-	public function is_same_type( WP_Post $post = null ) {
+	public function is_same_type( ?WP_Post $post = null ) {
 		return $post instanceof WP_Post && $post->post_type === static::POSTTYPE;
 	}
 

@@ -9,10 +9,13 @@
  *
  * @link https://evnt.is/1aiy
  *
- * @version 5.0.0
+ * @version 7.7.8
+ *
+ * @since 5.0.0
+ * @since 7.7.8 Improve accessibility by switching the wrapper element from an <article> to an <li> for semantic list structure.
  *
  * @var WP_Post $event The event post object with properties added by the `tribe_get_event` function.
- * @var string $placeholder_url The url for the placeholder image if a featured image does not exist.
+ * @var string  $placeholder_url The url for the placeholder image if a featured image does not exist.
  *
  * @see tribe_get_event() For the format of the event object.
  */
@@ -23,17 +26,18 @@ if ( ! empty( $event->featured ) ) {
 	$classes[] = 'tribe-events-pro-photo__event--featured';
 }
 ?>
-<article <?php tribe_classes( $classes ) ?>>
+<li <?php tec_classes( $classes ); ?>>
+	<article>
+		<?php $this->template( 'photo/event/featured-image', [ 'event' => $event ] ); ?>
 
-	<?php $this->template( 'photo/event/featured-image', [ 'event' => $event ] ); ?>
-
-	<div class="tribe-events-pro-photo__event-details-wrapper">
-		<?php $this->template( 'photo/event/date-tag', [ 'event' => $event ] ); ?>
-		<div class="tribe-events-pro-photo__event-details">
-			<?php $this->template( 'photo/event/date-time', [ 'event' => $event ] ); ?>
-			<?php $this->template( 'photo/event/title', [ 'event' => $event ] ); ?>
-			<?php $this->template( 'photo/event/cost', [ 'event' => $event ] ); ?>
+		<div class="tribe-events-pro-photo__event-details-wrapper">
+			<?php $this->template( 'photo/event/date-tag', [ 'event' => $event ] ); ?>
+			<div class="tribe-events-pro-photo__event-details">
+				<?php $this->template( 'photo/event/title', [ 'event' => $event ] ); ?>
+				<?php $this->template( 'photo/event/date-time', [ 'event' => $event ] ); ?>
+				<?php $this->template( 'photo/event/category', [ 'event' => $event ] ); ?>
+				<?php $this->template( 'photo/event/cost', [ 'event' => $event ] ); ?>
+			</div>
 		</div>
-	</div>
-
-</article>
+	</article>
+</li>

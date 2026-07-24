@@ -4,10 +4,10 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInita552a38d268739c81a09042f37ae6405
+class ComposerStaticInit3af55c29ec587b9a48fe41ecbcf19dbe
 {
     public static $prefixLengthsPsr4 = array (
-        'T' => 
+        'T' =>
         array (
             'Tribe\\' => 6,
             'TEC\\Event_Automator\\' => 20,
@@ -16,15 +16,15 @@ class ComposerStaticInita552a38d268739c81a09042f37ae6405
     );
 
     public static $prefixDirsPsr4 = array (
-        'Tribe\\' => 
+        'Tribe\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Tribe',
         ),
-        'TEC\\Event_Automator\\' => 
+        'TEC\\Event_Automator\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Common/Event_Automator',
         ),
-        'TEC\\Common\\' => 
+        'TEC\\Common\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Common',
         ),
@@ -37,9 +37,9 @@ class ComposerStaticInita552a38d268739c81a09042f37ae6405
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInita552a38d268739c81a09042f37ae6405::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInita552a38d268739c81a09042f37ae6405::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInita552a38d268739c81a09042f37ae6405::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit3af55c29ec587b9a48fe41ecbcf19dbe::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit3af55c29ec587b9a48fe41ecbcf19dbe::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit3af55c29ec587b9a48fe41ecbcf19dbe::$classMap;
 
         }, null, ClassLoader::class);
     }

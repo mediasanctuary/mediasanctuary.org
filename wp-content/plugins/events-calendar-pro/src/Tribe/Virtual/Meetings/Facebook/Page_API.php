@@ -917,10 +917,15 @@ class Page_API extends Video_API {
 					'%1$s <a href="%2$s" target="_blank">%3$s</a> %4$s',
 					esc_html_x(
 						'No connected Facebook Pages found. You must',
-					'The start of the message for smart url/autodetect when there is no Facebook App ID.',
-					'tribe-events-calendar-pro'
+						'The start of the message for smart url/autodetect when there is no Facebook App ID.',
+						'tribe-events-calendar-pro'
 					),
-					Settings::admin_url(),
+					Settings::admin_url(
+						[
+							'tab'                                   => 'meetings',
+							'#tribe-events-virtual-facebook-credentials' => '',
+						]
+					),
 					esc_html_x(
 						'connect a Facebook App',
 						'The link text in message for smart url/autodetect when there is no Facebook App ID.',

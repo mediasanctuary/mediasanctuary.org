@@ -45,8 +45,10 @@ class Events_Not_In_Series_Modifier extends Base_Modifier {
 
 	/**
 	 * {@inheritdoc}
+	 *
+	 * @since 7.8.0 Made $query explicitly nullable.
 	 */
-	public function applies_to( WP_Query $query = null ) {
+	public function applies_to( ?WP_Query $query = null ) {
 
 		if ( ! class_exists( 'Tribe__Events__Pro__Main' ) ) {
 			return false;

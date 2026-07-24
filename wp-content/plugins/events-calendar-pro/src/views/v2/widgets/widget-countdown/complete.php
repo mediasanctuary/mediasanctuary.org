@@ -23,8 +23,8 @@ $classes = [
 ];
 ?>
 <p
-	<?php tribe_classes( $classes ); ?>
+	<?php tec_classes( $classes ); ?>
 	data-js="tribe-events-widget-countdown-complete"
 >
-	<?php echo html_entity_decode( $complete ); ?>
+	<?php echo esc_html( html_entity_decode( $complete, ENT_QUOTES ) ); ?>
 </p>

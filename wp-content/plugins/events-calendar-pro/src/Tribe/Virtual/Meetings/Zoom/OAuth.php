@@ -116,7 +116,14 @@ class OAuth {
 			$handled = true;
 		}
 
-		wp_safe_redirect( Settings::admin_url() );
+		$admin_url = Settings::admin_url(
+			[
+				'tab'                               => 'meetings',
+				'#tec-zoom-application-credentials' => '',
+			]
+		);
+
+		wp_safe_redirect( $admin_url ); // phpcs:ignore StellarWP.CodeAnalysis.RedirectAndDie.Error
 
 		return $handled;
 	}

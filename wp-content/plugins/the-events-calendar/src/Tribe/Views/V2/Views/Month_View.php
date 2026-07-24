@@ -246,7 +246,7 @@ class Month_View extends By_Day_View {
 		$date         = $this->context->get( 'event_date', $default_date );
 		$current_date = Dates::build_date_object( $date );
 
-		if ( $this->skip_empty() ) {
+		if ( $this->skip_empty() && ! $this->context->get( 'past', false ) ) {
 			// At a minimum pick the next month or the month the next event starts in.
 			$next_date = $this->get_next_event_date( $current_date, $canonical );
 			if ( ! $next_date ) {
@@ -271,9 +271,11 @@ class Month_View extends By_Day_View {
 	}
 
 	/**
+	 * @since 6.17.0 Made $context explicitly nullable.
+	 *
 	 * {@inheritDoc}
 	 */
-	protected function setup_repository_args( Context $context = null ) {
+	protected function setup_repository_args( ?Context $context = null ) {
 		// Let's apply the arguments common to all Views.
 		$args = parent::setup_repository_args( $context );
 

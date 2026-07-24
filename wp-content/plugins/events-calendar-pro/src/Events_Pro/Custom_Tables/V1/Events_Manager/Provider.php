@@ -1,8 +1,9 @@
 <?php
 /**
- * ${CARET}
+ * This class is used to provide the Events Manager view support when working
+ * with the custom tables.
  *
- * @since   6.0.0
+ * @since 6.0.0
  *
  * @package TEC\Events_Pro\Custom_Tables\V1\Events_Manager;
  */
@@ -15,7 +16,7 @@ use TEC\Common\Contracts\Service_Provider;
 /**
  * Class Provider.
  *
- * @since   6.0.0
+ * @since 6.0.0
  *
  * @package TEC\Events_Pro\Custom_Tables\V1\Events_Manager;
  */

@@ -22,7 +22,7 @@ class Tribe__Events__Linked_Posts {
 	/**
 	 * @var array Collection of post types that can be linked with events.
 	 */
-	public $linked_post_types;
+	public $linked_post_types = [];
 
 	/**
 	 * @var Tribe__Cache
@@ -45,9 +45,11 @@ class Tribe__Events__Linked_Posts {
 	/**
 	 * Constructor!
 	 *
+	 * @since 6.17.0 Made $cache explicitly nullable.
+	 *
 	 * @param Tribe__Cache|null $cache
 	 */
-	public function __construct( Tribe__Cache $cache = null ) {
+	public function __construct( ?Tribe__Cache $cache = null ) {
 		$this->cache = null !== $cache ? $cache : tribe( 'cache' );
 
 		$this->main = Tribe__Events__Main::instance();
@@ -485,6 +487,17 @@ class Tribe__Events__Linked_Posts {
 	 */
 	public function get_linked_post_types() {
 		return (array) $this->linked_post_types;
+	}
+
+	/**
+	 * Get the arguments for a linked post type.
+	 *
+	 * @param string $post_type Post type.
+	 *
+	 * @return array|null The arguments for the linked post type, or `null` if the post type is not a linked post type.
+	 */
+	public function get_type_args( string $post_type ): ?array {
+		return $this->get_linked_post_types()[ $post_type ] ?? null;
 	}
 
 	/**

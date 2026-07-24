@@ -9,7 +9,10 @@
  *
  * @link http://evnt.is/1aiy
  *
- * @version 5.7.0
+ * @version 7.7.11
+ *
+ * @since 5.7.0
+ * @since 7.7.11 Switch from `h3` to `h4`.
  *
  * @var WP_Post $event The event post object with properties added by the `tribe_get_event` function.
  *
@@ -17,18 +20,17 @@
  */
 
 ?>
-<h3 class="tribe-common-h8 tribe-common-h7--min-medium tribe-events-pro-summary__event-title">
-	<?php $this->template( 'summary/date-group/event/title/featured' ); ?>
-	<a
-		href="<?php echo esc_url( $event->permalink ); ?>"
-		title="<?php echo esc_attr( $event->title ); ?>"
-		rel="bookmark"
-		class="tribe-events-pro-summary__event-title-link tribe-common-anchor-thin"
-	>
-		<?php
-		// phpcs:ignore
-		echo $event->title;
-		?>
-	</a>
-	<?php $this->template( 'summary/date-group/event/cost', [ 'event' => $event ] ); ?>
-</h3>
+	<h4 class="tribe-common-h8 tribe-common-h7--min-medium tribe-events-pro-summary__event-title">
+		<?php $this->template( 'summary/date-group/event/title/featured' ); ?>
+		<a
+			href="<?php echo esc_url( $event->permalink ); ?>"
+			title="<?php echo esc_attr( $event->title ); ?>"
+			rel="bookmark"
+			class="tribe-events-pro-summary__event-title-link tribe-common-anchor-thin"
+		>
+			<?php
+			// phpcs:ignore
+			echo $event->title;
+			?>
+		</a>
+	</h4>

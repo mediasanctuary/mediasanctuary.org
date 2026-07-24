@@ -26,29 +26,48 @@ class Cost extends \Tribe__Events__Filterbar__Filters__Cost {
 	 * Parses the value from the context and builds it the way the base filter.
 	 *
 	 * @since 4.9.0
+	 * @since 5.6.6 Normalized against nested-array request shapes; malformed range tokens are dropped
+	 *            instead of being passed through to `explode()`/`preg_match()` as-is.
 	 *
 	 * @param mixed $raw_value The raw value.
 	 *
-	 * @return array The parsed cost range value.
+	 * @return array<mixed> The parsed cost range values (`min`/`max` arrays or the `other` token); empty when nothing valid was submitted.
 	 */
 	public function parse_value( $raw_value ) {
 		$value = (array) $raw_value;
 
-		if ( isset( $value['min'] ) && isset( $value['max'] ) ) {
-			return array( $value );
-		} else {
-			foreach ( $value as &$v ) {
-				$range = explode( '-', $v );
-				if ( ! preg_match( '/[0-9]+\-[0-9]+/', $v ) ) {
-					continue;
-				}
-				$v = array( 'min' => $range[0], 'max' => $range[1] );
-			}
-
-			return $value;
+		// A pre-parsed { min, max } range from the context.
+		if ( isset( $value['min'], $value['max'] ) && is_scalar( $value['min'] ) && is_scalar( $value['max'] ) ) {
+			return [
+				[
+					'min' => $value['min'],
+					'max' => $value['max'],
+				],
+			];
 		}
 
-		return [];
+		/*
+		 * Otherwise expect a list of "min-max" range tokens or the special 'other' token;
+		 * drop anything malformed so the clause builder can trust the shape.
+		 */
+		$parsed = [];
+		foreach ( $value as $range_token ) {
+			if ( 'other' === $range_token ) {
+				$parsed[] = $range_token;
+				continue;
+			}
+
+			if ( ! is_string( $range_token ) || ! preg_match( '/^\s*(\d+)\s*-\s*(\d+)\s*$/', $range_token, $matches ) ) {
+				continue;
+			}
+
+			$parsed[] = [
+				'min' => $matches[1],
+				'max' => $matches[2],
+			];
+		}
+
+		return $parsed;
 	}
 
 	/**

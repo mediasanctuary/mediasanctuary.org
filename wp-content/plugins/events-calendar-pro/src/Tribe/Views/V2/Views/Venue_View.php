@@ -91,10 +91,11 @@ class Venue_View extends List_View {
 	 * Overrides the base View constructor to use PRO Rewrite handler.
 	 *
 	 * @since 5.0.1
+	 * @since 7.8.0 Made $messages explicitly nullable.
 	 *
 	 * {@inheritDoc}
 	 */
-	public function __construct( Messages $messages = null ) {
+	public function __construct( ?Messages $messages = null ) {
 		parent::__construct( $messages );
 		$this->rewrite = new Pro_Rewrite();
 	}
@@ -324,8 +325,10 @@ class Venue_View extends List_View {
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @since 7.8.0 Made $context explicitly nullable.
 	 */
-	protected function setup_repository_args( Context $context = null ) {
+	protected function setup_repository_args( ?Context $context = null ) {
 		$args = parent::setup_repository_args( $context );
 
 		$context = null !== $context ? $context : $this->context;
@@ -482,6 +485,30 @@ class Venue_View extends List_View {
 	}
 
 	/**
+	 * Set up the default back link data for this View.
+	 *
+	 * This provides a structured array containing the URL and label
+	 * for the "Back to Events" link.
+	 *
+	 * @since 7.7.7
+	 *
+	 * @param array|false $back_link   Existing back link data, or false if none provided.
+	 * @param array       $breadcrumbs The breadcrumbs array (may be empty).
+	 *
+	 * @return array Back link data with 'url' and 'label' keys.
+	 */
+	public function setup_back_link( $back_link, $breadcrumbs ) {
+		return [
+			'url'   => tribe_get_events_link(),
+			'label' => sprintf(
+				/* translators: %s: Plural event label, e.g. "All Events" */
+				__( 'All %s', 'the-events-calendar' ),
+				tribe_get_event_label_plural()
+			),
+		];
+	}
+
+	/**
 	 * Setups up the Header Title for this view.
 	 *
 	 * @since 6.2.0
@@ -578,10 +605,11 @@ class Venue_View extends List_View {
 	 * Updates the URL query arguments for the Venue View to correctly build its URls.
 	 *
 	 * @since 5.0.1
+	 * @since 7.8.0 Made $args explicitly nullable.
 	 *
 	 * {@inheritDoc}
 	 */
-	public function set_url( array $args = null, $merge = false ) {
+	public function set_url( ?array $args = null, $merge = false ) {
 		parent::set_url( $args, $merge );
 		$url_query_args = $this->url->get_query_args();
 

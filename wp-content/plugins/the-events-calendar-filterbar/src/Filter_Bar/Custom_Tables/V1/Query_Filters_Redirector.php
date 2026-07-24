@@ -17,6 +17,8 @@ use TEC\Events_Pro\Custom_Tables\V1\Events\Provisional\ID_Generator;
 use Tribe__Events__Filterbar__Filter as Filter;
 use Tribe__Events__Filterbar__Filters__Day_Of_Week as Day_Of_Week_Filter;
 use Tribe__Events__Filterbar__Filters__Time_Of_Day as Time_Of_Day_Filter;
+use Tribe\Events\Filterbar\Views\V2\Filters\Date_From as Date_From_Filter;
+use Tribe\Events\Filterbar\Views\V2\Filters\Date_To as Date_To_Filter;
 use WP_Query;
 
 /**
@@ -240,6 +242,14 @@ class Query_Filters_Redirector {
 			return $this->redirect_time_of_day_clause( $filter, $clause, $type );
 		}
 
+		if ( $filter instanceof Date_From_Filter ) {
+			return $this->redirect_date_from_clause( $clause, $type );
+		}
+
+		if ( $filter instanceof Date_To_Filter ) {
+			return $this->redirect_date_to_clause( $clause, $type );
+		}
+
 		// Another type of filter that will not require redirection.
 		return $clause;
 	}
@@ -332,6 +342,71 @@ class Query_Filters_Redirector {
 			[
 				$occurrences . '.start_date',
 				$occurrences . '.duration',
+			],
+			$clause
+		);
+	}
+
+	/**
+	 * Redirects the Date From Filter SQL clause to the Custom Tables.
+	 *
+	 * @since 5.4.0
+	 *
+	 * @param string $clause The SQL clause, as produced by the Filter.
+	 * @param string $type   The type of SQL clause to redirect, either `join` or `where`.
+	 *
+	 * @return string The Date From SQL clause, modified to redirect it to the Custom Tables.
+	 */
+	private function redirect_date_from_clause( string $clause, string $type ): string {
+		if ( 'join' === $type ) {
+			// No need to JOIN postmeta table when using Custom Tables.
+			return '';
+		}
+
+		global $wpdb;
+		$occurrences = Occurrences::table_name( true );
+
+		// Replace postmeta references with occurrences table start_date.
+		return str_replace(
+			[
+				$wpdb->postmeta . '.meta_value',
+				'date_from_start.meta_value',
+			],
+			[
+				$occurrences . '.start_date',
+				$occurrences . '.start_date',
+			],
+			$clause
+		);
+	}
+
+	/**
+	 * Redirects the Date To Filter SQL clause to the Custom Tables.
+	 *
+	 * @since 5.4.0
+	 *
+	 * @param string $clause The SQL clause, as produced by the Filter.
+	 * @param string $type   The type of SQL clause to redirect, either `join` or `where`.
+	 *
+	 * @return string The Date To SQL clause, modified to redirect it to the Custom Tables.
+	 */
+	private function redirect_date_to_clause( string $clause, string $type ): string {
+		if ( 'join' === $type ) {
+			// No need to JOIN postmeta table when using Custom Tables.
+			return '';
+		}
+
+		global $wpdb;
+		$occurrences = Occurrences::table_name( true );
+
+		return str_replace(
+			[
+				$wpdb->postmeta . '.meta_value',
+				'date_to_end.meta_value',
+			],
+			[
+				$occurrences . '.end_date',
+				$occurrences . '.end_date',
 			],
 			$clause
 		);

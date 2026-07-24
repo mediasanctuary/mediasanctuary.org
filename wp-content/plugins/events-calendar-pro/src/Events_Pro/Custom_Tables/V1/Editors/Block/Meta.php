@@ -191,6 +191,7 @@ class Meta extends Tribe__Editor__Meta {
 	 * off-pattern in respect to the rule.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $post_id explicitly nullable.
 	 *
 	 * @param array<array<string,mixed>> $data             The Event recurrence rules data in the format
 	 *                                                     used by the Blocks Editor.
@@ -201,7 +202,7 @@ class Meta extends Tribe__Editor__Meta {
 	 * @return array<array<string,mixed>> The Event recurrence meta in the format used by the Blocks
 	 *                                    Editor, updated to include the off-pattern DTSTART flag.
 	 */
-	public function add_off_pattern_dtstart_flag( $data, $recurrence_rules, int $post_id = null ) {
+	public function add_off_pattern_dtstart_flag( $data, $recurrence_rules, ?int $post_id = null ) {
 		if ( ! (
 			is_array( $data ) && is_array( $recurrence_rules )
 			&& count( $data ) === count( $recurrence_rules )
@@ -297,6 +298,7 @@ class Meta extends Tribe__Editor__Meta {
 	 * Filters and returns the Blocks Editor format recurrences or exclusions data for a post.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $data explicitly nullable.
 	 *
 	 * @param int                      $post_id The ID of the post to filter the data for.
 	 * @param string                   $key     Either `rules` or `exclusions`.
@@ -304,7 +306,7 @@ class Meta extends Tribe__Editor__Meta {
 	 *
 	 * @return array|null Either the filtered data, or `null` if th data was empty.
 	 */
-	public function filter_recurrence_meta_for_post( int $post_id, string $key, array $data = null ): ?array {
+	public function filter_recurrence_meta_for_post( int $post_id, string $key, ?array $data = null ): ?array {
 		if ( empty( $data ) || ! is_array( $data ) ) {
 			return $data;
 		}

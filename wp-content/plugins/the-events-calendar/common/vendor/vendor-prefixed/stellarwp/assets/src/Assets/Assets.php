@@ -1,11 +1,8 @@
 <?php
-/**
- * @license GPL-2.0
- *
- * Modified using {@see https://github.com/BrianHenryIE/strauss}.
- */
 
 namespace TEC\Common\StellarWP\Assets;
+
+use InvalidArgumentException;
 
 class Assets {
 	/**
@@ -193,13 +190,19 @@ class Assets {
 	/**
 	 * Get the Asset Object configuration.
 	 *
-	 * @param string|array $slug Slug of the Asset.
-	 * @param boolean $sort If we should do any sorting before returning.
+	 * @param string|string[]|null $slug Slug of the Asset, array of slugs, or null for all assets.
+	 * @param bool                 $sort If we should do any sorting before returning.
 	 *
-	 * @return array|Asset Array of asset objects, single asset object, or null if looking for a single asset but
-	 *                           it was not in the array of objects.
+	 * @return Asset[]|Asset|null Array of asset objects, a single Asset object, or null if looking
+	 *     for a single Asset but it was not found.
+	 *
+	 * @phpstan-return (
+	 *     $slug is null ? array<string, Asset> :
+	 *     ($slug is string ? Asset|null :
+	 *     ($slug is array ? array<string, Asset> : mixed))
+	 * )
+	 *
 	 * @since 1.0.0
-	 *
 	 */
 	public function get( $slug = null, $sort = true ) {
 		$obj = $this;
@@ -252,11 +255,7 @@ class Assets {
 		// Prevent weird stuff here.
 		$slug = sanitize_key( $slug );
 
-		if ( ! empty( $this->assets[ $slug ] ) ) {
-			return $this->assets[ $slug ];
-		}
-
-		return [];
+		return $this->assets[ $slug ] ?? null;
 	}
 
 	/**
@@ -540,13 +539,18 @@ class Assets {
 	 * useful where an asset is required in a situation not anticipated when it was originally
 	 * registered.
 	 *
-	 * @param string|array $assets_to_enqueue Which assets will be enqueued.
-	 * @param bool $should_enqueue_no_matter_what Whether to ignore conditional requirements when enqueuing.
+	 * @param string|array $assets_to_enqueue             Which assets will be enqueued.
+	 * @param bool         $should_enqueue_no_matter_what Whether to ignore conditional requirements when enqueuing.
 	 *
 	 * @since 1.0.0
-	 *
+	 * @since 1.4.11 - If explicitly passed an empty array, enqueue nothing.
 	 */
 	public function enqueue( $assets_to_enqueue = null, bool $should_enqueue_no_matter_what = false ) {
+		// If explicitly passed an empty array, enqueue nothing.
+		if ( is_array( $assets_to_enqueue ) && empty( $assets_to_enqueue ) ) {
+			return;
+		}
+
 		$assets_to_enqueue = array_filter( (array) $assets_to_enqueue );
 		if ( ! empty( $assets_to_enqueue ) ) {
 			$assets = (array) $this->get( $assets_to_enqueue );
@@ -681,8 +685,9 @@ class Assets {
 	 * Register the Assets on the correct hooks.
 	 *
 	 * @since 1.0.0
+	 * @since 1.4.5 Ensure the method accepts only `null` or an `Asset` instance or an array of `Asset[]` instances.
 	 *
-	 * @param array|Asset|null $assets Array of asset objects, single asset object, or null.
+	 * @param Asset[]|Asset|null $assets Array of asset objects, single asset object, or null.
 	 *
 	 * @return void
 	 */
@@ -693,18 +698,27 @@ class Assets {
 		)
 		) {
 			// Registering the asset now would trigger a doing_it_wrong notice: queue the assets to be registered later.
+			if ( empty( $assets ) ) {
+				return;
+			}
 
 			if ( ! is_array( $assets ) ) {
 				$assets = [ $assets ];
 			}
 
-			// Register later, avoid the doing_it_wrong notice.
-			$this->assets = array_merge( $this->assets, $assets );
+			foreach ( $assets as $asset ) {
+				if ( ! $asset instanceof Asset ) {
+					throw new InvalidArgumentException( 'Assets in register_in_wp() must be of type Asset' );
+				}
+
+				// Register later, avoid the doing_it_wrong notice.
+				$this->assets[ $asset->get_slug() ] = $asset;
+			}
 
 			return;
 		}
 
-		if ( is_null( $assets ) ) {
+		if ( null === $assets ) {
 			$assets = $this->get();
 		}
 
@@ -712,7 +726,15 @@ class Assets {
 			$assets = [ $assets ];
 		}
 
+		if ( empty( $assets ) ) {
+			return;
+		}
+
 		foreach ( $assets as $asset ) {
+			if ( ! $asset instanceof Asset ) {
+				throw new InvalidArgumentException( 'Assets in register_in_wp() must be of type Asset' );
+			}
+
 			// Asset is already registered.
 			if ( $asset->is_registered() ) {
 				continue;
@@ -809,9 +831,32 @@ class Assets {
 	}
 
 	/**
-	 * Prints the `script` (JS) and `link` (CSS) HTML tags associated with one or more assets groups.
+	 * Remove all assets.
 	 *
-	 * The method will force the scripts and styles to print overriding their registration and conditional.
+	 * @since 1.5.0
+	 *
+	 * @return int The number of assets successfully removed.
+	 */
+	public function remove_all() {
+		$removed = 0;
+
+		foreach ( $this->assets as $slug => $asset ) {
+			if ( ! $this->remove( $slug ) ) {
+				continue;
+			}
+
+			++$removed;
+		}
+
+		return $removed;
+	}
+
+	/**
+	 * Prints the `script` (JS) and `link` (CSS) HTML tags associated with one or more assets
+	 * groups.
+	 *
+	 * The method will force the scripts and styles to print overriding their registration and
+	 * conditional.
 	 *
 	 * @since 1.0.0
 	 *

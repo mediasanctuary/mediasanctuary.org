@@ -88,11 +88,23 @@ class Tribe__Events__Filterbar__Filters__Organizer extends Tribe__Events__Filter
 	}
 
 	protected function setup_where_clause() {
-		if ( is_array( $this->currentValue ) ) {
-			$organizer_ids = implode( ',', array_map( 'intval', $this->currentValue ) );
-		} else {
-			$organizer_ids = "'" . esc_sql( (string) $this->currentValue ) . "'";
-		}
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		$current_value = (array) $this->currentValue;
+
+		// Convert IDs to integers.
+		$organizer_ids = array_map( 'intval', $current_value );
+
+		/**
+		 * Convert IDs to original language if WPML is active.
+		 *
+		 * @param array $organizer_ids Array of organizer IDs.
+		 *
+		 * @return array
+		 */
+		$organizer_ids = (array) apply_filters( 'tribe_filterbar_organizer_ids', $organizer_ids );
+
+		// Convert array of IDs to comma-separated string for IN clause.
+		$organizer_ids = implode( ',', $organizer_ids );
 
 		$this->whereClause = " AND organizer_filter.meta_value IN ($organizer_ids) ";
 	}

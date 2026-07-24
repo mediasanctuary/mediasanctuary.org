@@ -37,9 +37,11 @@ class Post_Actions {
 	 *
 	 * since 6.0.1
 	 *
+	 * @since 7.8.0 Made $context explicitly nullable.
+	 *
 	 * @param Context|null $context A reference to the current context model.
 	 */
-	public function __construct( Context $context = null ) {
+	public function __construct( ?Context $context = null ) {
 		$this->context = $context ?? tribe_context();
 	}
 

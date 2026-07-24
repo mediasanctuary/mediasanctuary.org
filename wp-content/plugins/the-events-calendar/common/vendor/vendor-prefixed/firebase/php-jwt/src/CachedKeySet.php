@@ -1,9 +1,4 @@
 <?php
-/**
- * @license BSD-3-Clause
- *
- * Modified using {@see https://github.com/BrianHenryIE/strauss}.
- */
 
 namespace TEC\Common\Firebase\JWT;
 
@@ -12,7 +7,7 @@ use LogicException;
 use OutOfBoundsException;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
-use Psr\Http\Client\ClientInterface;
+use TEC\Common\Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use RuntimeException;
 

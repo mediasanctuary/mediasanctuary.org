@@ -11,6 +11,7 @@ namespace Tribe\Events\Pro\Views\V2\Widgets;
 
 use Tribe\Events\Views\V2\View;
 use Tribe\Events\Views\V2\Widgets\Widget_Abstract;
+use Tribe\Utils\Lazy_String;
 use Tribe__Context as Context;
 use Tribe__Date_Utils as Dates;
 use Tribe\Events\Views\V2\Template as View_Template;
@@ -95,24 +96,48 @@ class Widget_Month extends Widget_Abstract {
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @since 7.7.3 Updated to use Lazy_String.
 	 */
 	public static function get_default_widget_name() {
-		return esc_html( sprintf(
-			_x(
-				'%1$s Calendar',
-				'The name of the Month Widget.',
-				'tribe-events-calendar-pro'
-			),
-			tribe_get_event_label_plural()
-		) );
+		return new Lazy_String(
+			static function () {
+				return is_textdomain_loaded( 'tribe-events-calendar-pro' )
+					? esc_html(
+						sprintf(
+							/* translators: %1$s is the Event label */
+							_x(
+								'%1$s Calendar',
+								'The name of the Month Widget.',
+								'tribe-events-calendar-pro'
+							),
+							tribe_get_event_label_plural()
+						)
+					)
+					: esc_html( sprintf( '%1$s Calendar', tribe_get_event_label_plural() ) );
+			}
+		);
 	}
+
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @since 7.7.3 Updated to use Lazy_String.
 	 */
 	public static function get_default_widget_options() {
 		return [
-			'description' => esc_html_x( 'Displays this month\'s events.', 'Description of the Events Calendar Widget.', 'tribe-events-calendar-pro' ),
+			'description' => new Lazy_String(
+				static function () {
+					return is_textdomain_loaded( 'tribe-events-calendar-pro' )
+						? esc_html_x(
+							'Displays this month\'s events.',
+							'Description of the Events Calendar Widget.',
+							'tribe-events-calendar-pro'
+						)
+						: esc_html( "Displays this month's events." );
+				}
+			),
 		];
 	}
 

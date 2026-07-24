@@ -77,15 +77,17 @@ abstract class Taxonomy_Abstract extends Controller implements Taxonomy_Interfac
 	}
 
 	/**
-	 * @inheritDoc
+	 * Add actions related to this controller.
+	 *
+	 * @since 6.2.0
+	 * @since 7.7.3 Updated `register_to_wp` to priority 20. Updated `add_actions` to priority 25. [CE-329]
 	 */
 	public function add_actions(): void {
-		add_action( 'init', [ $this, 'register_to_wp' ], 15 );
+		add_action( 'init', [ $this, 'register_to_wp' ], 20 );
 
 		if ( ! did_action( 'init' ) && ! doing_action( 'init' ) ) {
 			// Hook itself to the init action, so we can be sure that the post type is registered.
-			add_action( 'init', [ $this, 'add_actions' ], 20 );
-
+			add_action( 'init', [ $this, 'add_actions' ], 25 );
 			return;
 		}
 
@@ -115,10 +117,11 @@ abstract class Taxonomy_Abstract extends Controller implements Taxonomy_Interfac
 
 	/**
 	 * @inheritDoc
+	 *
 	 */
 	public function remove_actions(): void {
-		remove_action( 'init', [ $this, 'register_to_wp' ], 15 );
-		remove_action( 'init', [ $this, 'add_actions' ], 20 );
+		remove_action( 'init', [ $this, 'register_to_wp' ], 20 );
+		remove_action( 'init', [ $this, 'add_actions' ], 25 );
 
 		$configuration = $this->get_configuration();
 
@@ -146,10 +149,20 @@ abstract class Taxonomy_Abstract extends Controller implements Taxonomy_Interfac
 
 
 	/**
-	 * @inheritDoc
+	 * Add filters related to this controller.
+	 *
+	 * @since 6.2.0
+	 * @since 7.7.3 Updated `add_filters` to priority 25.
 	 */
 	public function add_filters(): void {
 		add_filter( 'tribe_context_locations', [ $this, 'filter_context_locations' ] );
+
+		if ( ! did_action( 'init' ) && ! doing_action( 'init' ) ) {
+			// Hook itself to the init action, so we can be sure that the post type is registered.
+			add_action( 'init', [ $this, 'add_filters' ], 25 );
+
+			return;
+		}
 
 		$linked_post_type = $this->get_linked_post_type();
 		// Register the Linked Post Type Columns.

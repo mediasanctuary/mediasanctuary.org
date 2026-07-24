@@ -66,8 +66,15 @@ class Migration_Notice {
 	public function display_notice() {
 		_deprecated_function( __METHOD__, '1.15.3', 'No replacement.' );
 
-		$text = _x( 'Thank you for updating to the latest version of Virtual Events. You will need to <a href="%1$s">reconnect your Zoom account</a> for the plugin to work as intended.', 'The migration notice to authorize the new Zoom App.', 'tribe-events-calendar-pro' );
-
-		return sprintf( $text, Settings::admin_url() );
+		return sprintf(
+			/* translators: %1$s: The URL to the Zoom application credentials. */
+			_x( 'Thank you for updating to the latest version of Virtual Events. You will need to <a href="%1$s">reconnect your Zoom account</a> for the plugin to work as intended.', 'The migration notice to authorize the new Zoom App.', 'tribe-events-calendar-pro' ),
+			Settings::admin_url(
+				[
+					'tab'                               => 'meetings',
+					'#tec-zoom-application-credentials' => '',
+				]
+			)
+		);
 	}
 }

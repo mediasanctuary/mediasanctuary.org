@@ -54,14 +54,15 @@ if ( ! empty( $type ) ) {
 ?>
 <div <?php tribe_classes( $classes ); ?>>
 	<div class="tribe-filter-bar-c-filter__toggle-wrapper">
-		<button
-			class="tribe-filter-bar-c-filter__toggle tribe-common-b1 tribe-common-b2--min-medium"
-			id="<?php echo esc_attr( $toggle_id ); ?>"
-			type="button"
-			aria-controls="<?php echo esc_attr( $container_id ); ?>"
-			aria-expanded="<?php echo esc_attr( $is_open ? 'true' : 'false' ); ?>"
-			data-js="tribe-events-accordion-trigger tribe-filter-bar-c-filter-toggle"
-		>
+		<h3 class="tribe-filter-bar-c-filter__toggle-heading">
+			<button
+				class="tribe-filter-bar-c-filter__toggle tribe-common-b1 tribe-common-b2--min-medium"
+				id="<?php echo esc_attr( $toggle_id ); ?>"
+				type="button"
+				aria-controls="<?php echo esc_attr( $container_id ); ?>"
+				aria-expanded="<?php echo esc_attr( $is_open ? 'true' : 'false' ); ?>"
+				data-js="tribe-events-accordion-trigger tribe-filter-bar-c-filter-toggle"
+			>
 			<div class="tribe-filter-bar-c-filter__toggle-text">
 				<span class="tribe-filter-bar-c-filter__toggle-label"><?php echo esc_html( $label ); ?></span><span class="tribe-filter-bar-c-filter__toggle-label-colon">:</span>
 				<?php if ( ! empty( $selections_count ) ) : ?>
@@ -87,17 +88,20 @@ if ( ! empty( $type ) ) {
 					<?php esc_html_e( 'Close filter', 'tribe-events-filter-view' ); ?>
 				</span>
 			</span>
-		</button>
-
+			</button>
+		</h3>
 		<?php if ( $is_pill_style ) : ?>
+		<h3 class="tribe-filter-bar-c-filter__remove-heading">
 			<button class="tribe-filter-bar-c-filter__remove-button" type="button">
 				<?php $this->template( 'components/icons/close-alt', [ 'classes' => [ 'tribe-filter-bar-c-filter__remove-button-icon' ] ] ); ?>
 				<span class="tribe-filter-bar-c-filter__remove-button-text tribe-common-a11y-visual-hide">
 					<?php esc_html_e( 'Remove filters', 'tribe-events-filter-view' ); ?>
 				</span>
 			</button>
+		</h3>
 		<?php endif; ?>
 	</div>
+
 
 	<div
 		class="tribe-filter-bar-c-filter__container"
@@ -111,6 +115,7 @@ if ( ! empty( $type ) ) {
 			</legend>
 
 			<?php if ( $is_pill_style ) : ?>
+			<h3 class="tribe-filter-bar-c-filter__close-heading">
 				<button
 					class="tribe-filter-bar-c-filter__filters-close"
 					type="button"
@@ -121,6 +126,7 @@ if ( ! empty( $type ) ) {
 						<?php esc_html_e( 'Close filter', 'tribe-events-filter-view' ); ?>
 					</span>
 				</button>
+			</h3>
 			<?php endif; ?>
 
 			<div class="tribe-filter-bar-c-filter__filter-fields">

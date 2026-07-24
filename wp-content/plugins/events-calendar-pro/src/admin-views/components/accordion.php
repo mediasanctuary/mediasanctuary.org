@@ -7,9 +7,10 @@
  *
  * See more documentation about our views templating system.
  *
- * @since   1.6.0
+ * @since 1.6.0
+ * @since 7.7.6 Changed a <div> to a <fieldset> to match the new admin UI styling.
  *
- * @version 1.6.0
+ * @version 7.7.6
  *
  * @link    http://evnt.is/1aiy
  *
@@ -42,12 +43,12 @@ if ( ! empty( $classes_panel ) ) {
 }
 
 ?>
-<div
-	<?php tribe_classes( $accordion_wrap_classes ); ?>
+<fieldset
+	<?php tec_classes( $accordion_wrap_classes ); ?>
 >
 	<button
 		type="button"
-		<?php tribe_classes( $accordion_button_classes ); ?>
+		<?php tec_classes( $accordion_button_classes ); ?>
 		data-js="tribe-events-accordion-trigger"
 		aria-controls="<?php echo esc_html( $id ); ?>"
 		aria-expanded="<?php echo $expanded ? 'true' : 'false'; ?>"
@@ -70,7 +71,7 @@ if ( ! empty( $classes_panel ) ) {
 	</button>
 
 	<div
-		<?php tribe_classes( $accordion_panel_classes ); ?>
+		<?php tec_classes( $accordion_panel_classes ); ?>
 		aria-hidden="<?php echo $expanded ? 'false' : 'true'; ?>"
 		id="<?php echo esc_html( $id ); ?>"
 		<?php
@@ -80,4 +81,4 @@ if ( ! empty( $classes_panel ) ) {
 	>
 		<?php echo $panel ?>
 	</div>
-</div>
+</fieldset>

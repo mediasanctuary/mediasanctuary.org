@@ -11,15 +11,17 @@
  *
  * @since 5.0.0
  * @since 5.1.1 Moved icons out to separate templates.
+ * @since 7.7.8 Remove h3 to be more semantic to improve accessibility.
  *
  * @var WP_Post $event The event post object with properties added by the `tribe_get_event` function.
  *
  * @see tribe_get_event() For the format of the event object.
  *
- * @version 5.1.1
+ * @version 7.7.8
  */
+
 ?>
-<h3 class="tribe-events-pro-week-grid__event-title tribe-common-h8 tribe-common-h--alt">
+<div class="tribe-events-pro-week-grid__event-title tribe-common-h8 tribe-common-h--alt">
 	<?php $this->template( 'week/grid-body/events-day/event/title/featured' ); ?>
 	<?php echo wp_kses_post( get_the_title( $event->ID ) ); ?>
-</h3>
+</div>

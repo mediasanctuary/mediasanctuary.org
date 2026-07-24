@@ -124,7 +124,7 @@ abstract class Abstract_Url {
 	 *
 	 * @param string               $action         The name of the action to add to the url.
 	 * @param string               $nonce          The nonce to verify for the action.
-	 * @param array<string|string> $additional_arg An array of arugments to add to the query string of the admin ajax url.
+	 * @param array<string|string> $additional_arg An array of arguments to add to the query string of the admin ajax url.
 	 *
 	 * @return string
 	 */
@@ -156,9 +156,7 @@ abstract class Abstract_Url {
 		return $this->get_admin_ajax_url_with_parameters(
 			"ev_{$api_id}_settings_account_status",
 			$nonce,
-			[
-				'account_id' => $account_id
-			]
+			[ 'account_id' => $account_id ]
 		);
 	}
 

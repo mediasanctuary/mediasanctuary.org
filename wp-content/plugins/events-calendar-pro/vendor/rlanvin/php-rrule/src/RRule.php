@@ -1014,6 +1014,7 @@ class RRule implements RRuleInterface
 	/**
 	 * @internal
 	 */
+    #[\ReturnTypeWillChange]
 	public function current()
 	{
 		return $this->current;
@@ -1022,6 +1023,7 @@ class RRule implements RRuleInterface
 	/**
 	 * @internal
 	 */
+    #[\ReturnTypeWillChange]
 	public function key()
 	{
 		return $this->key;
@@ -1058,6 +1060,7 @@ class RRule implements RRuleInterface
 	/**
 	 * @internal
 	 */
+    #[\ReturnTypeWillChange]
 	public function offsetGet($offset)
 	{
 		if ( ! is_numeric($offset) || $offset < 0 || is_float($offset) ) {

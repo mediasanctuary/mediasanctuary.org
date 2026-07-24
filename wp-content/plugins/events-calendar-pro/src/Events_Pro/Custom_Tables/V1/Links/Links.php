@@ -112,7 +112,7 @@ class Links {
 		} catch ( Exception $exception ) {
 			do_action( 'tribe_log', 'error', __CLASS__, [
 				'message' => 'Error while getting next Occurrence.',
-				'error'   => $e->getMessage(),
+				'error'   => $exception->getMessage(),
 				'post_id' => $event->post_id,
 			] );
 
@@ -189,7 +189,7 @@ class Links {
 		} catch ( Exception $exception ) {
 			do_action( 'tribe_log', 'error', __CLASS__, [
 				'message' => 'Error while building Occurrence start date.',
-				'error'   => $e->getMessage(),
+				'error'   => $exception->getMessage(),
 				'post_id' => $event->post_id,
 			] );
 
@@ -210,9 +210,33 @@ class Links {
 				$post_link = str_replace( "%$post->post_type%", $post->post_name, $permastruct );
 			}
 			$post_link = trailingslashit( $post_link ) . $date;
-			$home_url  = home_url( '/' );
-			$post_link = str_replace( [ $home_url, site_url( '/' ) ], '', $post_link );
-			$post_link = home_url( user_trailingslashit( $post_link ) );
+			$post_link = str_replace( [ home_url( '/' ), site_url( '/' ), get_option( 'home' ) ], '', $post_link );
+
+			// Reconstruct URL.
+			$reconstructed_url = home_url( user_trailingslashit( $post_link ) );
+
+			/**
+			 * Filters the reconstructed recurrence view link URL.
+			 *
+			 * This filter allows integrations to modify the reconstructed URL,
+			 * for example to add language-specific prefixes or domain modifications.
+			 *
+			 * @since 7.7.12
+			 *
+			 * @param string  $reconstructed_url The reconstructed URL.
+			 * @param string  $post_link         The relative post link path.
+			 * @param WP_Post $post              The post object.
+			 * @param string  $date              The occurrence date in Y-m-d format.
+			 */
+			$reconstructed_url = apply_filters(
+				'tec_events_pro_custom_tables_v1_recurrence_view_link_url',
+				$reconstructed_url,
+				$post_link,
+				$post,
+				$date
+			);
+
+			$post_link = $reconstructed_url;
 		}
 
 		// Add the Arguments back

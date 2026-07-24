@@ -169,13 +169,14 @@ trait With_Event_Recurrence {
 	 * `_EventRecurrence` meta value.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $post_id and $rule explicitly nullable.
 	 *
 	 * @param int|null            $post_id The Event post ID.
 	 * @param array<string,mixed> $rule    The recurrence rule in the format used by the `_EventRecurrence` meta value.
 	 *
 	 * @return array{DateTimeImmutable, DateTimeImmutable, int} The date-related objects.
 	 */
-	private function build_date_data_from_rule( int $post_id = null, array $rule = null ): array {
+	private function build_date_data_from_rule( ?int $post_id = null, ?array $rule = null ): array {
 		$timezone     = Timezones::build_timezone_object( get_post_meta( $post_id, '_EventTimezone', true ) );
 		$start_string = empty( $rule['EventStartDate'] ) ?
 			get_post_meta( $post_id, '_EventStartDate', true )
@@ -412,6 +413,7 @@ trait With_Event_Recurrence {
 	 * rule.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $post_id explicitly nullable.
 	 *
 	 * @param array<string,array>|mixed $rule    The recurrence rule in the format used in the
 	 *                                           `_EventRecurrence` meta.
@@ -422,7 +424,7 @@ trait With_Event_Recurrence {
 	 * @return array<string,array>|mixed The updated recurrence rule, in the format used by the
 	 *                                   `_EventRecurrence` meta, or what was passed in if unable to identify.
 	 */
-	private function add_off_pattern_flag_to_rule( $rule, int $post_id = null, bool $reset = false ) {
+	private function add_off_pattern_flag_to_rule( $rule, ?int $post_id = null, bool $reset = false ) {
 		if ( ! (
 			is_array( $rule )
 			&& ( isset( $rule['custom']['type'] ) || isset( $rule['type'] ) ) )
@@ -508,13 +510,14 @@ trait With_Event_Recurrence {
 	 * Returns whether the rule DTSTART is off-pattern in respect to the RRULE or not.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $post_id explicitly nullable.
 	 *
 	 * @param array<string,mixed> $rule    The rule in the format used in the `_EventRecurrence` meta.
 	 * @param int|null            $post_id The Event post ID.
 	 *
 	 * @return bool Whether the rule DTSTART is off-pattern or not.
 	 */
-	private function is_rule_dtstart_off_pattern( array $rule, int $post_id = null ): bool {
+	private function is_rule_dtstart_off_pattern( array $rule, ?int $post_id = null ): bool {
 		$type = isset( $rule['type'] ) && $rule['type'] !== 'Custom' ? $rule['type'] : $rule['custom']['type'];
 
 		switch ( $type ) {

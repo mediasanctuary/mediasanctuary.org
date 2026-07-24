@@ -130,7 +130,13 @@ trait Context_Filter {
 
 		list( $start, $end ) = static::view_start_end( $context );
 
-		$use_filters_stack = $start instanceof \DateTimeInterface && $end instanceof \DateTimeInterface;
+		if ( did_action( 'tec_ct1_provider_registered' ) ) {
+			// When using Custom Tables v1 the use of the filter stack might create more problems than it could solve.
+			$use_filters_stack = false;
+		} else {
+			// Not using Custom Tables v1: use the stack if filtering on a date range.
+			$use_filters_stack = $start instanceof \DateTimeInterface && $end instanceof \DateTimeInterface;
+		}
 
 		/**
 		 * Filters whether to use the Filter Stack or not.
@@ -204,6 +210,8 @@ trait Context_Filter {
 			'Tribe\Events\Filterbar\Views\V2\Filters\Tag'              => 'tags',
 			'Tribe\Events\Filterbar\Views\V2\Filters\Time_Of_Day'      => 'timeofday',
 			'Tribe\Events\Filterbar\Views\V2\Filters\Venue'            => 'venues',
+			'Tribe\Events\Filterbar\Views\V2\Filters\Date_From' => 'datefrom',
+			'Tribe\Events\Filterbar\Views\V2\Filters\Date_To' => 'dateto',
 		];
 
 		/**
@@ -257,6 +265,8 @@ trait Context_Filter {
 			'Tribe\Events\Filterbar\Views\V2\Filters\Tag'              => __( 'Tags', 'tribe-events-filter-view' ),
 			'Tribe\Events\Filterbar\Views\V2\Filters\Time_Of_Day'      => __( 'Time', 'tribe-events-filter-view' ),
 			'Tribe\Events\Filterbar\Views\V2\Filters\Venue'            => tribe_get_venue_label_plural(),
+			'Tribe\Events\Filterbar\Views\V2\Filters\Date_From' => __( 'Date From', 'tribe-events-filter-view' ),
+			'Tribe\Events\Filterbar\Views\V2\Filters\Date_To' => __( 'Date To', 'tribe-events-filter-view' ),
 		];
 
 		/**

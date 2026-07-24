@@ -6,7 +6,7 @@ class Tribe__Events__Pro__APM_Filters__APM_Filters {
 	 * @return void
 	 */
 	public function __construct() {
-		add_action( 'init', array( $this, 'ecp_filters' ) );
+		add_action( 'init', [ $this, 'ecp_filters' ], 50 );
 		add_action( 'tribe_cpt_filters_after_init', array( $this, 'default_columns' ) );
 		add_filter( 'tribe_query_options', array( $this, 'query_options_for_date' ), 10, 3 );
 	}

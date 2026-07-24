@@ -189,7 +189,7 @@ class Tribe__Events__Integrations__Freemius {
 
 		add_action( 'admin_init', [ $this, 'maybe_remove_activation_complete_notice' ] );
 
-		tribe_asset(
+		tec_asset(
 			Tribe__Events__Main::instance(),
 			"tribe-{$this->slug}-freemius",
 			'freemius.css',
@@ -229,8 +229,6 @@ class Tribe__Events__Integrations__Freemius {
 	/**
 	 * For some reason Freemius is redirecting some customers to a page that doesnt exist. So we catch that page and
 	 * redirect them back to the actual page that we are using to setup the plugins integration.
-	 *
-	 * @link        https://moderntribe.atlassian.net/browse/TEC-3218
 	 *
 	 * @deprecated 6.1.0
 	 * @since       5.0.2

@@ -71,6 +71,7 @@ class Webex_Provider extends Meeting_Provider {
 	 * Hooks the actions required for the Webex API integration to work correctly.
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
+	 * @since 7.7.6 Change the hook used to add the settings fields.
 	 */
 	protected function add_actions() {
 		// Filter event object properties to add the ones related to Webex meetings for virtual events.
@@ -87,7 +88,7 @@ class Webex_Provider extends Meeting_Provider {
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
 	 */
 	protected function add_filters() {
-		add_filter( 'tec_settings_gmaps_js_api_start', [ $this, 'filter_addons_tab_fields' ] );
+		add_filter( 'tec_events_pro_meetings_tab_fields', [ $this, 'filter_addons_tab_fields' ] );
 		add_filter( 'tribe_events_virtual_video_sources', [ $this, 'add_video_source' ], 20, 2 );
 		add_filter( 'tec_events_virtual_autodetect_video_sources', [ $this, 'add_autodetect_source' ], 20, 3 );
 		add_filter( 'tec_events_virtual_video_source_autodetect_field_all', [ $this, 'filter_virtual_autodetect_field_accounts' ], 20, 5 );
@@ -154,13 +155,13 @@ class Webex_Provider extends Meeting_Provider {
 		);
 	}
 	/**
-	 * Filters the fields in the Events > Settings > APIs tab to add the ones provided by the extension.
+	 * Adds Webex settings fields to the Meetings settings tab.
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
 	 *
 	 * @param array<string,array> $fields The current fields.
 	 *
-	 * @return array<string,array> The fields, as updated by the settings.
+	 * @return array<string,array> The fields, as updated by the Webex settings.
 	 */
 	public function filter_addons_tab_fields( $fields ) {
 		if ( ! is_array( $fields ) ) {

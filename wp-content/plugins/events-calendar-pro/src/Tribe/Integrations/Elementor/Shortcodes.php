@@ -18,7 +18,7 @@ use Tribe\Events\Views\V2\Assets as Event_Assets;
 /**
  * Class Shortcodes
  *
- * @since   5.1.4
+ * @since 5.1.4
  *
  * @package Tribe\Events\Pro\Integrations\Elementor
  */
@@ -104,8 +104,6 @@ class Shortcodes {
 		$filter = FILTER_UNSAFE_RAW;
 		if ( defined( 'FILTER_SANITIZE_ADD_SLASHES' ) ) {
 			$filter = FILTER_SANITIZE_ADD_SLASHES;
-		} elseif ( defined( 'FILTER_SANITIZE_MAGIC_QUOTES' ) ) {
-			$filter = FILTER_SANITIZE_MAGIC_QUOTES;
 		}
 
 		// We do not use `tribe_get_request_var` here as we need the not decoded version, but still use some care.

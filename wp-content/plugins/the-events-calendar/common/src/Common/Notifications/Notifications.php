@@ -2,24 +2,24 @@
 /**
  * Handles In-App Notifications setup and actions.
  *
- * @since   6.4.0
+ * @since 6.4.0
  *
  * @package TEC\Common\Notifications
  */
 
 namespace TEC\Common\Notifications;
 
-use TEC\Common\Admin\Conditional_Content\Dismissible_Trait;
+use TEC\Common\Admin\Conditional_Content\Traits\Is_Dismissible;
 
 /**
  * Class Notifications
  *
- * @since   6.4.0
+ * @since 6.4.0
 
  * @package TEC\Common\Notifications
  */
 final class Notifications {
-	use Dismissible_Trait;
+	use Is_Dismissible;
 	use Readable_Trait;
 
 	/**
@@ -55,16 +55,17 @@ final class Notifications {
 	public function __construct() {
 		$this->api_url = $this->get_api_url();
 		$this->slugs   = $this->get_plugins();
+	}
 
-		/**
-		 * Allow plugins to hook in and add themselves,
-		 * running their own actions after IAN is initiated.
-		 *
-		 * @since 6.4.0
-		 *
-		 * @param self $ian The IAN instance.
-		 */
-		do_action( 'tec_common_ian_loaded', $this );
+	/**
+	 * Get the slug for the In-App Notifications.
+	 *
+	 * @since 6.8.2
+	 *
+	 * @return string
+	 */
+	public function get_slug(): string {
+		return $this->slug;
 	}
 
 	/**
@@ -82,8 +83,8 @@ final class Notifications {
 		 *
 		 * @since 6.4.0
 		 *
-		 * @param string $api The API URL for the In-App Notifications.
-		 * @param object $this The current instance of the class.
+		 * @param string $api      The API URL for the In-App Notifications.
+		 * @param object $instance The current instance of the class.
 		 */
 		$api = apply_filters( 'tec_common_ian_api_url', $api, $this );
 
@@ -173,18 +174,19 @@ final class Notifications {
 		}
 
 		$cache = tribe_cache();
-		$feed  = $cache->get_transient( 'tec_ian_api_feed' );
+		$slug  = tec_get_request_var( 'plugin' );
+		$feed  = $cache->get_transient( 'tec_ian_api_feed_' . $slug );
 		if ( false === $feed || ! is_array( $feed ) ) {
 			// phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_remote_get_wp_remote_get
 			$response = wp_remote_get( $this->api_url );
 			if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) !== 200 ) {
-				$cache->set_transient( 'tec_ian_api_feed', [], 15 * MINUTE_IN_SECONDS );
+				$cache->set_transient( 'tec_ian_api_feed_' . $slug, [], 15 * MINUTE_IN_SECONDS );
 				wp_send_json_error( wp_remote_retrieve_response_message( $response ), wp_remote_retrieve_response_code( $response ) );
 				return;
 			}
 			$body = json_decode( wp_remote_retrieve_body( $response ), true );
-			$feed = Conditionals::filter_feed( $body['notifications_by_area']['general-tec'] ?? [] );
-			$cache->set_transient( 'tec_ian_api_feed', $feed, 15 * MINUTE_IN_SECONDS );
+			$feed = Conditionals::filter_feed( $body['notifications_by_area'][ 'general-' . $slug ] ?? [] );
+			$cache->set_transient( 'tec_ian_api_feed_' . $slug, $feed, 15 * MINUTE_IN_SECONDS );
 		}
 
 		$template = new Template();
@@ -274,7 +276,7 @@ final class Notifications {
 			return;
 		}
 
-		$unread = json_decode( stripslashes( tec_get_request_var( 'unread' ) ), true );
+		$unread = json_decode( stripslashes( tec_get_request_var( 'unread', '' ) ), true );
 
 		foreach ( $unread as $slug ) {
 			$this->slug = $slug;

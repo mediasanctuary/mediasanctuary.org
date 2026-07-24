@@ -9,7 +9,12 @@
  *
  * @link http://evnt.is/1aiy
  *
- * @version 5.9.0
+ * @version 6.15.12.1
+ *
+ * @since 5.9.0
+ * @since 6.15.11 Made event date area more accessible.
+ * @since 6.15.12.1 Added context to the translation to produce a new msgid and avoid errors from older translations.
+ * @since 6.15.16 Improved heading hierarchy by making dates headings only when events are present.
  *
  * @var string $today_date Today's date in the `Y-m-d` format.
  * @var string $day_date The current day date, in the `Y-m-d` format.
@@ -34,42 +39,63 @@
  *      }
  */
 
-$day_button_classes = [ 'tribe-events-calendar-month__day-cell', 'tribe-events-calendar-month__day-cell--mobile' ];
-$day_number = $day['day_number'];
-$expanded = 'false';
+$day_button_classes = [
+	'tribe-events-calendar-month__day-cell',
+	'tribe-events-calendar-month__day-cell--mobile',
+];
 
-$day_id = 'tribe-events-calendar-day-' . $day_date;
+// Determine day state for ARIA context.
+$today_date  ??= $today_date;
+$day_date      = $day['date'];
+$day_number    = $day['day_number'];
+$expanded      = 'false';
+$day_id        = 'tribe-events-calendar-day-' . $day_date;
+$mobile_day_id = sprintf(
+	'tribe-events-calendar-mobile-day-%1$s-%2$s-%3$s',
+	$day['year_number'],
+	$day['month_number'],
+	$day['day_number']
+);
 
+// Determine relative state label.
 if ( $today_date === $day_date ) {
-	$expanded = 'true';
+	$expanded             = 'true';
 	$day_button_classes[] = 'tribe-events-calendar-month__day-cell--selected';
+	$state_label          = __( 'today', 'the-events-calendar' );
+} elseif ( strtotime( $day_date ) < strtotime( $today_date ) ) {
+	$state_label = __( 'past day', 'the-events-calendar' );
+} else {
+	$state_label = __( 'upcoming day', 'the-events-calendar' );
 }
 
-// Only add id if events exist on the day.
-$mobile_day_id = 'tribe-events-calendar-mobile-day-' . $day['year_number'] . '-' . $day['month_number'] . '-' . $day['day_number'];
-
-$events_label_singular = tribe_get_event_label_singular_lowercase();
-$events_label_plural   = tribe_get_event_label_plural_lowercase();
-
 $num_events_label = sprintf(
-	/* translators: %1$s: number of events, %2$s: event (singular), %3$s: events (plural). */
-	_n( '%1$s %2$s', '%1$s %3$s', $day['found_events'], 'the-events-calendar' ),
+	// Translators: %1$s = number of events, %2$s = event label (singular or plural).
+	_nx( '%1$s %2$s', '%1$s %2$s', $day['found_events'], 'As (number) (event label - singular or plural)', 'the-events-calendar' ),
 	number_format_i18n( $day['found_events'] ),
-	$events_label_singular,
-	$events_label_plural
+	1 === (int) $day['found_events'] ? tribe_get_event_label_singular_lowercase() : tribe_get_event_label_plural_lowercase()
 );
-?>
 
+$day_label = sprintf(
+	// translators: %1$s: formatted date (e.g. October 22), %2$s: event count (e.g. has 1 event), %3$s: day state (e.g. past day).
+	__( '%1$s, %2$s, %3$s', 'the-events-calendar' ),
+	tribe_format_date( $day['date'], false, 'F j' ),
+	$num_events_label,
+	$state_label
+);
+
+$has_events = ! empty( $day['found_events'] );
+$date_tag   = $has_events ? 'h3' : 'div';
+?>
 <button
 	aria-expanded="<?php echo esc_attr( $expanded ); ?>"
 	aria-controls="<?php echo esc_attr( $mobile_day_id ); ?>"
-	<?php tribe_classes( $day_button_classes ); ?>
+	aria-label="<?php echo esc_attr( $day_label ); ?>"
+	<?php tec_classes( $day_button_classes ); ?>
 	data-js="tribe-events-calendar-month-day-cell-mobile"
-	tabindex="-1"
 >
-	<h3 class="tribe-events-calendar-month__day-date tribe-common-h6 tribe-common-h--alt">
+	<<?php echo esc_attr( $date_tag ); ?> class="tribe-events-calendar-month__day-date tribe-common-h6 tribe-common-h--alt">
 		<span class="tribe-common-a11y-visual-hide">
-			<?php echo esc_html( $num_events_label ); ?>,
+			<?php echo esc_html( $num_events_label ); ?>
 		</span>
 		<time
 			class="tribe-events-calendar-month__day-date-daynum"
@@ -77,6 +103,6 @@ $num_events_label = sprintf(
 		>
 			<?php echo esc_html( $day_number ); ?>
 		</time>
-	</h3>
+	</<?php echo esc_attr( $date_tag ); ?>>
 	<?php $this->template( 'month/calendar-body/day/date-extras', [ 'day_date' => $day_date, 'day' => $day ] ); ?>
 </button>

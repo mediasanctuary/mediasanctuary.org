@@ -2,7 +2,7 @@
 /**
  * Controller for In-App Notifications.
  *
- * @since   6.4.0
+ * @since 6.4.0
  *
  * @package TEC\Common\Notifications
  */
@@ -17,11 +17,20 @@ use Tribe__Main;
 /**
  * Class Controller
  *
- * @since   6.4.0
+ * @since 6.4.0
 
  * @package TEC\Common\Notifications
  */
 class Controller extends Controller_Contract {
+
+	/**
+	 * The custom action that will be fired when the controller registers.
+	 *
+	 * @since 6.5.1
+	 *
+	 * @var string
+	 */
+	public static string $registration_action = 'tec_common_ian_loaded';
 
 	/**
 	 * Registers actions and filters.
@@ -67,7 +76,7 @@ class Controller extends Controller_Contract {
 	 * @return void
 	 */
 	public function register_ian() {
-		tribe_assets(
+		tec_assets(
 			Tribe__Main::instance(),
 			[
 				[ 'ian-client-css', 'ian-client.css' ],
@@ -101,8 +110,13 @@ class Controller extends Controller_Contract {
 	 * @return bool
 	 */
 	public function is_ian_page() {
-		$screen  = get_current_screen();
-		$allowed = [ 'tribe_events', 'edit-tribe_events', 'tribe_events_page_tec-events-settings' ];
+		$screen = get_current_screen();
+
+		if ( ! $screen ) {
+			return false;
+		}
+
+		$allowed = [];
 
 		/**
 		 * Filter the allowed pages for the Notifications icon.

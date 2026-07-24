@@ -15,6 +15,7 @@ use TEC\Event_Automator\Power_Automate\REST\V1\Endpoints\Queue\New_Events;
 use TEC\Event_Automator\Power_Automate\REST\V1\Endpoints\Queue\Updated_Events;
 use TEC\Event_Automator\Power_Automate\REST\V1\Endpoints\Queue\Canceled_Events;
 use TEC\Event_Automator\Power_Automate\Settings;
+use Tribe__Settings_Tab;
 
 /**
  * Class Power_Automate_Provider
@@ -25,6 +26,24 @@ use TEC\Event_Automator\Power_Automate\Settings;
  */
 class Power_Automate_Provider extends Service_Provider {
 	/**
+	 * Stores the instance of the settings tab.
+	 *
+	 * @since 7.7.6
+	 *
+	 * @var Tribe__Settings_Tab
+	 */
+	protected $settings_tab;
+
+	/**
+	 * Tab ID for the Power Automate settings.
+	 *
+	 * @since 7.7.6
+	 *
+	 * @var string
+	 */
+	const TAB_ID = 'power-automate';
+
+	/**
 	 * Binds and sets up implementations.
 	 *
 	 * @since 7.0.3
@@ -34,7 +53,7 @@ class Power_Automate_Provider extends Service_Provider {
 			return;
 		}
 
-		// Requires single instance to use the same API class through the call.
+		// Requires a single instance to use the same API class through the call.
 		$this->container->singleton( Create_Events::class );
 
 		$this->add_actions();
@@ -56,8 +75,11 @@ class Power_Automate_Provider extends Service_Provider {
 	 * Adds the actions required for event status.
 	 *
 	 * @since 7.0.3
+	 * @since 7.7.6 Add hook for `add_settings_fields`.
 	 */
 	protected function add_actions() {
+		add_action( 'tec_settings_tab_addons', [ $this, 'add_settings_fields' ] );
+
 		add_action( 'rest_api_init', [ $this, 'register_endpoints' ] );
 
 		// Add endpoints to settings dashboard.
@@ -68,9 +90,9 @@ class Power_Automate_Provider extends Service_Provider {
 	 * Adds the filters required by Power Automate.
 	 *
 	 * @since 7.0.3
+	 * @since 7.7.6 Remove hook for `filter_tec_integrations_tab_fields`.
 	 */
 	protected function add_filters() {
-		add_filter( 'tec_settings_gmaps_js_api_start', [ $this, 'filter_tec_integrations_tab_fields' ] );
 		add_filter( 'rest_pre_dispatch', [ $this, 'pre_dispatch_verification_for_create_events' ], 10, 3 );
 		add_filter( 'rest_request_before_callbacks', [ $this, 'modify_rest_api_params_before_validatio_of_create_events' ], 1, 3 );
 	}
@@ -103,22 +125,59 @@ class Power_Automate_Provider extends Service_Provider {
 	 * Filters the fields in the Events > Settings > Integrations tab to Power Automate settings.
 	 *
 	 * @since 7.0.3 Migrated from Common to Events Calendar Pro.
+	 * @since 7.7.6 Deprecated. Use `add_settings_fields` instead.
 	 *
 	 * @param array<string,array> $fields The current fields.
 	 *
 	 * @return array<string,array> The fields, as updated by the settings.
 	 */
 	public function filter_tec_integrations_tab_fields( $fields ) {
-		if ( ! is_array( $fields ) ) {
-			return $fields;
-		}
-
-		return tribe( Settings::class )->add_fields_tec( $fields );
+		_deprecated_function( __METHOD__, '7.7.6', 'add_settings_fields' );
 	}
 
 	/**
-	 * Verify token and login user before dispatching the request.
-	 * Done on `rest_pre_dispatch` to be able to set current user to pass validation capability checks.
+	 * Adds Power Automate settings fields to the settings tab.
+	 *
+	 * @since 7.7.6
+	 *
+	 * @param Tribe__Settings_Tab $parent_tab The parent settings tab instance to add fields to.
+	 *
+	 * @return void
+	 */
+	public function add_settings_fields( $parent_tab ) {
+		$this->settings_tab = new Tribe__Settings_Tab(
+			self::TAB_ID,
+			esc_html__( 'Power Automate', 'tribe-events-calendar-pro' ),
+			[
+				'priority'  => 30,
+				'fields'    => tribe( Settings::class )->add_fields_tec(
+					[
+						'power-automate-info' => [
+							'type' => 'html',
+							'html' => '<div class="tec-settings-form__header-block tec-settings-form__header-block--horizontal">'
+								. '<h2 class="tec-settings-form__section-header">'
+								. esc_html__( 'Power Automate', 'tribe-events-calendar-pro' )
+								. '</h2>'
+								. '<p class="tec-settings-form__section-description">'
+								. esc_html__(
+									'Connect your site to Microsoft Power Automate to automate your event and ticket workflows.',
+									'tribe-events-calendar-pro'
+								)
+								. '</p>'
+								. '</div>',
+						],
+					]
+				),
+				'show_save' => false,
+			]
+		);
+
+		$parent_tab->add_child( $this->settings_tab );
+	}
+
+	/**
+	 * Verify the token and log in the user before dispatching the request.
+	 * Done on `rest_pre_dispatch` to be able to set the current user to pass validation capability checks.
 	 *
 	 * @since 7.0.3 Migrated from Common to Events Calendar Pro.
 	 *
@@ -134,7 +193,7 @@ class Power_Automate_Provider extends Service_Provider {
 	}
 
 	/**
-	 * Modifies REST API comma seperated  parameters before validation.
+	 * Modifies REST API comma-separated parameters before validation.
 	 *
 	 * @since 6.0.0 Migrated to Common from Event Automator
 	 *

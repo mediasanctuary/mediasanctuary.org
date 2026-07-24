@@ -64,6 +64,7 @@ class Settings {
 	 * Filter the date time settings fields.
 	 *
 	 * @since 7.0.1
+	 * @since 7.7.3 Adjust header block key to avoid duplication.
 	 *
 	 * @param array $fields The current fields.
 	 *
@@ -73,7 +74,7 @@ class Settings {
 		$sample_date = strtotime( 'January 15 ' . gmdate( 'Y' ) );
 
 		// We add weekDayFormat above, so there are four fields.
-		$fields['dateTimeHeaderBlock'] = ( new Div( new Classes( [ 'tec-settings-form__header-block' ] ) ) )->add_children(
+		$fields['tec-settings-date-header'] = ( new Div( new Classes( [ 'tec-settings-form__header-block' ] ) ) )->add_children(
 			[
 				new Heading(
 					_x( 'Date & Time', 'Date and Time settings section header', 'the-events-calendar' ),

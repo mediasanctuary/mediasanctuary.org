@@ -9,6 +9,7 @@
 
 namespace Tribe\Events\Pro\Views\V2\Widgets;
 
+use Tribe\Utils\Lazy_String;
 use Tribe__Context as Context;
 use Tribe\Events\Views\V2\Widgets\Widget_Abstract;
 
@@ -75,17 +76,39 @@ class Widget_Featured_Venue extends Widget_Abstract {
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @since 7.7.3 Updated to use Lazy_String.
 	 */
 	public static function get_default_widget_name() {
-		return esc_html_x( 'Events Featured Venue', 'The name of the Featured Venue.', 'tribe-events-calendar-pro' );
+		return new Lazy_String(
+			static function () {
+				return is_textdomain_loaded( 'tribe-events-calendar-pro' )
+					? _x( 'Events Featured Venue', 'The name of the Featured Venue.', 'tribe-events-calendar-pro' )
+					: 'Events Featured Venue';
+			}
+		);
 	}
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @since 7.7.3 Updated to use Lazy_String.
 	 */
 	public static function get_default_widget_options() {
 		return [
-			'description' => esc_html_x( 'Displays a list of upcoming events at a specific venue.', 'The description of the Featured Venue Widget.', 'tribe-events-calendar-pro' ),
+			'description' => new Lazy_String(
+				static function () {
+					if ( is_textdomain_loaded( 'tribe-events-calendar-pro' ) ) {
+						return esc_html_x(
+							'Displays a list of upcoming events at a specific venue.',
+							'The description of the Featured Venue Widget.',
+							'tribe-events-calendar-pro'
+						);
+					}
+
+					return esc_html( 'Displays a list of upcoming events at a specific venue.' );
+				}
+			),
 		];
 	}
 

@@ -41,12 +41,11 @@ use Tribe\Events\Views\V2\Template;
 use Tribe__Context as Context;
 use Tribe__Customizer__Section as Customizer_Section;
 use Tribe__Events__Main as TEC;
-use Tribe__Events__Organizer as Organizer;
 use Tribe__Events__Pro__Main as Plugin;
 use Tribe__Events__Rewrite as TEC_Rewrite;
-use Tribe__Events__Venue as Venue;
 use WP_REST_Request as Request;
 use TEC\Common\Contracts\Service_Provider;
+use Tribe\Events\Pro\Views\V2\Views\Summary_View;
 
 /**
  * Class Hooks.
@@ -84,10 +83,12 @@ class Hooks extends Service_Provider {
 		add_action( 'tribe_template_after_include:events/v2/month/mobile-events/mobile-day/mobile-event/date/meta', [ $this, 'action_include_month_mobile_event_recurring_icon' ], 10, 3 );
 		add_action( 'tribe_events_views_v2_view_messages_before_render', [ $this, 'before_view_messages_render' ], 10, 3 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_disable_assets_v1' ], 0 );
+		add_action( 'init', [ $this, 'init' ] );
 		add_action( 'tribe_events_pre_rewrite', [ $this, 'on_pre_rewrite' ], 6 );
 		add_action( 'template_redirect', [ $this, 'on_template_redirect' ], 50 );
-		add_action( 'tribe_template_after_include:events/v2/components/breadcrumbs', [ $this, 'action_include_organizer_meta' ], 10, 3 );
-		add_action( 'tribe_template_after_include:events/v2/components/breadcrumbs', [ $this, 'action_include_venue_meta' ], 10, 3 );
+		add_action( 'tribe_template_before_include:events/v2/components/content-title', [ $this, 'action_include_organizer_meta' ], 10, 3 );
+		add_action( 'tribe_template_before_include:events/v2/components/content-title', [ $this, 'action_include_venue_meta' ], 10, 3 );
+		add_action( 'tec_events_calendar_embeds_enqueue_scripts', [ $this, 'include_assets' ] );
 	}
 
 	/**
@@ -112,8 +113,8 @@ class Hooks extends Service_Provider {
 
 		add_filter( 'tribe_events_views_v2_view_all_breadcrumbs', [ $this, 'filter_view_all_breadcrumbs' ], 10, 2 );
 		add_filter( 'tribe_events_views_v2_view_page_reset_ignored_params', [ $this, 'filter_page_reset_ignored_params' ], 10, 2 );
-		add_filter( 'tribe_events_views_v2_view_venue_breadcrumbs', [ $this, 'filter_view_venue_breadcrumbs' ], 10, 2 );
-		add_filter( 'tribe_events_views_v2_view_organizer_breadcrumbs', [ $this, 'filter_view_organizer_breadcrumbs' ], 10, 2 );
+		add_filter( 'tec_events_views_v2_view_venue_back_link', [ $this, 'filter_view_venue_back_link' ], 10, 2 );
+		add_filter( 'tec_events_views_v2_view_organizer_back_link', [ $this, 'filter_view_organizer_back_link' ], 10, 2 );
 		add_filter( 'tec_events_views_v2_view_venue_header_title', [ $this, 'filter_view_venue_header_title' ], 10, 2 );
 		add_filter( 'tec_events_views_v2_view_organizer_header_title', [ $this, 'filter_view_organizer_header_title' ], 10, 2 );
 		add_filter( 'tec_events_views_v2_view_venue_content_title', [ $this, 'filter_view_venue_content_title' ], 10, 2 );
@@ -154,16 +155,44 @@ class Hooks extends Service_Provider {
 	}
 
 	/**
+	 * Includes the assets for Pro Views v2.
+	 *
+	 * @since 7.4.3
+	 *
+	 * @return void
+	 */
+	public function include_assets(): void {
+		tribe_asset_enqueue_group( Pro_Assets::$group_key );
+	}
+
+	/**
+	 * Triggers the initialization of elements that need to be loaded on the `init` hook.
+	 *
+	 * @since 7.5.0
+	 *
+	 * @return void
+	 */
+	public function init(): void {
+		if ( function_exists( 'tribe_register_view' ) ) {
+			tribe_register_view( 'summary', __( 'Summary', 'tribe-events-calendar-pro' ), Summary_View::class, 50, __( 'summary', 'tribe-events-calendar-pro' ) );
+		}
+	}
+
+	/**
 	 * Checks if our Photo Grid View option is selected and applies classes appropriately.
 	 *
 	 * @since 7.3.2
+	 * @since 7.7.12 Added check to avoid duplicates.
 	 *
 	 * @param array $classes List of container classes.
 	 * @return mixed The modified list of classes.
 	 */
 	public function filter_grid_photo_classes( $classes ) {
 		if ( tribe_get_option( 'photo_view_force_grid' ) ) {
-			$classes[] = 'tribe-events-pro-photo--grid';
+			// Only add the class if it's not already present to avoid duplicates.
+			if ( ! in_array( 'tribe-events-pro-photo--grid', $classes, true ) ) {
+				$classes[] = 'tribe-events-pro-photo--grid';
+			}
 		}
 
 		return $classes;
@@ -407,6 +436,7 @@ class Hooks extends Service_Provider {
 	 * Filters the View repository args to parse and apply PRO specific View filters.
 	 *
 	 * @since 4.7.5
+	 * @since 7.8.0 Made $context explicitly nullable.
 	 *
 	 * @param array        $repository_args The current repository args.
 	 * @param Context|null $context         An instance of the context the View is using or `null` to use the
@@ -414,7 +444,7 @@ class Hooks extends Service_Provider {
 	 *
 	 * @return array The filtered repository args.
 	 */
-	public function filter_events_views_v2_view_repository_args( array $repository_args = [], Context $context = null ) {
+	public function filter_events_views_v2_view_repository_args( array $repository_args = [], ?Context $context = null ) {
 		return $this->container->make( View_Filters::class )->filter_repository_args( $repository_args, $context );
 	}
 
@@ -422,13 +452,14 @@ class Hooks extends Service_Provider {
 	 * Filters the ignored params to add the `hide_subsequent_recurrences` item.
 	 *
 	 * @since 5.3.0
+	 * @since 7.8.0 Made $view explicitly nullable.
 	 *
 	 * @param array<string> $arguments Which arguments we are ignoring.
 	 * @param View|null     $view      Current view that we are filtering.
 	 *
 	 * @return array Array of params with the hide_subsequent_recurrences added.
 	 */
-	public function filter_page_reset_ignored_params( array $arguments = [], View $view = null ) {
+	public function filter_page_reset_ignored_params( array $arguments = [], ?View $view = null ) {
 		return $this->container->make( View_Filters::class )->add_recurrence_hide_to_page_reset_ignored_params( $arguments, $view );
 	}
 
@@ -627,7 +658,8 @@ class Hooks extends Service_Provider {
 	/**
 	 * Filters Organizer view breadcrumbs
 	 *
-	 * @see   \Tribe\Events\Views\V2\View::get_breadcrumbs() for where this code is applying.
+	 * @deprecated 7.7.7 Use `filter_view_organizer_back_link` instead.
+	 * @see \Tribe\Events\Views\V2\View::get_breadcrumbs() for where this code is applying.
 	 * @since 4.7.9
 	 *
 	 * @param View  $view        The instance of the view being rendered.
@@ -638,13 +670,15 @@ class Hooks extends Service_Provider {
 	 *
 	 */
 	public function filter_view_organizer_breadcrumbs( $breadcrumbs, $view ) {
+		_deprecated_function( __METHOD__, '7.7.7', 'filter_view_organizer_back_link' );
 		return $this->container->make( Organizer_View::class )->setup_breadcrumbs( $breadcrumbs, $view );
 	}
 
 	/**
 	 * Filters Venue view breadcrumbs
 	 *
-	 * @see   \Tribe\Events\Views\V2\View::get_breadcrumbs() for where this code is applying.
+	 * @deprecated 7.7.7 Use `filter_view_venue_back_link` instead.
+	 * @see View::get_breadcrumbs() for where this code is applying.
 	 * @since 4.7.9
 	 *
 	 * @param array $view        The instance of the view being rendered.
@@ -655,8 +689,58 @@ class Hooks extends Service_Provider {
 	 *
 	 */
 	public function filter_view_venue_breadcrumbs( $breadcrumbs, $view ) {
+		_deprecated_function( __METHOD__, '7.7.7', 'filter_view_venue_back_link' );
 		return $this->container->make( Venue_View::class )->setup_breadcrumbs( $breadcrumbs, $view );
 	}
+
+	/**
+	 * Filters the Venue View back link data.
+	 *
+	 * Hooked into `tribe_events_views_v2_view_venue_back_link` to provide
+	 * the back link shown in place of breadcrumbs on single Venue views.
+	 *
+	 * @since 7.7.7
+	 *
+	 * @see View::get_back_link() For where this filter is applied.
+	 *
+	 * @param array|false $back_link   Back link data, or false to fall back to breadcrumbs.
+	 *                                 Expected array shape:
+	 *                                 [
+	 *                                     'url'   => (string) The URL for the back link.
+	 *                                     'label' => (string) The label for the back link.
+	 *                                 ].
+	 * @param array       $breadcrumbs The breadcrumbs array (may be empty).
+	 *
+	 * @return array|false Filtered back link data, or false to display breadcrumbs.
+	 */
+	public function filter_view_venue_back_link( $back_link, $breadcrumbs ) {
+		return $this->container->make( Venue_View::class )->setup_back_link( $back_link, $breadcrumbs );
+	}
+
+	/**
+	 * Filters the Organizer View back link data.
+	 *
+	 * Hooked into `tribe_events_views_v2_view_organizer_back_link` to provide
+	 * the back link shown in place of breadcrumbs on single Organizer views.
+	 *
+	 * @since 7.7.7
+	 *
+	 * @see View::get_back_link() For where this filter is applied.
+	 *
+	 * @param array|false $back_link   Back link data, or false to fall back to breadcrumbs.
+	 *                                 Expected array shape:
+	 *                                 [
+	 *                                     'url'   => (string) The URL for the back link.
+	 *                                     'label' => (string) The label for the back link.
+	 *                                 ].
+	 * @param array       $breadcrumbs The breadcrumbs array (may be empty).
+	 *
+	 * @return array|false Filtered back link data, or false to display breadcrumbs.
+	 */
+	public function filter_view_organizer_back_link( $back_link, $breadcrumbs ) {
+		return $this->container->make( Organizer_View::class )->setup_back_link( $back_link, $breadcrumbs );
+	}
+
 
 	/**
 	 * Filters Organizer view header title.

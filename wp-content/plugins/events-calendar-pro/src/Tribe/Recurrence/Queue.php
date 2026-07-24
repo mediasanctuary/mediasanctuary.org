@@ -111,10 +111,12 @@ class Tribe__Events__Pro__Recurrence__Queue {
 	 * overwritten, therefore for use cases where the dates need to be appended this
 	 * must be managed manually by first obtaining the existing list.
 	 *
+	 * @since 7.8.0 Made $dates explicitly nullable.
+	 *
 	 * @param  array $dates
 	 * @return mixed array|null
 	 */
-	public function instances_to_create( array $dates = null ) {
+	public function instances_to_create( ?array $dates = null ) {
 		if ( null === $dates ) {
 			return $this->to_create;
 		}
@@ -129,10 +131,12 @@ class Tribe__Events__Pro__Recurrence__Queue {
 	 * overwritten, therefore for use cases where the dates need to be appended this
 	 * must be managed manually by first obtaining the existing list.
 	 *
+	 * @since 7.8.0 Made $dates explicitly nullable.
+	 *
 	 * @param  array $dates
 	 * @return mixed array|null
 	 */
-	public function instances_to_update( array $dates = null ) {
+	public function instances_to_update( ?array $dates = null ) {
 		if ( null === $dates ) {
 			return $this->to_update;
 		}
@@ -147,10 +151,12 @@ class Tribe__Events__Pro__Recurrence__Queue {
 	 * overwritten, therefore for use cases where the dates need to be appended this
 	 * must be managed manually by first obtaining the existing list.
 	 *
+	 * @since 7.8.0 Made $dates explicitly nullable.
+	 *
 	 * @param  array $dates
 	 * @return mixed array|null
 	 */
-	public function instances_to_delete( array $dates = null ) {
+	public function instances_to_delete( ?array $dates = null ) {
 		if ( null === $dates ) {
 			return $this->to_delete;
 		}
@@ -166,10 +172,12 @@ class Tribe__Events__Pro__Recurrence__Queue {
 	 * overwritten, therefore for use cases where the dates need to be appended this
 	 * must be managed manually by first obtaining the existing list.
 	 *
+	 * @since 7.8.0 Made $dates explicitly nullable.
+	 *
 	 * @param  array $dates
 	 * @return mixed array|null
 	 */
-	public function instances_to_exclude( array $dates = null ) {
+	public function instances_to_exclude( ?array $dates = null ) {
 		if ( null === $dates ) {
 			return $this->to_exclude;
 		}

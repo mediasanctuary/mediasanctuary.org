@@ -250,12 +250,13 @@ class Condense_Events_Series {
 	 * from the ORM used on the legacy system with meta values.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $query explicitly nullable.
 	 *
 	 * @param WP_Query|null $query The current Query from the request.
 	 *
 	 * @return array<string, mixed> The filter found or an empty array if not found.
 	 */
-	private function get_filter( WP_Query $query = null ) {
+	private function get_filter( ?WP_Query $query = null ) {
 		if ( $query === null ) {
 			return [];
 		}
@@ -378,10 +379,11 @@ class Condense_Events_Series {
 	 * The object is passed by reference in order to modify the properties of the object.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $query explicitly nullable.
 	 *
 	 * @param WP_Query|null $query The query object from the request.
 	 */
-	private function cleanup_meta_query( WP_Query &$query = null ) {
+	private function cleanup_meta_query( ?WP_Query &$query = null ) {
 		if ( $query === null ) {
 			return;
 		}

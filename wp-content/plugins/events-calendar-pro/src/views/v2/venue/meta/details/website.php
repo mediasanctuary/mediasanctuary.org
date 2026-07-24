@@ -9,9 +9,14 @@
  *
  * @link https://evnt.is/1aiy
  *
- * @version 5.2.0
+ * @since 5.2.0
+ * @since 7.6.1 Add the $icon_description parameter and update the template to use it for the accessible label.
+ * @since 7.7.6 Change the class and the target of the `<a>` tag for better accessibility.
  *
- * @var WP_Post $venue The venue post object.
+ * @version 7.7.6
+ *
+ * @var WP_Post $venue            The venue post object.
+ * @var string  $icon_description The description of the icon. Used for the accessible label. (optional)
  *
  */
 
@@ -21,11 +26,19 @@ if ( empty( $url ) ) {
 	return;
 }
 
+if ( empty( $icon_description ) ) {
+	$icon_description = __( 'Website', 'tribe-events-calendar-pro' );
+}
+
 ?>
 <div class="tribe-events-pro-venue__meta-website tribe-common-b1 tribe-common-b2--min-medium">
 	<?php $this->template( 'components/icons/website', [ 'classes' => [ 'tribe-events-pro-venue__meta-website-icon-svg' ] ] ); ?>
+	<span class="tribe-common-a11y-visual-hide">
+		<?php echo esc_html( $icon_description ); ?>
+	</span>
 	<a
 		href="<?php echo esc_url( $url ); ?>"
-		class="tribe-events-pro-venue__meta-website-link tribe-common-anchor"
+		class="tribe-events-pro-venue__meta-website-link tribe-common-anchor-alt"
+		target="_blank"
 	><?php echo esc_html( $url ); ?></a>
 </div>

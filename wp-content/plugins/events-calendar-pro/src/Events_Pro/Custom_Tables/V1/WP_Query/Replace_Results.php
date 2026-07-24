@@ -54,13 +54,14 @@ class Replace_Results {
 	 * before the results are returned to the next WP_Query call.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $wp_query explicitly nullable.
 	 *
 	 * @param                 $posts
 	 * @param  WP_Query|null  $wp_query
 	 *
 	 * @return mixed
 	 */
-	public function replace( $posts, WP_Query $wp_query = null ) {
+	public function replace( $posts, ?WP_Query $wp_query = null ) {
 		// This should only apply to posts.
 		if ( ! $this->is_query_for_post_type( $wp_query, TEC::POSTTYPE ) ) {
 			return $posts;

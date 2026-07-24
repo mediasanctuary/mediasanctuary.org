@@ -8,15 +8,16 @@
  * See more documentation about our views templating system.
  *
  * @since 7.0.0 Migrated to Events Pro from Events Virtual.
+ * @since 7.7.6 Changed a <div> to a <fieldset> to match the new admin UI styling.
  *
- * @version 1.7.0
+ * @version 7.7.6
  *
  * @link    http://evnt.is/1aiy
  *
  */
 
 ?>
-<div class="tribe-settings-facebook-application__find-app-id">
+<fieldset class="tribe-settings-facebook-application__find-app-id tribe-field tribe-field--text">
 	<?php
 	$url = 'https://developers.facebook.com/apps/';
 	echo sprintf(
@@ -29,4 +30,4 @@
 		)
 	);
 	?>
-</div>
+</fieldset>

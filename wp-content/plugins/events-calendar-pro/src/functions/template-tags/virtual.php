@@ -6,17 +6,20 @@
  *
  */
 if ( ! function_exists( 'tribe_events_virtual_show_fail_message' ) ) {
+	// phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter.Found
 	/**
 	 * Shows a message to indicate the plugin cannot be loaded due to missing requirements.
 	 *
 	 * @since 1.0.0
 	 * @since 1.14.0 Include message as a param.
+	 * @since 7.8.0 Made $message explicitly nullable.
 	 *
 	 * @param ?string $message The message to show. Defaults to null.
 	 */
-	function tribe_events_virtual_show_fail_message( string $message = null ) {
+	function tribe_events_virtual_show_fail_message( ?string $message = null ) {
 		_deprecated_function( __FUNCTION__, '7.0.1', 'tribe_show_fail_message' );
 	}
+	// phpcs:enable Generic.CodeAnalysis.UnusedFunctionParameter.Found
 }
 
 if ( ! function_exists( 'tribe_events_virtual_load_text_domain' ) ) {

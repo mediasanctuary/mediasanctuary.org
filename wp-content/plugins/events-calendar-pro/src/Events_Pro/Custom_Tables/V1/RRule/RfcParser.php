@@ -18,6 +18,8 @@ use InvalidArgumentException;
 use RRule\RfcParser as Original_Rfc_Parser;
 use Tribe__Timezones as Timezones;
 
+// phpcs:disable StellarWP.Methods.MethodDeclaration.StaticBeforeVisibility, PSR2.Methods.MethodDeclaration.StaticBeforeVisibility
+
 /**
  * Class RfcParser
  *
@@ -34,6 +36,7 @@ class RfcParser extends Original_Rfc_Parser {
 	 * support additional RDATE entries.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $dtstart explicitly nullable.
 	 *
 	 * @param string $line The RDATE entry to parse.
 	 *
@@ -42,7 +45,7 @@ class RfcParser extends Original_Rfc_Parser {
 	 * @throws Exception If the RDATE line to parse does not define all the minimum required parts or those parts are
 	 *                   not coherent.
 	 */
-	static public function parseRDate( $line, DateTimeImmutable $dtstart = null ) {
+	static public function parseRDate( $line, ?DateTimeImmutable $dtstart = null ) {
 		$property = self::parseLine( $line );
 		if ( $property['name'] !== 'RDATE' ) {
 			throw new InvalidArgumentException( "Failed to parse RDATE line, this is a {$property['name']} property" );
@@ -145,6 +148,7 @@ class RfcParser extends Original_Rfc_Parser {
 	 * Parses an iCalendar format EXDATE string to return a set of exclusion dates.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $dtstart explicitly nullable.
 	 *
 	 * @param string                 $line    The iCalendar format line to parse.
 	 * @param DateTimeImmutable|null $dtstart A reference to the DTSTART object, if any.
@@ -153,7 +157,7 @@ class RfcParser extends Original_Rfc_Parser {
 	 *
 	 * @throws Exception If there's any issue building the dates.
 	 */
-	public static function parseExDate( $line, DateTimeImmutable $dtstart = null ): array {
+	public static function parseExDate( $line, ?DateTimeImmutable $dtstart = null ): array {
 		$property = self::parseLine( $line );
 		if ( $property['name'] !== 'EXDATE' ) {
 			throw new InvalidArgumentException( "Failed to parse EXDATE line, this is a {$property['name']} property" );

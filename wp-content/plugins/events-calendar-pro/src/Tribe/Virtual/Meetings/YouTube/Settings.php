@@ -51,9 +51,12 @@ class Settings {
 	 * @return string The URL of the YouTube API integration settings page.
 	 */
 	public static function admin_url() {
-		$admin_page_url = tribe( TEC_Settings::class )->get_url( [ 'tab' => 'addons' ] );
-
-		return $admin_page_url;
+		return tribe( TEC_Settings::class )->get_url(
+			[
+				'tab'                           => 'meetings',
+				'#tec-events-pro-youtube-title' => '',
+			]
+		);
 	}
 
 	/**

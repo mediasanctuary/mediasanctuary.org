@@ -1,6 +1,6 @@
 <?php
 /**
- * Widget admin for the event calendar widget.
+ * Widget admin for The Events Calendar widget.
  */
 
 // Don't load directly

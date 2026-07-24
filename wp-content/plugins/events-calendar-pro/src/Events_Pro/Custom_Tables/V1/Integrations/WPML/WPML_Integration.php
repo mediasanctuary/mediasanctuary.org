@@ -48,6 +48,8 @@ class WPML_Integration extends Service_Provider {
 		add_filter( 'post_type_link', [ $this, 'filter_permalinks_with_provisional_id' ], 15, 2 );
 
 		add_filter( 'wpml_meta_box_post', [ $this, 'filter_post_metabox' ] );
+
+		add_filter( 'tec_events_pro_custom_tables_v1_recurrence_view_link_url', [ $this, 'filter_recurrence_view_link_url' ], 10, 4 );
 	}
 
 	/**
@@ -73,6 +75,7 @@ class WPML_Integration extends Service_Provider {
 	 * parser will fail to locate the lang and lose the permalink.
 	 *
 	 * @since 6.3.0
+	 * @since 7.7.12 Use wp_make_link_relative instead of str_replace for home URL removal.
 	 *
 	 * @param string  $post_link The post link that has been pre-filtered.
 	 * @param WP_Post $post      The WP_Post for this permalink.
@@ -95,7 +98,7 @@ class WPML_Integration extends Service_Provider {
 		}
 
 		// Remove the home URL from permalink.
-		$post_link = str_replace( array( home_url( '/' ), site_url( '/' ) ), '', $post_link );
+		$post_link = wp_make_link_relative( $post_link );
 
 		// Add the home URL back and retain the lang query param.
 		return home_url( user_trailingslashit( $post_link ) );
@@ -231,5 +234,30 @@ class WPML_Integration extends Service_Provider {
 		$cache->set( $cache_key, $translations, 0, Cache_Listener::TRIGGER_SAVE_POST );
 
 		return $translations;
+	}
+
+	/**
+	 * Filters the reconstructed recurrence view link URL to ensure WPML language context is preserved.
+	 *
+	 * @since 7.7.12
+	 *
+	 * @param string  $reconstructed_url The reconstructed URL.
+	 * @param string  $post_link         The relative post link path.
+	 * @param WP_Post $post              The post object.
+	 * @param string  $date              The occurrence date in Y-m-d format.
+	 *
+	 * @return string The filtered URL with WPML language context preserved.
+	 */
+	public function filter_recurrence_view_link_url( string $reconstructed_url, string $post_link, WP_Post $post, string $date ): string {
+		// Get the post's language from WPML.
+		$language_details = apply_filters( 'wpml_post_language_details', null, $post->ID );
+		$post_language    = $language_details['language_code'] ?? null;
+
+		// Use WPML's permalink filter to ensure language is correct (handles both path and domain).
+		if ( $post_language ) {
+			$reconstructed_url = apply_filters( 'wpml_permalink', $reconstructed_url, $post_language );
+		}
+
+		return $reconstructed_url;
 	}
 }

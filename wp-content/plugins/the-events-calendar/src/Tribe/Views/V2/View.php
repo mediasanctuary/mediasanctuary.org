@@ -267,10 +267,11 @@ class View implements View_Interface {
 	 * View constructor.
 	 *
 	 * @since 4.9.11
+	 * @since 6.17.0 Made $messages explicitly nullable.
 	 *
 	 * @param Messages|null $messages An instance of the messages collection.
 	 */
-	public function __construct( Messages $messages = null ) {
+	public function __construct( ?Messages $messages = null ) {
 		$this->messages = $messages ?: new Messages();
 		$this->rewrite  = TEC_Rewrite::instance();
 		$this->slug     = static::$view_slug; // @todo Kept for back-compat, remove when we finally remove the non-static prop.
@@ -428,6 +429,7 @@ class View implements View_Interface {
 	 * Builds and returns an instance of a View by slug or class.
 	 *
 	 * @since  4.9.2
+	 * @since 6.17.0 Made $context explicitly nullable.
 	 *
 	 * @param string       $view       The view slug, as registered in the `tribe_events_views` filter, or class.
 	 * @param Context|null $context    The context this view should render from; if not set then the global
@@ -435,7 +437,7 @@ class View implements View_Interface {
 	 *
 	 * @return View_Interface An instance of the built view.
 	 */
-	public static function make( $view = null, Context $context = null ) {
+	public static function make( $view = null, ?Context $context = null ) {
 		$manager = tribe( Manager::class );
 
 		$default_view = $manager->get_default_view();
@@ -646,13 +648,7 @@ class View implements View_Interface {
 	}
 
 	/**
-	 * Sends, echoing it and exiting, the view HTML on the page.
-	 *
-	 * @since 4.9.2
-	 *
-	 * @param null|string $html A specific HTML string to print on the page or the HTML produced by the view
-	 *                          `get_html` method.
-	 *
+	 * {@inheritDoc}
 	 */
 	public function send_html( $html = null ) {
 		$html = null === $html ? $this->get_html() : $html;
@@ -692,6 +688,24 @@ class View implements View_Interface {
 		}
 
 		$repository_args = $this->filter_repository_args( $this->setup_repository_args() );
+
+		// Need our nonces for AJAX requests.
+		$nonce_html = Rest_Endpoint::get_rest_nonce_html( Rest_Endpoint::get_rest_nonces() );
+
+		/*
+		 * Some Views might need to access this out of this method, let's make the filtered repository arguments
+		 * available.
+		 */
+		$this->repository_args = $repository_args;
+
+		/**
+		 * Fire before the view HTML cache check.
+		 *
+		 * @since 6.10.2
+		 *
+		 * @param View $this A reference to the View instance that is currently setting up the loop.
+		 */
+		do_action( 'tec_events_before_view_html_cache', $this );
 
 		// Need our nonces for AJAX requests.
 		$nonce_html = Rest_Endpoint::get_rest_nonce_html( Rest_Endpoint::get_rest_nonces() );
@@ -805,9 +819,11 @@ class View implements View_Interface {
 	}
 
 	/**
+	 * @since 6.17.0 Made $context explicitly nullable.
+	 *
 	 * {@inheritDoc}
 	 */
-	public function set_context( Context $context = null ) {
+	public function set_context( ?Context $context = null ) {
 		$this->context = $context;
 	}
 
@@ -1014,7 +1030,7 @@ class View implements View_Interface {
 			$query_args[ $this->page_key ] = $this->url->get_current_page() + 1;
 
 			// Default to the current URL.
-			$url = $url ?: home_url( add_query_arg( [] ) );
+			$url = $url ?: Url::get_current_url();
 
 			$query_args = $this->filter_query_args( $query_args, $url );
 			$query_args = array_filter( $query_args );
@@ -1077,7 +1093,7 @@ class View implements View_Interface {
 			$query_args = array_merge( $query_args, $page_query_args );
 
 			// Default to the current URL.
-			$url = $url ?: home_url( add_query_arg( [] ) );
+			$url = $url ?: Url::get_current_url();
 
 			if ( $paged === 1 ) {
 				$url = remove_query_arg( $this->page_key, $url );
@@ -1147,9 +1163,11 @@ class View implements View_Interface {
 	}
 
 	/**
+	 * @since 6.17.0 Made $repository explicitly nullable.
+	 *
 	 * {@inheritDoc}
 	 */
-	public function set_repository( Repository $repository = null ) {
+	public function set_repository( ?Repository $repository = null ) {
 		$this->repository = $repository;
 	}
 
@@ -1211,12 +1229,13 @@ class View implements View_Interface {
 	 * Sets a View URL object either from some arguments or from the current URL.
 	 *
 	 * @since 4.9.3
+	 * @since 6.17.0 Made $args explicitly nullable.
 	 *
 	 * @param array|null $args   An associative array of arguments that will be mapped to the corresponding query
 	 *                           arguments by the View, or `null` to use the current URL.
 	 * @param bool       $merge  Whether to merge the arguments or override them.
 	 */
-	public function set_url( array $args = null, $merge = false ) {
+	public function set_url( ?array $args = null, $merge = false ) {
 		if ( ! isset( $this->url ) ) {
 			$this->url = new Url();
 		}
@@ -1242,12 +1261,13 @@ class View implements View_Interface {
 	 * Maps a set of arguments to query arguments, ready to be appended to a URL.
 	 *
 	 * @since 4.9.3
+	 * @since 6.17.0 Made $args explicitly nullable.
 	 *
 	 * @param array $args An associative array of arguments to map (translate) to query arguments.
 	 *
 	 * @return array An associative array of query arguments mapped from the input ones.
 	 */
-	protected function map_args_to_query_args( array $args = null ) {
+	protected function map_args_to_query_args( ?array $args = null ) {
 		if ( empty( $args ) ) {
 			return [];
 		}
@@ -1319,12 +1339,13 @@ class View implements View_Interface {
 	 * @since 4.9.3
 	 * @since 6.0.5 Now will merge a "global" repository arg filter, which will be applied elsewhere as well as this
 	 *                primary repository query.
+	 * @since 6.17.0 Made $context explicity nullable.
 	 *
 	 * @param Context|null $context A context to use to setup the args, or `null` to use the View Context.
 	 *
 	 * @return array The arguments, ready to be set on the View repository instance.
 	 */
-	protected function setup_repository_args( Context $context = null ) {
+	protected function setup_repository_args( ?Context $context = null ) {
 		$context = null !== $context ? $context : $this->context;
 
 		$context_arr = $context->to_array();
@@ -1337,7 +1358,7 @@ class View implements View_Interface {
 		 * @since 5.0.0
 		*/
 		$args = [
-			'posts_per_page'       => $context_arr['events_per_page'] + 1,
+			'posts_per_page'       => (int) $context_arr['events_per_page'] + 1,
 			'paged'                => max( Arr::get_first_set( array_filter( $context_arr ), [
 				'paged',
 				'page',
@@ -1406,7 +1427,7 @@ class View implements View_Interface {
 			1
 		);
 
-		return ( $current_page - 1 ) * $context->get( 'events_per_page' );
+		return ( $current_page - 1 ) * (int) $context->get( 'events_per_page' );
 	}
 
 	/**
@@ -1571,7 +1592,7 @@ class View implements View_Interface {
 	 * @return mixed                   Weather the array of events has a next page.
 	 */
 	public function has_next_event( array $events, $overwrite_flag = true ) {
-		$has_next_events = count( $events ) > $this->get_context()->get( 'events_per_page', 12 );
+		$has_next_events = count( $events ) > (int) $this->get_context()->get( 'events_per_page', 12 );
 		if ( (bool) $overwrite_flag ) {
 			$this->set_has_next_event( $has_next_events );
 		}
@@ -1595,6 +1616,9 @@ class View implements View_Interface {
 	 *
 	 * @since 4.9.4
 	 * @since 5.2.1 Add the `rest_method` to the template variables.
+	 * @since 6.14.0 Added filter `tec_events_views_v2_view_template_vars` to filter the template variables.
+	 * @since 6.15.7 Added `backlink` support to template variables, allowing views to display a back link instead of breadcrumbs.
+	 * @since 6.15.20 Added the `day_view_disabled` to the template variables.
 	 *
 	 * @return array An array of Template variables for the View Template.
 	 */
@@ -1713,6 +1737,7 @@ class View implements View_Interface {
 			'today'                => $today,
 			'now'                  => $this->context->get( 'now', 'now' ),
 			'request_date'         => Dates::build_date_object( $this->context->get( 'event_date', $today ) ),
+			'home_url'             => home_url(),
 			'rest_url'             => $endpoint->get_url(),
 			'rest_method'          => $endpoint->get_method(),
 			'rest_nonce'           => '', // For backwards compatibility in views. No longer used.
@@ -1733,8 +1758,10 @@ class View implements View_Interface {
 			'start_of_week'        => get_option( 'start_of_week', 0 ),
 			'header_title'         => $this->get_header_title(),
 			'header_title_element' => $this->get_header_title_element(),
-			'content_title'        => $this->get_content_title(),
+			'content_title'        => $content_title = $this->get_content_title(),
+			'show_content_title'   => ! empty( $content_title ),
 			'breadcrumbs'          => $this->get_breadcrumbs(),
+			'backlink'             => $this->get_back_link( $this->get_breadcrumbs() ),
 			'before_events'        => tribe( Advanced_Display::class )->get_before_events_html( $this ),
 			'after_events'         => tribe( Advanced_Display::class )->get_after_events_html( $this ),
 			'display_events_bar'   => $this->filter_display_events_bar( $this->display_events_bar ),
@@ -1754,7 +1781,18 @@ class View implements View_Interface {
 			'is_initial_load'      => $this->context->doing_php_initial_state(),
 			'public_views'         => $this->get_public_views( $url_event_date ),
 			'show_latest_past'     => $this->should_show_latest_past_events_view(),
+			'past'                 => $this->context->get( 'past', false ),
 		];
+
+		/**
+		 * Filters the template variables for the view.
+		 *
+		 * @since 6.14.0
+		 *
+		 * @param array<string,mixed> $template_vars The template variables.
+		 * @param View               $view          The current view instance.
+		 */
+		$template_vars = apply_filters( 'tec_events_views_v2_view_template_vars', $template_vars, $this );
 
 		if ( ! $this->config->get( 'TEC_NO_MEMOIZE_VIEW_VARS' ) ) {
 			tribe_cache()->set( $memoize_key, $template_vars, Tribe__Cache::NON_PERSISTENT, Tribe__Cache_Listener::TRIGGER_SAVE_POST );
@@ -1764,16 +1802,72 @@ class View implements View_Interface {
 	}
 
 	/**
+	 * Decide whether to show breadcrumbs or a back link.
+	 *
+	 * @since 6.15.7
+	 *
+	 * @param array $breadcrumbs The breadcrumbs array (may be empty).
+	 *
+	 * @return array|false False to show breadcrumbs, or an array with back link data:
+	 *                     [
+	 *                         'url'   => (string) The URL for the back link.
+	 *                         'label' => (string) The label for the back link.
+	 *                     ]
+	 */
+	protected function get_back_link( $breadcrumbs ) {
+		/**
+		 * Filter the back link data for all views.
+		 *
+		 * Return false to show breadcrumbs, or return an array with 'url' and 'label'
+		 * to show a back link instead.
+		 *
+		 * @since 6.15.7
+		 *
+		 * @param array|false $back_link   Default false. Return array to show back link.
+		 * @param array       $breadcrumbs The breadcrumbs array (may be empty).
+		 * @param View        $view        The current view instance.
+		 */
+		$back_link = apply_filters(
+			'tec_events_views_v2_view_back_link',
+			false,
+			$breadcrumbs,
+			$this
+		);
+
+		$view_slug = static::get_view_slug();
+
+		/**
+		 * Filter the back link data for a specific view.
+		 *
+		 * Return false to show breadcrumbs, or return an array with 'url' and 'label'
+		 * to show a back link instead.
+		 *
+		 * @since 6.15.7
+		 *
+		 * @param array|false $back_link   Default false. Return array to show back link.
+		 * @param array       $breadcrumbs The breadcrumbs array (may be empty).
+		 * @param View        $view        The current view instance.
+		 */
+		return apply_filters(
+			"tec_events_views_v2_view_{$view_slug}_back_link",
+			$back_link,
+			$breadcrumbs,
+			$this
+		);
+	}
+
+	/**
 	 * Filters the repository arguments that will be used to set up the View repository instance.
 	 *
 	 * @since 4.9.5
+	 * @since 6.17.0 Made $context explicitly nullable.
 	 *
 	 * @param array        $repository_args The repository arguments that will be used to set up the View repository instance.
 	 * @param Context|null $context         Either a specific Context or `null` to use the View current Context.
 	 *
 	 * @return array The filtered repository arguments.
 	 */
-	protected function filter_repository_args( array $repository_args, Context $context = null ) {
+	protected function filter_repository_args( array $repository_args, ?Context $context = null ) {
 		$context = null !== $context ? $context : $this->context;
 
 		/**
@@ -2205,8 +2299,9 @@ class View implements View_Interface {
 	 * Returns the breadcrumbs data the View will display on the front-end.
 	 *
 	 * @since 4.9.11
+	 * @since 6.15.7 Add is_last property to each breadcrumb after filters are applied.
 	 *
-	 * @return array
+	 * @return array<int,array{link:string,label:string,is_last:bool}>
 	 */
 	protected function get_breadcrumbs() {
 		$context     = $this->context;
@@ -2278,6 +2373,20 @@ class View implements View_Interface {
 		 * @param View  $this        The current View instance being rendered.
 		 */
 		$breadcrumbs = apply_filters( "tribe_events_views_v2_view_{$view_slug}_breadcrumbs", $breadcrumbs, $this );
+
+		// After filters are applied.
+		$last_index = array_key_last( $breadcrumbs );
+
+		$breadcrumbs = array_map(
+			static function ( $crumb, $index ) use ( $last_index ) {
+				$crumb['is_last'] = ( $index === $last_index );
+
+				return $crumb;
+			},
+			$breadcrumbs,
+			array_keys( $breadcrumbs )
+		);
+
 
 		return $breadcrumbs;
 	}
@@ -2378,6 +2487,23 @@ class View implements View_Interface {
 	 *
 	 * @return string
 	 */
+	/**
+	 * Gets the default content title for this view.
+	 *
+	 * Views can override this method to provide contextual defaults like
+	 * "Events for [Date]" or "Events in [Month]".
+	 *
+	 * @since 6.15.16
+	 *
+	 * @return string The default content title, empty string if none.
+	 */
+	protected function get_default_content_title(): string {
+		return '';
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	protected function get_content_title(): string {
 		/**
 		 * Filters the content title the View will print on the frontend.
@@ -2399,8 +2525,53 @@ class View implements View_Interface {
 		 * @param string $content_title The content title to be displayed.
 		 * @param View   $this          The current View instance being rendered.
 		 */
-		return (string) apply_filters( "tec_events_views_v2_view_{$view_slug}_content_title", $content_title, $this );
+		$content_title = (string) apply_filters( "tec_events_views_v2_view_{$view_slug}_content_title", $content_title, $this );
+
+		// If filters didn't provide a title, use the view's default.
+		if ( empty( $content_title ) ) {
+			$content_title = $this->get_default_content_title();
+		}
+
+		return $content_title;
 	}
+
+
+	/**
+	 * Get the HTML heading tag used for the content title on event archive views in Views V2.
+	 *
+	 * Filter allows downgrading the tag from `h1` to any valid `h2–h6` depending on context,
+	 * without introducing new View class properties.
+	 *
+	 * @since 6.15.14
+	 *
+	 * @param string $default_tag The default heading tag. Defaults to `h1`.
+	 *
+	 * @return string A validated HTML heading tag name (`h1` ... `h6`).
+	 */
+	public function get_content_title_heading_tag( string $default_tag = 'h1' ): string {
+		$view_slug = static::get_view_slug();
+
+		/**
+		 * Filters the heading tag used for the content title on event archive views.
+		 *
+		 * This filter runs for all Views V2 event archives and allows themes or plugins to
+		 * adjust the heading level for accessibility or document structure.
+		 *
+		 * @since 6.15.14
+		 *
+		 * @param string                       $tag   The heading tag to use (defaults to 'h1').
+		 * @param View $view  The current View instance.
+		 */
+		$tag = apply_filters( "tec_events_views_v2_view_{$view_slug}_content_title_heading_tag", $default_tag, $this );
+
+		// Early bail safety: fallback if no value or invalid tag.
+		if ( true === empty( $tag ) || 1 !== preg_match( '/^h[1-6]$/', $tag ) ) {
+			return $default_tag;
+		}
+
+		return $tag;
+	}
+
 
 	/**
 	 * Returns if the view should display the events bar.
@@ -2991,3 +3162,4 @@ class View implements View_Interface {
 		return [ static::$view_slug, translate( static::$view_slug, 'the-events-calendar' ) ];
 	}
 }
+

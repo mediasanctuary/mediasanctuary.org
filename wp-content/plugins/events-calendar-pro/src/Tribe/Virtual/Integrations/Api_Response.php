@@ -84,6 +84,7 @@ class Api_Response {
 	 * Invokes either a fulfillment callable or a rejection callable on the response result.
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
+	 * @since 7.8.0 Made $on_rejection explicitly nullable.
 	 *
 	 * @param callable      $on_fulfillment The callback that should be called if the request does not result in an
 	 *                                      error. The callback will receive the response complete array as an input.
@@ -92,7 +93,7 @@ class Api_Response {
 	 *
 	 * @return $this For chaining.
 	 */
-	public function then( callable $on_fulfillment, callable $on_rejection = null ) {
+	public function then( callable $on_fulfillment, ?callable $on_rejection = null ) {
 		if ( $this->is_fulfilled ) {
 			call_user_func( $on_fulfillment, $this->response );
 		}

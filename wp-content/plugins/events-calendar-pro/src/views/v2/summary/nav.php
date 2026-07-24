@@ -9,15 +9,22 @@
  *
  * @link http://m.tri.be/1aiy
  *
+ * @since 7.7.13 Add aria-label attribute to nav. [TEC-5732]
+ *
  * @var string $prev_url The URL to the previous page, if any, or an empty string.
  * @var string $next_url The URL to the next page, if any, or an empty string.
  * @var string $today_url The URL to the today page, if any, or an empty string.
  *
- * @version 5.7.0
+ * @version 7.7.13
  */
 
+$nav_aria_label = sprintf(
+	// Translators: %s: Events (plural).
+	__( 'Bottom %s list pagination', 'tribe-events-calendar-pro' ),
+	tribe_get_event_label_plural_lowercase()
+);
 ?>
-<nav class="tribe-events-pro-summary-nav tribe-events-c-nav">
+<nav class="tribe-events-pro-summary-nav tribe-events-c-nav" aria-label="<?php echo esc_attr( $nav_aria_label ); ?>">
 	<ul class="tribe-events-c-nav__list">
 		<?php
 		if ( ! empty( $prev_url ) ) {

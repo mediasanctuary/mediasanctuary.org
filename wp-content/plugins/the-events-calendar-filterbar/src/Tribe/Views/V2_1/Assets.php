@@ -52,23 +52,24 @@ class Assets extends Service_Provider {
 			$required_styles[] = 'tribe-events-views-v2-full';
 		}
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-views-v2-1-filter-bar-skeleton',
-			'views-filter-bar-skeleton.css',
+			'css/views-filter-bar-skeleton.css',
 			$required_styles,
 			'wp_enqueue_scripts',
 			[
 				'priority'     => 10,
 				'conditionals' => [ $this, 'should_enqueue_frontend' ],
 				'groups'       => [ static::$group_key ],
+				'group_path'   => \Tribe__Events__Filterbar__View::class,
 			]
 		);
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-views-v2-1-filter-bar-full',
-			'views-filter-bar-full.css',
+			'css/views-filter-bar-full.css',
 			[ 'tribe-events-filterbar-views-v2-1-filter-bar-skeleton' ],
 			'wp_enqueue_scripts',
 			[
@@ -79,13 +80,14 @@ class Assets extends Service_Provider {
 					[ tribe( TEC_Assets::class ), 'should_enqueue_full_styles' ],
 				],
 				'groups'       => [ static::$group_key ],
+				'group_path'   => \Tribe__Events__Filterbar__View::class,
 			]
 		);
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-views-v2-print',
-			'views-print.css',
+			'css/views-print.css',
 			[
 				'tribe-events-views-v2-skeleton',
 			],
@@ -100,13 +102,14 @@ class Assets extends Service_Provider {
 				'groups'       => [ static::$group_key ],
 				'print'        => true,
 				'media'        => 'print',
+				'group_path'   => \Tribe__Events__Filterbar__View::class,
 			]
 		);
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-views-filter-bar-state-js',
-			'views/filter-bar-state.js',
+			'js/views/filter-bar-state.js',
 			[
 				'jquery',
 				'tribe-common',
@@ -125,10 +128,10 @@ class Assets extends Service_Provider {
 			]
 		);
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-views-filter-toggle-js',
-			'views/filter-toggle.js',
+			'js/views/filter-toggle.js',
 			[
 				'jquery',
 				'tribe-common',
@@ -140,11 +143,12 @@ class Assets extends Service_Provider {
 				'priority'     => 10,
 				'conditionals' => [ $this, 'should_enqueue_frontend' ],
 				'groups'       => [ static::$group_key ],
+				'group_path'   => \Tribe__Events__Filterbar__View::class,
 			]
 		);
 
 		if ( ! class_exists( 'Tribe__Events__Pro__Main' ) ) {
-			tribe_asset(
+			tec_asset(
 				$plugin,
 				'tribe-swiper',
 				'vendor/swiper/dist/js/swiper.js',
@@ -154,10 +158,10 @@ class Assets extends Service_Provider {
 			);
 		}
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-views-filter-bar-slider-js',
-			'views/filter-bar-slider.js',
+			'js/views/filter-bar-slider.js',
 			[
 				'jquery',
 				'tribe-swiper',
@@ -169,13 +173,14 @@ class Assets extends Service_Provider {
 				'priority'     => 10,
 				'conditionals' => [ $this, 'should_enqueue_frontend' ],
 				'groups'       => [ static::$group_key ],
+				'group_path'   => \Tribe__Events__Filterbar__View::class,
 			]
 		);
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-views-filter-button-js',
-			'views/filter-button.js',
+			'js/views/filter-button.js',
 			[
 				'jquery',
 				'tribe-common',
@@ -188,13 +193,14 @@ class Assets extends Service_Provider {
 				'priority'     => 10,
 				'conditionals' => [ $this, 'should_enqueue_frontend' ],
 				'groups'       => [ static::$group_key ],
+				'group_path'   => \Tribe__Events__Filterbar__View::class,
 			]
 		);
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-views-filters-js',
-			'views/filters.js',
+			'js/views/filters.js',
 			[
 				'jquery',
 				'tribe-common',
@@ -204,14 +210,15 @@ class Assets extends Service_Provider {
 				'localize' => [
 					'name' => 'tribeFilterBarFilterMap',
 					'data' => [ tribe( Filters::class ), 'get_filters_read_map' ],
-				]
+				],
+				'group_path' => \Tribe__Events__Filterbar__View::class,
 			]
 		);
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-views-filter-checkboxes-js',
-			'views/filter-checkboxes.js',
+			'js/views/filter-checkboxes.js',
 			[
 				'jquery',
 				'tribe-common',
@@ -225,10 +232,10 @@ class Assets extends Service_Provider {
 			]
 		);
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-views-filter-radios-js',
-			'views/filter-radios.js',
+			'js/views/filter-radios.js',
 			[
 				'jquery',
 				'tribe-common',
@@ -242,7 +249,7 @@ class Assets extends Service_Provider {
 			]
 		);
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'jquery-ui-touch-punch',
 			'vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js',
@@ -254,10 +261,10 @@ class Assets extends Service_Provider {
 			null
 		);
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-views-filter-range-js',
-			'views/filter-range.js',
+			'js/views/filter-range.js',
 			[
 				'jquery',
 				'jquery-ui-slider',
@@ -274,10 +281,10 @@ class Assets extends Service_Provider {
 			]
 		);
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-views-filter-dropdowns-js',
-			'views/filter-dropdowns.js',
+			'js/views/filter-dropdowns.js',
 			[
 				'jquery',
 				'tribe-dropdowns',
@@ -292,12 +299,13 @@ class Assets extends Service_Provider {
 			]
 		);
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-views-filter-multiselects-js',
-			'views/filter-multiselects.js',
+			'js/views/filter-multiselects.js',
 			[
 				'jquery',
+				'underscore',
 				'tribe-dropdowns',
 				'tribe-common',
 				'tribe-events-filterbar-views-filters-js',
@@ -310,10 +318,10 @@ class Assets extends Service_Provider {
 			]
 		);
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-views-filter-remove-js',
-			'views/filter-remove.js',
+			'js/views/filter-remove.js',
 			[
 				'jquery',
 				'tribe-common',
@@ -327,10 +335,10 @@ class Assets extends Service_Provider {
 			]
 		);
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-views-filter-clear-js',
-			'views/filter-clear.js',
+			'js/views/filter-clear.js',
 			[
 				'jquery',
 				'tribe-common',
@@ -344,15 +352,37 @@ class Assets extends Service_Provider {
 			]
 		);
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-admin-settings',
-			'admin-settings-tab.js',
+			'js/admin-settings-tab.js',
 			[
 				'jquery',
 				'tribe-common',
 			],
-			null
+			null,
+			null,
+			[
+				'group_path' => \Tribe__Events__Filterbar__View::class,
+			]
+		);
+
+		tec_asset(
+			$plugin,
+			'tribe-events-filterbar-views-filter-date-js',
+			'views/filter-date.js',
+			[
+				'jquery',
+				'underscore',
+				'tribe-common',
+				'tribe-events-filterbar-views-filters-js',
+			],
+			'wp_enqueue_scripts',
+			[
+				'priority'     => 10,
+				'conditionals' => [ $this, 'should_enqueue_frontend' ],
+				'groups'       => [ static::$group_key ],
+			]
 		);
 
 		add_action( 'wp_enqueue_scripts', [ $this, 'disable_v1' ], 0 );

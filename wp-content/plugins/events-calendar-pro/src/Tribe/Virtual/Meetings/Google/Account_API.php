@@ -10,6 +10,7 @@
 namespace Tribe\Events\Virtual\Meetings\Google;
 
 use Tribe\Events\Virtual\Integrations\Abstract_Account_Api;
+use \Tribe\Events\Admin\Settings as TEC_Settings;
 
 /**
  * Class Account_API
@@ -149,7 +150,15 @@ abstract class Account_API extends Abstract_Account_Api {
 			$handled = true;
 		}
 
-		wp_safe_redirect( Settings::admin_url() );
+
+		$admin_url = Settings::admin_url(
+			[
+				'tab'                                 => 'meetings',
+				'#tec-google-application-credentials' => '',
+			]
+		);
+
+		wp_safe_redirect( $admin_url ); // phpcs:ignore StellarWP.CodeAnalysis.RedirectAndDie.Error
 
 		return $handled;
 	}

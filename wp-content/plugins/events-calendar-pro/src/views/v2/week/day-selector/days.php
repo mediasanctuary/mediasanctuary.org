@@ -9,13 +9,15 @@
  *
  * @link https://evnt.is/1aiy
  *
- * @version 5.0.0
+ * @version 7.7.10
  *
+ * @since 5.0.0
+ * @since 7.7.10 Use role="tablist" instead of ul.
  *
  * @var array $days An array of each day data.
  */
 ?>
-<ul class="tribe-events-pro-week-day-selector__days-list">
+<ul class="tribe-events-pro-week-day-selector__days-list" role="tablist">
 
 	<?php foreach ( $days as $day ) : ?>
 		<?php $this->template( 'week/day-selector/days/day', [ 'day' => $day ] ); ?>

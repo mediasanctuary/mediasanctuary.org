@@ -57,6 +57,7 @@ class View_Filters {
 	 * Filters the View repository args to apply the applicable filters provided by the plugin.
 	 *
 	 * @since 4.7.5
+	 * @since 7.8.0 Made $context explicitly nullable.
 	 *
 	 * @param array        $repository_args         The current repository args.
 	 * @param Context|null $context                 An instance of the context the View is using or `null` to use the
@@ -64,7 +65,7 @@ class View_Filters {
 	 *
 	 * @return array The filtered repository args.
 	 */
-	public function filter_repository_args( array $repository_args, Context $context = null ) {
+	public function filter_repository_args( array $repository_args, ?Context $context = null ) {
 		$context = null !== $context ? $context : tribe_context();
 		/**
 		 * @var Views_Manager $manager
@@ -109,13 +110,15 @@ class View_Filters {
 	 * Adds the recurrence param to the ignored params on the page reset.
 	 *
 	 * @since 5.3.0
+	 * @since 7.8.0 Made $view explicitly nullable.
 	 *
 	 * @param array     $arguments Which arguments we are ignoring.
 	 * @param View|null $view      Current view that we are filtering.
 	 *
 	 * @return array Array of params with the hide_subsequent_recurrences added.
 	 */
-	public function add_recurrence_hide_to_page_reset_ignored_params( array $arguments = [], View $view = null ) {
+	public function add_recurrence_hide_to_page_reset_ignored_params( array $arguments = [], ?View $view = null ) {
+		unset( $view );
 		$arguments[] = 'hide_subsequent_recurrences';
 
 		return $arguments;
@@ -157,13 +160,14 @@ class View_Filters {
 	 * Filters the View template variables before the HTML is generated to add the ones related to this plugin filters.
 	 *
 	 * @since 4.7.5
+	 * @since 7.8.0 Made $context explicitly nullable.
 	 *
 	 * @param array   $template_vars The View template variables.
 	 * @param Context $context       The View current context.
 	 *
 	 * @return array The filtered template variables.
 	 */
-	public function filter_template_vars( array $template_vars, Context $context = null ) {
+	public function filter_template_vars( array $template_vars, ?Context $context = null ) {
 		$context = null !== $context ? $context : tribe_context();
 		if ( empty( $template_vars['bar'] ) ) {
 			$template_vars['bar'] = [];

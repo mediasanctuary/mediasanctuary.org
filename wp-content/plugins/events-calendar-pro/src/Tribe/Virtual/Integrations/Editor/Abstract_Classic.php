@@ -393,7 +393,7 @@ Abstract class Abstract_Classic {
 				'field' => [
 					'classes_wrap' => [ 'tribe-dependent', "tribe-events-virtual-meetings-autodetect-{$api_key}__message-wrap", 'error' ],
 					'message'        => _x(
-						'No accounts found. Use the link to authorize a new account or reauthorize an existing account:',
+						'No Zoom account detected. Your link will still work if valid, but to access additional features, please',
 						'The message for smart url/autodetect when there are no valid api accounts.',
 						'tribe-events-calendar-pro'
 					),

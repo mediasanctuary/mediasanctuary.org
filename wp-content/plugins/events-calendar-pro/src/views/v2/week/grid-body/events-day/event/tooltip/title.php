@@ -9,7 +9,10 @@
  *
  * @link https://evnt.is/1aiy
  *
- * @version 5.0.0
+ * @version 7.7.12
+ *
+ * @since 5.0.0
+ * @since 7.7.12 Improve accessibility for Week View markup and ARIA structure.
  *
  * @var WP_Post $event The event post object with properties added by the `tribe_get_event` function.
  *
@@ -17,7 +20,7 @@
  *
  */
 ?>
-<h3 class="tribe-events-pro-week-grid__event-tooltip-title tribe-common-h7">
+<h4 class="tribe-events-pro-week-grid__event-tooltip-title tribe-common-h7">
 	<a
 		href="<?php echo esc_url( $event->permalink ); ?>"
 		title="<?php echo esc_attr( get_the_title( $event->ID ) ); ?>"
@@ -26,4 +29,4 @@
 	>
 		<?php echo wp_kses_post( get_the_title( $event->ID ) ); ?>
 	</a>
-</h3>
+</h4>

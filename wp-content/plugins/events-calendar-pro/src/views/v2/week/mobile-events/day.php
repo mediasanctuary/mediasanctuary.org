@@ -9,8 +9,10 @@
  *
  * @link https://evnt.is/1aiy
  *
+ * @version 7.7.10
  *
- * @version 5.0.0
+ * @since 5.0.0
+ * @since 7.7.10 Added role="tabpanel" for proper tab accessibility.
  *
  * @var string $day_date The day date, in the `Y-m-d` format.
  * @var array  $day The data for the day.
@@ -34,8 +36,9 @@ if (
 ?>
 
 <div
-	<?php tribe_classes( $day_classes ) ?>
+	<?php tec_classes( $day_classes ); ?>
 	id="tribe-events-pro-week-mobile-events-day-<?php echo esc_attr( $day_date ); ?>"
+	role="tabpanel"
 	aria-hidden="<?php echo esc_attr( $hidden ); ?>"
 >
 	<?php if ( 0 === $day['found_events'] && ! empty( $day['message_mobile'] ) ) : ?>

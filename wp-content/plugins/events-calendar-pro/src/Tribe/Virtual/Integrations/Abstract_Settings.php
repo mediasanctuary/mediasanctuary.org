@@ -69,13 +69,14 @@ abstract class Abstract_Settings {
 	 * Returns the URL of the Settings URL page.
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
+	 * @since 7.7.6 Added the $args parameter.
+	 *
+	 * @param array<string,string> $args The arguments to add to the URL.
 	 *
 	 * @return string The URL of the TEC Integration settings page.
 	 */
-	public static function admin_url() {
-		$admin_page_url = tribe( TEC_Settings::class )->get_url( [ 'tab' => 'addons' ] );
-
-		return $admin_page_url;
+	public static function admin_url( array $args = [] ) {
+		return tribe( TEC_Settings::class )->get_url( array_merge( [ 'tab' => 'addons' ], $args ) );
 	}
 
 	/**

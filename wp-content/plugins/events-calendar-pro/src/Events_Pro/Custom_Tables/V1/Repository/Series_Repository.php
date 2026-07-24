@@ -9,7 +9,6 @@
 
 namespace TEC\Events_Pro\Custom_Tables\V1\Repository;
 
-use TEC\Events_Pro\Custom_Tables\V1\Events\Provisional\ID_Generator;
 use TEC\Events_Pro\Custom_Tables\V1\Models\Provisional_Post;
 use TEC\Events_Pro\Custom_Tables\V1\Models\Series_Relationship;
 use Tribe__Repository as Repository;

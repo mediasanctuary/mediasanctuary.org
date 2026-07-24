@@ -30,8 +30,10 @@ class Summary_View extends List_View {
 
 	/**
 	 * @inheritdoc
+	 *
+	 * @since 7.8.0 Made $messages explicitly nullable.
 	 */
-	public function __construct( Messages $messages = null ) {
+	public function __construct( ?Messages $messages = null ) {
 		parent::__construct( $messages );
 
 		$this->slug = static::$view_slug;

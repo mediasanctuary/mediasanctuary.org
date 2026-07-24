@@ -12,6 +12,7 @@
  * @since 5.0.0
  * @since 5.1.1 Moved icons out to separate templates.
  * @since 5.2.0 Updated the template to use and support the time format set in WordPress General Settings.
+ * @since 7.7.8 Add date text for screen reader to improve accessibility.
  *
  * @var WP_Post $event        The event post object with properties added by the `tribe_get_event` function.
  * @var obj     $date_formats Object containing the date formats.
@@ -20,7 +21,7 @@
  *
  * @see tribe_get_event() For the format of the event object.
  *
- * @version 5.1.1
+ * @version 7.7.8
  */
 
 $show_end_time  ??= true;
@@ -30,12 +31,15 @@ $display_end_date = $show_end_time
 
 <div class="tribe-events-pro-week-grid__event-datetime">
 	<?php $this->template( 'week/grid-body/events-day/event/date/featured' ); ?>
-	<time datetime="<?php echo $event->dates->start_display->format( 'H:i' ); ?>">
+	<span class="tribe-common-a11y-visual-hide">
+		<?php echo esc_html( $event->dates->start_display->format( 'F j, Y' ) ); ?>
+	</span>
+	<time datetime="<?php echo esc_attr( $event->dates->start_display->format( 'H:i' ) ); ?>">
 		<?php echo esc_html( $event->dates->start_display->format( $time_format ) ); ?>
 	</time>
 	<?php if ( $display_end_date ) : ?>
 		<span class="tribe-events-pro-week-grid__event-datetime-separator"><?php echo esc_html( $date_formats->time_range_separator ); ?></span>
-		<time datetime="<?php echo $event->dates->end_display->format( 'H:i' ) ?>">
+		<time datetime="<?php echo esc_attr( $event->dates->end_display->format( 'H:i' ) ); ?>">
 			<?php echo esc_html( $event->dates->end_display->format( $time_format ) ); ?>
 		</time>
 	<?php endif; ?>

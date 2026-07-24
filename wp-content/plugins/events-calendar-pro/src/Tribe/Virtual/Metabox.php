@@ -61,12 +61,13 @@ class Metabox {
 	 * Metabox constructor.
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
+	 * @since 7.8.0 Made $context explicitly nullable.
 	 *
 	 * @param Admin_Template $template An instance of the plugin template handler.
 	 * @param Context|null   $context  The instance of the Context the metabox should use, or `null` to use the global
 	 *                                 one.
 	 */
-	public function __construct( Admin_Template $template, Context $context = null ) {
+	public function __construct( Admin_Template $template, ?Context $context = null ) {
 		$this->context  = null !== $context ? $context : tribe_context();
 		$this->template = $template;
 	}

@@ -486,15 +486,20 @@ class Api extends Account_API {
 		return sprintf(
 			'%1$s <a href="%2$s" target="_blank">%3$s</a>',
 			esc_html_x(
-				'No Zoom account found. Please check',
-			'The start of the message for smart url/autodetect when there is no Zoom account found.',
-			'tribe-events-calendar-pro'
+				'No connected Zoom account found. Your link will still work if it is valid, but to integrate with Zoom, check',
+				'The start of the message for smart url/autodetect when there is no Zoom account found.',
+				'tribe-events-calendar-pro'
 			),
-			Settings::admin_url(),
+			Settings::admin_url(
+				[
+					'tab'                               => 'meetings',
+					'#tec-zoom-application-credentials' => '',
+				]
+			),
 			esc_html_x(
-				'check your account connection.',
-			'The link in of the message for smart url/autodetect when no Zoom account is found.',
-			'tribe-events-calendar-pro'
+				'your account connection.',
+				'The link in of the message for smart url/autodetect when no Zoom account is found.',
+				'tribe-events-calendar-pro'
 			)
 		);
 	}

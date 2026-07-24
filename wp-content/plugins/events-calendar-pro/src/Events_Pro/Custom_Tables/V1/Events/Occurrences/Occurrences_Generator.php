@@ -128,6 +128,7 @@ class Occurrences_Generator {
 	 * Generates Occurrences for an Event using a custom RSET string, start date and timezone.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $generation_start explicitly nullable.
 	 *
 	 * @param Event             $event            A reference to the Event model instance.
 	 * @param string|RSET       $rset             The RSET definition, in the iCalendar format.
@@ -141,7 +142,7 @@ class Occurrences_Generator {
 	public function generate_from_rset(
 		Event $event,
 		$rset,
-		DateTimeInterface $generation_start = null,
+		?DateTimeInterface $generation_start = null,
 		$duration = null
 	) {
 		try {

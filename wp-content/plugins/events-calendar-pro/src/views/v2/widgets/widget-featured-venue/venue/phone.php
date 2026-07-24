@@ -15,16 +15,13 @@
  *
  * @see tribe_get_venue_object() For the format of the venue object.
  */
+
 if ( empty( $venue->phone ) ) {
 	return;
 }
 ?>
 <div class="tribe-common-h7 tribe-common-h--alt tribe-events-widget-featured-venue__venue-info-group tribe-events-widget-featured-venue__venue-info-group--phone">
-	<em
-		class="tribe-events-widget-featured-venue__venue-icon"
-		aria-label="<?php esc_attr_e( 'Phone', 'tribe-events-calendar-pro' ); ?>"
-		title="<?php esc_attr_e( 'Phone', 'tribe-events-calendar-pro' ); ?>"
-	>
+	<span class="tribe-events-widget-featured-venue__venue-icon" >
 		<?php
 		$this->template(
 			'components/icons/phone',
@@ -36,7 +33,10 @@ if ( empty( $venue->phone ) ) {
 			]
 		);
 		?>
-	</em>
+	</span>
+	<span class="tribe-events-widget-featured-venue__venue-icon-text tribe-common-a11y-visual-hide">
+		<?php esc_html_e( 'Phone', 'tribe-events-calendar-pro' ); ?>
+	</span>
 	<div class="tribe-events-widget-featured-venue__venue-content tribe-events-widget-featured-venue__venue-phone">
 		<?php echo esc_html( $venue->phone ); ?>
 	</div>

@@ -165,7 +165,7 @@ class Filters_Stack {
 		$pool_key = get_class( $filter ) . '|' . $start->format( Dates::DBDATEFORMAT ) . '|' . $end->format( Dates::DBDATEFORMAT );
 
 		if ( ! isset( $this->filter_pools[ $pool_key ] ) ) {
-			$batch_size = 5000;
+			$batch_size = tec_query_batch_size();
 			/** @var \WP_Query $query */
 			$query      = tribe_events()
 				->where( 'date_overlaps', $start, $end, null, 2 )

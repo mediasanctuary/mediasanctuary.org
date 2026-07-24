@@ -11,18 +11,20 @@
  *
  * @var string $prev_url The URL to the previous page, if any, or an empty string.
  *
- * @version 5.6.0
+ * @version 7.7.11
  *
+ * @since 5.6.0
+ * @since 7.7.11 Changed from <a> to <button> to fix accessibility issues.
  */
 ?>
 <li class="tribe-events-c-top-bar__nav-list-item">
-	<a
-		href="<?php echo esc_url( $prev_url ); ?>"
+	<button
+		type="button"
 		class="tribe-common-c-btn-icon tribe-common-c-btn-icon--caret-left tribe-events-c-top-bar__nav-link tribe-events-c-top-bar__nav-link--prev"
 		aria-label="<?php esc_attr_e( 'Previous month', 'tribe-events-calendar-pro' ); ?>"
-		title="<?php esc_attr_e( 'Previous month', 'tribe-events-calendar-pro' ); ?>"
+		data-url="<?php echo esc_url( $prev_url ); ?>"
 		data-js="tribe-events-view-link"
 	>
 		<?php $this->template( 'components/icons/caret-left', [ 'classes' => [ 'tribe-common-c-btn-icon__icon-svg', 'tribe-events-c-top-bar__nav-link-icon-svg' ] ] ); ?>
-	</a>
+	</button>
 </li>

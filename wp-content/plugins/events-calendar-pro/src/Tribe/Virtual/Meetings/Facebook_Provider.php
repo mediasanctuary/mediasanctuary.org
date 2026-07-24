@@ -16,10 +16,11 @@ use Tribe\Events\Virtual\Meetings\Facebook\Settings;
 use Tribe\Events\Virtual\Meetings\Facebook\Event_Export as Facebook_Event_Export;
 use Tribe\Events\Virtual\Meetings\Facebook\Event_Meta as Facebook_Meta;
 use Tribe\Events\Virtual\Meetings\Facebook\Template_Modifications;
-use Tribe\Events\Virtual\Plugin;
 use Tribe\Events\Virtual\Traits\With_Nonce_Routes;
 use Tribe__Admin__Helpers as Admin_Helpers;
 use WP_Post;
+use Tribe__Events__Pro__Main as Pro;
+use Tribe__Template;
 
 /**
  * Class Facebook_Provider
@@ -119,9 +120,10 @@ class Facebook_Provider extends Meeting_Provider {
 	 * Hooks the filters required for the Facebook Live API integration to work correctly.
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
+	 * @since 7.7.6 Change the hook used to add the settings fields.
 	 */
 	protected function add_filters() {
-		add_filter( 'tec_settings_gmaps_js_api_start', [ $this, 'filter_addons_tab_fields' ], 20 );
+		add_filter( 'tec_events_pro_meetings_tab_fields', [ $this, 'filter_addons_tab_fields' ] );
 		add_filter( 'tribe_events_virtual_video_sources', [ $this, 'add_video_source' ], 10, 2 );
 		add_filter( 'tec_events_virtual_export_fields', [ $this, 'filter_facebook_source_google_calendar_parameters' ], 10, 5 );
 		add_filter( 'tec_events_virtual_export_fields', [ $this, 'filter_facebook_source_ical_feed_items' ], 10, 5 );
@@ -130,7 +132,7 @@ class Facebook_Provider extends Meeting_Provider {
 		add_filter( 'tec_events_virtual_video_source_autodetect_field_zoom-accounts', [ $this, 'filter_virtual_autodetect_field_accounts' ], 20, 5 );
 		add_filter( 'tribe_rest_event_data', [ $this, 'attach_rest_properties' ], 10, 2 );
 
-		// Filter event object properties to add Facebook Live Status
+		// Filter event object properties to add Facebook Live Status.
 		add_filter( 'tribe_get_event_after', [ $this, 'add_dynamic_properties' ], 15 );
 
 		// Filter the ticket email virtual url.
@@ -144,12 +146,12 @@ class Facebook_Provider extends Meeting_Provider {
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
 	 *
-	 * @param \WP_Post $event The events post object to be modified.
+	 * @param WP_Post $event The events post object to be modified.
 	 *
-	 * @return \WP_Post The original event object decorated with properties related to virtual events.
+	 * @return WP_Post The original event object decorated with properties related to virtual events.
 	 */
 	public function add_event_properties( $event ) {
-		if ( ! $event instanceof \WP_Post ) {
+		if ( ! $event instanceof WP_Post ) {
 			// We should only act on event posts, else bail.
 			return $event;
 		}
@@ -185,7 +187,7 @@ class Facebook_Provider extends Meeting_Provider {
 	 */
 	public function on_metabox_save( $post_id, $data ) {
 		$post = get_post( $post_id );
-		if ( ! $post instanceof \WP_Post && is_array( $data ) ) {
+		if ( ! $post instanceof WP_Post && is_array( $data ) ) {
 			return;
 		}
 
@@ -197,13 +199,13 @@ class Facebook_Provider extends Meeting_Provider {
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
 	 *
-	 * @param string           $file        The path to the template file, unused.
-	 * @param string           $entry_point The name of the template entry point, unused.
-	 * @param \Tribe__Template $template    The current template instance.
+	 * @param string          $file        The path to the template file, unused.
+	 * @param string          $entry_point The name of the template entry point, unused.
+	 * @param Tribe__Template $template    The current template instance.
 	 */
-	public function render_classic_setup_options( $file, $entry_point, \Tribe__Template $template ) {
+	public function render_classic_setup_options( $file, $entry_point, Tribe__Template $template ) {
 		$this->container->make( Classic_Editor::class )
-		                ->render_setup_options( $template->get( 'post' ) );
+			->render_setup_options( $template->get( 'post' ) );
 	}
 
 	/**
@@ -213,17 +215,17 @@ class Facebook_Provider extends Meeting_Provider {
 	 */
 	public function action_add_event_single_facebook_embed() {
 		$this->container->make( Template_Modifications::class )
-						->add_facebook_video_embed();
+			->add_facebook_video_embed();
 	}
 
 	/**
-	 * Filters the fields in the Events > Settings > APIs tab to add the ones provided by the extension.
+	 * Adds Facebook settings fields to the Meetings settings tab.
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
 	 *
 	 * @param array<string,array> $fields The current fields.
 	 *
-	 * @return array<string,array> The fields, as updated by the settings.
+	 * @return array<string,array> The fields, as updated by the Facebook settings.
 	 */
 	public function filter_addons_tab_fields( $fields ) {
 		if ( ! is_array( $fields ) ) {
@@ -238,8 +240,8 @@ class Facebook_Provider extends Meeting_Provider {
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
 	 *
-	 * @param array<string|string> An array of video sources.
-	 * @param \WP_Post $post       The current event post object, as decorated by the `tribe_get_event` function.
+	 * @param array<string|string> $video_sources An array of video sources.
+	 * @param WP_Post              $post          The current event post object, as decorated by the `tribe_get_event` function.
 	 *
 	 * @return array<string|mixed> An array of video sources.
 	 */
@@ -261,7 +263,7 @@ class Facebook_Provider extends Meeting_Provider {
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
 	 *
 	 * @param array<string|string> $fields      The various file format components for this specific event.
-	 * @param \WP_Post             $event       The WP_Post of this event.
+	 * @param WP_Post              $event       The WP_Post of this event.
 	 * @param string               $key_name    The name of the array key to modify.
 	 * @param string               $type        The name of the export type.
 	 * @param boolean              $should_show Whether to modify the export fields for the current user, default to false.
@@ -295,9 +297,9 @@ class Facebook_Provider extends Meeting_Provider {
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
 	 *
-	 * @param array<string|string>        An array of autodetect sources.
-	 * @param string   $autodetect_source The ID of the current selected video source.
-	 * @param \WP_Post $post              The current event post object, as decorated by the `tribe_get_event` function.
+	 * @param array<string|string> $autodetect_sources An array of autodetect sources.
+	 * @param string               $autodetect_source   The ID of the current selected video source.
+	 * @param \WP_Post             $post                The current event post object, as decorated by the `tribe_get_event` function.
 	 *
 	 * @return array<string|string> An array of video sources.
 	 */
@@ -318,17 +320,17 @@ class Facebook_Provider extends Meeting_Provider {
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
 	 *
-	 * @param array<string|mixed> $autodetect        An array of the autodetect resukts.
+	 * @param array<string|mixed> $autodetect_fields An array of the autodetect results.
 	 * @param string              $video_url         The url to use to autodetect the video source.
 	 * @param string              $autodetect_source The optional name of the video source to attempt to autodetect.
-	 * @param \WP_Post|null       $event             The event post object, as decorated by the `tribe_get_event` function.
+	 * @param WP_Post|null        $event             The event post object, as decorated by the `tribe_get_event` function.
 	 * @param array<string|mixed> $ajax_data         An array of extra values that were sent by the ajax script.
 	 *
 	 * @return array<string|mixed> An array of the autodetect results.
 	 */
 	public function filter_virtual_autodetect_field_accounts( $autodetect_fields, $video_url, $autodetect_source, $event, $ajax_data ) {
 		return $this->container->make( Classic_Editor::class )
-		                ->classic_autodetect_video_source_message( $autodetect_fields, $video_url, $autodetect_source, $event, $ajax_data );
+					->classic_autodetect_video_source_message( $autodetect_fields, $video_url, $autodetect_source, $event, $ajax_data );
 	}
 
 	/**
@@ -337,11 +339,11 @@ class Facebook_Provider extends Meeting_Provider {
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
 	 *
 	 * @param array<string,mixed> $data  The current data of the event.
-	 * @param \WP_Post            $event The event being updated.
+	 * @param WP_Post             $event The event being updated.
 	 *
 	 * @return array<string,mixed> An array with the data of the event on the endpoint.
 	 */
-	public function attach_rest_properties( array $data, \WP_Post $event ) {
+	public function attach_rest_properties( array $data, WP_Post $event ) {
 		return tribe( Facebook_Meta::class )->attach_rest_properties( $data, $event );
 	}
 
@@ -389,8 +391,9 @@ class Facebook_Provider extends Meeting_Provider {
 	protected function enqueue_admin_assets() {
 		$admin_helpers = Admin_Helpers::instance();
 
-		tribe_asset(
-			tribe( Plugin::class ),
+		$pro = Pro::instance();
+		tec_asset(
+			$pro,
 			'tec-virtual-fb-sdk-admin',
 			'https://connect.facebook.net/en_US/sdk.js',
 			[],
@@ -403,8 +406,8 @@ class Facebook_Provider extends Meeting_Provider {
 			]
 		);
 
-		tribe_asset(
-			tribe( Plugin::class ),
+		tec_asset(
+			$pro,
 			'tribe-events-virtual-facebook-settings-js',
 			'events-virtual-facebook-settings.js',
 			[ 'jquery' ],
@@ -416,7 +419,7 @@ class Facebook_Provider extends Meeting_Provider {
 				],
 				'localize' => [
 					'name' => 'tribe_events_virtual_facebook_settings_strings',
-					'data' => [
+					'data' => fn() => [
 						'localIdFailure'              => static::get_local_id_failure_text(),
 						'pageWrapFailure'             => static::get_facebook_page_wrap_failure_text(),
 						'connectionFailure'           => static::get_facebook_connection_failure_text(),
@@ -442,8 +445,8 @@ class Facebook_Provider extends Meeting_Provider {
 			return;
 		}
 
-		tribe_asset(
-			tribe( Plugin::class ),
+		tec_asset(
+			Pro::instance(),
 			'tec-virtual-fb-sdk',
 			'https://connect.facebook.net/en_US/sdk.js',
 			[],
@@ -599,7 +602,8 @@ class Facebook_Provider extends Meeting_Provider {
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
 	 */
 	public function hook_block_template() {
-		/* The action/location which the template is injected depends on whether or not V2 is enabled
+		/*
+		 * The action/location which the template is injected depends on whether or not V2 is enabled
 		 * and whether the virtual event block is present in the post content.
 		 */
 		$embed_inject_action = tribe( 'events-virtual.hooks' )->get_virtual_embed_action();

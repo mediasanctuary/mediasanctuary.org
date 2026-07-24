@@ -8,6 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
+use Tribe\Events\Filterbar\Views;
 use Tribe\Utils\Body_Classes as Body_Classes_Object;
 use Tribe\Events\Views\V2\Template_Bootstrap;
 use \Tribe\Events\Filterbar\Compatibility\Divi\Service_Provider as Divi_Service_Provider;
@@ -16,7 +17,7 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__View' ) ) {
 	class Tribe__Events__Filterbar__View {
 
 		/**
-		 * @var The instance of the class.
+		 * @var self The instance of the class.
 		 *
 		 * @static
 		 */
@@ -30,12 +31,12 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__View' ) ) {
 		protected static $plugin_file = '';
 
 		/**
-		 * @var The directory of the plugin.
+		 * @var string The directory of the plugin.
 		 */
 		public $pluginDir;
 
 		/**
-		 * @var the plugin path.
+		 * @var string The plugin path.
 		 */
 		public $pluginPath;
 
@@ -45,18 +46,18 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__View' ) ) {
 		public $pluginUrl;
 
 		/**
-		 * @var Whether filters sidebar is being displayed or not.
+		 * @var bool Whether filters sidebar is being displayed or not.
 		 */
 		protected $sidebarDisplayed;
 
 		/**
-		 * @var The default filters for a MU site.
+		 * @var array The default filters for a MU site.
 		 *
 		 * @static
 		 */
 		protected static $defaultMuFilters;
 
-		const VERSION = '5.5.8';
+		const VERSION = '5.6.6';
 
 		/**
 		 * The Events Calendar Required Version
@@ -119,6 +120,10 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__View' ) ) {
 			}
 
 			tribe_register_provider( Divi_Service_Provider::class );
+
+			// Initialize integrations before any filters are created.
+			tribe_singleton( 'filterbar.integrations', 'Tribe__Events__Filterbar__Integrations__Manager', [ 'hook' ] );
+			tribe( 'filterbar.integrations' );
 		}
 
 		/**
@@ -150,6 +155,7 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__View' ) ) {
 			$this->pluginUrl        = trailingslashit( plugins_url() . '/' . $this->pluginDir );
 			$this->sidebarDisplayed = false;
 			$this->register_active_plugin();
+			$this->register_assets_group();
 
 			add_action( 'tribe_events_ajax_accessibility_check', [ $this, 'display_dynamic_a11y_notice' ] );
 			add_action( 'current_screen', [ $this, 'maybe_initialize_filters_for_screen' ], 10, 0 );
@@ -181,39 +187,42 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__View' ) ) {
 			add_action( 'admin_init', [ $this, 'run_updates' ], 10, 0 );
 
 			/** Load the main filter-view.css stylesheet */
-			tribe_asset(
+			tec_asset(
 				$this,
 				'tribe-filterbar-styles',
-				'filter-view.css',
+				'css/filter-view.css',
 				[ 'tribe-select2-css', 'tribe-common-admin', 'dashicons' ],
 				'wp_enqueue_scripts',
 				[
 					'conditionals' => [ $this, 'should_enqueue_assets' ],
+					'group_path'   => self::class,
 				]
 			);
 
 			/** Load the mobile filter-view stylesheet */
-			tribe_asset(
+			tec_asset(
 				$this,
 				'tribe-filterbar-mobile-styles',
-				'filter-view-mobile.css',
+				'css/filter-view-mobile.css',
 				[ 'tribe-select2-css', 'tribe-common-admin', 'dashicons' ],
 				'wp_enqueue_scripts',
 				[
 					'media'        => 'only screen and (max-width: ' . tribe_get_mobile_breakpoint() . 'px)',
 					'conditionals' => [ $this, 'should_enqueue_assets' ],
+					'group_path'   => self::class,
 				]
 			);
 
 			/** Load JS */
-			tribe_asset(
+			tec_asset(
 				$this,
 				'tribe-filterbar-js',
-				'filter-scripts.js',
+				'js/filter-scripts.js',
 				[ 'tribe-dropdowns', 'jquery-ui-slider' ],
 				'wp_enqueue_scripts',
 				[
 					'conditionals' => [ $this, 'should_enqueue_assets' ],
+					'group_path'   => self::class,
 				]
 			);
 		}
@@ -229,6 +238,28 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__View' ) ) {
 			}
 
 			return tribe_register_plugin( TRIBE_EVENTS_FILTERBAR_FILE, __CLASS__, self::VERSION );
+		}
+
+		/**
+		 * Register the assets group for the build directory.
+		 *
+		 * @since 5.6.1
+		 */
+		protected function register_assets_group() {
+			if ( ! class_exists( 'TEC\\Common\\StellarWP\\Assets\\Config' ) ) {
+				return;
+			}
+
+			/*
+			 * Register the `/build` directory assets as a different group to ensure back-compatibility.
+			 * This needs to happen early in the plugin bootstrap routine.
+			 */
+			\TEC\Common\StellarWP\Assets\Config::add_group_path(
+				self::class,
+				$this->pluginPath, // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				'build/',
+				true
+			);
 		}
 
 		/**
@@ -576,6 +607,22 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__View' ) ) {
 				)
 			);
 
+			tribe_singleton(
+				'filterbar.filters.date-from',
+				new Views\V2\Filters\Date_From(
+					esc_html__( 'Date From', 'tribe-events-filter-view' ),
+					'datefrom'
+				)
+			);
+
+			tribe_singleton(
+				'filterbar.filters.date-to',
+				new Views\V2\Filters\Date_To(
+					esc_html__( 'Date To', 'tribe-events-filter-view' ),
+					'dateto'
+				)
+			);
+
 			Tribe__Events__Filterbar__Additional_Fields__Manager::init();
 
 			do_action( 'tribe_events_filters_create_filters' );
@@ -718,7 +765,7 @@ if ( ! class_exists( 'Tribe__Events__Filterbar__View' ) ) {
 		 *
 		 * @since 4.7
 		 *
-		 * @return void
+		 * @return bool
 		 */
 		public function display_dynamic_a11y_notice() {
 			if ( 'automatic' === tribe_get_option( 'liveFiltersUpdate', 'automatic' ) ) {

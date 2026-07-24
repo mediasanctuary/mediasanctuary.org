@@ -30,6 +30,8 @@ use Tribe__Rewrite as TEC_Rewrite;
 use Tribe__Utils__Array as Arr;
 use WP_Post;
 use TEC\Common\Contracts\Service_Provider;
+use Tribe__Context;
+use WP_Query;
 
 
 /**
@@ -81,6 +83,7 @@ class Hooks extends Service_Provider {
 		add_action( 'get_header', [ $this, 'print_single_json_ld' ] );
 		add_action( 'tribe_template_after_include:events/v2/components/after', [ $this, 'action_add_promo_banner' ], 10, 3 );
 		add_action( 'tribe_events_parse_query', [ $this, 'parse_query' ] );
+		add_action( 'template_redirect', [ $this, 'disabled_views_redirect' ] );
 		add_action( 'template_redirect', [ $this, 'action_initialize_legacy_views' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_customizer_in_block_editor' ] );
 		add_action( 'tec_events_views_v2_after_get_events', [ $this, 'action_set_title_events' ], 10, 2 );
@@ -125,6 +128,7 @@ class Hooks extends Service_Provider {
 	 * Adds the filters required by each Views v2 component.
 	 *
 	 * @since 4.9.2
+	 * @since 6.15.12 Added filter for adding the main landmark wrapper around the TEC view output.
 	 */
 	protected function add_filters() {
 		add_filter( 'tec_system_information', [ $this, 'filter_system_information' ] );
@@ -132,6 +136,7 @@ class Hooks extends Service_Provider {
 		add_filter( 'redirect_canonical', [ $this, 'filter_redirect_canonical' ], 10, 2 );
 		add_filter( 'template_include', [ $this, 'filter_template_include' ], 50 );
 		add_filter( 'embed_template', [ $this, 'filter_template_include' ], 50 );
+		add_action( 'pre_get_posts', [ $this, 'filter_pre_get_posts_events_per_page' ], 20 );
 		add_filter( 'posts_pre_query', [ $this, 'filter_posts_pre_query' ], 20, 2 );
 		add_filter( 'body_class', [ $this, 'filter_body_classes' ] );
 		add_filter( 'tribe_body_class_should_add_to_queue', [ $this, 'body_class_should_add_to_queue' ], 10, 3 );
@@ -196,6 +201,11 @@ class Hooks extends Service_Provider {
 		add_filter( 'tribe_events_views_v2_rest_params', [ $this, 'filter_url_date_conflicts' ], 12, 2 );
 		add_filter( 'tec_events_view_month_today_button_label', [ $this, 'filter_view_month_today_button_label' ], 10, 2 );
 		add_filter( 'tec_events_view_month_today_button_title', [ $this, 'filter_view_month_today_button_title' ], 10, 2 );
+
+		add_filter( 'wp_rest_cache/allowed_endpoints', [ $this, 'include_rest_for_caching' ], 10, 1 );
+
+		// Add main landmark wrapper for accessibility.
+		add_filter( 'tribe_events_views_v2_bootstrap_html', [ $this, 'filter_add_main_landmark' ], 100, 4 );
 	}
 
 	/**
@@ -215,7 +225,7 @@ class Hooks extends Service_Provider {
 		// Trim to what is shown (we add one sometimes for pagination links).
 		$cnt = $view->get_context()->get( 'events_per_page' );
 		if ( $cnt ) {
-			$events = array_slice( $events, 0, $cnt );
+			$events = array_slice( $events, 0, (int) $cnt );
 		}
 		$this->container->make( Title::class )->set_posts( $events );
 	}
@@ -310,6 +320,57 @@ class Hooks extends Service_Provider {
 	}
 
 	/**
+	 * Redirects to the default view if the current view is not enabled.
+	 *
+	 * @since 6.14.0
+	 * @since 6.15.6 Add `tec_events_views_v2_should_redirect` to disable redirect in certain scenarios.
+	 *
+	 * @return void
+	 */
+	public function disabled_views_redirect() {
+		/**
+		 * Filters whether the redirect to the default view should occur.
+		 *
+		 * Returning false here will prevent the redirect entirely.
+		 *
+		 * @since 6.15.6
+		 *
+		 * @param bool $should_redirect Whether the redirect should occur. Default true.
+		 */
+		$should_redirect = (bool) apply_filters( 'tec_events_views_v2_should_redirect', true );
+
+		if ( false === $should_redirect ) {
+			return;
+		}
+
+		$context = tribe_context();
+
+		if ( ! ( $context->get( 'event_post_type' ) && is_archive( TEC::POSTTYPE ) ) ) {
+			return;
+		}
+
+		$view_slug = $context->get( 'event_display' );
+		if ( ! empty( $view_slug ) && 'default' !== $view_slug ) {
+			$public_views = $this->container->make( Manager::class )->get_publicly_visible_views();
+
+			if ( ! isset( $public_views[ $view_slug ] ) ) {
+				$default = tribe_events_get_url(
+					[
+						'eventDisplay'     => 'default',
+						'tribe_redirected' => 1,
+					]
+				);
+
+				add_filter( 'tribe_events_views_v2_redirected', '__return_true' );
+
+				// phpcs:ignore WordPressVIPMinimum.Security.ExitAfterRedirect, StellarWP.CodeAnalysis.RedirectAndDie
+				wp_safe_redirect( $default );
+				tribe_exit();
+			}
+		}
+	}
+
+	/**
 	 * Filters the template included file.
 	 *
 	 * @since 4.9.2
@@ -332,18 +393,33 @@ class Hooks extends Service_Provider {
 		$this->container->make( Rest_Endpoint::class )->register();
 	}
 
+
+	/**
+	 * Include the REST endpoint so it will be cached.
+	 *
+	 * @since 6.11.1
+	 *
+	 * @param array[] $allowed_endpoints The allowed endpoints.
+	 *
+	 * @return array[] The allowed endpoints.
+	 */
+	public function include_rest_for_caching( $allowed_endpoints ): array {
+		return $this->container->make( Rest_Endpoint::class )->include_rest_for_caching( $allowed_endpoints );
+	}
+
 	/**
 	 * Filters the posts before the query runs but after its SQL and arguments are finalized to
 	 * inject posts in it, if needed.
 	 *
 	 * @since 4.9.2
+	 * @since 6.17.0 Made $query explicitly nullable.
 	 *
 	 * @param  null|array  $posts The posts to filter, a `null` value by default or an array if set by other methods.
 	 * @param  \WP_Query|null  $query The query object to (maybe) control and whose posts will be populated.
 	 *
 	 * @return array An array of injected posts, or the original array of posts if no post injection is required.
 	 */
-	public function filter_posts_pre_query( $posts = null, \WP_Query $query = null ) {
+	public function filter_posts_pre_query( $posts = null, ?\WP_Query $query = null ) {
 		if ( is_admin() ) {
 			return $posts;
 		}
@@ -374,6 +450,29 @@ class Hooks extends Service_Provider {
 		remove_filter( current_filter(), [ $this, 'filter_posts_pre_query' ] );
 
 		return $posts;
+	}
+
+	/**
+	 * Sets the main event archive query's posts_per_page to the tribe option so pagination
+	 * (found_posts, max_num_pages) matches the View and AJAX. Without this, SSR uses the
+	 * WordPress "Blog pages show at most" value and can 404 on valid page numbers (e.g. page 3).
+	 *
+	 * @since 6.15.20
+	 *
+	 * @param WP_Query $query The query object.
+	 */
+	public function filter_pre_get_posts_events_per_page( $query ) {
+		if ( ! $query instanceof WP_Query || ! $query->is_main_query() || is_admin() ) {
+			return;
+		}
+		// tribe_is_event_query is set in Tribe__Events__Query::parse_query (runs before pre_get_posts).
+		if ( empty( $query->tribe_is_event_query ) ) {
+			return;
+		}
+		$per_page = (int) tribe_get_option( 'posts_per_page', tribe_get_option( 'postsPerPage', get_option( 'posts_per_page', 12 ) ) );
+		if ( $per_page > 0 ) {
+			$query->set( 'posts_per_page', $per_page );
+		}
 	}
 
 	/**
@@ -531,7 +630,12 @@ class Hooks extends Service_Provider {
 	 */
 	public function pre_get_document_title( $title ) {
 		$bootstrap = $this->container->make( Template_Bootstrap::class );
-		if ( ! $bootstrap->should_load() || $bootstrap->is_single_event() ) {
+		if (
+			! $bootstrap->should_load()
+			|| $bootstrap->is_single_event()
+			|| $bootstrap->is_single_organizer()
+			|| $bootstrap->is_single_venue()
+		) {
 			return $title;
 		}
 
@@ -1310,6 +1414,26 @@ class Hooks extends Service_Provider {
 	}
 
 	/**
+	 * Filters the view HTML to add a main landmark wrapper for accessibility.
+	 *
+	 * This wraps the view output in a <main> element if it's not already wrapped.
+	 * This ensures skip links and screen readers work properly even when themes
+	 * override the default template.
+	 *
+	 * @since 6.15.12
+	 *
+	 * @param string         $html      The HTML to be displayed.
+	 * @param Tribe__Context $context   Tribe context used to setup the view.
+	 * @param string         $view_slug The slug of the View that we've built.
+	 * @param WP_Query       $query     The current WP Query object.
+	 *
+	 * @return string The filtered HTML with main landmark wrapper if needed.
+	 */
+	public function filter_add_main_landmark( $html, $context, $view_slug, $query ) {
+		return $this->container->make( Template_Bootstrap::class )->maybe_add_main_landmark( $html );
+	}
+
+	/**
 	 * Unregisters all the filters and action handled by the class.
 	 *
 	 * @since 6.0.2
@@ -1378,6 +1502,7 @@ class Hooks extends Service_Provider {
 		remove_filter( 'tribe_ical_template_event_ids', [ $this, 'inject_ical_event_ids' ] );
 		remove_filter( 'tec_events_query_default_view', [ $this, 'filter_tec_events_query_default_view' ] );
 		remove_filter( 'tribe_events_views_v2_rest_params', [ $this, 'filter_url_date_conflicts' ], 12 );
+		remove_filter( 'tribe_events_views_v2_bootstrap_html', [ $this, 'filter_add_main_landmark' ], 100 );
 
 		remove_action( 'rest_api_init', [ $this, 'register_rest_endpoints' ] );
 		remove_action( 'tribe_common_loaded', [ $this, 'on_tribe_common_loaded' ], 1 );
@@ -1398,6 +1523,7 @@ class Hooks extends Service_Provider {
 		], 10, 3 );
 		remove_action( 'tribe_events_parse_query', [ $this, 'parse_query' ] );
 		remove_action( 'template_redirect', [ $this, 'action_initialize_legacy_views' ] );
+		remove_action( 'template_redirect', [ $this, 'disabled_views_redirect' ] );
 		remove_action( 'admin_enqueue_scripts', [ $this, 'enqueue_customizer_in_block_editor' ] );
 		remove_action( 'tec_events_views_v2_after_get_events', [ $this, 'action_set_title_events' ] );
 	}

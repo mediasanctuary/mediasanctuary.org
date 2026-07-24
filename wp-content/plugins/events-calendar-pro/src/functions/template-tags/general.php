@@ -717,15 +717,16 @@ if ( ! function_exists( 'tribe_events_recurrence_tooltip' ) ) {
 
 if ( ! function_exists( 'tribe_events_pro_resource_url' ) ) {
 	/**
-	 * Returns or echoes a url to a file in the Events Calendar PRO plugin resources directory
+	 * Returns or echoes a url to a file in the Events Calendar PRO plugin built resources directory.
 	 *
-	 * @param string $resource the filename of the resource
-	 * @param bool $echo whether or not to echo the url
+	 * @param string $resource the filename of the resource.
+	 * @param bool   $echo whether or not to echo the url.
+	 *
 	 * @return string
-	 **/
+	 */
 	function tribe_events_pro_resource_url( $resource, $echo = false ) {
 		$extension      = pathinfo( $resource, PATHINFO_EXTENSION );
-		$resources_path = 'src/resources/';
+		$resources_path = 'build/';
 		switch ( $extension ) {
 			case 'css':
 				$resource_path = $resources_path . 'css/';

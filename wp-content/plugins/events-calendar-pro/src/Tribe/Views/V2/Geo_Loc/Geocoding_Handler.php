@@ -47,8 +47,9 @@ class Geocoding_Handler extends Base_Handler implements Handler_Interface {
 	 * {@inheritDoc}
 	 *
 	 * @since 4.7.9
+	 * @since 7.8.0 Made $context explicitly nullable.
 	 */
-	public function filter_repository_args( array $repository_args = [], Context $context = null ) {
+	public function filter_repository_args( array $repository_args = [], ?Context $context = null ) {
 		$context = $context ?: tribe_context();
 
 		$location = $context->get( 'geoloc_search', false );

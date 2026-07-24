@@ -136,46 +136,47 @@ class Tribe__Events__Filterbar__Filters__Day_Of_Week extends Tribe__Events__Filt
 	/**
 	 * Adds the event start date meta key to the query to use it in the join clauses later.
 	 *
-	 * The added key is Timezone Settings aware.
+	 * The added key is Timezone Settings aware and is guaranteed to be the first entry of the
+	 * `meta_query` so the filter WHERE clause resolves it through the primary postmeta alias.
 	 *
 	 * @since 4.8
+	 * @since 5.6.6 Matched the date meta key by exact string to avoid an
+	 *            `_EventStartDate`/`_EventStartDateUTC` substring collision that caused a fatal error on UTC sites.
 	 *
 	 * @param WP_Query $query The query object to add the meta key to.
 	 */
 	protected function add_date_meta_to_query( $query ) {
 		$date_meta_key = Timezones::is_mode( 'site' ) ? '_EventStartDateUTC' : '_EventStartDate';
-		$meta_query = $query->get( 'meta_query' );
+		$meta_query    = $query->get( 'meta_query' );
 
 		if ( ! is_array( $meta_query ) ) {
 			return;
 		}
 
-		$exists = false !== strpos( json_encode( $meta_query ), $date_meta_key );
+		// Already the first clause: nothing to reorder.
 		$first = reset( $meta_query );
-		$is_first = $exists && is_array( $first ) && $first['key'] === $date_meta_key;
-
-		if ( $is_first ) {
+		if ( is_array( $first ) && isset( $first['key'] ) && $date_meta_key === $first['key'] ) {
 			return;
 		}
 
+		// Reuse an existing entry matched by EXACT key (not a substring) to avoid JOIN proliferation.
 		$entry = [
 			'key'  => $date_meta_key,
 			'type' => 'DATETIME',
 		];
-
-		// Reuse an existing entry to avoid JOIN proliferation if possible.
-		if ( $exists ) {
-			$matches = array_filter( $meta_query, static function ( $existing_entry ) use ( $date_meta_key ) {
-				return is_array( $existing_entry )
-				       && isset( $existing_entry['key'] )
-				       && $date_meta_key === $existing_entry['key'];
-			} );
-			$entry = reset( $matches );
-			$entry_index = array_search( $meta_query, $entry, true );
-			unset( $meta_query[ $entry_index ] );
+		foreach ( $meta_query as $index => $existing_entry ) {
+			if (
+				is_array( $existing_entry )
+				&& isset( $existing_entry['key'] )
+				&& $date_meta_key === $existing_entry['key']
+			) {
+				$entry = $existing_entry;
+				unset( $meta_query[ $index ] );
+				break;
+			}
 		}
 
-		// Prepend the entry in the array.
+		// Prepend so the date meta resolves to the primary postmeta alias in the WHERE clause.
 		array_unshift( $meta_query, $entry );
 
 		$query->set( 'meta_query', $meta_query );

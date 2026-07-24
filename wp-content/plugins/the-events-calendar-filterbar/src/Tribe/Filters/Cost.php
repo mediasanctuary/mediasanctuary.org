@@ -28,27 +28,50 @@ class Tribe__Events__Filterbar__Filters__Cost extends Tribe__Events__Filterbar__
 	 * Returns the Filter currently submitted value, as read from the request arguments.
 	 *
 	 * @since 5.0.0.1 Changed the method visibility to `public`.
+	 * @since 5.6.6     Normalized against nested-array request shapes; malformed range tokens are dropped
+	 *                instead of being passed through to `explode()`/`preg_match()` as-is.
 	 *
-	 * @return array<mixed>|mixed|null The submitted value for the Filter, `null` if not submitted.
+	 * @return array<mixed> The submitted range values (`min`/`max` arrays or the `other` token); empty when nothing valid was submitted.
 	 */
 	public function get_submitted_value() {
-		if ( ! empty( $_REQUEST[ 'tribe_' . $this->slug ] ) ) {
-			$value = (array) $_REQUEST[ 'tribe_' . $this->slug ];
-
-			if ( isset( $value['min'] ) && isset( $value['max'] ) ) {
-				return array( $value );
-			} else {
-				foreach ( $value as &$v ) {
-					$range = explode( '-', $v );
-					if ( ! preg_match( '/[0-9]+\-[0-9]+/', $v ) ) {
-						continue;
-					}
-					$v = array( 'min' => $range[0], 'max' => $range[1] );
-				}
-				return $value;
-			}
+		if ( empty( $_REQUEST[ 'tribe_' . $this->slug ] ) ) {
+			return [];
 		}
-		return array();
+
+		$value = (array) $_REQUEST[ 'tribe_' . $this->slug ];
+
+		// A pre-parsed { min, max } range submitted directly by the range slider.
+		if ( isset( $value['min'], $value['max'] ) && is_scalar( $value['min'] ) && is_scalar( $value['max'] ) ) {
+			return [
+				[
+					'min' => $value['min'],
+					'max' => $value['max'],
+				],
+			];
+		}
+
+		/*
+		 * Otherwise expect a list of "min-max" range tokens or the special 'other' token;
+		 * drop anything malformed so the clause builder can trust the shape.
+		 */
+		$parsed = [];
+		foreach ( $value as $range_token ) {
+			if ( 'other' === $range_token ) {
+				$parsed[] = $range_token;
+				continue;
+			}
+
+			if ( ! is_string( $range_token ) || ! preg_match( '/^\s*(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\s*$/', $range_token, $matches ) ) {
+				continue;
+			}
+
+			$parsed[] = [
+				'min' => $matches[1],
+				'max' => $matches[2],
+			];
+		}
+
+		return $parsed;
 	}
 
 	public function get_admin_form() {
@@ -196,6 +219,14 @@ class Tribe__Events__Filterbar__Filters__Cost extends Tribe__Events__Filterbar__
 		$clauses = array();
 
 		foreach ( $this->currentValue as $value ) {
+			/*
+			 * Skip malformed values that are neither the 'other' token nor a { min, max } range,
+			 * so the clause builder never dereferences a non-array value.
+			 */
+			if ( 'other' !== $value && ! ( is_array( $value ) && isset( $value['min'], $value['max'] ) ) ) {
+				continue;
+			}
+
 			$free_clause = '';
 			if ( isset( $value['min'] ) ) {
 				// Should we exclude events where a cost has not been provided?

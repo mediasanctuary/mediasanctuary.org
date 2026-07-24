@@ -176,6 +176,7 @@ class Relationship {
 	 * Detaches an Event from either all Series it's related to, or from a specific Series.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $series explicitly nullable.
 	 *
 	 * @param Event        $event  A reference to the Event model instance to detach.
 	 * @param WP_Post|null $series A reference to the Series post object instance, or `null` if
@@ -184,7 +185,7 @@ class Relationship {
 	 *
 	 * @return int The number of disconnected Series to Event relationships.
 	 */
-	public function detach_event( Event $event, WP_Post $series = null ) {
+	public function detach_event( Event $event, ?WP_Post $series = null ) {
 		if ( null === $series ) {
 			$detached = Series_Relationship::where( 'event_post_id', '=', $event->post_id )
 			                               ->delete();

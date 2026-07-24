@@ -2,26 +2,29 @@
 /**
  * Countdown Widget
  *
- * @since   5.3.0
+ * @since 5.3.0
  *
  * @package Tribe\Events\Views\V2\Widgets
  */
 
 namespace Tribe\Events\Pro\Views\V2\Widgets;
 
-use \Tribe\Events\Views\V2\Widgets\Widget_Abstract;
+use Tribe\Events\Views\V2\Widgets\Widget_Abstract;
 use Tribe__Context as Context;
+use Tribe\Utils\Lazy_String;
 
 /**
  * Class for the Countdown Widget.
  *
- * @since   5.3.0
+ * @since 5.3.0
  *
  * @package Tribe\Events\Views\V2\Widgets
  */
 class Widget_Countdown extends Widget_Abstract {
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @var boolean
 	 */
 	protected static $widget_in_use;
 
@@ -60,18 +63,18 @@ class Widget_Countdown extends Widget_Abstract {
 	 */
 	protected $default_arguments = [
 		// View options.
-		'view'                      => null,
-		'should_manage_url'         => false,
+		'view'              => null,
+		'should_manage_url' => false,
 
 		// Countdown widget options.
-		'id'                        => null,
-		'alias-slugs'               => null,
-		'title'                     => '',
-		'type'                      => 'next-event',
-		'event'                     => null,
-		'show_seconds'              => true,
-		'complete'                  => '',
-		'jsonld_enable'             => true,
+		'id'                => null,
+		'alias-slugs'       => null,
+		'title'             => '',
+		'type'              => 'next-event',
+		'event'             => null,
+		'show_seconds'      => true,
+		'complete'          => '',
+		'jsonld_enable'     => true,
 	];
 
 	/**
@@ -88,24 +91,51 @@ class Widget_Countdown extends Widget_Abstract {
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @since 7.7.3 Updated to use Lazy_String.
 	 */
 	public static function get_default_widget_name() {
-		return esc_html_x(
-			'Events Countdown',
-			'The name of the Countdown Widget.',
-			'tribe-events-calendar-pro'
+		return new Lazy_String(
+			static function () {
+				return is_textdomain_loaded( 'tribe-events-calendar-pro' )
+					? esc_html(
+						sprintf(
+							/* translators: %1$s is the Events label */
+							_x(
+								'%1$s By Week',
+								'The name of the Events By Week Widget.',
+								'tribe-events-calendar-pro'
+							),
+							tribe_get_event_label_plural()
+						)
+					)
+					: esc_html( sprintf( '%1$s By Week', tribe_get_event_label_plural() ) );
+			}
 		);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Gets the default widget options.
+	 *
+	 * @since 4.13.0
+	 * @since 7.7.3 Updated to use Lazy_String.
+	 *
+	 * @return array Default widget options.
 	 */
 	public static function get_default_widget_options() {
 		return [
-			'description' => esc_html_x(
-				'Displays the time remaining until a specified event.',
-				'The description of the Countdown Widget.',
-				'tribe-events-calendar-pro'
+			'description' => new Lazy_String(
+				static function () {
+					return is_textdomain_loaded( 'tribe-events-calendar-pro' )
+						? esc_html(
+							sprintf(
+								/* translators: %1$s is the Events label in lowercase */
+								_x( 'Display %1$s by day for the week.', 'Description of the Events By Week Widget.', 'tribe-events-calendar-pro' ),
+								tribe_get_event_label_plural_lowercase()
+							)
+						)
+						: esc_html( sprintf( 'Display %1$s by day for the week.', tribe_get_event_label_plural_lowercase() ) );
+				}
 			),
 		];
 	}
@@ -127,12 +157,12 @@ class Widget_Countdown extends Widget_Abstract {
 		$updated_instance = $old_instance;
 
 		/* Strip tags (if needed) and update the widget settings. */
-		$updated_instance['title']               = wp_strip_all_tags( $new_instance['title'] );
-		$updated_instance['type']                = ! empty( $new_instance['type'] ) ? $new_instance['type'] : $this->default_arguments['type'];
-		$updated_instance['event']               = ! empty( $new_instance['event'] ) && '-1' !== $new_instance['event'] ? absint( $new_instance['event'] ) : null;
-		$updated_instance['complete']            = wp_strip_all_tags( $new_instance['complete'] );
-		$updated_instance['show_seconds']        = ! empty( $new_instance['show_seconds'] );
-		$updated_instance['jsonld_enable']       = ! empty( $new_instance['jsonld_enable'] );
+		$updated_instance['title']         = wp_strip_all_tags( $new_instance['title'] );
+		$updated_instance['type']          = ! empty( $new_instance['type'] ) ? $new_instance['type'] : $this->default_arguments['type'];
+		$updated_instance['event']         = ! empty( $new_instance['event'] ) && '-1' !== $new_instance['event'] ? absint( $new_instance['event'] ) : null;
+		$updated_instance['complete']      = wp_strip_all_tags( $new_instance['complete'] );
+		$updated_instance['show_seconds']  = ! empty( $new_instance['show_seconds'] );
+		$updated_instance['jsonld_enable'] = ! empty( $new_instance['jsonld_enable'] );
 
 		if ( 'future-event' === $updated_instance['type'] ) {
 			$updated_instance['type'] = 'next-event';
@@ -146,7 +176,7 @@ class Widget_Countdown extends Widget_Abstract {
 	 */
 	public function setup_admin_fields() {
 		return [
-			'title'          => [
+			'title'         => [
 				'type'  => 'text',
 				'label' => _x(
 					'Title:',
@@ -154,7 +184,7 @@ class Widget_Countdown extends Widget_Abstract {
 					'tribe-events-calendar-pro'
 				),
 			],
-			'type'           => [
+			'type'          => [
 				'type'     => 'fieldset',
 				'classes'  => 'tribe-common-form-control-checkbox-radio-group',
 				'label'    => _x(
@@ -185,14 +215,14 @@ class Widget_Countdown extends Widget_Abstract {
 						'type'       => 'fieldset',
 						'classes'    => 'tribe-dependent',
 						'dependency' => [
-							'ID' => 'type-single-event',
+							'ID'         => 'type-single-event',
 							'is-checked' => true,
 							'parent'     => '.tribe-common-form-control-checkbox-radio-group',
 						],
 						'children'   => [
-							'event'              => [
-								'type'    => 'event-dropdown',
-								'label'   => _x(
+							'event' => [
+								'type'        => 'event-dropdown',
+								'label'       => _x(
 									'Event:',
 									'The label for the event field of the Countdown Widget.',
 									'tribe-events-calendar-pro'
@@ -202,8 +232,8 @@ class Widget_Countdown extends Widget_Abstract {
 									esc_html__( 'Select an %1$s', 'tribe-events-calendar-pro' ),
 									tribe_get_event_label_singular_lowercase()
 								),
-								'disabled' => '',
-								'options' => [
+								'disabled'    => '',
+								'options'     => [
 									[
 										'text'  => 'Choose an event.',
 										'value' => '',
@@ -214,7 +244,7 @@ class Widget_Countdown extends Widget_Abstract {
 					],
 				],
 			],
-			'complete'       => [
+			'complete'      => [
 				'type'        => 'text',
 				'label'       => _x(
 					'Countdown Completed Text',
@@ -227,7 +257,7 @@ class Widget_Countdown extends Widget_Abstract {
 					'tribe-events-calendar-pro'
 				),
 			],
-			'show_seconds'   => [
+			'show_seconds'  => [
 				'type'  => 'checkbox',
 				'label' => _x(
 					'Show seconds?',
@@ -235,7 +265,7 @@ class Widget_Countdown extends Widget_Abstract {
 					'tribe-events-calendar-pro'
 				),
 			],
-			'jsonld_enable'  => [
+			'jsonld_enable' => [
 				'type'  => 'checkbox',
 				'label' => _x(
 					'Generate JSON-LD data',
@@ -274,11 +304,11 @@ class Widget_Countdown extends Widget_Abstract {
 	 * {@inheritDoc}
 	 */
 	protected function args_to_context( array $arguments, Context $context ) {
-		$alterations                      = parent::args_to_context( $arguments, $context );
-		$alterations['widget_title']      = ! empty( $arguments['title'] ) ? $arguments['title'] : '';
-		$alterations['jsonld_enable']     = (int) tribe_is_truthy( $arguments['jsonld_enable'] );
-		$alterations['show_seconds']      = tribe_is_truthy( $arguments['show_seconds'] );
-		$alterations['complete']          = wp_strip_all_tags( $arguments['complete'] );
+		$alterations                  = parent::args_to_context( $arguments, $context );
+		$alterations['widget_title']  = ! empty( $arguments['title'] ) ? $arguments['title'] : '';
+		$alterations['jsonld_enable'] = (int) tribe_is_truthy( $arguments['jsonld_enable'] );
+		$alterations['show_seconds']  = tribe_is_truthy( $arguments['show_seconds'] );
+		$alterations['complete']      = wp_strip_all_tags( $arguments['complete'] );
 
 		return $this->filter_args_to_context( $alterations );
 	}
@@ -319,9 +349,9 @@ class Widget_Countdown extends Widget_Abstract {
 	 * @return string Rendered View HTML code.
 	 */
 	public function get_html() {
-		$arguments = $this->get_arguments();
+		$arguments  = $this->get_arguments();
 		$widget_obj = $this;
-		$callback = static function ( $template_vars, $view ) use ( $arguments, $widget_obj ) {
+		$callback   = static function ( $template_vars, $view ) use ( $arguments, $widget_obj ) {
 			// Use set event or the next upcoming one.
 			$template_vars['event'] = $widget_obj->get_fallback_event( $arguments['event'] );
 

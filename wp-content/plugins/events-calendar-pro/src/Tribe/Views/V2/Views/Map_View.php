@@ -67,12 +67,13 @@ class Map_View extends View {
 	 * Map_View constructor.
 	 *
 	 * @since 5.0.1
+	 * @since 7.8.0 Made $messages explicitly nullable.
 	 *
 	 * {@inheritDoc}
 	 *
 	 * @param Messages|null $messages An instance of the messages collection.
 	 */
-	public function __construct( Messages $messages = null ) {
+	public function __construct( ?Messages $messages = null ) {
 		parent::__construct( $messages );
 		$this->rewrite = tribe( 'events.rewrite' );
 	}
@@ -325,12 +326,13 @@ class Map_View extends View {
 	 * {@inheritDoc}
 	 *
 	 * @since 4.9.3
+	 * @since 7.8.0 Made $context explicitly nullable.
 	 *
 	 * @param Context|null $context A context to use to setup the args, or `null` to use the View Context.
 	 *
 	 * @return array The arguments, ready to be set on the View repository instance.
 	 */
-	protected function setup_repository_args( \Tribe__Context $context = null ) {
+	protected function setup_repository_args( ?\Tribe__Context $context = null ) {
 		if ( is_null( $context ) ) {
 			$context = $this->context;
 		}

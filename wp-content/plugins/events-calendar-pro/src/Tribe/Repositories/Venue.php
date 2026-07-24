@@ -20,6 +20,17 @@ class Tribe__Events__Pro__Repositories__Venue extends Tribe__Events__Repositorie
 	public function __construct() {
 		parent::__construct();
 
+		$this->update_fields_aliases = array_merge(
+			$this->update_fields_aliases,
+			[
+				'lat' => Tribe__Events__Pro__Geo_Loc::LAT,
+				'lng' => Tribe__Events__Pro__Geo_Loc::LNG,
+			]
+		);
+
+		$this->add_simple_meta_schema_entry( 'lat', Tribe__Events__Pro__Geo_Loc::LAT );
+		$this->add_simple_meta_schema_entry( 'lng', Tribe__Events__Pro__Geo_Loc::LNG );
+
 		$this->add_schema_entry( 'geoloc_lat', array( $this, 'filter_by_geoloc_lat' ) );
 		$this->add_schema_entry( 'geoloc_lng', array( $this, 'filter_by_geoloc_lng' ) );
 		$this->add_schema_entry( 'geoloc', array( $this, 'filter_by_geoloc' ) );

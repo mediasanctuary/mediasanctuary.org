@@ -182,8 +182,8 @@ class Tribe__Meta__Chunker {
 	/**
 	 * Tags a post ID and meta key couple as "chunkable" if needed.
 	 *
-	 * @param $post_id
-	 * @param $meta_key
+	 * @param int|WP_Post $post_id The post ID.
+	 * @param string      $meta_key The meta key.
 	 */
 	protected function tag_as_chunkable( $post_id, $meta_key ) {
 		$key = $this->get_key( $post_id, $meta_key );
@@ -469,7 +469,7 @@ class Tribe__Meta__Chunker {
 	 * @return int
 	 */
 	public function get_byte_size( $data ) {
-		return strlen( utf8_decode( maybe_serialize( $data ) ) );
+		return strlen( mb_convert_encoding( maybe_serialize( $data ), 'ISO-8859-1', 'UTF-8' ) );
 	}
 
 	/**
@@ -896,9 +896,11 @@ class Tribe__Meta__Chunker {
 	/**
 	 * Sets the post types the Chunker should support.
 	 *
+	 * @since 6.12.0 Made $post_types explicitly nullable.
+	 *
 	 * @param array $post_types
 	 */
-	public function set_post_types( array $post_types = null ) {
+	public function set_post_types( ?array $post_types = null ) {
 		if ( null === $post_types ) {
 			/**
 			 * Filters the chunk-able post types.

@@ -50,10 +50,11 @@ class Occurrences_List extends WP_List_Table {
 	 * Occurrences_List constructor.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $series_post explicitly nullable.
 	 *
 	 * @param WP_Post|null         $series_post The instance of the series post.
 	 */
-	public function __construct( WP_Post $series_post = null ) {
+	public function __construct( ?WP_Post $series_post = null ) {
 		$this->series_post = $series_post;
 
 		parent::__construct( [

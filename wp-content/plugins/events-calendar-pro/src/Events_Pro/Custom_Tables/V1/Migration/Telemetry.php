@@ -120,6 +120,7 @@ class Telemetry {
 	 * Logs an error message.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $data explicitly nullable.
 	 *
 	 * @param string      $message The error message to log.
 	 * @param string|null $data    Optional. The data to log.
@@ -127,7 +128,7 @@ class Telemetry {
 	 * @return void The method does not return a value and will dispatch a
 	 *              logging action.
 	 */
-	private function log_error( string $message, string $data = null ): void {
+	private function log_error( string $message, ?string $data = null ): void {
 		$context = [
 			'source' => __CLASS__,
 			'slug'   => 'telemetry-migration-report-post-fail',

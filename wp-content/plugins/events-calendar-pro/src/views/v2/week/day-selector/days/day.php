@@ -16,10 +16,12 @@
  *
  * @version 5.9.2
  *
- * @since   5.9.2   Remove incorrect aria-selected attribute.
- * @since   5.0.3
+ * @since 5.0.3
+ * @since 5.9.2 Remove incorrect aria-selected attribute.
+ * @since 7.7.10 Use role="tab" instead of aria-expanded.
  *
  */
+
 $selected    = 'false';
 $day_classes = [ 'tribe-events-pro-week-day-selector__day' ];
 
@@ -38,28 +40,29 @@ $label = sprintf( __( 'Has %s', 'tribe-events-calendar-pro' ), tribe_get_event_l
 ?>
 <li class="tribe-events-pro-week-day-selector__days-list-item">
 	<button
-		<?php tribe_classes( $day_classes ) ?>
-		aria-expanded="<?php echo esc_attr( $selected ); ?>"
+		<?php tec_classes( $day_classes ); ?>
+		role="tab"
+		aria-selected="<?php echo esc_attr( $selected ); ?>"
 		aria-controls="tribe-events-pro-week-mobile-events-day-<?php echo esc_attr( $day[ 'datetime' ] ); ?>"
 		data-js="tribe-events-pro-week-day-selector-day"
 	>
 
 		<?php if ( ! empty( $day['found_events'] ) ) : ?>
-			<em
+			<span
 				class="tribe-events-pro-week-day-selector__events-icon"
 				title="<?php echo esc_attr( $label ); ?>"
 			>
-			</em>
+			</span>
 		<?php endif; ?>
 
-		<time class="tribe-events-pro-week-day-selector__day-datetime" datetime="<?php echo esc_attr( $day[ 'datetime' ] ); ?>">
+		<time class="tribe-events-pro-week-day-selector__day-datetime" datetime="<?php echo esc_attr( $day['datetime'] ); ?>">
 
 			<span class="tribe-events-pro-week-day-selector__day-weekday tribe-common-b3">
-				<?php echo esc_html( $day[ 'weekday' ] ); ?>
+				<?php echo esc_html( $day['weekday'] ); ?>
 			</span>
 
 			<span class="tribe-events-pro-week-day-selector__day-daynum tribe-common-h4">
-				<?php echo esc_html( $day[ 'daynum' ] ); ?>
+				<?php echo esc_html( $day['daynum'] ); ?>
 			</span>
 
 		</time>

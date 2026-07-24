@@ -51,7 +51,7 @@ if ( $today_date === $day_date ) {
 }
 ?>
 
-<div <?php tribe_classes( $classes ); ?> id="<?php echo sanitize_html_class( $mobile_day_id ); ?>">
+<div <?php tec_classes( $classes ); ?> id="<?php echo sanitize_html_class( $mobile_day_id ); ?>">
 
 	<?php if ( count($events) ) : ?>
 
@@ -66,7 +66,16 @@ if ( $today_date === $day_date ) {
 
 		<?php endforeach; ?>
 
-		<?php $this->template( 'month/mobile-events/mobile-day/more-events', [ 'more_events' => $day['more_events'], 'more_url' => $day['day_url'] ] ); ?>
+		<?php
+		$this->template(
+			'month/mobile-events/mobile-day/more-events',
+			[
+				'more_events' => $day['more_events'],
+				'more_url'    => $day['day_url'],
+				'day_date'    => $day['date'],
+			]
+		);
+		?>
 
 	<?php else : ?>
 

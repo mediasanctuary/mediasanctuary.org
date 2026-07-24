@@ -1,9 +1,4 @@
 <?php
-/**
- * @license GPL-3.0-or-later
- *
- * Modified using {@see https://github.com/BrianHenryIE/strauss}.
- */
 
 namespace TEC\Common\StellarWP\Models;
 
@@ -13,7 +8,7 @@ abstract class DataTransferObject {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $object
+	 * @param object $object
 	 *
 	 * @return self
 	 */

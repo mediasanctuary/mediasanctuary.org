@@ -3,9 +3,9 @@
 Contributors: theeventscalendar, borkweb, bordoni, brianjessee, aguseo, camwynsp, GeoffBel, geoffgraham, jentheo, leahkoerper, lucatume, neillmcshea, paulskim, vicskf, zbtirrell, juanfra
 Tags: events, calendar, event, venue, organizer, dates, date, google maps, conference, workshop, concert, meeting, seminar, summit, class, the events calendar, widget, pro, filters, categories, sort, tags, taxonomy, find, search
 Donate link: http://evnt.is/29
-Stable tag: 5.5.8
-Requires at least: 6.5
-Tested up to: 6.7.1
+Stable tag: 5.6.6
+Requires at least: 6.8
+Tested up to: 7.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -194,6 +194,80 @@ Our Premium Plugins:
 * <a href="http://evnt.is/18h9" target="_blank">The Events Calendar: iCal Importer</a>
 
 == Changelog ==
+
+= [5.6.6] 2026-07-22 =
+
+* Feature - Add a Filter Bar setting to batch filter selections behind an Apply button, improving keyboard accessibility.
+* Fix - Corrected encoding of additional field filter values containing spaces so the FilterBar no longer returns empty results when adding a second filter from a direct link.
+* Fix - Resolved additional field filter matching and display issues for values containing quotes, percent signs, or plus-encoded spaces.
+* Fix - Resolved an issue where additional field filters did not return events when an option value contained special characters such as commas or ampersands, and where the active filter state could display incorrectly.
+* Fix - Resolved an issue where the Cost filter range slider stopped filtering on sites with cent-priced events.
+* Fix - Resolved a PHP warning when the Cost filter was displayed as checkboxes.
+* Fix - Resolved fatal errors that could occur when the Cost or Date filters received malformed request parameters.
+* Language - 4 new strings added, 16 updated, 0 fuzzied, and 0 obsoleted.
+
+= [5.6.5] 2026-06-24 =
+
+* Tweak - Updated broken link to coding standards in `CONTRIBUTING.md`
+* Security - Replaced vendored Swiper v4.5.0 with v12.2.0 for security improvement.
+* Language - 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted.
+
+= [5.6.4] 2026-06-15 =
+
+* Fix - Prevent additional fields filters from resetting when navigating between pages of events. [FBAR-363]
+* Fix - Resolved a fatal database error when using the Time of Day "All Day" filter on Month and Week views with Custom Tables active. [SMTNC-342]
+* Language - 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted.
+
+= [5.6.3] 2026-03-11 =
+
+* Tweak - Add appropriate ARIA roles to dropdown versus multiselect elements. [FBAR-360]
+* Tweak - Changed views: `v2_1/components/pill-button`, `v2_1/components/pill`
+* Accessibility - Close the filter options and move the focus back to the toggle button using the eescape key. [FBAR-358]
+* Accessibility - Move the focus to the first viable option when navigating via keyboard. [FBAR-357]
+* Accessibility - Trap focus within the filter options when navigating with keyboard. [FBAR-362]
+* Language - 0 new strings added, 1 updated, 0 fuzzied, and 0 obsoleted.
+
+= [5.6.2] 2025-09-16 =
+
+* Fix - Added new class to handle special character parsing. [FBAR-247]
+* Tweak - Added filters: `tec_events_filterbar_encoding_helper_encode_for_url`, `tec_events_filterbar_encoding_helper_decode_from_url`, `tec_events_filterbar_encoding_helper_encode_for_form`, `tec_events_filterbar_encoding_helper_decode_from_form`
+* Tweak - Leverage WP's new "requires plugin" header https://make.wordpress.org/core/2024/03/05/introducing-plugin-dependencies-in-wordpress-6-5/ to prevent activating FBAR if TEC is not active.
+* Compatibility - PHP 8.3 compatibility improvements. [FBAR-352]
+* Language - 1 new strings added, 10 updated, 0 fuzzied, and 1 obsoleted.
+
+= [5.6.1] 2025-08-26 =
+
+* Tweak - Migrated build system from gulp to wp-scripts with Tyson for modern asset compilation
+* Tweak - Removed filters: `tribe_events_filters_css_version
+* Language - 0 new strings added, 27 updated, 0 fuzzied, and 0 obsoleted.
+
+= [5.6.0] 2025-07-22 =
+
+* Feature - Add admin control to select which categories are displayed in the frontend filter. [FBAR-350]
+* Feature - Added Date From filter to show events starting from a selected date [FBAR-348]
+* Feature - Added Date To filter to show events ending by a selected date. [FBAR-349]
+* Language - 7 new strings added, 13 updated, 0 fuzzied, and 0 obsoleted.
+
+= [5.5.10] 2025-05-13 =
+
+* Fix - Make sure that filtering by venue or organizer works on WPML-translated pages. [FBAR-313]
+* Tweak - Add the `tec_events_filter_additional_field_intersect` filter to allow showing all used values of additional field in Filter Bar.
+* Tweak - Ensure that Additional Field options that are removed don't show up in Filter Bar any longer. [FBAR-307]
+* Tweak - Added filters: `tec_events_filter_additional_field_intersect`, `tribe_filterbar_organizer_ids`, `tribe_filterbar_venue_ids`, `wpml_default_language`, `wpml_object_id`
+* Tweak - Changed views: `v2_1/components/events-bar/filter-button`, `v2_1/components/filter`, `v2_1/components/pill-button`, `v2_1/components/pill`, `v2_1/components/range`
+* Accessibility - Add header tags around accordion buttons to maintain semantic meaning. [FBAR-334]
+* Accessibility - Add `aria-hidden="true"` to filterbar icon for better screen reader accessibility. [FBAR-319]
+* Accessibility - Improve accessibility labels for range slider. [FBAR-331]
+* Accessibility - Improved accessibility of Filter Bar buttons. [FBAR-337]
+* Accessibility - Move focus to filterbar options when accordion is opened for better accessibility. [FBAR-335]
+* Accessibility - Tweaked the filter for Featured events for better accessibility. [FBAR-338]
+* Language - 1 new strings added, 27 updated, 0 fuzzied, and 0 obsoleted.
+
+= [5.5.9] 2025-04-07 =
+
+* Fix - Avoid slow queries by not adding Category filter tax query multiple times. [ECP-1898]
+* Performance - Avoid too long queries by deactivating filters stack with Custom Tables v1. [ECP-1898]
+* Language - 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted.
 
 = [5.5.8] 2024-12-17 =
 

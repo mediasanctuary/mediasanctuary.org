@@ -410,10 +410,15 @@ class Api extends Account_API {
 			'%1$s <a href="%2$s" target="_blank">%3$s</a>',
 			esc_html_x(
 				'No Google account found.',
-			'The start of the message for smart url/autodetect when there is no Google account found.',
-			'tribe-events-calendar-pro'
+				'The start of the message for smart url/autodetect when there is no Google account found.',
+				'tribe-events-calendar-pro'
 			),
-			Settings::admin_url(),
+			Settings::admin_url(
+				[
+					'tab'                                 => 'meetings',
+					'#tec-google-application-credentials' => '',
+				]
+			),
 			esc_html_x(
 				'Please check your account connection.',
 				'The link in of the message for smart url/autodetect when no Google account is found.',

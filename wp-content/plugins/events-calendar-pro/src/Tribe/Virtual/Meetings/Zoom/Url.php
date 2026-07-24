@@ -169,9 +169,15 @@ class Url extends Abstract_Url {
 	public function to_disconnect( $current_url = null ) {
 		_deprecated_function( __METHOD__, '1.13.1', 'No replacement, see Account_API class.' );
 
-		return add_query_arg( [
-			Plugin::$request_slug => wp_create_nonce( OAuth::$deauthorize_nonce_action ),
-		], Settings::admin_url() );
+		return add_query_arg(
+			Settings::admin_url(
+				[
+					'tab'                               => 'meetings',
+					'#tec-zoom-application-credentials' => '',
+					Plugin::$request_slug               => wp_create_nonce( OAuth::$deauthorize_nonce_action )
+				]
+			)
+		);
 	}
 
 	/**

@@ -96,7 +96,11 @@ class Single_Block_Template implements Block_Template_Contract {
 			'post_excerpt' => $post_excerpt,
 			'post_type'    => 'wp_template',
 			'post_status'  => 'publish',
-			'post_content' => Template_Utils::inject_theme_attribute_in_content( $this->get_template_engine()->template( 'single-venue', [], false ) ),
+			'post_content' => Template_Utils::inject_theme_attribute_in_content(
+				file_get_contents(
+					Tribe__Events__Pro__Main::instance()->pluginPath . '/src/Events_Pro/Block_Templates/Single_Venue/templates/single-venue.html'
+				)
+			),
 			'tax_input'    => [
 				'wp_theme' => $this->block->get_namespace(),
 			],

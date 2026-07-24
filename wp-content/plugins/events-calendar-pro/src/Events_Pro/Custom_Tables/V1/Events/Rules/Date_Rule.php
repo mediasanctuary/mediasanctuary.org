@@ -78,6 +78,7 @@ class Date_Rule {
 	 * Builds an instance of the object from a rule in the format used in the `_EventRecurrence` meta field.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $dtstart and $dtend explicitly nullable.
 	 *
 	 * @param array<string,mixed>    $rule    A rule in the format used in the `_EventRecurrence` meta field.
 	 * @param DateTimeImmutable|null $dtstart A reference to the Event start date and time; this will be used if the
@@ -89,7 +90,7 @@ class Date_Rule {
 	 *
 	 * @throws InvalidArgumentException If the rule is not in the expected format.
 	 */
-	public static function from_event_recurrence_format( array $rule, DateTimeImmutable $dtstart = null, DateTimeImmutable $dtend = null ) {
+	public static function from_event_recurrence_format( array $rule, ?DateTimeImmutable $dtstart = null, ?DateTimeImmutable $dtend = null ) {
 		$missing = array_keys( array_filter( [
 			'EventStartDate'   => ! isset( $rule['EventStartDate'] ) && $dtstart === null,
 			'EventEndDate'     => ! isset( $rule['EventEndDate'] ) && $dtend === null,

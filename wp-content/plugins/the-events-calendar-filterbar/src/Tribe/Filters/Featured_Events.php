@@ -9,9 +9,14 @@
 class Tribe__Events__Filterbar__Filters__Featured_Events extends Tribe__Events__Filterbar__Filter {
 
 	/**
-	 * @var string The default type for this filter.
+	 * The default type for this filter.
+	 *
+	 * @since 4.4.0
+	 * @since 5.5.10 Change filter type to select for a11y.
+	 *
+	 * @var string
 	 */
-	public $type = 'checkbox';
+	public $type = 'select';
 
 	/**
 	 * @var string The table alias that will be used for the postmeta table.

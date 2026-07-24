@@ -1,19 +1,16 @@
 <?php
+
 /**
  * The API provided by a Builder that can be re-initialized.
  *
  * @package TEC\Common\lucatume\DI52\Builders
- *
- * @license GPL-3.0
- * Modified using {@see https://github.com/BrianHenryIE/strauss}.
  */
-
 namespace TEC\Common\lucatume\DI52\Builders;
 
 /**
  * Interface ReinitializableBuilderInterface
  *
- * @package TEC\Common\lucatume\DI52\Builders
+ * @package \TEC\Common\lucatume\DI52\Builders
  */
 interface ReinitializableBuilderInterface
 {

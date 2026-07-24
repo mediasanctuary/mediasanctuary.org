@@ -31,25 +31,21 @@ if ( Event_Meta::$value_hybrid_event_type === $event->virtual_event_type ) {
 	return;
 }
 
-// translators: %s (singular)
+// translators: %s (singular).
 $virtual_label = tribe_get_virtual_label();
-// translators: %s: Event (singular)
+// translators: %s: Event (singular).
 $virtual_event_label = tribe_get_virtual_event_label_singular();
 
 ?>
 <div class="tribe-common-b2 tribe-common-b2--bold tribe-events-virtual-virtual-event">
-	<em
-		class="tribe-events-virtual-virtual-event__icon"
-		title="<?php echo esc_attr( $virtual_label ); ?>"
-	>
-		<?php $this->template(
+	<span class="tribe-events-virtual-virtual-event__icon" aria-hidden="true">
+		<?php
+		$this->template(
 			'components/icons/virtual',
-			[
-				'classes'    => [ 'tribe-events-virtual-virtual-event__icon-svg' ],
-				'icon_title' =>  esc_attr( $virtual_event_label ),
-			]
-		); ?>
-	</em>
+			[ 'classes' => [ 'tribe-events-virtual-virtual-event__icon-svg' ] ]
+		);
+		?>
+	</span>
 	<span class="tribe-events-virtual-virtual-event__text">
 		<?php echo esc_html( $virtual_event_label ); ?>
 	</span>

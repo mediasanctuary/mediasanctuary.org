@@ -1,8 +1,8 @@
 <?php
 /**
- * ${CARET}
+ * This class is used to lock the recurrence rules and exclusions UI.
  *
- * @since   6.0.0
+ * @since 6.0.0
  *
  * @package TEC\Events_Pro\Custom_Tables\V1\Editors\Classic;
  */
@@ -17,7 +17,7 @@ use WP_Post;
 /**
  * Class UI_Lock.
  *
- * @since   6.0.0
+ * @since 6.0.0
  *
  * @package TEC\Events_Pro\Custom_Tables\V1\Editors\Classic;
  */

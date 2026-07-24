@@ -4,6 +4,8 @@ namespace TEC\Events_Pro\Linked_Posts\Organizer;
 
 use TEC\Common\Contracts\Provider\Controller as Controller_Contract;
 use Tribe__Settings_Tab as Tab;
+use Tribe\Events\Views\V2\Template\Title;
+use Tribe__Context;
 
 /**
  * Class Controller.
@@ -11,7 +13,11 @@ use Tribe__Settings_Tab as Tab;
  * This class extends the Controller_Contract to provide specific functionalities
  * for the TEC\Events_Pro\Linked_Posts\Organizer package.
  *
- * @since   6.2.0
+ * @version 7.7.12
+ *
+ * @since 6.2.0
+ * @since 7.7.12 Add filter for Organizer page title.
+ *
  * @package TEC\Events_Pro\Linked_Posts\Organizer
  */
 class Controller extends Controller_Contract {
@@ -97,6 +103,7 @@ class Controller extends Controller_Contract {
 	 */
 	public function add_filters(): void {
 		add_action( 'tec_events_settings_tab_display', [ $this, 'add_organizer_tab' ], 14 );
+		add_filter( 'tribe_events_pro_views_v2_view_title', [ $this, 'filter_organizer_view_title' ], 10, 4 );
 	}
 
 	/**
@@ -106,6 +113,7 @@ class Controller extends Controller_Contract {
 	 */
 	public function remove_filters(): void {
 		remove_action( 'tec_events_settings_tab_display', [ $this, 'add_organizer_tab' ], 14 );
+		remove_filter( 'tribe_events_pro_views_v2_view_title', [ $this, 'filter_organizer_view_title' ] );
 	}
 
 	/**
@@ -204,5 +212,53 @@ class Controller extends Controller_Contract {
 		/** @var Settings $settings */
 		$settings = $this->container->make( Settings::class );
 		$settings->add_organizer_tab( $display_tab );
+	}
+
+	/**
+	 * Filters the title for single Organizer pages.
+	 *
+	 * @since 7.7.12
+	 *
+	 * @param string         $title   The current view title.
+	 * @param bool           $depth   Whether to include the linked title or not.
+	 * @param Tribe__Context $context The current context.
+	 * @param array          $posts   The posts for the view.
+	 *
+	 * @return string The filtered title.
+	 */
+	public function filter_organizer_view_title( $title, $depth, $context, $posts ): string {
+		// Only modify the title if we're in an organizer context.
+		if ( ! $context->is( 'organizer_post_type' ) ) {
+			return $title;
+		}
+
+		$organizer_id = get_the_ID();
+		$organizer    = tribe_organizers()->where( 'post_id', $organizer_id )->first();
+
+		if ( ! $organizer ) {
+			return $title;
+		}
+
+		// If no events, just return the organizer title.
+		if ( empty( $posts ) ) {
+			return $organizer->post_title;
+		}
+
+		$event_date         = $context->get( 'event_date', 'now' );
+		$event_display_mode = $context->get( 'event_display_mode' );
+		$range              = Title::build_post_range_title( $context, $event_date, $posts );
+
+		$title_format = 'past' === $event_display_mode
+			// translators: %1$s: Organizer name, %2$s: Events plural, %3$s: Event date range.
+			? __( '%1$s - Past %2$s from %3$s', 'tribe-events-calendar-pro' )
+			// translators: %1$s: Organizer name, %2$s: Events plural, %3$s: Event date range.
+			: __( '%1$s - %2$s from %3$s', 'tribe-events-calendar-pro' );
+
+		return sprintf(
+			$title_format,
+			$organizer->post_title,
+			tribe_get_event_label_plural(),
+			$range
+		);
 	}
 }

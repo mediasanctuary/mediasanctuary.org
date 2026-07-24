@@ -74,8 +74,8 @@ $default_classes = [ 'tribe-events-schedule', 'tribe-clearfix' ];
 // Add the custom classes from the block attributes.
 $classes = isset( $attributes['className'] ) ? array_merge( $default_classes, [ $attributes['className'] ] ) : $default_classes;
 ?>
-<div <?php tribe_classes( $classes ); ?>>
-	<h2 class="tribe-events-schedule__datetime">
+<div <?php tec_classes( $classes ); ?>>
+	<p class="tribe-events-schedule__datetime">
 		<span class="tribe-events-schedule__date tribe-events-schedule__date--start">
 			<?php echo esc_html( $formatted_start_date ); ?>
 		</span>
@@ -122,5 +122,5 @@ $classes = isset( $attributes['className'] ) ? array_merge( $default_classes, [ 
 				<span class="tribe-events-schedule__timezone"><?php echo esc_html( $time_zone_label ); ?></span>
 			<?php endif; ?>
 		<?php endif; ?>
-	</h2>
+	</p>
 </div>

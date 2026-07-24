@@ -20,12 +20,14 @@ class Tribe__Events__Pro__Recurrence__Events_Saver {
 	/**
 	 * Tribe__Events__Pro__Recurrence__Events_Saver constructor.
 	 *
+	 * @since 7.8.0 Made $exclusions explicitly nullable.
+	 *
 	 * @param int                                             $event_id The post ID of the event being saved
 	 * @param bool|int                                        $updated  The meta_id of the post meta containing the
 	 *                                                                  event recurrence meta information.
 	 * @param Tribe__Events__Pro__Recurrence__Exclusions|null $exclusions
 	 */
-	public function __construct( $event_id, $updated, Tribe__Events__Pro__Recurrence__Exclusions $exclusions = null ) {
+	public function __construct( $event_id, $updated, ?Tribe__Events__Pro__Recurrence__Exclusions $exclusions = null ) {
 		$this->event_id        = $event_id;
 		$this->updated         = $updated;
 		$event_timezone_string = Tribe__Events__Timezones::get_event_timezone_string( $event_id );

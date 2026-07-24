@@ -275,7 +275,7 @@ class From_Rset_Converter {
 		}
 
 		// Set up a mutable date, so we can increment to the end time.
-		$end            = new DateTime( null, $start->getTimezone() );
+		$end            = new DateTime( '', $start->getTimezone() );
 		$end->setTimestamp( $start->getTimestamp() );
 		$end->add( new DateInterval( "PT{$duration}S" ) );
 
@@ -606,7 +606,7 @@ class From_Rset_Converter {
 
 	/**
 	 * Returns a value to sort rules, or exclusions by type, putting the ones that would produce the highest
-	 * count (i.e. Daily, Weeekly, ...) first.
+	 * count (i.e. Daily, Weekly, ...) first.
 	 *
 	 * @since 6.0.0
 	 *

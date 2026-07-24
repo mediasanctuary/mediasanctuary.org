@@ -21,9 +21,11 @@ class Tribe__Events__Pro__Recurrence__Children_Events {
 	/**
 	 * Tribe__Events__Pro__Recurrence__Children_Events constructor.
 	 *
+	 * @since 7.8.0 Made $cache explicitly nullable.
+	 *
 	 * @param Tribe__Cache|null $cache
 	 */
-	public function __construct( Tribe__Cache $cache = null ) {
+	public function __construct( ?Tribe__Cache $cache = null ) {
 		$this->cache = $cache ? $cache : new Tribe__Cache();
 	}
 

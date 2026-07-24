@@ -67,6 +67,12 @@ class Tribe__Events__Filterbar__Filters__Time_Of_Day extends Tribe__Events__Filt
 
 	protected function setup_join_clause() {
 		global $wpdb;
+
+		// Reset so repeated calls rebuild the clause instead of appending. Month/Week (By-Day) views
+		// run this filter once per query and would otherwise stack a fresh uniqid JOIN every pass,
+		// desyncing the JOINs from the WHEREs under Custom Tables and triggering an unknown-column error.
+		$this->joinClause = '';
+
 		$values = $this->currentValue;
 
 		// They've checked _everything_, let's not pile on the JOINs.
@@ -96,6 +102,11 @@ class Tribe__Events__Filterbar__Filters__Time_Of_Day extends Tribe__Events__Filt
 
 	protected function setup_where_clause() {
 		global $wpdb;
+
+		// Reset so repeated calls rebuild the clause instead of appending. See setup_join_clause():
+		// the WHERE must stay in lockstep with the JOIN aliases for each pass.
+		$this->whereClause = '';
+
 		$clauses = [];
 		$values = $this->currentValue;
 

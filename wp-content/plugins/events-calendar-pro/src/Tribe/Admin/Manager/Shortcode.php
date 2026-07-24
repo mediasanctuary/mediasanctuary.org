@@ -172,9 +172,15 @@ class Shortcode {
 	}
 
 	/**
-	 * Filters the repository args to include all post status.
+	 * Filters the repository args to include the appropriate post status based on the request.
+	 *
+	 * Checks multiple sources for the post_status parameter (context view_data, view_url,
+	 * request URL, etc.) to ensure the correct post status is preserved when switching
+	 * between views via AJAX in the Events Manager.
 	 *
 	 * @since 5.9.0
+	 * @since 7.7.12 Enhanced to check multiple sources for post_status, including context
+	 *            view_data and URL parameters for AJAX view switches.
 	 *
 	 * @param array          $repository_args An array of repository arguments that will be set for all Views.
 	 * @param Context        $context         The current render context object.
@@ -183,11 +189,95 @@ class Shortcode {
 	 * @return array Repository arguments after modifying the Post Status.
 	 */
 	public function filter_include_event_status( $repository_args, Context $context, View_Interface $repository ) {
-		$post_stati = tribe( Page::class )->get_implicitly_requested_post_stati();
+		// Try multiple sources for post_status, especially important for AJAX view switches.
+		$requested_status = $this->get_post_status_from_context( $context );
+
+		// Get the post stati based on the requested status.
+		$post_stati = $this->get_post_stati_for_status( $requested_status );
 
 		$repository_args['post_status'] = $post_stati;
 
 		return $repository_args;
+	}
+
+	/**
+	 * Gets the post_status from various sources, prioritizing AJAX-friendly sources.
+	 *
+	 * Checks multiple sources in order of priority to find the post_status parameter:
+	 * 1. Context view_data (used in AJAX requests)
+	 * 2. Context view_url (if available)
+	 * 3. Page class method (checks $_REQUEST, $_REQUEST['url'], referrer, REQUEST_URI, etc.)
+	 *
+	 * This ensures the post_status is preserved when switching views via AJAX,
+	 * where the parameter may not be directly in $_REQUEST.
+	 *
+	 * @since 7.7.12
+	 *
+	 * @param Context $context The current render context object.
+	 *
+	 * @return string|null The requested post status, or null if not found.
+	 */
+	private function get_post_status_from_context( Context $context ) {
+		// 1. Check the context's view_data (used in AJAX requests).
+		$view_data = $context->get( 'view_data', [] );
+		if ( is_array( $view_data ) && isset( $view_data['post_status'] ) ) {
+			return $view_data['post_status'];
+		}
+
+		// 2. Check the context's URL parameter (if available).
+		$view_url = $context->get( 'view_url', null );
+		$status   = $this->get_post_status_from_url( $view_url );
+		if ( $status ) {
+			return $status;
+		}
+
+		// 3. Fall back to the Page class method (checks $_REQUEST, $_REQUEST['url'], referrer, REQUEST_URI, etc.).
+		return tribe( Page::class )->get_requested_post_status();
+	}
+
+	/**
+	 * Extracts post_status from a URL's query string.
+	 *
+	 * Parses the query string from the provided URL and extracts the post_status
+	 * parameter if present. Returns null if the URL is empty, has no query string,
+	 * or doesn't contain a post_status parameter.
+	 *
+	 * @since 7.7.12
+	 *
+	 * @param string|null $url The URL to parse, or null.
+	 *
+	 * @return string|null The post_status if found, or null.
+	 */
+	private function get_post_status_from_url( $url ) {
+		if ( ! $url ) {
+			return null;
+		}
+
+		$query_string = wp_parse_url( $url, PHP_URL_QUERY );
+		if ( ! $query_string ) {
+			return null;
+		}
+
+		$query_args = wp_parse_args( $query_string );
+		return Arr::get( $query_args, 'post_status', null );
+	}
+
+	/**
+	 * Gets the post stati array based on the requested status.
+	 *
+	 * Passes the requested status directly to get_implicitly_requested_post_stati()
+	 * without manipulating $_REQUEST. If no status is provided, returns the
+	 * default post stati from the Page class.
+	 *
+	 * @since 7.7.12
+	 *
+	 * @param string|null $requested_status The requested post status, or null.
+	 *
+	 * @return array The array of post stati to use in the query.
+	 */
+	private function get_post_stati_for_status( $requested_status ) {
+		// Pass the status directly to avoid $_REQUEST manipulation.
+		return tribe( Page::class )->get_implicitly_requested_post_stati( $requested_status );
 	}
 
 	/**

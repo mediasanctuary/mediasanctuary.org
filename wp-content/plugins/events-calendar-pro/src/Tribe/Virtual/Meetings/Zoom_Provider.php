@@ -24,9 +24,9 @@ use Tribe\Events\Virtual\Meetings\Zoom\Password;
 use Tribe\Events\Virtual\Meetings\Zoom\Template_Modifications;
 use Tribe\Events\Virtual\Meetings\Zoom\Users;
 use Tribe\Events\Virtual\Meetings\Zoom\Webinars;
-use Tribe\Events\Virtual\Plugin;
 use Tribe\Events\Virtual\Traits\With_Nonce_Routes;
 use Tribe__Events__Main as Events_Plugin;
+use Tribe__Events__Pro__Main as ECP;
 use Tribe__Admin__Helpers as Admin_Helpers;
 use WP_Post;
 
@@ -95,13 +95,13 @@ class Zoom_Provider extends Meeting_Provider {
 	}
 
 	/**
-	 * Filters the fields in the Events > Settings > APIs tab to add the ones provided by the extension.
+	 * Adds Zoom settings fields to the Meetings settings tab.
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
 	 *
 	 * @param array<string,array> $fields The current fields.
 	 *
-	 * @return array<string,array> The fields, as updated by the settings.
+	 * @return array<string,array> The fields, as updated by the Zoom settings.
 	 */
 	public function filter_addons_tab_fields( $fields ) {
 		if ( ! is_array( $fields ) ) {
@@ -268,8 +268,10 @@ class Zoom_Provider extends Meeting_Provider {
 	protected function enqueue_assets() {
 		$admin_helpers = Admin_Helpers::instance();
 
-		tribe_asset(
-			tribe( Plugin::class ),
+		$ecp = ECP::instance();
+
+		tec_asset(
+			$ecp,
 			'tribe-events-virtual-api-admin-js',
 			'events-virtual-api-admin.js',
 			[ 'jquery', 'tribe-dropdowns' ],
@@ -281,15 +283,15 @@ class Zoom_Provider extends Meeting_Provider {
 				],
 				'localize' => [
 					'name' => 'tribe_events_virtual_placeholder_strings',
-					'data' => [
+					'data' => fn() => [
 						'video'         => Event_Meta::get_video_source_text(),
 					],
 				],
 			]
 		);
 
-		tribe_asset(
-			tribe( Plugin::class ),
+		tec_asset(
+			$ecp,
 			'tribe-events-virtual-zoom-admin-style',
 			'events-virtual-zoom-admin.css',
 			[],
@@ -302,8 +304,8 @@ class Zoom_Provider extends Meeting_Provider {
 			]
 		);
 
-		tribe_asset(
-			tribe( Plugin::class ),
+		tec_asset(
+			$ecp,
 			'tribe-events-virtual-api-settings-js',
 			'events-virtual-api-settings.js',
 			[ 'jquery' ],
@@ -605,9 +607,10 @@ class Zoom_Provider extends Meeting_Provider {
 	 * Hooks the filters required for the Zoom API integration to work correctly.
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
+	 * @since 7.7.6 Change the hook used to add the settings fields.
 	 */
 	protected function add_filters() {
-		add_filter( 'tec_settings_gmaps_js_api_start', [ $this, 'filter_addons_tab_fields' ] );
+		add_filter( 'tec_events_pro_meetings_tab_fields', [ $this, 'filter_addons_tab_fields' ] );
 
 		foreach ( [ Meetings::$meeting_type, Webinars::$meeting_type ] as $meeting_type ) {
 			add_filter(

@@ -61,9 +61,11 @@ class iCalendar_Export extends Link_Abstract {
 	}
 
 	/**
+	 * @since 6.17.0 Made $view explicitly nullable.
+	 *
 	 * {@inheritDoc}
 	 */
-	public function get_uri( View $view = null ) {
+	public function get_uri( ?View $view = null ) {
 		if ( null === $view || is_single( Tribe__Events__Main::POSTTYPE ) ) {
 			// Try to construct it for the event single.
 			return add_query_arg( [ 'ical' => 1 ], get_the_permalink() );
@@ -79,6 +81,14 @@ class iCalendar_Export extends Link_Abstract {
 			return '';
 		}
 
-		return $ical->link->url;
+		/**
+		 * Filters the iCalendar export URL.
+		 *
+		 * @since 6.11.0
+		 *
+		 * @param string $feed_url The iCalendar export URL.
+		 * @param View   $view The view.
+		 */
+		return (string) apply_filters( 'tec_views_v2_subscribe_links_ics_feed_url', $ical->link->url, $view );
 	}
 }

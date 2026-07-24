@@ -43,10 +43,12 @@ class Occurrences_Series_Relationship_Modifier extends Base_Modifier {
 		remove_filter( 'posts_where', [ $this, 'where_event_is_related_to_series' ] );
 	}
 
-	/*
+	/**
 	 * {@inheritdoc}
+	 *
+	 * @since 7.8.0 Made $query explicitly nullable.
 	 */
-	public function applies_to( WP_Query $query = null ) {
+	public function applies_to( ?WP_Query $query = null ) {
 		return $query instanceof Custom_Tables_Query
 		       && array_filter( (array) $query->get( 'post_type' ) ) === [ TEC::POSTTYPE ]
 		       && count( (array) $query->get( 'related_series', [] ) );

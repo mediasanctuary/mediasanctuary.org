@@ -51,23 +51,24 @@ class Assets extends Service_Provider {
 			$required_styles[] = 'tribe-events-views-v2-full';
 		}
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-views-filter-bar-styles',
-			'views-filter-bar.css',
+			'css/views-filter-bar.css',
 			$required_styles,
 			'wp_enqueue_scripts',
 			[
 				'priority'     => 10,
 				'conditionals' => [ $this, 'should_enqueue_frontend' ],
 				'groups'       => [ static::$group_key ],
+				'group_path'   => \Tribe__Events__Filterbar__View::class,
 			]
 		);
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-views-filter-bar-js',
-			'views/filter-bar.js',
+			'js/views/filter-bar.js',
 			[
 				'jquery',
 				'underscore',
@@ -81,18 +82,23 @@ class Assets extends Service_Provider {
 				'priority'     => 10,
 				'conditionals' => [ $this, 'should_enqueue_frontend' ],
 				'groups'       => [ static::$group_key ],
+				'group_path'   => \Tribe__Events__Filterbar__View::class,
 			]
 		);
 
-		tribe_asset(
+		tec_asset(
 			$plugin,
 			'tribe-events-filterbar-admin-settings',
-			'admin-settings-tab.js',
+			'js/admin-settings-tab.js',
 			[
 				'jquery',
 				'tribe-common',
 			],
-			null
+			null,
+			null,
+			[
+				'group_path' => \Tribe__Events__Filterbar__View::class,
+			]
 		);
 
 		add_action( 'wp_enqueue_scripts', [ $this, 'disable_v1' ], 0 );

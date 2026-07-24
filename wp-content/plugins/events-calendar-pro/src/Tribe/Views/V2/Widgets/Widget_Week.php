@@ -14,6 +14,7 @@ use \Tribe\Events\Views\V2\Widgets\Widget_Abstract;
 use Tribe__Context as Context;
 use Tribe__Date_Utils as Dates;
 use Tribe\Events\Views\V2\Template as View_Template;
+use Tribe\Utils\Lazy_String;
 
 /**
  * Class for the Week Widget.
@@ -92,32 +93,39 @@ class Widget_Week extends Widget_Abstract {
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @since 7.7.3 Updated to use Lazy_String.
 	 */
 	public static function get_default_widget_name() {
-		return esc_html( sprintf(
-			_x(
-				'%1$s By Week',
-				'The name of the Events By Week Widget.',
-				'tribe-events-calendar-pro'
-			),
-			tribe_get_event_label_plural()
-		) );
+		return new Lazy_String(
+			static function () {
+				return is_textdomain_loaded( 'tribe-events-calendar-pro' )
+					? _x( 'Events Countdown', 'The name of the Countdown Widget.', 'tribe-events-calendar-pro' )
+					: 'Events Countdown';
+			}
+		);
 	}
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @since 7.7.3 Updated to use Lazy_String.
 	 */
 	public static function get_default_widget_options() {
-		sprintf(
-			_x( 'Display %1$s by day for the week.', 'Description of the Events By Week Widget.', 'tribe-events-calendar-pro' ),
-			tribe_get_event_label_plural_lowercase()
-		);
-
 		return [
-			'description' => esc_html( sprintf(
-				_x( 'Display %1$s by day for the week.', 'Description of the Events By Week Widget.', 'tribe-events-calendar-pro' ),
-				tribe_get_event_label_plural_lowercase()
-			) ),
+			'description' => new Lazy_String(
+				static function () {
+					return is_textdomain_loaded( 'tribe-events-calendar-pro' )
+						? esc_html(
+							sprintf(
+								/* translators: %1$s is the Events label in lowercase */
+								_x( 'Display %1$s by day for the week.', 'Description of the Events By Week Widget.', 'tribe-events-calendar-pro' ),
+								tribe_get_event_label_plural_lowercase()
+							)
+						)
+						: esc_html( sprintf( 'Display %1$s by day for the week.', tribe_get_event_label_plural_lowercase() ) );
+				}
+			),
 		];
 	}
 
@@ -141,6 +149,7 @@ class Widget_Week extends Widget_Abstract {
 		add_filter( 'tribe_events_virtual_assets_should_enqueue_widget_groups', [ $this, 'add_self_to_virtual_widget_groups' ] );
 		add_filter( 'tribe_template_include_html:events-pro/v2/week/grid-body/events-row-header', '__return_false' );
 		add_filter( 'tribe_template_include_html:events-pro/v2/week/grid-body/multiday-events-row-header', '__return_false' );
+		add_filter( 'tribe_template_include_html:events-pro/v2/week/grid-header', '__return_false' );
 		add_filter( 'tribe_template_include_html:events-pro/v2/week/mobile-events/nav', '__return_false' );
 		add_filter( 'tribe_template_include_html:events-pro/v2/week/top-bar', [ $this, 'filter_top_bar' ], 10, 4 );
 
@@ -159,6 +168,7 @@ class Widget_Week extends Widget_Abstract {
 		remove_filter( 'tribe_events_virtual_assets_should_enqueue_widget_groups', [ $this, 'add_self_to_virtual_widget_groups' ] );
 		remove_filter( 'tribe_template_include_html:events-pro/v2/week/grid-body/events-row-header', '__return_false' );
 		remove_filter( 'tribe_template_include_html:events-pro/v2/week/grid-body/multiday-events-row-header', '__return_false' );
+		remove_filter( 'tribe_template_include_html:events-pro/v2/week/grid-header', '__return_false' );
 		remove_filter( 'tribe_template_include_html:events-pro/v2/week/top-bar', [ $this, 'filter_top_bar' ], 10 );
 		remove_filter( 'tribe_template_include_html:events-pro/v2/week/mobile-events/nav', '__return_false' );
 		remove_filter( 'tribe_template_include_html:events-pro/v2/week/grid-body/events-day/more-events', [ $this, 'filter_html_remove_managed_link' ], 15 );

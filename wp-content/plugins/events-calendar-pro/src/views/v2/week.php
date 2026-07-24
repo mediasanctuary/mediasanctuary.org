@@ -9,9 +9,11 @@
  *
  * @link https://evnt.is/1aiy
  *
- * @since   6.1.2 Changing our nonce verification structures.
+ * @version 7.7.12
  *
- * @version  5.1.6
+ * @since 5.1.6
+ * @since 6.1.2 Changing our nonce verification structures.
+ * @since 7.7.12 Improve accessibility for Week View markup and ARIA structure.
  *
  * @var string   $rest_url             The REST URL.
  * @var string   $rest_method          The HTTP method, either `POST` or `GET`, the View will use to make requests.
@@ -30,14 +32,17 @@ if ( empty( $disable_event_search ) ) {
 	$header_classes[] = 'tribe-events-header--has-event-search';
 }
 
-$grid_classes = [ 'tribe-events-pro-week-grid', 'tribe-common-a11y-hidden' ];
+$grid_classes = [ 'tribe-events-pro-week-grid' ];
 
 if ( $hide_weekends ) {
 	$grid_classes[] = 'tribe-events-pro-week-grid--hide-weekends';
 }
 ?>
 <div
-	<?php tribe_classes( $container_classes ); ?>
+	aria-live="off"
+	aria-readonly="true"
+	tabindex="0"
+	<?php tec_classes( $container_classes ); ?>
 	data-js="tribe-events-view"
 	data-view-rest-url="<?php echo esc_url( $rest_url ); ?>"
 	data-view-rest-method="<?php echo esc_attr( $rest_method ); ?>"
@@ -49,7 +54,7 @@ if ( $hide_weekends ) {
 		data-view-breakpoint-pointer="<?php echo esc_attr( $breakpoint_pointer ); ?>"
 	<?php endif; ?>
 >
-	<div class="tribe-common-l-container tribe-events-l-container">
+	<section class="tribe-common-l-container tribe-events-l-container">
 
 		<?php $this->template( 'components/loader', [ 'text' => __( 'Loading...', 'tribe-events-calendar-pro' ) ] ); ?>
 
@@ -59,7 +64,7 @@ if ( $hide_weekends ) {
 
 		<?php $this->template( 'components/before' ); ?>
 
-		<header <?php tribe_classes( $header_classes ); ?>>
+		<header <?php tec_classes( $header_classes ); ?>>
 			<?php $this->template( 'components/messages' ); ?>
 
 			<?php $this->template( 'components/breadcrumbs' ); ?>
@@ -76,7 +81,7 @@ if ( $hide_weekends ) {
 		<?php $this->template( 'week/mobile-events', [ 'days' => $mobile_days ] ); ?>
 
 		<div
-			<?php tribe_classes( $grid_classes ); ?>
+			<?php tec_classes( $grid_classes ); ?>
 			role="grid"
 			aria-labelledby="tribe-events-pro-week-header"
 			aria-readonly="true"
@@ -90,7 +95,7 @@ if ( $hide_weekends ) {
 		<?php $this->template( 'components/ical-link' ); ?>
 
 		<?php $this->template( 'components/after' ); ?>
-	</div>
+	</section>
 </div>
 
 <?php $this->template( 'components/breakpoints' ); ?>

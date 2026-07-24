@@ -1,21 +1,20 @@
 <?php
-/**
- * @license GPL-3.0-or-later
- *
- * Modified using {@see https://github.com/BrianHenryIE/strauss}.
- */
 
 namespace TEC\Common\StellarWP\Models\Repositories;
 
+use TEC\Common\StellarWP\Models\Contracts\Model;
 use TEC\Common\StellarWP\Models\ModelQueryBuilder;
 
+/**
+ * @template M of Model
+ */
 abstract class Repository {
 	/**
 	 * Prepare a query builder for the repository.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return ModelQueryBuilder
+	 * @return ModelQueryBuilder<M>
 	 */
 	abstract function prepareQuery() : ModelQueryBuilder;
 }

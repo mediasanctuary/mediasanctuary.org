@@ -9,8 +9,10 @@
  *
  * @link    https://evnt.is/1aiy
  *
- * @version 6.2.0
- * @since   6.2.0
+ * @since 6.2.0
+ * @since 7.7.6 Change the class of the `<a>` tag for better accessibility and add a check for `$category_link`.
+ *
+ * @version 7.7.6
  *
  * @var WP_Post $venue The organizer post object.
  */
@@ -28,7 +30,12 @@ $index = 0;
 	</span>
 	<?php foreach ( $categories as $category_id => $category_name ) :
 		$category = get_term( $category_id );
-		if ( empty( $category ) ) {
+		if ( is_wp_error( $category ) || ! $category ) {
+			continue;
+		}
+
+		$category_link = get_term_link( $category );
+		if ( is_wp_error( $category_link ) ) {
 			continue;
 		}
 
@@ -38,10 +45,10 @@ $index = 0;
 			"tribe-events-pro-venue__meta-categories-term--{$category->slug}",
 		];
 		?>
-		<span <?php tribe_classes( $classes ); ?>>
+		<span <?php tec_classes( $classes ); ?>>
 			<?php
 			// These two are intentionally printed with echos inside a single PHP tag to avoid having a space between them.
-			echo '<a class="tribe-events-pro-venue__meta-categories-term-link tribe-common-anchor" data-js="tribe-events-view-link" href="' . esc_url( get_term_link( $category ) ) . '">' . esc_html( $category_name ) . '</a>';
+			echo '<a class="tribe-events-pro-venue__meta-categories-term-link tribe-common-anchor-alt" data-js="tribe-events-view-link" href="' . esc_url( $category_link ) . '">' . esc_html( $category_name ) . '</a>';
 			if ( count( $categories ) !== $index ) {
 				echo '<span class="tribe-events-pro-venue__meta-categories-term-separator">,</span>';
 			}

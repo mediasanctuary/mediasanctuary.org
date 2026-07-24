@@ -18,7 +18,7 @@ use WP_REST_Server;
 /**
  * Class Calender_Embed
  *
- * @since   7.2.0
+ * @since 7.2.0
  *
  * @package TEC\Events_Pro\Custom_Tables\V1\REST\V1
  */
@@ -115,107 +115,107 @@ class Calender_Embed {
 				'required'          => false,
 				'sanitize_callback' => [ $this, 'sanitize_callback' ],
 				'default'           => tribe_get_option( 'viewOption' ),
-				'description'       => esc_html_x( 'Specifies the format in which events are displayed, with options including Month, List, Day, Photo, Week, Map, and Summary view.', 'Description for the view argument in the Calendar Embed REST endpoint.', 'events-calendar-pro' ),
+				'description'       => esc_html_x( 'Specifies the format in which events are displayed, with options including Month, List, Day, Photo, Week, Map, and Summary view.', 'Description for the view argument in the Calendar Embed REST endpoint.', 'tribe-events-calendar-pro' ),
 				'type'              => 'string',
 			],
 			'category'             => [
 				'required'          => false,
 				'sanitize_callback' => [ $this, 'sanitize_callback' ],
 				'default'           => '',
-				'description'       => esc_html_x( 'Filters the view to only show events in the specified category.', 'Description for the category argument in the Calendar Embed REST endpoint.', 'events-calendar-pro' ),
+				'description'       => esc_html_x( 'Filters the view to only show events in the specified category.', 'Description for the category argument in the Calendar Embed REST endpoint.', 'tribe-events-calendar-pro' ),
 				'type'              => 'string',
 			],
 			'exclude_category'     => [
 				'required'          => false,
 				'sanitize_callback' => [ $this, 'sanitize_callback' ],
 				'default'           => '',
-				'description'       => esc_html_x( 'Excludes a specified category from the events displayed.', 'Description for the exclude-category argument in the Calendar Embed REST endpoint.', 'events-calendar-pro' ),
+				'description'       => esc_html_x( 'Excludes a specified category from the events displayed.', 'Description for the exclude-category argument in the Calendar Embed REST endpoint.', 'tribe-events-calendar-pro' ),
 				'type'              => 'string',
 			],
 			'tag'                  => [
 				'required'          => false,
 				'sanitize_callback' => [ $this, 'sanitize_callback' ],
 				'default'           => '',
-				'description'       => esc_html_x( 'Filters the view to only show events in the specified tag.', 'Description for the tag argument in the Calendar Embed REST endpoint.', 'events-calendar-pro' ),
+				'description'       => esc_html_x( 'Filters the view to only show events in the specified tag.', 'Description for the tag argument in the Calendar Embed REST endpoint.', 'tribe-events-calendar-pro' ),
 				'type'              => 'string',
 			],
 			'tag_category'         => [
 				'required'          => false,
 				'sanitize_callback' => [ $this, 'sanitize_callback' ],
 				'default'           => '',
-				'description'       => esc_html_x( 'Excludes a specified tag from the events displayed.', 'Description for the tag-category argument in the Calendar Embed REST endpoint.', 'events-calendar-pro' ),
+				'description'       => esc_html_x( 'Excludes a specified tag from the events displayed.', 'Description for the tag-category argument in the Calendar Embed REST endpoint.', 'tribe-events-calendar-pro' ),
 				'type'              => 'string',
 			],
 			'tax_operand'          => [
 				'required'          => false,
 				'sanitize_callback' => [ $this, 'sanitize_callback' ],
 				'default'           => '',
-				'description'       => esc_html_x( 'Determines whether to include events that match all or any of the specified categories/tags.', 'Description for the tax-operand argument in the Calendar Embed REST endpoint.', 'events-calendar-pro' ),
+				'description'       => esc_html_x( 'Determines whether to include events that match all or any of the specified categories/tags.', 'Description for the tax-operand argument in the Calendar Embed REST endpoint.', 'tribe-events-calendar-pro' ),
 				'type'              => 'string',
 			],
 			'events_per_page'      => [
 				'required'          => false,
 				'sanitize_callback' => [ $this, 'sanitize_callback' ],
 				'default'           => '',
-				'description'       => esc_html_x( 'Controls the number of events displayed per page in list-style views.', 'Description for the events_per_page argument in the Calendar Embed REST endpoint.', 'events-calendar-pro' ),
+				'description'       => esc_html_x( 'Controls the number of events displayed per page in list-style views.', 'Description for the events_per_page argument in the Calendar Embed REST endpoint.', 'tribe-events-calendar-pro' ),
 				'type'              => 'integer',
 			],
 			'month_events_per_day' => [
 				'required'          => false,
 				'sanitize_callback' => [ $this, 'sanitize_callback' ],
 				'default'           => '',
-				'description'       => esc_html_x( 'Limits the number of events displayed per day in Month View.', 'Description for the month_events_per_day argument in the Calendar Embed REST endpoint.', 'events-calendar-pro' ),
+				'description'       => esc_html_x( 'Limits the number of events displayed per day in Month View.', 'Description for the month_events_per_day argument in the Calendar Embed REST endpoint.', 'tribe-events-calendar-pro' ),
 				'type'              => 'integer',
 			],
 			'featured'             => [
 				'required'    => false,
 				'type'        => 'boolean',
-				'description' => esc_html_x( 'Events should be filtered by their featured status.', 'Description for the featured argument in the Calendar Embed REST endpoint.', 'events-calendar-pro' ),
+				'description' => esc_html_x( 'Events should be filtered by their featured status.', 'Description for the featured argument in the Calendar Embed REST endpoint.', 'tribe-events-calendar-pro' ),
 			],
 			'past'                 => [
 				'required'    => false,
 				'type'        => 'boolean',
-				'description' => esc_html_x( 'Past events should display.', 'Description for the past argument in the Calendar Embed REST endpoint.', 'events-calendar-pro' ),
+				'description' => esc_html_x( 'Past events should display.', 'Description for the past argument in the Calendar Embed REST endpoint.', 'tribe-events-calendar-pro' ),
 			],
 			'tribe_bar'            => [
 				'required'    => false,
 				'type'        => 'boolean',
-				'description' => esc_html_x( 'Whether to display the tribe bar above the views.', 'Description for the tribe_bar argument in the Calendar Embed REST endpoint.', 'events-calendar-pro' ),
+				'description' => esc_html_x( 'Whether to display the tribe bar above the views.', 'Description for the tribe_bar argument in the Calendar Embed REST endpoint.', 'tribe-events-calendar-pro' ),
 			],
 			'filter_bar'           => [
 				'required'    => false,
 				'type'        => 'boolean',
-				'description' => esc_html_x( 'Whether to display the Filter Bar with the views.', 'Description for the filter_bar argument in the Calendar Embed REST endpoint.', 'events-calendar-pro' ),
+				'description' => esc_html_x( 'Whether to display the Filter Bar with the views.', 'Description for the filter_bar argument in the Calendar Embed REST endpoint.', 'tribe-events-calendar-pro' ),
 			],
 			'date'                 => [
 				'required'    => false,
 				'type'        => 'string',
-				'description' => esc_html_x( 'Sets the specific date for the view to start displaying events.', 'Description for the date argument in the Calendar Embed REST endpoint.', 'events-calendar-pro' ),
+				'description' => esc_html_x( 'Sets the specific date for the view to start displaying events.', 'Description for the date argument in the Calendar Embed REST endpoint.', 'tribe-events-calendar-pro' ),
 			],
 			'keyword'              => [
 				'required'    => false,
 				'type'        => 'string',
-				'description' => esc_html_x( 'Filters events by a specified keyword in the title or description.', 'Description for the keyword argument in the Calendar Embed REST endpoint.', 'events-calendar-pro' ),
+				'description' => esc_html_x( 'Filters events by a specified keyword in the title or description.', 'Description for the keyword argument in the Calendar Embed REST endpoint.', 'tribe-events-calendar-pro' ),
 			],
 			'author'               => [
 				'required'          => false,
 				'sanitize_callback' => [ $this, 'sanitize_callback' ],
 				'default'           => '',
-				'description'       => esc_html_x( 'Filters the view to only show events in the specified category.', 'Description for the category argument in the Calendar Embed REST endpoint.', 'events-calendar-pro' ),
+				'description'       => esc_html_x( 'Filters the view to only show events in the specified category.', 'Description for the category argument in the Calendar Embed REST endpoint.', 'tribe-events-calendar-pro' ),
 				'type'              => 'integer',
 			],
 			'organizer'            => [
 				'required'          => false,
 				'sanitize_callback' => [ $this, 'sanitize_callback' ],
 				'default'           => '',
-				'description'       => esc_html_x( 'Filters the view to only show events in the specified category.', 'Description for the category argument in the Calendar Embed REST endpoint.', 'events-calendar-pro' ),
+				'description'       => esc_html_x( 'Filters the view to only show events in the specified category.', 'Description for the category argument in the Calendar Embed REST endpoint.', 'tribe-events-calendar-pro' ),
 				'type'              => 'integer',
 			],
 			'venue'                => [
 				'required'          => false,
 				'sanitize_callback' => [ $this, 'sanitize_callback' ],
 				'default'           => '',
-				'description'       => esc_html_x( 'Filters the view to only show events in the specified category.', 'Description for the category argument in the Calendar Embed REST endpoint.', 'events-calendar-pro' ),
+				'description'       => esc_html_x( 'Filters the view to only show events in the specified category.', 'Description for the category argument in the Calendar Embed REST endpoint.', 'tribe-events-calendar-pro' ),
 				'type'              => 'integer',
 			],
 		];
@@ -308,7 +308,7 @@ class Calender_Embed {
 		<!DOCTYPE html>
 			<html>
 				<head>
-					<title><?php echo esc_html_x( 'Calendar Embed Iframe', 'The title for the calendar embed iframe.', 'events-calendar-pro' ); ?></title>
+					<title><?php echo esc_html_x( 'Calendar Embed Iframe', 'The title for the calendar embed iframe.', 'tribe-events-calendar-pro' ); ?></title>
 		<?php
 
 		do_action( 'tec_events_pro_calendar_embed_iframe_head' );

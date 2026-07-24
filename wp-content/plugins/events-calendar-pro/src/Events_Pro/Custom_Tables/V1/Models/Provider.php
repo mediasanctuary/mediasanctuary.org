@@ -102,13 +102,14 @@ class Provider extends Service_Provider {
 	 * Filters TEC base Occurrences generation method to implement the ECP one.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $generator explicitly nullable.
 	 *
 	 * @param Generator|null $generator A reference to the filtered Generator instance, if not
 	 *                                  null, then it will NOT be filtered.
 	 * @param mixed          $args,...  The set of arguments that should be used to generate
 	 *                                  the Occurrences.
 	 */
-	public function get_occurrences_generator( Generator $generator = null, ...$args ): ?Generator {
+	public function get_occurrences_generator( ?Generator $generator = null, ...$args ): ?Generator {
 		if ( $generator !== null ) {
 			return $generator;
 		}

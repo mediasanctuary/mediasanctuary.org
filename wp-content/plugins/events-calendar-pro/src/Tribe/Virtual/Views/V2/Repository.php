@@ -22,6 +22,7 @@ class Repository {
 	 * Filters a View repository args to add the virtual ones.
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
+	 * @since 7.8.0 Made $context explicitly nullable.
 	 *
 	 * @param array        $repository_args The current repository args.
 	 * @param Context|null $context         An instance of the context the View is using or `null` to use the
@@ -29,7 +30,7 @@ class Repository {
 	 *
 	 * @return array The filtered repository args.
 	 */
-	public function filter_repository_args( array $repository_args, Context $context = null ) {
+	public function filter_repository_args( array $repository_args, ?Context $context = null ) {
 		$context = null !== $context ? $context : tribe_context();
 
 		if ( $context->is( 'virtual' ) ) {

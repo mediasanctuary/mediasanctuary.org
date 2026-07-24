@@ -36,10 +36,6 @@ class Service_Provider extends Provider_Contract {
 			return;
 		}
 
-		if ( function_exists( 'tribe_register_view' ) ) {
-			tribe_register_view( 'summary', __( 'Summary', 'tribe-events-calendar-pro' ), Summary_View::class, 50, __( 'summary', 'tribe-events-calendar-pro' ) );
-		}
-
 		require_once tribe( 'events-pro.main' )->pluginPath . 'src/Tribe/Views/V2/functions/classes.php';
 		tribe_register_provider( Widgets\Service_Provider::class );
 		tribe_register_provider( Shortcodes\Service_Provider::class );

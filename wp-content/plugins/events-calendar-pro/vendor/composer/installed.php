@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'the-events-calendar/events-pro',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => 'c442ddb36b93bb59e3f57cb5399f995e26ee8c5e',
+        'pretty_version' => 'dev-release/M26.jigglypuff',
+        'version' => 'dev-release/M26.jigglypuff',
+        'reference' => 'fc6bb04e73e613c4501dbaa406a5ae2622abe7dd',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -29,9 +29,9 @@
             'dev_requirement' => false,
         ),
         'the-events-calendar/events-pro' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => 'c442ddb36b93bb59e3f57cb5399f995e26ee8c5e',
+            'pretty_version' => 'dev-release/M26.jigglypuff',
+            'version' => 'dev-release/M26.jigglypuff',
+            'reference' => 'fc6bb04e73e613c4501dbaa406a5ae2622abe7dd',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

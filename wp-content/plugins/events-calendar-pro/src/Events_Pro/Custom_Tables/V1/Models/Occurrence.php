@@ -2,7 +2,7 @@
 /**
  * Provides the code required to extend the base Event Model using the extensions API.
  *
- * @since   6.0.0
+ * @since 6.0.0
  *
  * @package TEC\Events_Pro\Custom_Tables\V1\Models
  */
@@ -26,14 +26,14 @@ use TEC\Events_Pro\Custom_Tables\V1\RRule\Occurrence as Occurrence_Date;
 /**
  * Class Occurrence
  *
- * @since   6.0.0
+ * @since 6.0.0
  *
  * @package TEC\Events_Pro\Custom_Tables\V1\Models
  */
 class Occurrence {
 
 	/**
-	 * ${CARET}
+	 * The provisional post.
 	 *
 	 * @since 6.0.0
 	 *
@@ -42,7 +42,7 @@ class Occurrence {
 	private $provisional_post;
 
 	/**
-	 * ${CARET}
+	 * The cache.
 	 *
 	 * @since 6.0.0
 	 *
@@ -51,7 +51,7 @@ class Occurrence {
 	private $cache;
 
 	/**
-	 * ${CARET}
+	 * The ID generator.
 	 *
 	 * @since 6.0.0
 	 *

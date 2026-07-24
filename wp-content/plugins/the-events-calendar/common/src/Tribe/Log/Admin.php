@@ -101,7 +101,7 @@ class Tribe__Log__Admin {
 	 * Register our script early.
 	 */
 	public function register_script() {
-		tribe_asset(
+		tec_asset(
 			Tribe__Main::instance(),
 			'tribe-common-logging-controls',
 			'admin-log-controls.js',
@@ -205,15 +205,16 @@ class Tribe__Log__Admin {
 		return $levels;
 	}
 
+	//phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter.Found
 	/**
 	 * Provides a URL that can be used to download the current or specified
 	 * log.
 	 *
-	 * @param $log
+	 * @param mixed $unused_log Unused.
 	 *
 	 * @return string
 	 */
-	protected function get_log_url( $log = null ) {
+	protected function get_log_url( $unused_log = null ) {
 		$query = [
 			'tribe-common-log' => 'download',
 			'check'            => wp_create_nonce( 'download_log' ),
@@ -223,6 +224,7 @@ class Tribe__Log__Admin {
 
 		return esc_url( $log_download_url );
 	}
+	//phpcs:enable Generic.CodeAnalysis.UnusedFunctionParameter.Found
 
 	/**
 	 * Facilitate downloading of logs.
@@ -255,7 +257,7 @@ class Tribe__Log__Admin {
 		$output = fopen( 'php://output', 'w' );
 
 		foreach ( $this->current_logger()->retrieve() as $log_entry ) {
-			fputcsv( $output, $log_entry );
+			fputcsv( $output, $log_entry, ',', '"', '\\' ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fputcsv -- Writing to the PHP output stream for a file download, not the filesystem.
 		}
 
 		fclose( $output );

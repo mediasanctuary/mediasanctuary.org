@@ -75,6 +75,7 @@ class Views_Provider extends Service_Provider {
 	 * Hook to filter a view repository args to add the virtual ones.
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
+	 * @since 7.8.0 Made $context explicitly nullable.
 	 *
 	 * @param array        $repository_args The current repository args.
 	 * @param Context|null $context         An instance of the context the View is using or `null` to use the
@@ -82,7 +83,7 @@ class Views_Provider extends Service_Provider {
 	 *
 	 * @return array The filtered repository args.
 	 */
-	public function filter_events_views_v2_view_repository_args( array $repository_args = [], Context $context = null ) {
+	public function filter_events_views_v2_view_repository_args( array $repository_args = [], ?Context $context = null ) {
 		return $this->container->make( Repository::class )->filter_repository_args( $repository_args, $context );
 	}
 

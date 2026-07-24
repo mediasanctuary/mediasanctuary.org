@@ -9,9 +9,10 @@
  *
  * @link https://evnt.is/1aiy
  *
- * @version 6.2.0
- * @since   6.1.2 Changing our nonce verification structures.
+ * @version 7.7.8
+ * @since 6.1.2 Changing our nonce verification structures.
  * @since 6.2.0 Defer header rendering to the components/header template.
+ * @since 7.7.8 Improve accessibility by switching from a <div> to a semantic <ul> structure and adding a hidden heading linked via aria-labelledby.
  *
  * @var string   $rest_url             The REST URL.
  * @var string   $rest_method          The HTTP method, either `POST` or `GET`, the View will use to make requests.
@@ -33,7 +34,7 @@ if ( empty( $disable_event_search ) ) {
 }
 ?>
 <div
-	<?php tribe_classes( $container_classes ); ?>
+	<?php tec_classes( $container_classes ); ?>
 	data-js="tribe-events-view"
 	data-view-rest-url="<?php echo esc_url( $rest_url ); ?>"
 	data-view-rest-method="<?php echo esc_attr( $rest_method ); ?>"
@@ -45,7 +46,7 @@ if ( empty( $disable_event_search ) ) {
 		data-view-breakpoint-pointer="<?php echo esc_attr( $breakpoint_pointer ); ?>"
 	<?php endif; ?>
 >
-	<div class="tribe-common-l-container tribe-events-l-container">
+	<section class="tribe-common-l-container tribe-events-l-container">
 		<?php $this->template( 'components/loader', [ 'text' => __( 'Loading...', 'tribe-events-calendar-pro' ) ] ); ?>
 
 		<?php $this->template( 'components/json-ld-data' ); ?>
@@ -59,8 +60,13 @@ if ( empty( $disable_event_search ) ) {
 		<?php $this->template( 'components/filter-bar' ); ?>
 
 		<div class="tribe-events-pro-photo">
-
-			<div class="tribe-common-g-row tribe-common-g-row--gutters">
+			<h2
+				id="tribe-events-photo-view-heading"
+				class="tribe-common-a11y-visual-hide"
+			>
+				<?php esc_html_e( 'List of events in Photo View', 'tribe-events-calendar-pro' ); ?>
+			</h2>
+			<ul class="tribe-common-g-row tribe-common-g-row--gutters" aria-labelledby="tribe-events-photo-view-heading">
 
 				<?php foreach ( $events as $event ) : ?>
 					<?php $this->setup_postdata( $event ); ?>
@@ -69,7 +75,7 @@ if ( empty( $disable_event_search ) ) {
 
 				<?php endforeach; ?>
 
-			</div>
+			</ul>
 
 		</div>
 
@@ -78,7 +84,7 @@ if ( empty( $disable_event_search ) ) {
 		<?php $this->template( 'components/ical-link' ); ?>
 
 		<?php $this->template( 'components/after' ); ?>
-	</div>
+	</section>
 </div>
 
 <?php $this->template( 'components/breakpoints' ); ?>

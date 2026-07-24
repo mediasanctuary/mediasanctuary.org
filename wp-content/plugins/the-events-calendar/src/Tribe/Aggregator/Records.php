@@ -214,75 +214,85 @@ class Tribe__Events__Aggregator__Records {
 
 		// Register the Success post status.
 		$args   = [
-			'label'              => esc_html_x( 'Imported', 'event aggregator status', 'the-events-calendar' ),
-			'label_count'        => _nx_noop(
+			'label'               => esc_html_x( 'Imported', 'event aggregator status', 'the-events-calendar' ),
+			// translators: %s is the number of imported records.
+			'label_count'         => _nx_noop(
 				'Imported <span class="count">(%s)</span>',
 				'Imported <span class="count">(%s)</span>',
 				'event aggregator status',
 				'the-events-calendar'
 			),
-			'public'             => true,
-			'publicly_queryable' => true,
+			'public'              => true,
+			'publicly_queryable'  => false,
+			'exclude_from_search' => false,
 		];
 		$object = register_post_status( self::$status->success, $args );
 		$registered_by_key->success = $registered_by_name->{'tribe-aggregator-success'} = $object;
 
 		// Register the Failed post status.
 		$args   = [
-			'label'              => esc_html_x( 'Failed', 'event aggregator status', 'the-events-calendar' ),
-			'label_count'        => _nx_noop(
+			'label'               => esc_html_x( 'Failed', 'event aggregator status', 'the-events-calendar' ),
+			// translators: %s is the number of failed records.
+			'label_count'         => _nx_noop(
 				'Failed <span class="count">(%s)</span>',
 				'Failed <span class="count">(%s)</span>',
 				'event aggregator status',
 				'the-events-calendar'
 			),
-			'public'             => true,
-			'publicly_queryable' => true,
+			'public'              => true,
+			'publicly_queryable'  => false,
+			'exclude_from_search' => false,
 		];
 		$object = register_post_status( self::$status->failed, $args );
 		$registered_by_key->failed = $registered_by_name->{'tribe-aggregator-failed'} = $object;
 
 		// Register the Schedule post status.
 		$args   = [
-			'label'              => esc_html_x( 'Schedule', 'event aggregator status', 'the-events-calendar' ),
-			'label_count'        => _nx_noop(
+			'label'               => esc_html_x( 'Schedule', 'event aggregator status', 'the-events-calendar' ),
+			// translators: %s is the number of schedule records.
+			'label_count'         => _nx_noop(
 				'Schedule <span class="count">(%s)</span>',
 				'Schedule <span class="count">(%s)</span>',
 				'event aggregator status',
 				'the-events-calendar'
 			),
-			'public'             => true,
-			'publicly_queryable' => true,
+			'public'              => true,
+			'publicly_queryable'  => false,
+			'exclude_from_search' => false,
 		];
 		$object = register_post_status( self::$status->schedule, $args );
 		$registered_by_key->schedule = $registered_by_name->{'tribe-aggregator-schedule'} = $object;
 
 		// Register the Pending post status.
 		$args   = [
-			'label'              => esc_html_x( 'Pending', 'event aggregator status', 'the-events-calendar' ),
-			'label_count'        => _nx_noop(
+			'label'               => esc_html_x( 'Pending', 'event aggregator status', 'the-events-calendar' ),
+			// translators: %s is the number of pending records.
+			'label_count'         => _nx_noop(
 				'Pending <span class="count">(%s)</span>',
 				'Pending <span class="count">(%s)</span>',
 				'event aggregator status',
 				'the-events-calendar'
 			),
-			'public'             => true,
-			'publicly_queryable' => true,
+			'public'              => true,
+			'publicly_queryable'  => false,
+			'exclude_from_search' => false,
 		];
 		$object = register_post_status( self::$status->pending, $args );
 		$registered_by_key->pending = $registered_by_name->{'tribe-aggregator-pending'} = $object;
 
 		// Register the Pending post status.
 		$args   = [
-			'label'              => esc_html_x( 'Draft', 'event aggregator status', 'the-events-calendar' ),
-			'label_count'        => _nx_noop(
+			'label'               => esc_html_x( 'Draft', 'event aggregator status', 'the-events-calendar' ),
+			// translators: %s is the number of draft records.
+			'label_count'         => _nx_noop(
 				'Draft <span class="count">(%s)</span>',
 				'Draft <span class="count">(%s)</span>',
 				'event aggregator status',
 				'the-events-calendar'
 			),
-			'public'             => true,
-			'publicly_queryable' => true,
+			'public'              => true,
+			'publicly_queryable'  => false,
+			'exclude_from_search' => false,
 		];
 		$object = register_post_status( self::$status->draft, $args );
 		$registered_by_key->draft = $registered_by_name->{'tribe-aggregator-draft'} = $object;
@@ -456,6 +466,59 @@ class Tribe__Events__Aggregator__Records {
 		}
 
 		return $this->get_by_origin( $post->post_mime_type, $post );
+	}
+
+	/**
+	 * Ensures a scheduled import record ID is valid for an edit request and that the current user may update it.
+	 *
+	 * @since 6.15.19
+	 *
+	 * @param int                                         $post_id        Post ID submitted as the record to update.
+	 * @param Tribe__Events__Aggregator__Record__Abstract $request_record Record for the import origin from the same request.
+	 *
+	 * @return true|WP_Error True when the user may proceed, or a `WP_Error` describing the failure.
+	 */
+	public function validate_scheduled_record_edit_access( $post_id, Tribe__Events__Aggregator__Record__Abstract $request_record ) {
+		$post_id = absint( $post_id );
+
+		if ( ! $post_id ) {
+			return new WP_Error(
+				'tribe-ea-invalid-record-id',
+				__( 'The import record could not be updated.', 'the-events-calendar' )
+			);
+		}
+
+		$existing = $this->get_by_post_id( $post_id );
+
+		if ( tribe_is_error( $existing ) || ! $existing instanceof Tribe__Events__Aggregator__Record__Abstract ) {
+			return new WP_Error(
+				'tribe-ea-invalid-record',
+				__( 'The import record could not be updated.', 'the-events-calendar' )
+			);
+		}
+
+		if ( ! $existing->is_schedule ) {
+			return new WP_Error(
+				'tribe-ea-not-scheduled-record',
+				__( 'The import record could not be updated.', 'the-events-calendar' )
+			);
+		}
+
+		if ( $existing->origin !== $request_record->origin ) {
+			return new WP_Error(
+				'tribe-ea-record-origin-mismatch',
+				__( 'The import record could not be updated.', 'the-events-calendar' )
+			);
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return new WP_Error(
+				'tribe-ea-cannot-edit-record',
+				__( 'You do not have permission to edit this import.', 'the-events-calendar' )
+			);
+		}
+
+		return true;
 	}
 
 	/**

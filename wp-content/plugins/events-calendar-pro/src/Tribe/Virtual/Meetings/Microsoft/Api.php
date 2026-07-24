@@ -324,14 +324,19 @@ class Api extends Account_API {
 			'%1$s <a href="%2$s" target="_blank">%3$s</a>',
 			esc_html_x(
 				'No Microsoft account found.',
-			'The start of the message for smart url/autodetect when there is no Microsoft account found.',
-			'tribe-events-calendar-pro'
+				'The start of the message for smart url/autodetect when there is no Microsoft account found.',
+				'tribe-events-calendar-pro'
 			),
-			Settings::admin_url(),
+			Settings::admin_url(
+				[
+					'tab'                                    => 'meetings',
+					'#tec-microsoft-application-credentials' => '',
+				]
+			),
 			esc_html_x(
 				'Please check your account connection.',
-			'The link in of the message for smart url/autodetect when no Microsoft account is found.',
-			'tribe-events-calendar-pro'
+				'The link in of the message for smart url/autodetect when no Microsoft account is found.',
+				'tribe-events-calendar-pro'
 			)
 		);
 	}

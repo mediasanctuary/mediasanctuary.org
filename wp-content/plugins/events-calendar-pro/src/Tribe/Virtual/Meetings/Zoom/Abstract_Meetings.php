@@ -151,10 +151,10 @@ class Abstract_Meetings {
 	 * @param Api            $api            An instance of the Zoom API handler.
 	 * @param Classic_Editor $classic_editor An instance of the Classic Editor rendering handler.
 	 * @param Password       $password       An instance of the Password handler.
-	 * @param Encryption     $encryption     An instance of the Encryption handler.
-	 * @param Actions        $actions        An instance of the Actions name handler.
+	 * @param Encryption     $encryption     An instance of the Encryption handler (optional).
+	 * @param Actions        $actions        An instance of the Actions name handler (optional).
 	 */
-	public function __construct( Api $api, Classic_Editor $classic_editor, Password $password, Encryption $encryption = NULL, Actions $actions = NULL ) {
+	public function __construct( Api $api, Classic_Editor $classic_editor, Password $password, ?Encryption $encryption = null, ?Actions $actions = null ) {
 		$this->api            = $api;
 		$this->classic_editor = $classic_editor;
 		$this->password       = $password;
@@ -908,7 +908,7 @@ class Abstract_Meetings {
 				}
 
 				// Do something to indicate failure with $error_message?
-				$this->classic_editor->render_meeting_generation_error_details( $event, $error_message, true );
+				self::$classic_editor->render_meeting_generation_error_details( $event, $error_message, true );
 			}
 		);
 

@@ -34,24 +34,15 @@ class Tribe__Events__Aggregator__Record__CSV extends Tribe__Events__Aggregator__
 	}
 
 	public function queue_import( $args = array() ) {
-		$is_previewing = (
-			! empty( $_GET['action'] )
-			&& (
-				'tribe_aggregator_create_import' === $_GET['action']
-				|| 'tribe_aggregator_preview_import' === $_GET['action']
-			)
-		);
-
-		$data = $this->get_csv_data();
-
-		$result = array(
+		$data   = $this->get_csv_data();
+		$result = [
 			'status'       => 'success',
 			'message_code' => 'success',
-			'data'         => array(
+			'data'         => [
 				'import_id' => $this->id,
 				'items'     => $data,
-			),
-		);
+			],
+		];
 
 		$first_row = reset( $data );
 		$columns   = array_keys( $first_row );
@@ -61,9 +52,8 @@ class Tribe__Events__Aggregator__Record__CSV extends Tribe__Events__Aggregator__
 		// store the import id
 		update_post_meta( $this->id, self::$meta_key_prefix . 'import_id', $this->id );
 
-		// only set as pending if we aren't previewing the record
-		if ( ! $is_previewing ) {
-			// if we get here, we're good! Set the status to pending
+		// Only set as pending if we aren't previewing the record.
+		if ( ! $this->is_previewing() ) {
 			$this->set_status_as_pending();
 		}
 
@@ -319,6 +309,8 @@ class Tribe__Events__Aggregator__Record__CSV extends Tribe__Events__Aggregator__
 	 * Returns the path to the CSV file.
 	 *
 	 * @since 4.6.15
+	 * @since 6.15.17.1 Strengthen file type and location checks during aggregator imports.
+	 * @since 6.17.1 Resolve symlinks before validating the path so imports work on symlinked uploads directories.
 	 *
 	 * @return bool|false|string Either the absolute path to the CSV file or `false` on failure.
 	 */
@@ -327,6 +319,24 @@ class Tribe__Events__Aggregator__Record__CSV extends Tribe__Events__Aggregator__
 			$file_path = get_attached_file( absint( $this->meta['file'] ) );
 		} else {
 			$file_path = realpath( $this->meta['file'] );
+		}
+
+		if ( $file_path ) {
+			// Resolve symlinks (e.g. a symlinked uploads directory) so the path can be compared against the uploads base below.
+			$file_path = realpath( $file_path ) ?: $file_path;
+
+			// Only allow CSV files — reject any other extension to prevent file disclosure.
+			$filetype = wp_check_filetype( $file_path );
+			if ( empty( $filetype['ext'] ) || 'csv' !== strtolower( $filetype['ext'] ) ) {
+				return false;
+			}
+
+			// Restrict the file to the WordPress uploads directory to prevent path traversal.
+			$upload_info  = wp_upload_dir();
+			$uploads_base = realpath( $upload_info['basedir'] );
+			if ( false === $uploads_base || 0 !== strpos( $file_path, trailingslashit( $uploads_base ) ) ) {
+				return false;
+			}
 		}
 
 		return $file_path && file_exists( $file_path ) ? $file_path : false;

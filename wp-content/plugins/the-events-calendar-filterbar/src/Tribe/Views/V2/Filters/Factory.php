@@ -51,6 +51,7 @@ class Factory {
 	 * Modifies the rest Params to reflect required modifications to make filter work as expected.
 	 *
 	 * @since 4.9.0
+	 * @since 5.6.4 Add additional fields handling to the REST params.
 	 *
 	 * @param array   $params   The Rest params to filter.
 	 * @param Request $request  WP Rest Request used.
@@ -62,6 +63,21 @@ class Factory {
 		$is_form_submit = tribe_is_truthy( Arr::get( $params, [ 'view_data', 'form_submit' ], false ) );
 
 		foreach ( $params_map as $key => $filter_class ) {
+			// Additional fields use dynamic keys (tribe__ecp_custom_*) instead of single QUERY_VAR.
+			if ( 'filterbar_additional_fields' === $key ) {
+				$additional_fields = array_filter(
+					$is_form_submit ? (array) Arr::get( $params, 'view_data', [] ) : $params,
+					static function ( $value, $param_key ) {
+						return 0 === strpos( $param_key, 'tribe__ecp_custom_' );
+					},
+					ARRAY_FILTER_USE_BOTH
+				);
+
+				$params[ $key ] = ! empty( $additional_fields ) ? $additional_fields : null;
+
+				continue;
+			}
+
 			$tribe_key = 'tribe_' . $key;
 			$context_key = tribe_context()->get_read_key_for( $key, Context::QUERY_VAR );
 
@@ -117,6 +133,8 @@ class Factory {
 			'filterbar_city'           => City::class,
 			'filterbar_state_province' => State::class,
 			'filterbar_featured'       => Featured_Events::class,
+			'filterbar_date_from'      => Date_From::class,
+			'filterbar_date_to'        => Date_To::class,
 		];
 
 		if ( class_exists( 'Tribe__Events__Pro__Geo_Loc_Filter' ) ) {

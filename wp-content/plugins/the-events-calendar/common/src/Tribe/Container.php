@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed -- The container class and its procedural helper functions are intentionally bundled together.
 
 use TEC\Common\Contracts\Container;
 
@@ -75,16 +76,18 @@ if ( ! function_exists( 'tribe_singleton' ) ) {
 	 * The class will be built only once (if passing the class name or a callback function), stored
 	 * and the same instance will be returned from that moment on.
 	 *
+	 * @since 6.12.0 Made $after_build_methods explicitly nullable.
+	 *
 	 * @param string                 $slug                The human-readable and catchy name of the class.
-	 * @param string|object|callable $class               The full class name or an instance of the class
+	 * @param string|object|callable $class_name          The full class name or an instance of the class
 	 *                                                    or a callback that will return the instance of the class.
 	 * @param array                  $after_build_methods An array of methods that should be called on
 	 *                                                    the built object after the `__construct` method; the methods
 	 *                                                    will be called only once after the singleton instance
 	 *                                                    construction.
 	 */
-	function tribe_singleton( $slug, $class, array $after_build_methods = null ) {
-		Tribe__Container::init()->singleton( $slug, $class, $after_build_methods );
+	function tribe_singleton( $slug, $class_name, ?array $after_build_methods = null ) {
+		Tribe__Container::init()->singleton( $slug, $class_name, $after_build_methods );
 	}
 }
 
@@ -140,15 +143,17 @@ if ( ! function_exists( 'tribe_register' ) ) {
 	 *      // the `hook` and `register` methods will be called on the built instance.
 	 *      tribe( 'tec.admin.class' )->doSomething();
 	 *
+	 * @since 6.12.0 Made $after_build_methods explicitly nullable.
+	 *
 	 * @param string                 $slug                The human-readable and catchy name of the class.
-	 * @param string|object|callable $class               The full class name or an instance of the class
+	 * @param string|object|callable $class_name          The full class name or an instance of the class
 	 *                                                    or a callback that will return the instance of the class.
 	 * @param array                  $after_build_methods An array of methods that should be called on
 	 *                                                    the built object after the `__construct` method; the methods
 	 *                                                    will be called each time after the instance construction.
 	 */
-	function tribe_register( $slug, $class, array $after_build_methods = null ) {
-		Tribe__Container::init()->bind( $slug, $class, $after_build_methods );
+	function tribe_register( $slug, $class_name, ?array $after_build_methods = null ) {
+		Tribe__Container::init()->bind( $slug, $class_name, $after_build_methods );
 	}
 }
 
@@ -208,7 +213,7 @@ if ( ! function_exists( 'tribe_get_var' ) ) {
 	 *      $url = tribe_get_var( 'tec.url' );
 	 *
 	 * @param string $slug    The slug of the variable registered using `tribe_set_var`.
-	 * @param null   $default The value that should be returned if the variable slug
+	 * @param mixed  $default The value that should be returned if the variable slug
 	 *                        is not a registered one.
 	 *
 	 * @return mixed Either the registered value or the default value if the variable
@@ -263,9 +268,9 @@ if ( ! function_exists( 'tribe_isset_var' ) ) {
 	 *
 	 * @since 4.11.0
 	 *
-	 * @param  string   $slug    The slug of the variable checked using `tribe_isset_var`.
+	 * @param string $slug The slug of the variable checked using `tribe_isset_var`.
 	 *
-	 * @return boolean  Either a the given slug exists.
+	 * @return boolean Whether the given slug exists.
 	 */
 	function tribe_isset_var( $slug ) {
 		$container = Tribe__Container::init();
@@ -283,24 +288,25 @@ if ( ! function_exists( 'tribe_register_provider' ) ) {
 	 * @see ServiceProvider
 	 * @see ServiceProviderInterface
 	 *
-	 * @param string $provider_class
+	 * @param string $provider_class The class name of the service provider to register.
 	 */
 	function tribe_register_provider( $provider_class ) {
 		$container = Tribe__Container::init();
 
 		if ( $provider_class === 'Tribe\Tickets\Admin\Home\Service_Provider' ) {
+			$callback = static function () use ( $container, &$callback ): void {
+				$container->register( Tribe\Tickets\Admin\Home\Service_Provider::class );
+				remove_action( 'tribe_tickets_plugin_loaded', $callback );
+			};
+
 			/**
 			 * Prevent binding a poorly located service provider registration in ET pre 5.6.0
 			 * and places it after ET Main::bind_implementations().
 			 *
 			 * @todo: Remove this after TEC 7.5 after enough time has passed.
 			 */
-			add_action(
-				'tribe_tickets_plugin_loaded',
-				static function() use ( $container ) {
-					$container->register( Tribe\Tickets\Admin\Home\Service_Provider::class );
-				}
-			);
+			add_action( 'tec_tickets_fully_loaded', $callback );
+			add_action( 'tribe_tickets_plugin_loaded', $callback );
 		} else {
 			$container->register( $provider_class );
 		}
@@ -311,15 +317,16 @@ if ( ! function_exists( 'tribe_register_provider' ) ) {
 		 * Returns a lambda function suitable to use as a callback; when called the function will build the implementation
 		 * bound to `$classOrInterface` and return the value of a call to `$method` method with the call arguments.
 		 *
-		 * @since  4.7
-		 * @since  4.6.2  Included the $argsN params
+		 * @since 4.7
+		 * @since 4.6.2  Included the $argsN params
 		 *
-		 * @param  string $slug       A class or interface fully qualified name or a string slug.
-		 * @param  string $method     The method that should be called on the resolved implementation with the
-		 *                            specified array arguments.
-		 * @param  mixed  [$argsN]      (optional) Any number of arguments that will be passed down to the Callback
+		 * @param string $slug    A class or interface fully qualified name or a string slug.
+		 * @param string $method  The method that should be called on the resolved implementation with the
+		 *                        specified array arguments.
 		 *
-		 * @return callable A PHP Callable based on the Slug and Methods passed
+		 * @args mixed  $arguments (optional) Any number of additional arguments that will be passed down to the Callback.
+		 *
+		 * @return callable A PHP Callable based on the Slug and Methods passed.
 		 */
 		function tribe_callback( $slug, $method ) {
 			$container = Tribe__Container::init();
@@ -339,17 +346,17 @@ if ( ! function_exists( 'tribe_register_provider' ) ) {
 
 	if ( ! function_exists( 'tribe_callback_return' ) ) {
 		/**
-		 * Returns a tribe_callback for a very simple Return value method
+		 * Returns a tribe_callback for a very simple Return value method.
 		 *
 		 * Example of Usage:
 		 *
 		 *      add_filter( 'admin_title', tribe_callback_return( __( 'Ready to work.' ) ) );
 		 *
-		 * @since  4.6.2
+		 * @since 4.6.2
 		 *
-		 * @param  mixed    $value  The value to be returned
+		 * @param mixed $value The value to be returned.
 		 *
-		 * @return callable A PHP Callable based on the Slug and Methods passed
+		 * @return callable A PHP Callable based on the Slug and Methods passed.
 		 */
 		function tribe_callback_return( $value ) {
 			return tribe_callback( 'callback', 'return_value', $value );

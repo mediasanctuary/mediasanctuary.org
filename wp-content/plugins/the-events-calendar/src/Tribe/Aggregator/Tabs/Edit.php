@@ -1,6 +1,11 @@
 <?php
 
+use TEC\Events\Traits\Can_Edit_Events;
+
 class Tribe__Events__Aggregator__Tabs__Edit extends Tribe__Events__Aggregator__Tabs__Abstract {
+
+	use Can_Edit_Events;
+
 	/**
 	 * Static Singleton Holder
 	 *
@@ -60,6 +65,28 @@ class Tribe__Events__Aggregator__Tabs__Edit extends Tribe__Events__Aggregator__T
 		];
 
 		if ( empty( $_POST['aggregator']['action'] ) || 'edit' !== $_POST['aggregator']['action'] ) {
+			return;
+		}
+
+		if ( ! $this->current_user_can_edit_events() ) {
+			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+				wp_send_json_error(
+					[
+						'message_code' => 'error:edit-import-denied',
+						'message'      => __( 'You do not have permission to edit this import.', 'the-events-calendar' ),
+					],
+					403
+				);
+			}
+
+			ob_start();
+			?>
+			<p>
+				<?php esc_html_e( 'You do not have permission to edit this import.', 'the-events-calendar' ); ?>
+			</p>
+			<?php
+			tribe_notice( 'tribe-aggregator-edit-import-denied', ob_get_clean(), 'type=error' );
+
 			return;
 		}
 
@@ -128,7 +155,7 @@ class Tribe__Events__Aggregator__Tabs__Edit extends Tribe__Events__Aggregator__T
 			return $result;
 		}
 
-		$this->messages['success'][] = esc_html__( 'Scheduled import was successfully updated.' );
+		$this->messages['success'][] = esc_html__( 'Scheduled import was successfully updated.', 'the-events-calendar' );
 
 		ob_start();
 		?>
@@ -151,6 +178,18 @@ class Tribe__Events__Aggregator__Tabs__Edit extends Tribe__Events__Aggregator__T
 	 * Handles the previewing of a scheduled import edit
 	 */
 	public function ajax_preview_import() {
+		$this->validate_nonce( 'tribe-aggregator-save-import' );
+
+		if ( ! $this->current_user_can_edit_events() ) {
+			wp_send_json_error(
+				[
+					'message_code' => 'error:create-import-failed',
+					'message'      => __( 'You do not have permission to create an import.', 'the-events-calendar' ),
+				],
+				403
+			);
+		}
+
 		$result = $this->handle_submit();
 
 		if ( is_wp_error( $result ) ) {

@@ -9,12 +9,14 @@
  *
  * @link http://evnt.is/1aiy
  *
+ * @version 5.6.3
+ * @since 5.0.0
+ * @since 5.6.3 Correct typo in aria-label attribute.
+ *
  * @var array<string>        $classes    Array of classes to add to pill.
  * @var array<string,string> $attrs      Associative array of key and value for attributes.
  * @var string               $label      Label for the pill.
  * @var string               $selections Selections of the filter labeled by pill.
- *
- * @version 5.0.0
  *
  */
 $pill_classes = [ 'tribe-filter-bar-c-pill' ];
@@ -34,7 +36,7 @@ if ( ! empty( $classes ) ) {
 			<?php echo esc_html( $selections ); ?>
 		</span>
 	</div>
-	<button class="tribe-filter-bar-c-pill__remove-button" data-js="tribe-filter-bar-c-pill__remove-button" type="button">
+	<button class="tribe-filter-bar-c-pill__remove-button" data-js="tribe-filter-bar-c-pill__remove-button" type="button" aria-label="<?php esc_attr_e( 'Remove filters', 'tribe-events-filter-view' ); ?>">
 		<?php $this->template( 'components/icons/close-alt', [ 'classes' => [ 'tribe-filter-bar-c-pill__remove-button-icon' ] ] ); ?>
 		<span class="tribe-filter-bar-c-pill__remove-button-text tribe-common-a11y-visual-hide">
 			<?php esc_html_e( 'Remove filters', 'tribe-events-filter-view' ); ?>

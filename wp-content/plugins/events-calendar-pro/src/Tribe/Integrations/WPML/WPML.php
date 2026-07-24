@@ -28,9 +28,11 @@ class Tribe__Events__Pro__Integrations__WPML__WPML extends Tribe__Events__Integr
 	/**
 	 * Tribe__Events__Pro__Integrations__WPML__WPML constructor.
 	 *
+	 * @since 7.8.0 Made $translations explicitly nullable.
+	 *
 	 * @param Tribe__Events__Pro__Integrations__WPML__API__Translations|null $translations
 	 */
-	public function __construct( Tribe__Events__Pro__Integrations__WPML__API__Translations $translations = null ) {
+	public function __construct( ?Tribe__Events__Pro__Integrations__WPML__API__Translations $translations = null ) {
 		$this->translations = $translations ? $translations : new Tribe__Events__Pro__Integrations__WPML__API__Translations();
 	}
 

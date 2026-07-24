@@ -18,7 +18,7 @@ use Tribe__Context as Context;
  * @package Tribe\Events\Views\V2
  * @since   4.9.2
  */
-interface View_Interface  extends View_Url_Provider_Interface, Repository_User_Interface {
+interface View_Interface extends View_Url_Provider_Interface, Repository_User_Interface {
 
 	/**
 	 * Returns a View HTML code.
@@ -28,6 +28,16 @@ interface View_Interface  extends View_Url_Provider_Interface, Repository_User_I
 	 * @return string
 	 */
 	public function get_html();
+
+	/**
+	 * Sends, echoing it and exiting, the view HTML on the page.
+	 *
+	 * @since 6.11.1
+	 *
+	 * @param null|string $html A specific HTML string to print on the page or the HTML produced by the view
+	 *                          `get_html` method.
+	 */
+	public function send_html( ?string $html = null );
 
 	/**
 	 * Returns the view label.
@@ -77,10 +87,11 @@ interface View_Interface  extends View_Url_Provider_Interface, Repository_User_I
 	 * Sets, or unset, the View context.
 	 *
 	 * @since 4.9.2
+	 * @since 6.17.0 Made $context explicitly nullable.
 	 *
 	 * @param \Tribe__Context|null $context Either a context instance or null to make the View use the global one.
 	 */
-	public function set_context( Context $context = null );
+	public function set_context( ?Context $context = null );
 
 	/**
 	 * Sets the View slug, usually the one it was registered with in the `tribe_events_views` filter.
@@ -175,12 +186,13 @@ interface View_Interface  extends View_Url_Provider_Interface, Repository_User_I
 	 * Sets a View URL object either from some arguments or from the current URL.
 	 *
 	 * @since 4.9.3
+	 * @since 6.17.0 Made $args explicitly nullable.
 	 *
 	 * @param array|null $args   An associative array of arguments that will be mapped to the corresponding query
 	 *                           arguments by the View, or `null` to use the current URL.
 	 * @param bool       $merge  Whether to merge the arguments or override them.
 	 */
-	public function set_url( array $args = null, $merge = false );
+	public function set_url( ?array $args = null, $merge = false );
 
 	/**
 	 * Returns the post IDs of the posts the View is displaying in the order it's displaying them.

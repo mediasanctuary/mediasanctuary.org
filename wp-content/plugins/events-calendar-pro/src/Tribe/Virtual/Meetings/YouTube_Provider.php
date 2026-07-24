@@ -17,6 +17,7 @@ use Tribe\Events\Virtual\Plugin;
 use Tribe\Events\Virtual\Traits\With_Nonce_Routes;
 use Tribe__Admin__Helpers as Admin_Helpers;
 use WP_Post;
+use Tribe__Events__Pro__Main as Pro;
 
 /**
  * Class YouTube_Provider
@@ -79,10 +80,11 @@ class YouTube_Provider extends Meeting_Provider {
 	 * Hooks the filters required for the YouTube API integration to work correctly.
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
+	 * @since 7.7.6 Change the hook used to add the settings fields.
 	 */
 	protected function add_filters() {
 		add_filter( 'tribe_rest_event_data', [ $this, 'attach_rest_properties' ], 10, 2 );
-		add_filter( 'tec_settings_gmaps_js_api_start', [ $this, 'filter_addons_tab_fields' ], 20 );
+		add_filter( 'tec_events_pro_meetings_tab_fields', [ $this, 'filter_addons_tab_fields' ] );
 		add_filter( 'tribe_field_div_end', [ $this, 'setup_channel_trash_icon' ], 10, 2 );
 		add_filter( 'tribe_events_virtual_video_sources', [ $this, 'add_video_source' ], 15, 2 );
 		add_filter( 'tec_events_virtual_export_fields', [ $this, 'filter_youtube_source_google_calendar_parameters' ], 10, 5 );
@@ -198,8 +200,9 @@ class YouTube_Provider extends Meeting_Provider {
 	protected function enqueue_assets() {
 		$admin_helpers = Admin_Helpers::instance();
 
-		tribe_asset(
-			tribe( Plugin::class ),
+		$pro = Pro::instance();
+		tec_asset(
+			$pro,
 			'tribe-events-virtual-youtube-settings-js',
 			'events-virtual-youtube-settings.js',
 			[ 'jquery', 'tribe-events-views-v2-accordion' ],
@@ -209,10 +212,10 @@ class YouTube_Provider extends Meeting_Provider {
 					'operator' => 'OR',
 					[ $admin_helpers, 'is_screen' ],
 				],
-				'localize' => [
+				'localize'     => [
 					'name' => 'tribe_events_virtual_youtube_settings_strings',
-					'data' => [
-						'deleteConfirm'  => static::get_youtube_confirmation_to_delete_account(),
+					'data' => fn() => [
+						'deleteConfirm' => static::get_youtube_confirmation_to_delete_account(),
 					],
 				],
 			]
@@ -234,13 +237,13 @@ class YouTube_Provider extends Meeting_Provider {
 	}
 
 	/**
-	 * Filters the fields in the Events > Settings > APIs tab to add the ones provided by the extension.
+	 * Adds YouTube settings fields to the Meetings settings tab.
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
 	 *
 	 * @param array<string,array> $fields The current fields.
 	 *
-	 * @return array<string,array> The fields, as updated by the settings.
+	 * @return array<string,array> The fields, as updated by the YouTube settings.
 	 */
 	public function filter_addons_tab_fields( $fields ) {
 		if ( ! is_array( $fields ) ) {

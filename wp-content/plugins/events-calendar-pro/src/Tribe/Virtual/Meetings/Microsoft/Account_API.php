@@ -122,7 +122,14 @@ abstract class Account_API extends Abstract_Account_Api {
 			$handled = true;
 		}
 
-		wp_safe_redirect( Settings::admin_url() );
+		$admin_url = Settings::admin_url(
+			[
+				'tab'                                    => 'meetings',
+				'#tec-microsoft-application-credentials' => '',
+			]
+		);
+
+		wp_safe_redirect( $admin_url ); // phpcs:ignore StellarWP.CodeAnalysis.RedirectAndDie.Error
 
 		return $handled;
 	}

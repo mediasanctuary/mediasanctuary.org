@@ -117,8 +117,10 @@ class Week_View extends By_Day_View {
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @since 7.8.0 Made $context explicitly nullable.
 	 */
-	protected function setup_repository_args( Context $context = null ) {
+	protected function setup_repository_args( ?Context $context = null ) {
 		$context = null !== $context ? $context : $this->context;
 
 		/*
@@ -595,12 +597,13 @@ class Week_View extends By_Day_View {
 	 * Returns an array of the CSS classes that should be applied to the event to render correctly in the Week View.
 	 *
 	 * @since 4.7.8
+	 * @since 7.8.0 Made $prev explicitly nullable.
 	 *
 	 * @param \WP_Post $event The event to get the classes for.
 	 *
 	 * @return array An array of classes that should be applied to the event to render correctly in the Week View.
 	 */
-	protected function get_event_classes( \WP_Post $event, \WP_Post $prev = null ) {
+	protected function get_event_classes( \WP_Post $event, ?\WP_Post $prev = null ) {
 		$event_classes = array_filter( [
 			'vertical_position' => $this->get_event_vertical_position_class( $event ),
 			'duration'          => $this->get_event_duration_class( $event ),
@@ -688,13 +691,14 @@ class Week_View extends By_Day_View {
 	 * Returns the event CSS sequence class, based on the event coming before it.
 	 *
 	 * @since 4.7.8
+	 * @since 7.8.0 Made $prev explicitly nullable.
 	 *
 	 * @param \WP_Post      $event The event object to calculate the CSS class for.
 	 * @param \WP_Post|null $prev The previous event object, if any.
 	 *
 	 * @return string The CSS class that should be added to the event for the sequence or an empty string.
 	 */
-	protected function get_event_sequence_class( \WP_Post $event, \WP_Post $prev = null ) {
+	protected function get_event_sequence_class( \WP_Post $event, ?\WP_Post $prev = null ) {
 		if ( null === $prev ) {
 			return '';
 		}

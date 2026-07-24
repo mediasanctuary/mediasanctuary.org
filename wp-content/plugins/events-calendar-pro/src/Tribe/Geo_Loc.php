@@ -118,9 +118,12 @@ class Tribe__Events__Pro__Geo_Loc { // phpcs:ignore -- legacy class name
 
 	/**
 	 * Class constructor.
+	 *
+	 * @since 4.4.0
+	 * @since 7.7.3 Updated `init` to priority 20. [CE-329]
 	 */
 	public function __construct() {
-		$this->rewrite_slug = Tribe__Settings_Manager::get_option( 'geoloc_rewrite_slug', __( 'map', 'tribe-events-calendar-pro' ) );
+		$this->rewrite_slug = 'map'; // Converted to translated string on init, below.
 
 		add_action( 'tribe_events_venue_updated', [ $this, 'save_venue_geodata' ], 10, 2 );
 		add_action( 'tribe_events_venue_created', [ $this, 'save_venue_geodata' ], 10, 2 );
@@ -145,6 +148,18 @@ class Tribe__Events__Pro__Geo_Loc { // phpcs:ignore -- legacy class name
 
 		add_action( 'admin_notices', [ $this, 'maybe_notify_about_google_over_limit' ] );
 		add_filter( 'tribe_events_google_map_link', [ $this, 'google_map_link' ], 10, 2 );
+		add_action( 'init', [ $this, 'init' ], 20 );
+	}
+
+	/**
+	 * Initialize the class.
+	 *
+	 * @since 7.5.0
+	 *
+	 * @return void
+	 */
+	public function init(): void {
+		$this->rewrite_slug = Tribe__Settings_Manager::get_option( 'geoloc_rewrite_slug', __( 'map', 'tribe-events-calendar-pro' ) );
 	}
 
 	/**

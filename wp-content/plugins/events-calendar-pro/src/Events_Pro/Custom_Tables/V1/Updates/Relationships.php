@@ -69,6 +69,9 @@ class Relationships {
 			tribe( Relationship::class )->with_event( $event, $series_post_ids );
 		}
 
+		$cache_key = Series_Relationship::get_cache_key( $post->ID );
+		tribe_cache()->delete( $cache_key );
+
 		return true;
 	}
 

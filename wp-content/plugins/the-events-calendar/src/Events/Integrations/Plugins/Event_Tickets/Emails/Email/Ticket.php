@@ -9,11 +9,10 @@
 
 namespace TEC\Events\Integrations\Plugins\Event_Tickets\Emails\Email;
 
-use \Tribe__Utils__Array as Arr;
+use Tribe__Utils__Array as Arr;
 use TEC\Events\Integrations\Plugins\Event_Tickets\Emails\Emails as TEC_Email_Handler;
 use TEC\Tickets\Emails\Dispatcher;
 use TEC\Tickets\Emails\Email\Ticket as Ticket_Email;
-use TEC\Tickets\Emails\Email_Abstract;
 use Tribe\Events\Views\V2\iCalendar\Links\Google_Calendar;
 use TEC\Events\Integrations\Plugins\Event_Tickets\Emails\Template;
 
@@ -26,7 +25,7 @@ use TEC\Events\Integrations\Plugins\Event_Tickets\Emails\Template;
  */
 class Ticket {
 	/**
-	 * The option key for the Event calendar links.
+	 * The option key for The Events Calendar links.
 	 *
 	 * @see   Email_Abstract::get_option_key() for option key format.
 	 *
@@ -37,7 +36,7 @@ class Ticket {
 	public static string $option_add_event_links = 'tec-tickets-emails-ticket-add-event-links';
 
 	/**
-	 * The option key for the Event calendar invite.
+	 * The option key for The Events Calendar invite.
 	 *
 	 * @see   Email_Abstract::get_option_key() for option key format.
 	 *

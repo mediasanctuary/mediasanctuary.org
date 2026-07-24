@@ -11,18 +11,21 @@
  *
  * @var string $next_url The URL to the next page, if any, or an empty string.
  *
- * @version 5.6.0
+ * @version 7.7.11
+ *
+ * @since 5.6.0
+ * @since 7.7.11 Changed from <a> to <button> to fix accessibility issues.
  *
  */
 ?>
 <li class="tribe-events-c-top-bar__nav-list-item">
-	<a
-		href="<?php echo esc_url( $next_url ); ?>"
+	<button
+		type="button"
 		class="tribe-common-c-btn-icon tribe-common-c-btn-icon--caret-right tribe-events-c-top-bar__nav-link tribe-events-c-top-bar__nav-link--next"
 		aria-label="<?php esc_attr_e( 'Next month', 'tribe-events-calendar-pro' ); ?>"
-		title="<?php esc_attr_e( 'Next month', 'tribe-events-calendar-pro' ); ?>"
+		data-url="<?php echo esc_url( $next_url ); ?>"
 		data-js="tribe-events-view-link"
 	>
 		<?php $this->template( 'components/icons/caret-right', [ 'classes' => [ 'tribe-common-c-btn-icon__icon-svg', 'tribe-events-c-top-bar__nav-link-icon-svg' ] ] ); ?>
-	</a>
+	</button>
 </li>

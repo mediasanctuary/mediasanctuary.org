@@ -15,6 +15,7 @@
  *
  * @see tribe_get_venue_object() For the format of the venue object.
  */
+
 if (
 	empty( $venue->address )
 	&& empty( $venue->city )
@@ -27,11 +28,7 @@ if (
 
 ?>
 <div class="tribe-common-h7 tribe-common-h--alt tribe-events-widget-featured-venue__venue-info-group tribe-events-widget-featured-venue__venue-info-group--address">
-	<em
-		class="tribe-events-widget-featured-venue__venue-icon"
-		aria-label="<?php esc_attr_e( 'Address', 'tribe-events-calendar-pro' ); ?>"
-		title="<?php esc_attr_e( 'Address', 'tribe-events-calendar-pro' ); ?>"
-	>
+	<span class="tribe-events-widget-featured-venue__venue-icon" >
 		<?php
 		$this->template(
 			'components/icons/map-pin',
@@ -43,10 +40,12 @@ if (
 			]
 		);
 		?>
-	</em>
+	</span>
+	<span class="tribe-events-widget-featured-venue__venue-icon-text tribe-common-a11y-visual-hide">
+		<?php esc_html_e( 'Address', 'tribe-events-calendar-pro' ); ?>
+	</span>
 
 	<div class="tribe-events-widget-featured-venue__venue-content tribe-events-widget-featured-venue__venue-address-info">
-
 		<?php if ( ! empty( $venue->address ) ) : ?>
 			<div class="tribe-events-widget-featured-venue__venue-address-info-street">
 				<?php echo esc_html( $venue->address ); ?>
@@ -59,7 +58,7 @@ if (
 			|| ! empty( $venue->state_province )
 			|| ! empty( $venue->zip )
 		) :
-		?>
+			?>
 			<div class="tribe-events-widget-featured-venue__venue-address-info-larger-areas">
 
 				<?php if ( ! empty( $venue->city ) ) : ?>
@@ -82,12 +81,10 @@ if (
 
 			</div>
 		<?php endif; ?>
-
 		<?php if ( ! empty( $venue->country ) ) : ?>
 			<div class="tribe-events-widget-featured-venue__venue-address-info-country">
 				<?php echo esc_html( $venue->country ); ?>
 			</div>
 		<?php endif; ?>
-
 	</div>
 </div>

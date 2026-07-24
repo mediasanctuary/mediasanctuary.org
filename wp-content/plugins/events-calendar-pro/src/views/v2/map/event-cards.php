@@ -20,15 +20,17 @@
 		class="tribe-events-pro-map__event-cards-wrapper"
 		data-js="tribe-events-pro-map-event-cards-wrapper"
 	>
-		<div
+		<ul
 			class="tribe-events-pro-map__event-cards"
 			data-js="tribe-events-pro-map-event-cards"
+			role="list"
+			aria-label="<?php esc_attr_e( 'Map view events list', 'tribe-events-calendar-pro' ); ?>"
 		>
 			<?php foreach ( $events as $index => $event ) : ?>
 				<?php $this->setup_postdata( $event ); ?>
 				<?php $this->template( 'map/event-cards/event-card', [ 'event' => $event, 'index' => $index ] ); ?>
 			<?php endforeach; ?>
-		</div>
+		</ul>
 	</div>
 
 	<?php $this->template( 'map/event-cards/nav' ); ?>

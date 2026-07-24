@@ -31,6 +31,7 @@ class Configuration {
 			'l10n'   => [
 				'show_filters'                      => esc_html__( 'Show filters', 'tribe-events-filter-view' ),
 				'hide_filters'                      => esc_html__( 'Hide filters', 'tribe-events-filter-view' ),
+				'filter_options'                    => esc_html__( 'Filter options', 'tribe-events-filter-view' ),
 				'cost_range_currency_symbol_before' => sprintf(
 					esc_html_x(
 						'%1$s%2$s - %1$s%3$s',

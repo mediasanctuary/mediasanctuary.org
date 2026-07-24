@@ -33,6 +33,7 @@ class ORM_Provider extends Service_Provider {
 		$this->container->bind( 'events-virtual.event-repository', Event::class );
 
 		add_filter( 'tribe_events_event_repository_map', array( $this, 'filter_event_repository_map' ), 12 );
+		add_filter( 'tec_rest_event_properties_to_add', [ $this, 'filter_event_properties_to_add' ], 12 );
 	}
 
 	/**
@@ -48,5 +49,22 @@ class ORM_Provider extends Service_Provider {
 		$map['default'] = 'events-virtual.event-repository';
 
 		return $map;
+	}
+
+	/**
+	 * Filters the properties to add to the event REST API response.
+	 *
+	 * @since 7.7.0
+	 *
+	 * @param array $properties The properties to add to the event REST API response.
+	 *
+	 * @return array The modified properties.
+	 */
+	public function filter_event_properties_to_add( array $properties ) {
+		$properties['virtual']              = true;
+		$properties['virtual_video_source'] = true;
+		$properties['virtual_url']          = true;
+
+		return $properties;
 	}
 }

@@ -3,9 +3,9 @@
 Contributors: theeventscalendar, borkweb, bordoni, brianjessee, aguseo, camwynsp, GeoffBel, jentheo, leahkoerper, lucatume, neillmcshea, vicskf, zbtirrell, juanfra
 Tags: events, calendar, event, venue, organizer, dates, date, google maps, conference, workshop, concert, meeting, seminar, summit, class, the events calendar, widget, pro
 Donate link: https://evnt.is/29
-Stable tag: 7.3.2
-Requires at least: 6.5
-Tested up to: 6.7.1
+Stable tag: 7.8.0
+Requires at least: 6.8
+Tested up to: 7.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -64,7 +64,7 @@ If this is your first time using The Events Calendar and Events Calendar Pro, yo
 * Our <a href="https://evnt.is/3t">New User Primer</a> was designed for folks in your exact position. Featuring both step-by-step videos and written walkthroughs that feature accompanying screenshots, the primer aims to take you from zero to hero in no time.
 * <a href="https://evnt.is/3v">Installation/Setup FAQs</a> from our Support page can help give an overview of what the plugin can and cannot do. This section of the FAQs may be helpful as it aims to address any basic install questions not addressed by the new user primer.
 * <a href="https://evnt.is/9u">Tutorials</a>, based on commonly-requested hacks and tweaks, which will provide you guidance towards accomplishing some highly sought-after tweaks.
-* Are you a developer looking to build a custom frontend view? We created an example plugin that demonstrates how to register a new view. You can download the plugin at GitHub here: https://github.com/moderntribe/tribe-events-agenda-view
+* Are you a developer looking to build a custom frontend view? We created an example plugin that demonstrates how to register a new view. You can download the plugin at GitHub here: https://github.com/the-events-calendar/tribe-events-agenda-view
 * Take care of your license key. Though not required to create your first event, you'll want to get it in place as soon as possible to guarantee your access to support and upgrades. Need help finding your license key? Check out https://evnt.is/3w
 
 Otherwise, if you're feeling adventurous, you can get started by heading to the Events menu and adding your first event.
@@ -213,6 +213,242 @@ Previous versions of Events Calendar Pro are not cross-compatible with 6.X add-o
 Remember to always make a backup of your database and files before updating!
 
 == Changelog ==
+
+= [7.8.0] 2026-07-08 =
+
+* Compatibility - Improved PHP compatibility for versions 7.4 and up to 8.4.
+* Language - 0 new strings added, 36 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.7.16] 2026-06-24 =
+
+* Security - Updated Swiper library v5.3.6 to v12.2.0 for security improvements.
+* Language - 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.7.15] 2026-06-15 =
+
+* Fix - Organizer and Venue views now correctly return a 404 response when an invalid slug is requested alongside an empty search query. [SMTNC-347]
+* Fix - Prevent fatal TypeError on the Organizer view when an invalid organizer slug is requested with a search query under themes that call the view bootstrap directly (e.g., Enfold). [SMTNC-347]
+* Language - 0 new strings added, 1 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.7.14] 2026-03-11 =
+
+* Fix - Redirect to the Events page when trashing a recurring event from the block editor. [ECP-1410]
+* Language - 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.7.13] 2026-02-11 =
+
+* Tweak - Add aria-label attribute to events navigation. [TEC-5732]
+* Tweak - Add aria-label to month navigation for screen reader accessibility. [TEC-5230]
+* Tweak - Changed views: `v2/map/event-cards/nav`, `v2/map/top-bar/nav`, `v2/photo/nav`, `v2/photo/top-bar/nav`, `v2/summary/nav`, `v2/summary/top-bar/nav`, `v2/week/top-bar/nav`, `v2/widgets/shortcodes/components/top-bar/month-nav`
+* Language - 3 new strings added, 1 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.7.12] 2026-01-13 =
+
+* Fix - Add a filter to allow skipping updating the series post status, for example during old event cleanup.
+* Fix - Add filters to control Venue and Organizer page titles. [ECP-1508]
+* Fix - Fix recurring event view links in admin dashboard when using WPML with different domains per language by including get_option( 'home' ) in URL stripping logic. [ECP-1997]
+* Fix - Handle ignored imported events in Event Manager list view. [ECP-1678]
+* Tweak - Added filters: `wpml_post_language_details`, `wpml_permalink`, `tec_events_skip_updating_series_status`
+* Tweak - Adjust focus order for Events by Week widget so it follows a logical left to right pattern. [ECP-1989]
+* Tweak - Automatically move focus to events when using a keyboard to navigate the Events By Week widget. [ECP-2001]
+* Tweak - Changed views: `v2/map/event-cards/event-card/event`, `v2/photo/event`, `v2/week`, `v2/week/day-selector`, `v2/week/grid-body`, `v2/week/grid-body/events-day`, `v2/week/grid-body/events-day/event`, `v2/week/grid-body/events-day/event/tooltip/title`, `v2/week/grid-header`, `v2/week/grid-header/header-column`
+* Tweak - Improve accessibility for Week View by reorganizing heading hierarchy, adding ARIA roles and labels, and refining screen reader behavior. [TEC-5624]
+* Tweak - Increase contrast of pagination arrows for the Week Widget for improved accessibility. [ECP-1998]
+* Tweak - Increase contrast on focus for mini calendar. [ECP-1999] [ECP-2000]
+* Tweak - Reorder event markup in archive and widget views so event titles precede their date and time for improved screen reader navigation. [TEC-5621]
+* Language - 6 new strings added, 15 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.7.11] 2025-11-18 =
+
+* Version - Events Pro 7.7.11 is only compatible with The Events Calendar 6.15.12 or higher.
+* Feature - Introduce new REST endpoint for the Series archive.
+* Tweak - Added filters: `tec_is_rest_tec_v1_request`, `tec_rest_swagger_{$type}_definition`, `tec_rest_swagger_definition`, `tec_events_pro_rest_v1_series_read_params`
+* Tweak - Changed views: `iframe/header`, `v2/map/event-cards/nav`, `v2/summary/date-group/date-tag`, `v2/summary/date-group/event`, `v2/summary/date-group/event/title`, `v2/widgets/shortcodes/components/top-bar/month-nav`, `v2/widgets/shortcodes/components/top-bar/nav/next`, `v2/widgets/shortcodes/components/top-bar/nav/prev`
+* Tweak - Change AJAX-based navigation from anchor tags to button elements for better semantic accessibility, as they trigger state changes rather than page navigation. [TEC-5633]
+* Tweak - Improve mini calendar navigation semantics by removing static month label from navigation list. [ECP-1995]
+* Tweak - Improve Summary View heading hierarchy by restructuring markup to use H2 for event list, H3 for dates, and H4 for event titles for better screen reader navigation. [ECP-1996]
+* Tweak - Increase visual contrast for focus indicator on events by week widget. [ECP-1994]
+* Tweak - Increase visual contrast for focus indicator on mini calendar widget. [ECP-1992]
+* Tweak - Make mini calendar event markers accessible by adding descriptive focus styles and contextual information for color-based indicators. [TEC-5630]
+* Accessibility - Increase visual contrast for focus indicator on virtual event link button. [ECP-1993]
+* Language - 56 new strings added, 4 updated, 0 fuzzied, and 0 obsoleted.
+* Language - Set correct text domain is some files using the wrong one.
+
+= [7.7.10] 2025-11-04 =
+
+* Fix - Convert em tags to span tags in icons to prevent announcement of "Empty emphasis". [TEC-5718]
+* Fix - Correct aria attribute use in featured event icons. [TEC-5718]
+* Tweak - Changed views: `components/hybrid-event`, `components/virtual-event`, `custom-tables-v1/single/series-relationship-marker`, `single/hybrid-marker-mobile`, `single/hybrid-marker`, `single/virtual-marker-mobile`, `single/virtual-marker`, `v2/day/event/recurring`, `v2/list/event/recurring`, `v2/map/event-cards/event-card/event/date-time/featured`, `v2/map/event-cards/event-card/event/date-time/recurring`, `v2/map/event-cards/event-card/tooltip/date-time/featured`, `v2/map/event-cards/event-card/tooltip/date-time/recurring`, `v2/month/calendar-event/multiday/recurring`, `v2/month/calendar-event/recurring`, `v2/month/calendar-event/tooltip/recurring`, `v2/month/mobile-event/recurring`, `v2/photo/event/date-time/featured`, `v2/photo/event/date-time/recurring`, `v2/summary`, `v2/summary/date-group`, `v2/summary/date-group/event`, `v2/summary/date-group/event/date/recurring`, `v2/summary/date-group/event/title/featured`, `v2/summary/date-separator`, `v2/summary/month-separator`, `v2/week/day-selector/days`, `v2/week/day-selector/days/day`, `v2/week/grid-body/events-day/event/date/featured`, `v2/week/grid-body/events-day/event/date/recurring`, `v2/week/grid-body/events-day/event/title/featured`, `v2/week/grid-body/events-day/event/tooltip/date/featured`, `v2/week/grid-body/events-day/event/tooltip/date/recurring`, `v2/week/grid-body/multiday-events-day/multiday-event/bar/featured`, `v2/week/grid-body/multiday-events-day/multiday-event/bar/recurring`, `v2/week/grid-body/multiday-events-day/multiday-event/hidden/link/featured`, `v2/week/grid-body/multiday-events-day/multiday-event/hidden/link/recurring`, `v2/week/mobile-events/day`, `v2/week/mobile-events/day/event/date/featured`, `v2/week/mobile-events/day/event/date/recurring`, `v2/widgets/widget-events-list/event/date/recurring`, `v2/widgets/widget-featured-venue/events-list/event/date/featured`, `v2/widgets/widget-featured-venue/events-list/event/date/recurring`, `v2/widgets/widget-featured-venue/venue/address`, `v2/widgets/widget-featured-venue/venue/phone`, `v2/widgets/widget-featured-venue/venue/website`
+* Accessibility - Add visible underlines to venue and organizer links on Events List Widget. [TEC-5225]
+* Accessibility - Adjust summary view markup to make use of unordered lists for better accessibility. [TEC-5223]
+* Accessibility - Change Week View Widget day selector to use proper tab pattern instead of accordion pattern for improved screen reader accessibility. [TEC-5234]
+* Language - 0 new strings added, 5 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.7.9] 2025-10-21 =
+
+* Tweak - Add event titles to map view action links for improved screen reader context. [TEC-5220]
+* Tweak - Changed views: `v2/map/event-cards`, `v2/map/event-cards/event-card`, `v2/map/event-cards/event-card/actions/details`, `v2/map/event-cards/event-card/actions/directions`
+* Tweak - Mark event cards as list items in Map View for improved screen reader accessibility. [TEC-5221]
+* Language - 3 new strings added, 3 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.7.8] 2025-10-14 =
+
+* Tweak - Week view updated to improve accesibility for individual event cards. [TEC-5219]
+* Accessibility - Use semantic list structure and hidden heading in Photo View. [TEC-5218]
+* Language - 1 new strings added, 2 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.7.7] 2025-10-07 =
+
+* Tweak - Week view headers structure updated for improved accessibility. [TEC-5238]
+* Tweak - Add ARIA landmark roles and aria-current attributes to breadcrumbs to improve screen reader support. [TEC-5205]
+* Tweak - Added underline to the email and website fields on the Organizer Single template. [TEC-5206]
+* Tweak - Changed views: `v2/organizer/meta/details/email`, `v2/organizer/meta/details/website`, `v2/week/grid-header/header-column`
+* Language - 0 new strings added, 4 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.7.6] 2025-09-30 =
+
+* Version - Events Pro 7.7.6 is only compatible with The Events Calendar 6.15.6 and higher.
+* Fix - Declare support for WooCommerce HPOS to avoid showing an incompatible notice. [ECP-1988]
+* Tweak - Added filters: `tec_events_pro_meetings_tab_fields`, `tec_events_pro_virtual_meetings_tab_fields`
+* Tweak - Changed views: `v2/venue/meta/categories`, `v2/venue/meta/details/address`, `v2/venue/meta/details/website`, `v2/week/grid-header/header-column`
+* Tweak - Move Power Automate, Zapier, and Meeting settings to their own subtab under Integrations. [ECP-1956]
+* Accessibility - Add an underline to the mini calendar widget 'View Calendar' link for improved accessibility. [ECP-1955]
+* Accessibility - Add aria-label to week view day links. [ECP-1954]
+* Accessibility - Use alternative styling for links on the venue page. [TEC-5204]
+* Language - 6 new strings added, 77 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.7.5] 2025-09-23 =
+
+* Tweak - Adds aria-hidden attribute to ECP virtual lock icon. [ECP-1834]
+* Tweak - Changes views: `components/hybrid-event`, `components/icons/lock`, `components/virtual-event`, `single/hybrid-marker-mobile`, `single/hybrid-marker`, `single/virtual-marker-mobile`, `single/virtual-marker`
+* Tweak - Ensures icon has aria-hidden and no alt text. [TEC-5235]
+* Tweak - Improves messages for failed Zoom account detection, adding clarity for users. [ECP-1892]
+* Language - 2 new strings added, 0 updated, 1 fuzzied, and 2 obsoleted.
+
+= [7.7.4] 2025-09-16 =
+
+* Fix - Add "WC tested up to" and "WC requires at least" headers to events-calendar-pro.php [ECP-1925]
+* Fix - Add plugin requires header to events-calendar-pro.php [ECP-1928]
+* Fix - Correct "Closures / anonymous functions declared as static do not have access to $this" [ECP-1927]
+* Fix - Corrected an issue with JIT translatations. [CE-329]
+* Fix - Remove deprecated FILTER_SANITIZE_MAGIC_QUOTES [ECP-1927]
+* Fix - Update htmlspecialchars() and html_entity_decode() usage to make them PHP 8.1 compatible. [ECP-1927]
+* Tweak - Changed views: `v2/organizer/meta`, `v2/venue/meta`, `v2/widgets/widget-countdown/complete`
+* Tweak - Ensure that the correct header is shows for the Date & Time settings. [ECP-1951]
+* Tweak - Leverage WP's new "requires plugin" header to prevent activating ECP if TEC is not active. [ECP-1928]
+* Compatibility - Update single-venue template handling to avoid warnings in PHP 8.3 [ECP-1918]
+* Language - 0 new strings added, 145 updated, 0 fuzzied, and 1 obsoleted.
+
+= [7.7.3] 2025-09-10 =
+
+* Tweak - Changed views: `pro/single-organizer`, `v2/organizer/meta`, `v2/venue/meta`
+* Security - Ensures password protected Venues and Organizers have their data protected. [SVUL-19]
+* Language - 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.7.2] 2025-09-02 =
+
+* Fix - Alters the code in classic-editor-events.js to properly get the date and time for display and storage. [ECP-1929]
+* Tweak - Recurring settings labels updated to be more precise. [ECP-1932]
+* Language - 0 new strings added, 4 updated, 0 fuzzied, and 4 obsoleted.
+
+= [7.7.1] 2025-08-26 =
+
+* Fix - Add checks to make sure the shortcode parameters are respected during AJAX calls. [ECP-1923]
+* Tweak - Tweaked timing of initialization for APM. [ECP-1915]
+* Language - 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.7.0] 2025-08-19 =
+
+* Version - Events Pro 7.7.0 is only compatible with The Events Calendar 6.15.0 and higher.
+* [EXPERIMENTAL] Feature - Extending new REST endpoints, with Pro functionality. Note: This API is for experimental use only and requires the X-TEC-EEA header. It may be subject to breaking changes in upcoming releases.
+* Language - 2 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.6.3] 2025-07-22 =
+
+* Tweak - Changed views: `components/hybrid-event`, `v2/map/event-cards/nav`, `v2/organizer/meta/featured-image`, `v2/photo/event/featured-image`, `v2/venue/meta/featured-image`, `v2/week/mobile-events/day/event/featured-image`
+* Accessibility - Accessibility enhanced for calendar map and week views. [TEC-5156]
+* Language - 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.6.2] 2025-07-16 =
+
+* Fix - Ensure all featured images on calendar views have dimensions set to reduce layout shifts. [TEC-4715]
+* Fix - Remove titles and add role=presentation and an empty alt attribute on featured images for screen readers. [TEC-5196]
+* Tweak - Changed views: `v2/map/event-cards/event-card/event/featured-image`, `v2/photo/event/featured-image`, `v2/week/grid-body/events-day/event/tooltip/featured-image`
+* Language - 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.6.1] 2025-07-03 =
+
+* Feature - Add integration with WP All Export to support exporting and migrating recurring events and event series. [ECP-1913]
+* Feature - Updated the calendar view templates to integrate Category Colors functionality. [TEC-5364]
+* Fix - Corrected provisional post SQL query parsing regex and added automated tests. [ECP-1914]
+* Tweak - Changed views: `blocks/additional-fields/checkbox`, `blocks/additional-fields/dropdown`, `blocks/additional-fields/radio`, `blocks/additional-fields/text`, `blocks/additional-fields/textarea`, `blocks/additional-fields/url`, `blocks/related-events`, `blocks/related-events/event-thumbnail`, `blocks/single-venue`, `blocks/virtual-event`, `components/icons/lock`, `components/virtual-event`, `custom-tables-v1/components/icons/series`, `custom-tables-v1/components/series-relationship-icon-link-pill`, `custom-tables-v1/components/series-relationship-icon-link`, `custom-tables-v1/components/series-relationship-marker-link`, `custom-tables-v1/single/series-relationship-marker`, `facebook/single/facebook-embed`, `integrations/elementor/widgets/event-additional-fields`, `integrations/elementor/widgets/event-additional-fields/field/label`, `integrations/elementor/widgets/event-additional-fields/field/value`, `integrations/elementor/widgets/event-additional-fields/fields`, `integrations/elementor/widgets/event-additional-fields/header`, `integrations/elementor/widgets/event-organizer/names`, `integrations/elementor/widgets/event-related`, `integrations/elementor/widgets/event-related/header`, `integrations/elementor/widgets/event-related/item/datetime`, `integrations/elementor/widgets/event-related/item/thumb`, `integrations/elementor/widgets/event-related/item/title`, `integrations/elementor/widgets/event-related/list-item`, `integrations/elementor/widgets/event-related/list`, `integrations/elementor/widgets/event-venue/name`, `pro/related-events`, `single/hybrid-marker-mobile`, `single/hybrid-marker`, `single/virtual-marker-mobile`, `single/virtual-marker`, `v2/day/event/recurring`, `v2/list/event/recurring`, `v2/map`, `v2/map/event-cards/event-card`, `v2/map/event-cards/event-card/actions`, `v2/map/event-cards/event-card/event`, `v2/map/event-cards/event-card/event/category`, `v2/map/event-cards/event-card/event/date-time/featured`, `v2/map/event-cards/event-card/event/date-time/recurring`, `v2/map/event-cards/event-card/tooltip`, `v2/map/event-cards/event-card/tooltip/date-time/featured`, `v2/map/event-cards/event-card/tooltip/date-time/recurring`, `v2/map/map/no-venue-modal`, `v2/map/top-bar`, `v2/month/calendar-event/multiday/recurring`, `v2/month/calendar-event/recurring`, `v2/month/calendar-event/tooltip/recurring`, `v2/month/mobile-event/recurring`, `v2/organizer/meta`, `v2/organizer/meta/categories`, `v2/organizer/meta/details/email`, `v2/organizer/meta/details/phone`, `v2/organizer/meta/details/website`, `v2/organizer/meta/featured-image`, `v2/photo`, `v2/photo/event`, `v2/photo/event/category`, `v2/photo/event/date-time/featured`, `v2/photo/event/date-time/recurring`, `v2/photo/top-bar`, `v2/summary`, `v2/summary/date-group`, `v2/summary/date-group/event`, `v2/summary/date-group/event/date/recurring`, `v2/summary/date-group/event/title/featured`, `v2/summary/top-bar`, `v2/venue/meta`, `v2/venue/meta/categories`, `v2/venue/meta/details/address`, `v2/venue/meta/details/phone`, `v2/venue/meta/details/website`, `v2/venue/meta/featured-image`, `v2/week`, `v2/week/day-selector`, `v2/week/day-selector/days/day`, `v2/week/grid-body/events-day/event`, `v2/week/grid-body/events-day/event/date/featured`, `v2/week/grid-body/events-day/event/date/recurring`, `v2/week/grid-body/events-day/event/title/featured`, `v2/week/grid-body/events-day/event/tooltip/date/featured`, `v2/week/grid-body/events-day/event/tooltip/date/recurring`, `v2/week/grid-body/events-row-header`, `v2/week/grid-body/multiday-events-day/multiday-event`, `v2/week/grid-body/multiday-events-day/multiday-event/bar/featured`, `v2/week/grid-body/multiday-events-day/multiday-event/bar/recurring`, `v2/week/grid-body/multiday-events-day/multiday-event/hidden/link/featured`, `v2/week/grid-body/multiday-events-day/multiday-event/hidden/link/recurring`, `v2/week/grid-header`, `v2/week/grid-header/header-column`, `v2/week/mobile-events/day`, `v2/week/mobile-events/day/event`, `v2/week/mobile-events/day/event/date/featured`, `v2/week/mobile-events/day/event/date/recurring`, `v2/week/top-bar`, `v2/widgets/shortcodes/components/after`, `v2/widgets/shortcodes/components/before`, `v2/widgets/shortcodes/components/icons/caret-left`, `v2/widgets/shortcodes/components/icons/caret-right`, `v2/widgets/shortcodes/components/title`, `v2/widgets/shortcodes/events-month`, `v2/widgets/shortcodes/events-week`, `v2/widgets/widget-countdown`, `v2/widgets/widget-countdown/complete`, `v2/widgets/widget-events-list/event/date/recurring`, `v2/widgets/widget-featured-venue`, `v2/widgets/widget-featured-venue/events-list/event`, `v2/widgets/widget-featured-venue/events-list/event/date/featured`, `v2/widgets/widget-featured-venue/events-list/event/date/recurring`, `v2/widgets/widget-featured-venue/venue/address`, `youtube/single/youtube-embed`
+* Accessibility - Correct confusing labelling of images and links for screen readers. [TEC-5197, TEC-5182, TEC-5183, TEC-5195]
+* Accessibility - Reorganized the Virtual and Hybrid icons to be more understandable when read by a screen reader. [ECP-1833, TEC-5203]
+* Accessibility - Updated featured icons in all calendar views to include accessible labels. [TEC-5190, TEC-5201]
+* Language - 2 new strings added, 18 updated, 0 fuzzied, and 4 obsoleted.
+
+= [7.6.0.2] 2025-06-23 =
+
+* Fix - Prevents treating occurrences as events for pre custom tables migration code, resulting in creating multiple occurrences of phantom events. [ECP-1912]
+
+= [7.6.0.1] 2025-06-05 =
+
+* Fix - Utilize the newer version of our build process to ensure inline svgs are being handled properly. [TCMN-188]
+
+= [7.6.0] 2025-05-20 =
+
+* Version - Events Pro 7.6.0 is only compatible with The Events Calendar 6.13.0 or higher.
+* Feature - Migrated our style and script building process to stellarwp/tyson.
+* Feature - Added proper separation of asset paths for build directory and packages.
+* Feature - Updated block asset loading structure for better performance.
+* Tweak - Changed all instances of `tribe_asset()` to `tec_asset()` for compatibility with the new asset system.
+* Tweak - Updated asset registration paths to match the new build system structure.
+* Tweak - Improved asset conditionals and organization across the plugin.
+* Tweak - Updated Calendar embed block to use the new build path structure.
+* Tweak - Standardized CSS naming conventions with separate skeleton and full style files.
+* Performance - Optimized asset loading with improved grouping and conditional logic.
+* Language - 0 new strings added, 154 updated, 2 fuzzied, and 0 obsoleted.
+
+= [7.5.0.1] 2025-05-15 =
+
+* Fix - Ensure saving events with checkbox-type additional fields does not produce a fatal error. [ECP-1902]
+* Language - 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.5.0] 2025-05-13 =
+
+* Feature - New method to get the next Event in a Series [TEC-5407]
+* Fix - Ensure that additional field data is properly saved with the event when using the Block editor. [FBAR-294]
+* Fix - Prevent instances of the `_load_textdomain_just_in_time` warning by moving all language after the `init` hook
+* Tweak - Added actions: `tec_events_virtual_fully_loaded`, `tec_event_automator_fully_loaded`, `tec_events_pro_fully_loaded`
+* Tweak - Added filters: `tec_events_qr_next_series_event_url`
+* Tweak - Changed views: `v2/map`, `v2/photo`, `v2/summary`, `v2/week`, `v2/week/grid-body/multiday-events-day/multiday-event/bar`, `v2/week/grid-body/multiday-events-day/multiday-event/hidden`, `v2/week/grid-body/multiday-events-day/multiday-event/hidden/link`
+* Tweak - Include more Recurrence and Exclusion Telemetry data to improve functionality planning. [ECP-1900]
+* Tweak - Removed actions: `tribe_log`
+* Accessibility - Adjustments to keyboard navigation to focus on multiday and all day events properly. [ECP-1595]
+* Accessibility - Change wrapper div to a section tag to avoid multiple 'banner' landmarks. [TEC-3424]
+* Language - 9 new strings added, 121 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.4.2] 2025-03-04 =
+
+* Tweak - Update calls to DateTime that are passing null for PHP 8+ compatibility. [TEC-5086]
+* Fix - Fix past events shortcode attribute [TEC-5348]
+* Fix - Stop the noindex conflict by changing the View Title class to only get posts for list-type views. [TEC-5354]
+* Compatibility - Added 404 handling for week view when disabled or accessed outside the range of earliest and latest events, with an exception for the current month when no events exist. [TEC-5356]
+* Language - 0 new strings added, 3 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.4.1] 2025-02-10 =
+
+* Fix - Preemtively update postmeta before 3rd parties to prevent metadata duplication. [ECP-1879]
+* Fix - Validating post object before accessing post_type on Widget Manager. [ECP-1886]
+* Tweak - Add caching to Zoom method to get alternative hosts to prevent accessing the API on every load of event editor. [VE-591]
+* Tweak - Move file index.umd.js from node_modules to `src/resources/includes/`. [TCMN-175]
+* Tweak - Added filters: `tec_events_pro_virtual_alternative_hosts_cache_duration`
+* Language - 0 new strings added, 51 updated, 0 fuzzied, and 0 obsoleted.
+
+= [7.4.0] 2025-01-30 =
+
+* Fix - Update asset, dependencies, customizations to align with WordPress 6.7 and React 18. [TEC-5322]
+* Language - 0 new strings added, 2 updated, 0 fuzzied, and 0 obsoleted.
 
 = [7.3.2] 2025-01-22 =
 
@@ -2309,7 +2545,7 @@ Some things to consider before posting on the forum:
 * Your issue will be solved more quickly if you run a few checks before making a support request. Deactivate your plugins one by one - if the issue is fixed by deactivating a plugin you know you've got a plugin conflict. To test your Theme, revert to the default Twenty Twelve Theme to see if you are still experiencing the problem. If not, your Theme is the issue. Please provide this information when making your supper request.
 * Sometimes, just resetting your permalinks can fix the issue. Visit Events -> Settings -> Permalinks, save your permalinks with a different option and then save with your preferred choice again. This can solve events-related problems and can is worth a shot before creating a new thread.
 
-Still not happy? Shoot us an email to pro@tri.be or tweet to @moderntribeinc and tell us why. We'll do what we can to make it right.
+Still not happy? Shoot us an email to pro@tri.be or tweet to @TheEventsCal and tell us why. We'll do what we can to make it right.
 
 == Upgrade Notice ==
 

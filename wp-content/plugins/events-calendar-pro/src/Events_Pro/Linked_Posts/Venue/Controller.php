@@ -10,6 +10,8 @@
 namespace TEC\Events_Pro\Linked_Posts\Venue;
 
 use TEC\Common\Contracts\Provider\Controller as Controller_Contract;
+use Tribe\Events\Views\V2\Template\Title;
+use Tribe__Context;
 use Tribe__Events__Editor__Blocks__Event_Venue as Venue_Block;
 use Tribe__Template as Template;
 use WP_Post;
@@ -110,6 +112,7 @@ class Controller extends Controller_Contract {
 		add_filter( 'tec_block_tribe/event-venue_has_block', [ $this, 'filter_has_venue_block' ], 10, 4 );
 		add_filter( 'tec_events_views_v2_assets_should_enqueue_single_event_block_editor_styles', [ $this, 'filter_should_enqueue_block_styles' ] );
 		add_filter( 'tec_events_blocks_event_venue_should_enqueue_assets', [ $this, 'filter_should_enqueue_block_styles' ] );
+		add_filter( 'tribe_events_pro_views_v2_view_title', [ $this, 'filter_venue_view_title' ], 10, 4 );
 	}
 
 	/**
@@ -141,6 +144,7 @@ class Controller extends Controller_Contract {
 		remove_filter( 'tec_block_tribe/event-venue_has_block', [ $this, 'filter_has_venue_block' ] );
 		remove_filter( 'tec_events_views_v2_assets_should_enqueue_single_event_block_editor_styles', [ $this, 'filter_should_enqueue_block_styles' ] );
 		remove_filter( 'tec_events_blocks_event_venue_should_enqueue_assets', [ $this, 'filter_should_enqueue_block_styles' ] );
+		remove_filter( 'tribe_events_pro_views_v2_view_title', [ $this, 'filter_venue_view_title' ] );
 	}
 
 	/**
@@ -257,7 +261,9 @@ class Controller extends Controller_Contract {
 	/**
 	 * Filters whether the event venue block should be shown.
 	 *
+	 * @version 7.7.12
 	 * @since 6.2.0
+	 * @since 7.7.12 - Added filter to modify the Venue page title.
 	 *
 	 * @param bool     $has_block Whether the block has the block.
 	 * @param ?WP_Post $post      Post object.
@@ -284,5 +290,53 @@ class Controller extends Controller_Contract {
 		/** @var Multiple_Modifier $multiple_modifier */
 		$multiple_modifier = $this->container->get( Multiple_Modifier::class );
 		return $multiple_modifier->filter_should_enqueue_block_styles( (bool) $should_enqueue );
+	}
+
+	/**
+	 * Filters the title for single Venue pages.
+	 *
+	 * @since 7.7.12
+	 *
+	 * @param string         $title   The current view title.
+	 * @param bool           $depth   Whether to include the linked title or not.
+	 * @param Tribe__Context $context The current context.
+	 * @param array          $posts   The posts for the view.
+	 *
+	 * @return string The filtered title.
+	 */
+	public function filter_venue_view_title( $title, $depth, $context, $posts ) {
+		// Only modify the title if we're in a venue context.
+		if ( ! $context->is( 'venue_post_type' ) ) {
+			return $title;
+		}
+
+		$venue_id = get_the_ID();
+		$venue    = tribe_venues()->where( 'post_id', $venue_id )->first();
+
+		if ( ! $venue ) {
+			return $title;
+		}
+
+		// If no events, just return the venue title.
+		if ( empty( $posts ) ) {
+			return $venue->post_title;
+		}
+
+		$event_date         = $context->get( 'event_date', 'now' );
+		$event_display_mode = $context->get( 'event_display_mode' );
+		$range              = Title::build_post_range_title( $context, $event_date, $posts );
+
+		$title_format = 'past' === $event_display_mode
+			// translators: %1$s: Venue name, %2$s: Events plural, %3$s: Event date range.
+			? __( '%1$s - Past %2$s from %3$s', 'tribe-events-calendar-pro' )
+			// translators: %1$s: Venue name, %2$s: Events plural, %3$s: Event date range.
+			: __( '%1$s - %2$s from %3$s', 'tribe-events-calendar-pro' );
+
+		return sprintf(
+			$title_format,
+			$venue->post_title,
+			tribe_get_event_label_plural(),
+			$range
+		);
 	}
 }

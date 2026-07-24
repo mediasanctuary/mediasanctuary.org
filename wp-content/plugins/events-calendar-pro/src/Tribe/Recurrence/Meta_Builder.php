@@ -20,9 +20,11 @@ class Tribe__Events__Pro__Recurrence__Meta_Builder {
 	/**
 	 * Tribe__Events__Pro__Recurrence__Meta_Builder constructor.
 	 *
+	 * @since 7.8.0 Made $utils explicitly nullable.
+	 *
 	 * @param array $data
 	 */
-	public function __construct( $event_id, array $data = array(), Tribe__Events__Pro__Recurrence__Utils $utils = null ) {
+	public function __construct( $event_id, array $data = [], ?Tribe__Events__Pro__Recurrence__Utils $utils = null ) {
 		$this->event_id = $event_id;
 		$this->data = $data;
 		$this->utils = $utils ? $utils : new Tribe__Events__Pro__Recurrence__Utils();

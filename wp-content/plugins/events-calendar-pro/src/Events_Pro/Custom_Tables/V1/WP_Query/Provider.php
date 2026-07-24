@@ -115,7 +115,7 @@ class Provider extends Service_Provider implements \TEC\Events\Custom_Tables\V1\
 		}
 
 		if ( ! has_filter( 'tec_events_custom_tables_v1_occurrence_select_fields', [ $this, 'filter_occurrence_fields' ] ) ) {
-			add_filter( 'tec_events_custom_tables_v1_occurrence_select_fields', [ $this, 'filter_occurrence_fields' ], 10, 1 );
+			add_filter( 'tec_events_custom_tables_v1_occurrence_select_fields', [ $this, 'filter_occurrence_fields' ] );
 		}
 
 		if ( ! has_action( 'tec_events_custom_tables_v1_custom_tables_query_pre_get_posts', [ $this, 'register_custom_tables_filters' ] ) ) {
@@ -500,8 +500,8 @@ class Provider extends Service_Provider implements \TEC\Events\Custom_Tables\V1\
 	 *
 	 * @since 6.0.0
 	 *
-	 * @param string $select_fields       The input SQL required to select distinct Occurrences in the context
-	 *                                    of a Custom Tables Query.
+	 * @param string $select_fields The input SQL required to select distinct Occurrences in the context
+	 *                              of a Custom Tables Query.
 	 *
 	 * @return string TheSQL required to select distinct Occurrences in the context of a Custom Tables Query,
 	 *                pointing to the Occurrences custom table.

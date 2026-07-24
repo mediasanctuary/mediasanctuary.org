@@ -92,11 +92,23 @@ class Tribe__Events__Filterbar__Filters__Venue extends Tribe__Events__Filterbar_
 	}
 
 	protected function setup_where_clause() {
-		if ( is_array( $this->currentValue ) ) {
-			$venue_ids = implode( ',', array_map( 'intval', $this->currentValue ) );
-		} else {
-			$venue_ids = "'" . esc_sql( (string) $this->currentValue ) . "'";
-		}
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		$current_value = (array) $this->currentValue;
+
+		// Convert IDs to integers.
+		$venue_ids = array_map( 'intval', $current_value );
+
+		/**
+		 * Convert IDs to original language if WPML is active.
+		 *
+		 * @param array $venue_ids Array of venue IDs.
+		 *
+		 * @return array
+		 */
+		$venue_ids = (array) apply_filters( 'tribe_filterbar_venue_ids', $venue_ids );
+
+		// Convert array of IDs to comma-separated string for IN clause.
+		$venue_ids = implode( ',', $venue_ids );
 
 		$this->whereClause = " AND venue_filter.meta_value IN ($venue_ids) ";
 	}

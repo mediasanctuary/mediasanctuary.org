@@ -47,13 +47,14 @@ class Tribe__Events__Pro__Service_Providers__Templates extends Service_Provider 
 	 * Filters the list of folders TEC will look up to find templates to add the ones defined by PRO.
 	 *
 	 * @since 5.0.0
+	 * @since 7.8.0 Made $template explicitly nullable.
 	 *
 	 * @param array           $folders  The current list of folders that will be searched template files.
 	 * @param Tribe__Template $template Which template instance we are dealing with.
 	 *
 	 * @return array The filtered list of folders that will be searched for the templates.
 	 */
-	public function filter_template_path_list( array $folders = [], Tribe__Template $template = null ) {
+	public function filter_template_path_list( array $folders = [], ?Tribe__Template $template = null ) {
 		$main = tribe( 'events-pro.main' );
 
 		$path = (array) rtrim( $main->pluginPath, '/' );

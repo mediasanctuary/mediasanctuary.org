@@ -1,9 +1,4 @@
 <?php
-/**
- * @license GPL-2.0
- *
- * Modified using {@see https://github.com/BrianHenryIE/strauss}.
- */
 namespace TEC\Common\StellarWP\Assets;
 
 use RuntimeException;
@@ -90,6 +85,7 @@ class Config {
 	 *
 	 * @since 1.4.0
 	 * @since 1.4.2 Added the ability to specify whether the group path is using the asset directory prefix.
+	 * @since 1.4.10 Added the hook prefix to the filter.
 	 *
 	 * @throws RuntimeException If the root or relative path is not specified.
 	 *
@@ -101,11 +97,30 @@ class Config {
 	 * @return void
 	 */
 	public static function add_group_path( string $group_path_slug, string $root, string $relative, bool $is_using_asset_directory_prefix = false ): void {
-		static::$group_paths[ $group_path_slug ] = [
-			'root'     => self::normalize_path( $root ),
-			'relative' => trailingslashit( $relative ),
-			'prefix'   => $is_using_asset_directory_prefix,
-		];
+		$hook_prefix = static::get_hook_prefix();
+
+		/**
+		 * Allows for the group path to be filtered.
+		 *
+		 * This filters allows plugins/themes using the library to modify the root path
+		 * to follow symlinks. The library itself can't handle this on its own,
+		 * because it's not possible to be aware of where the library is placed relative
+		 * to the actual WordPress plugins or themes directories.
+		 *
+		 * @since 1.4.9
+		 *
+		 * @param array  $group_path      The group path data.
+		 * @param string $group_path_slug The slug of the group path.
+		 */
+		static::$group_paths[ $group_path_slug ] = apply_filters(
+			"stellarwp/assets/{$hook_prefix}/group_path",
+			[
+				'root'     => self::normalize_path( $root ),
+				'relative' => trailingslashit( $relative ),
+				'prefix'   => $is_using_asset_directory_prefix,
+			],
+			$group_path_slug
+		);
 	}
 
 	/**
@@ -133,6 +148,8 @@ class Config {
 	/**
 	 * Gets the root path of the project.
 	 *
+	 * @since 1.5.1
+	 *
 	 * @return string
 	 */
 	public static function get_url( $path ): string {
@@ -141,7 +158,25 @@ class Config {
 
 		if ( empty( static::$path_urls[ $key ] ) ) {
 			$bases = Utils::get_bases();
-			static::$path_urls[ $key ] = trailingslashit( str_replace( wp_list_pluck( $bases, 'base_dir' ), wp_list_pluck( $bases, 'base_url' ), $path ) );
+
+			$base_dirs = array_column( $bases, 'base_dir' );
+			$base_urls = array_column( $bases, 'base_url' );
+
+			uasort( $base_dirs, function( $a, $b ) {
+				return strlen( $b ) <=> strlen( $a );
+			} );
+
+			foreach ( $base_dirs as $dir_type => $dir_path ) {
+				if ( ! isset( $base_urls[ $dir_type ] ) ) {
+					continue;
+				}
+
+				static::$path_urls[ $key ] = str_replace( $dir_path, $base_urls[ $dir_type ], $path );
+
+				if ( static::$path_urls[ $key ] !== $path ) {
+					break;
+				}
+			}
 		}
 
 		return static::$path_urls[ $key ];

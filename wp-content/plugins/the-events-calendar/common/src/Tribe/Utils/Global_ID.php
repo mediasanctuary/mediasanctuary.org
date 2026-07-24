@@ -63,7 +63,7 @@ class Tribe__Utils__Global_ID {
 	/**
 	 * A setter and getter for the Type of ID
 	 *
-	 * @param  string|null  $name  When null is passed it will return the current Type
+	 * @param string|null  $name  When null is passed it will return the current Type
 	 * @return mixed               Will return False on invalid type or the Type in String
 	 */
 	public function type( $name = null ) {
@@ -85,7 +85,7 @@ class Tribe__Utils__Global_ID {
 	/**
 	 * A setter and getter for the origin on this ID
 	 *
-	 * @param  string|null  $name  When null is passed it will return the current Origin
+	 * @param string|null  $name  When null is passed it will return the current Origin
 	 * @return mixed               Will return False on invalid origin or the Origin in String
 	 */
 	public function origin( $url = null ) {
@@ -119,7 +119,7 @@ class Tribe__Utils__Global_ID {
 	/**
 	 * A very simple Generation of IDs
 	 *
-	 * @param  array  $args Which query arguments will be added to the Origin
+	 * @param array  $args Which query arguments will be added to the Origin
 	 *
 	 * @return string
 	 */
@@ -145,7 +145,7 @@ class Tribe__Utils__Global_ID {
 		$parsed_global_id = null;
 
 		if ( $global_id ) {
-			$global_id = html_entity_decode( $global_id ); // &amp; characters replaced as expected
+			$global_id = html_entity_decode( $global_id, ENT_COMPAT ); // &amp; characters replaced as expected
 
 			$parsed = wp_parse_url( 'http://' . $global_id );
 

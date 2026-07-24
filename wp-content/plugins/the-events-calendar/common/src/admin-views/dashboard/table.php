@@ -7,11 +7,12 @@
  *
  * See more documentation about our views templating system.
  *
- * @since   1.4.0
+ * @since 1.4.0
+ * @since 5.26.7 Updated Zapier Knowledgebase URL.
  *
- * @version 1.4.0
+ * @version 5.26.7
  *
- * @link    http://evnt.is/1aiy
+ * @link http://evnt.is/1aiy
  *
  * @var array<string,array> $endpoints An array of intergration endpoints.
  * @var Endpoints_Manager   $manager   The Endpoint Manager instance.
@@ -19,7 +20,7 @@
  */
 
 ?>
-<fieldset id="tec-field-integration_token" class="tec-automator-endpoint-dashboard tribe-field tribe-field-text tribe-size-medium tec-settings-form__element--colspan-2">
+<fieldset id="tec-field-integration_token" class="tec-automator-endpoint-dashboard tribe-field tribe-field-text tribe-size-medium">
 	<legend class="tribe-field-label"><?php echo esc_html_x( 'Endpoint Dashboard', 'The legend for the integration endpoint dashboard.', 'tribe-common' ); ?></legend>
 	<?php if ( $manager::$api_id === 'zapier' ) { ?>
 		<p class="tec-settings-zapier-application__description">
@@ -31,7 +32,7 @@
 						'The Zapier endpoint dashboard description.',
 						'tribe-common'
 					),
-					'<a href="https://evnt.is/1bda" target="_blank">',
+					'<a href="https://evnt.is/zapier-endpoints" target="_blank" rel="noopener noreferrer">',
 					'</a>',
 				);
 			?>

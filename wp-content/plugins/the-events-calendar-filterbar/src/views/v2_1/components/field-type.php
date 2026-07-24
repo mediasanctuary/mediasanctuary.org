@@ -35,6 +35,9 @@ switch ( $data['type'] ) {
 	case 'range':
 		$this->template( 'components/range', $data );
 		break;
+	case 'date':
+		$this->template( 'components/date', $data );
+		break;
 	default:
 		break;
 }

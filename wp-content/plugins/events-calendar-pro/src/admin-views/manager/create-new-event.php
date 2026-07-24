@@ -2,7 +2,9 @@
 /**
  * Admin View: Admin Manager Add New event link
  *
- * @version  5.9.0
+ * @since 5.9.0
+ *
+ * @version 5.9.0
  *
  * @var string $today_date Today's date in the `Y-m-d` format.
  * @var string $day_date The current day date, in the `Y-m-d` format.

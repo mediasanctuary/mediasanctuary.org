@@ -30,6 +30,7 @@ class Controller extends Controller_Contract {
 	 */
 	public function do_register(): void {
 		$this->container->singleton( Thumbnail_Inclusion::class );
+		$this->container->singleton( Coordinates_Inclusion::class );
 		$this->container->register( Organizer\Controller::class );
 		$this->container->register( Venue\Controller::class );
 
@@ -75,6 +76,8 @@ class Controller extends Controller_Contract {
 	public function add_filters(): void {
 		add_filter( 'tribe_get_organizer_object', [ $this, 'include_thumbnail_in_object' ], 15, 3 );
 		add_filter( 'tribe_get_venue_object', [ $this, 'include_thumbnail_in_object' ], 15, 3 );
+		add_filter( 'tribe_get_venue_object', [ $this, 'include_coordinates_in_object' ], 15 );
+		add_filter( 'tec_rest_venue_properties_to_add', [ $this, 'add_coordinates_to_rest_properties' ] );
 		add_filter( 'admin_post_thumbnail_html', [ $this, 'include_helper_text_post_metabox' ], 15 );
 	}
 
@@ -86,6 +89,8 @@ class Controller extends Controller_Contract {
 	public function remove_filters(): void {
 		remove_filter( 'tribe_get_organizer_object', [ $this, 'include_thumbnail_in_object' ], 15 );
 		remove_filter( 'tribe_get_venue_object', [ $this, 'include_thumbnail_in_object' ], 15 );
+		remove_filter( 'tribe_get_venue_object', [ $this, 'include_coordinates_in_object' ], 15 );
+		remove_filter( 'tec_rest_venue_properties_to_add', [ $this, 'add_coordinates_to_rest_properties' ] );
 		remove_filter( 'admin_post_thumbnail_html', [ $this, 'include_helper_text_post_metabox' ], 15 );
 	}
 
@@ -108,6 +113,23 @@ class Controller extends Controller_Contract {
 	}
 
 	/**
+	 * Include the coordinates in a Venue object.
+	 *
+	 * @since 7.7.0
+	 *
+	 * @param WP_Post $post The venue post object, decorated with a set of custom properties.
+	 *
+	 * @return mixed
+	 */
+	public function include_coordinates_in_object( $post ) {
+		if ( ! $post instanceof WP_Post ) {
+			return $post;
+		}
+
+		return $this->container->make( Coordinates_Inclusion::class )->include_coordinates( $post );
+	}
+
+	/**
 	 * Filters the `admin_post_thumbnail_html` to add image aspect ratio recommendation.
 	 *
 	 * @since 6.2.0
@@ -118,5 +140,20 @@ class Controller extends Controller_Contract {
 	 */
 	public function include_helper_text_post_metabox( string $html ): string {
 		return $this->container->make( Thumbnail_Inclusion::class )->include_helper_text_post_metabox( $html );
+	}
+
+	/**
+	 * Adds latitude and longitude slugs to the REST venue properties list.
+	 *
+	 * @since 7.7.0
+	 *
+	 * @param array<string,bool> $properties The properties already slated for inclusion.
+	 *
+	 * @return array<string,bool>
+	 */
+	public function add_coordinates_to_rest_properties( array $properties ): array {
+		/** @var Coordinates_Inclusion $coordinates_inclusion */
+		$coordinates_inclusion = $this->container->make( Coordinates_Inclusion::class );
+		return $coordinates_inclusion->filter_rest_properties( $properties );
 	}
 }

@@ -19,6 +19,7 @@ use WP_REST_Request;
 use Tribe__Events__Main as TEC;
 use WP_REST_Response;
 use TEC\Common\Contracts\Service_Provider;
+use TEC\Common\REST\TEC\V1\Controller as REST_Controller;
 
 /**
  * Class Provider
@@ -358,7 +359,7 @@ class Provider extends Service_Provider implements Provider_Contract {
 	 *                                 if required.
 	 *
 	 * @return void The method will have the side-effect of updating the request information
-	 *              in the Request object and in the reques super-globals.
+	 *              in the Request object and in the request super-globals.
 	 */
 	public function redirect_rest_request( WP_REST_Request $request ): void {
 		$this->container->make( Controller::class )->redirect_request( $request );
@@ -511,7 +512,7 @@ class Provider extends Service_Provider implements Provider_Contract {
 		if ( ! (
 			$post instanceof WP_Post
 			&& $response instanceof WP_REST_Response
-			&& $response instanceof WP_REST_Request
+			&& $request instanceof WP_REST_Request
 		) ) {
 			return;
 		}
@@ -560,6 +561,22 @@ class Provider extends Service_Provider implements Provider_Contract {
 	 */
 	public function redirect_trash_delete_request( $response = null, $handler = null, $request = null ) {
 		if ( ! $request instanceof WP_REST_Request ) {
+			return $response;
+		}
+
+		$route = $request->get_route();
+
+		/**
+		 * Filters if the request is a REST API request for the TEC REST API V1.
+		 *
+		 * @since 7.7.11
+		 *
+		 * @param bool            $is_rest_tec_v1_request Whether the request is a REST API request for the TEC REST API V1.
+		 * @param WP_REST_Request $request                The request object.
+		 *
+		 * @return bool Whether the request is a REST API request for the TEC REST API V1.
+		 */
+		if ( (bool) apply_filters( 'tec_is_rest_tec_v1_request', str_starts_with( $route, '/' . REST_Controller::get_versioned_namespace() ), $request ) ) {
 			return $response;
 		}
 

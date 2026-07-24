@@ -397,6 +397,7 @@ class Recurrence {
 	 * Monday is 1, Sunday is 7.
 	 *
 	 * @since 6.0.1
+	 * @since 7.8.0 Made $days and $diff_time_data explicitly nullable.
 	 *
 	 * @param int        $interval       The number of days between each occurrence.
 	 * @param array|null $days           The days of the week on which the rule should apply.
@@ -410,9 +411,9 @@ class Recurrence {
 	 */
 	public function with_weekly_recurrence(
 		int $interval = 1,
-		array $days = null,
+		?array $days = null,
 		bool $same_time = true,
-		array $diff_time_data = null
+		?array $diff_time_data = null
 	): Recurrence {
 		if ( $this->delay( __FUNCTION__, func_get_args() ) ) {
 			return $this;
@@ -545,6 +546,7 @@ class Recurrence {
 	 * Starts the construction of a Daily recurrence rule.
 	 *
 	 * @since 6.0.1
+	 * @since 7.8.0 Made $diff_time_data explicitly nullable.
 	 *
 	 * @param int        $interval       The number of days between each occurrence.
 	 * @param bool       $same_time      Whether the rule should apply on the same time as the Event or not.
@@ -556,7 +558,7 @@ class Recurrence {
 	 * @return Recurrence The recurrence rules and exclusions in the format used by the `_EventRecurrence`
 	 *                             meta field.
 	 */
-	public function with_daily_recurrence( int $interval = 1, bool $same_time = true, array $diff_time_data = null ): Recurrence {
+	public function with_daily_recurrence( int $interval = 1, bool $same_time = true, ?array $diff_time_data = null ): Recurrence {
 		if ( $this->delay( __FUNCTION__, func_get_args() ) ) {
 			return $this;
 		}
@@ -599,6 +601,7 @@ class Recurrence {
 	 * Starts the construction of a Monthly recurrence rule.
 	 *
 	 * @since 6.0.1
+	 * @since 7.8.0 Made $diff_time_data explicitly nullable.
 	 *
 	 * @param int        $interval       The number of days between each occurrence.
 	 * @param bool       $same_day       Whether the rule should apply on the same numeric day as the Event start date
@@ -620,7 +623,7 @@ class Recurrence {
 	 * @return Recurrence The recurrence rules and exclusions in the format used by the `_EventRecurrence`
 	 *                             meta field.
 	 */
-	public function with_monthly_recurrence( int $interval = 1, bool $same_day = true, $number = 1, $day = 'mon', bool $same_time = true, array $diff_time_data = null ): Recurrence {
+	public function with_monthly_recurrence( int $interval = 1, bool $same_day = true, $number = 1, $day = 'mon', bool $same_time = true, ?array $diff_time_data = null ): Recurrence {
 		if ( $this->delay( __FUNCTION__, func_get_args() ) ) {
 			return $this;
 		}
@@ -683,6 +686,7 @@ class Recurrence {
 	 * Starts the construction of a Yearly recurrence rule.
 	 *
 	 * @since 6.0.1
+	 * @since 7.8.0 Made $diff_time_data explicitly nullable.
 	 *
 	 * @param int          $interval       The number of days between each occurrence.
 	 * @param bool         $same_day       Whether the rule should apply on the same numeric day as the Event start
@@ -713,7 +717,7 @@ class Recurrence {
 		$day = 1,
 		$month = null,
 		bool $same_time = true,
-		array $diff_time_data = null
+		?array $diff_time_data = null
 	): Recurrence {
 		if ( $this->delay( __FUNCTION__, func_get_args() ) ) {
 			return $this;
@@ -870,13 +874,14 @@ class Recurrence {
 	 * Starts the construction of a Weekly exclusion rule.
 	 *
 	 * @since 6.0.1
+	 * @since 7.8.0 Made $days explicitly nullable.
 	 *
 	 * @param int   $interval The number of weeks between each exclusion.
 	 * @param array $days     The days of the week to exclude.
 	 *
 	 * @return $this For chaining.
 	 */
-	public function with_weekly_exclusion( int $interval = 1, array $days = null ): Recurrence {
+	public function with_weekly_exclusion( int $interval = 1, ?array $days = null ): Recurrence {
 		if ( $this->delay( __FUNCTION__, func_get_args() ) ) {
 			return $this;
 		}
@@ -1104,7 +1109,7 @@ class Recurrence {
 	 *
 	 */
 	public function to_repository_recurrence_callback(): Closure {
-		$callback = function ( array $postarr = null ) use ( &$callback ) {
+		$callback = function ( ?array $postarr = null ) use ( &$callback ) {
 			if ( ! isset(
 				$postarr['meta_input']['_EventStartDate'],
 				$postarr['meta_input']['_EventEndDate'],

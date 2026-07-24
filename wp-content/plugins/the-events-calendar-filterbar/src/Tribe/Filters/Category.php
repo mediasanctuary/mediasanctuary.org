@@ -1,4 +1,5 @@
 <?php
+
 use Tribe__Utils__Array as Arr;
 
 /**
@@ -12,8 +13,108 @@ class Tribe__Events__Filterbar__Filters__Category extends Tribe__Events__Filterb
 		$title = $this->get_title_field();
 		$type  = $this->get_multichoice_type_field();
 
-		return $title . $type;
+		// Add our custom control.
+		$visible_categories = $this->get_visible_categories_field();
+
+		// Return all fields.
+		return $title . $type . $visible_categories;
 	}
+
+	/**
+	 * Get the list of category IDs that are allowed to be shown in the frontend filter.
+	 *
+	 * @since 5.6.0
+	 *
+	 * @return array
+	 */
+	protected function get_current_filter_allowed_cats(): array {
+		// Get the current filter settings.
+		$current_active_filters = Tribe__Events__Filterbar__View::instance()->get_filter_settings();
+
+		// Get the current selected categories (default to empty array).
+		return $current_active_filters['eventcategory']['visible_categories'] ?? [];
+	}
+
+	/**
+	 * Create a multiselect field to control which categories show in filter
+	 */
+	protected function get_visible_categories_field() {
+		// Get the current selected categories (default to empty array).
+		$visible_cats = $this->get_current_filter_allowed_cats();
+
+		// Get all event categories.
+		$categories = get_terms(
+			[
+				'taxonomy'   => Tribe__Events__Main::TAXONOMY,
+				'hide_empty' => false,
+				'orderby'    => 'name',
+				'order'      => 'ASC',
+			]
+		);
+
+		// Create the field HTML.
+		$field  = '<div class="tribe_events_active_filter_visible_categories">';
+		$field .= '<p>' . __( 'Select which categories to show in the frontend filter:', 'tribe-events-filter-view' ) . '</p>';
+
+		if ( ! empty( $categories ) ) {
+			$field .= sprintf(
+				'<select name="%s[]" multiple="multiple" class="tribe-dropdown" data-placeholder="%s" style="width: 100%%;">',
+				$this->get_admin_field_name( 'visible_categories' ),
+				esc_attr__( 'Select categories to display', 'tribe-events-filter-view' )
+			);
+
+			// Option to select all categories.
+			$field .= sprintf(
+				'<option value="all" %s>%s</option>',
+				selected( in_array( 'all', $visible_cats ), true, false ),
+				esc_html__( 'All Categories', 'tribe-events-filter-view' )
+			);
+
+			// Add all categories as options.
+			foreach ( $categories as $category ) {
+				$field .= sprintf(
+					'<option value="%s" %s>%s</option>',
+					esc_attr( $category->term_id ),
+					selected( in_array( $category->term_id, $visible_cats ), true, false ),
+					esc_html( $category->name )
+				);
+			}
+
+			$field .= '</select>';
+
+			// Add some help text.
+			$field .= '<p class="description">' . __( 'If no categories are selected, all categories will be shown. Select "All Categories" to explicitly show all categories.', 'tribe-events-filter-view' ) . '</p>';
+		} else {
+			$field .= '<p>' . __( 'No event categories found.', 'tribe-events-filter-view' ) . '</p>';
+		}
+
+		$field .= '</div>';
+
+		// Add script to initialize select2.
+		$field .= "
+            <script type='text/javascript'>
+            jQuery(document).ready(function($) {
+                $('.tribe-dropdown').select2({
+                    dropdownCssClass: 'tribe-select2-results__option',
+                    width: '100%'
+                });
+
+                // Handle the 'All Categories' option.
+                $('.tribe-dropdown').on('change', function() {
+                    var selectedValues = $(this).val() || [];
+
+                    // If 'all' is selected, deselect other options.
+                    if (selectedValues.includes('all')) {
+                        $(this).val(['all']).trigger('change.select2');
+                    }
+                });
+            });
+            </script>
+            ";
+
+		return $field;
+	}
+
 
 	protected function get_values() {
 		$terms = [];
@@ -25,6 +126,12 @@ class Tribe__Events__Filterbar__Filters__Category extends Tribe__Events__Filterb
 			'number'     => 200,
 			'hide_empty' => true,
 		];
+
+		$allowed_cats = $this->get_current_filter_allowed_cats();
+
+		if ( ! empty( $allowed_cats ) && ! in_array( 'all', $allowed_cats, true ) ) {
+			$args['include'] = $allowed_cats;
+		}
 
 		/**
 		 * Filter the args of displaying categories.
@@ -183,7 +290,6 @@ class Tribe__Events__Filterbar__Filters__Category extends Tribe__Events__Filterb
 	 * @param WP_Query $query
 	 */
 	protected function pre_get_posts( WP_Query $query ) {
-		$new_rules      = [];
 		$existing_rules = (array) $query->get( 'tax_query' );
 		$values         = (array) $this->currentValue;
 
@@ -207,7 +313,7 @@ class Tribe__Events__Filterbar__Filters__Category extends Tribe__Events__Filterb
 			$values = array_filter( Arr::list_to_array( $values ) );
 		}
 
-		$new_rules[] = [
+		$new_rule = [
 			'taxonomy' => Tribe__Events__Main::TAXONOMY,
 			'operator' => 'IN',
 			'terms'    => array_map( 'absint', $values ),
@@ -234,12 +340,36 @@ class Tribe__Events__Filterbar__Filters__Category extends Tribe__Events__Filterb
 		$nest = apply_filters( 'tribe_events_filter_nest_taxonomy_queries', version_compare( $GLOBALS['wp_version'], '4.1', '>=' ) );
 
 		if ( $nest ) {
-			$new_rules = [
-				__CLASS__ => $new_rules,
-			];
-		}
+			$tax_query = array_replace_recursive( $existing_rules, [ __CLASS__ => [ $new_rule ] ] );
+		} else {
+			$tax_query = [];
+			$append    = true;
 
-		$tax_query = array_merge_recursive( $existing_rules, $new_rules );
+			foreach ( $existing_rules as $existing_rule_key => $existing_rule_value ) {
+				if ( $existing_rule_value === '' ) {
+					continue;
+				}
+
+				if ( is_int( $existing_rule_key ) ) {
+					$tax_query[] = $existing_rule_value;
+				} else {
+					$tax_query[ $existing_rule_key ] = $existing_rule_value;
+				}
+
+				if ( ! is_array( $existing_rule_value ) ) {
+					continue;
+				}
+
+				if ( $existing_rule_value == $new_rule ) {
+					$append = false;
+					break;
+				}
+			}
+
+			if ( $append ) {
+				$tax_query[] = $new_rule;
+			}
+		}
 
 		// Apply the relationship (we leave this late, or the recursive array merge would potentially cause duplicates).
 		if ( ! empty( $relationship ) && $nest ) {

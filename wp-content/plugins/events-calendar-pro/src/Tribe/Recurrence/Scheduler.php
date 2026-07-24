@@ -39,8 +39,12 @@ class Tribe__Events__Pro__Recurrence__Scheduler {
 	}
 
 	public function add_hooks() {
-		if ( ! wp_next_scheduled( self::CRON_HOOK ) ) {
-			wp_schedule_event( time(), 'daily', self::CRON_HOOK );
+		// Scheduling before `init` fires the `cron_schedules` filter too early: translated schedule
+		// labels would trigger a `_doing_it_wrong` on WP 6.8+.
+		if ( did_action( 'init' ) ) {
+			$this->schedule_cron_event();
+		} else {
+			add_action( 'init', [ $this, 'schedule_cron_event' ] );
 		}
 		add_action( self::CRON_HOOK, array(
 			$this,
@@ -69,6 +73,19 @@ class Tribe__Events__Pro__Recurrence__Scheduler {
 
 	public function clear_scheduled_task() {
 		wp_clear_scheduled_hook( self::CRON_HOOK );
+	}
+
+	/**
+	 * Schedules the daily cron event, if not scheduled already.
+	 *
+	 * @since 7.7.15
+	 *
+	 * @return void
+	 */
+	public function schedule_cron_event() {
+		if ( ! wp_next_scheduled( self::CRON_HOOK ) ) {
+			wp_schedule_event( time(), 'daily', self::CRON_HOOK );
+		}
 	}
 
 	/**

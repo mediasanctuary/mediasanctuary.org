@@ -25,7 +25,15 @@ class Tribe__Events__Pro__Recurrence__Old_Events_Cleaner {
 		return self::$instance;
 	}
 
-	public function __construct( Tribe__Events__Pro__Recurrence__Scheduler $scheduler = null ) {
+	/**
+	 * The Old Events Cleaner constructor.
+	 *
+	 * @since 6.0.0
+	 * @since 7.8.0 Made $scheduler explicitly nullable.
+	 *
+	 * @param Tribe__Events__Pro__Recurrence__Scheduler|null $scheduler The scheduler instance or null.
+	 */
+	public function __construct( ?Tribe__Events__Pro__Recurrence__Scheduler $scheduler = null ) {
 		$this->scheduler = $scheduler ? $scheduler : new Tribe__Events__Pro__Recurrence__Scheduler();
 	}
 

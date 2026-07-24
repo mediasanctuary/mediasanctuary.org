@@ -333,14 +333,19 @@ class Api extends Account_API {
 			'%1$s <a href="%2$s" target="_blank">%3$s</a>',
 			esc_html_x(
 				'No Webex account found. ',
-			'The start of the message for smart url/autodetect when there is no Webex account found.',
-			'tribe-events-calendar-pro'
+				'The start of the message for smart url/autodetect when there is no Webex account found.',
+				'tribe-events-calendar-pro'
 			),
-			Settings::admin_url(),
+			Settings::admin_url(
+				[
+					'tab'                                => 'meetings',
+					'#tec-webex-application-credentials' => '',
+				]
+			),
 			esc_html_x(
 				'Please check your account connection.',
-			'The link in of the message for smart url/autodetect when no Webex account is found.',
-			'tribe-events-calendar-pro'
+				'The link in of the message for smart url/autodetect when no Webex account is found.',
+				'tribe-events-calendar-pro'
 			)
 		);
 	}

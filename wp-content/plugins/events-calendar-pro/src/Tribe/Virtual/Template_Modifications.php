@@ -44,8 +44,8 @@ class Template_Modifications {
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
 	 *
-	 * @param Template       $template An instance of the front-end template handler.
-	 * @param Admin_Template $template An instance of the backend template handler.
+	 * @param Template       $template       An instance of the front-end template handler.
+	 * @param Admin_Template $admin_template An instance of the backend template handler.
 	 */
 	public function __construct( Template $template, Admin_Template $admin_template ) {
 		$this->template       = $template;
@@ -64,16 +64,16 @@ class Template_Modifications {
 	 */
 	public function should_show_virtual_content( $event ) {
 		if ( is_integer( $event ) ) {
-		     $event = tribe_get_event( $event );
+			$event = tribe_get_event( $event );
 		}
 
-		if ( ! $event instanceof \WP_Post) {
+		if ( ! $event instanceof \WP_Post ) {
 			return false;
 		}
 
 		$show_to_arr = array_flip( $event->virtual_show_embed_to );
-		$show =  isset( $show_to_arr[ Event_Meta::$value_show_embed_to_all ] )
-		 || ( isset(  $show_to_arr[ Event_Meta::$value_show_embed_to_logged_in ] ) && is_user_logged_in() );
+		$show        = isset( $show_to_arr[ Event_Meta::$value_show_embed_to_all ] )
+					|| ( isset( $show_to_arr[ Event_Meta::$value_show_embed_to_logged_in ] ) && is_user_logged_in() );
 
 		/**
 		 * Filters whether the virtual content should show or not.
@@ -104,7 +104,7 @@ class Template_Modifications {
 
 		$event = tribe_get_event( $event );
 
-		if ( ! $event instanceof \WP_Post) {
+		if ( ! $event instanceof \WP_Post ) {
 			return $classes;
 		}
 
@@ -140,7 +140,7 @@ class Template_Modifications {
 		 */
 		$event = tribe_get_event( $event, OBJECT, 'raw', true );
 
-		if ( ! $event instanceof \WP_Post) {
+		if ( ! $event instanceof \WP_Post ) {
 			return $classes;
 		}
 
@@ -202,8 +202,7 @@ class Template_Modifications {
 	 *
 	 * @since 7.0.0 Migrated to Events Pro from Events Virtual.
 	 *
-	 * @param string $schedule  The output HTML.
-	 * @param int    $event_id  The post ID of the event we are interested in.
+	 * @param int $event_id The post ID of the event we are interested in.
 	 *
 	 * @return bool|\WP_Post Event on which to show control markers.
 	 */
@@ -238,7 +237,7 @@ class Template_Modifications {
 
 		$event = tribe_get_event( $event_id );
 
-		if ( ! $event instanceof \WP_Post) {
+		if ( ! $event instanceof \WP_Post ) {
 			return false;
 		}
 
@@ -260,7 +259,8 @@ class Template_Modifications {
 	 * @return string  New details with the control markers appended.
 	 */
 	public function add_single_control_markers( $schedule, $event_id ) {
-		if ( ! $event = $this->get_control_marker_event( $event_id ) ) {
+		$event = $this->get_control_marker_event( $event_id );
+		if ( ! $event ) {
 			return $schedule;
 		}
 
@@ -280,7 +280,8 @@ class Template_Modifications {
 	 * @return string  New details with the control markers appended.
 	 */
 	public function add_single_hybrid_control_markers( $schedule, $event_id ) {
-		if ( ! $event = $this->get_control_marker_event( $event_id ) ) {
+		$event = $this->get_control_marker_event( $event_id );
+		if ( ! $event ) {
 			return $schedule;
 		}
 
@@ -325,7 +326,7 @@ class Template_Modifications {
 	public function add_single_block_virtual_event_marker() {
 		$event = tribe_get_event( get_the_ID() );
 
-		if ( ! $event instanceof \WP_Post) {
+		if ( ! $event instanceof \WP_Post ) {
 			return;
 		}
 
@@ -372,7 +373,7 @@ class Template_Modifications {
 
 		$event = tribe_get_event( get_the_ID() );
 
-		if ( ! $event instanceof \WP_Post) {
+		if ( ! $event instanceof \WP_Post ) {
 			return;
 		}
 
@@ -428,11 +429,11 @@ class Template_Modifications {
 
 		$event = tribe_get_event( get_the_ID() );
 
-		if ( ! $event instanceof \WP_Post) {
+		if ( ! $event instanceof \WP_Post ) {
 			return;
 		}
 
-		if ( empty( $event->virtual ) ){
+		if ( empty( $event->virtual ) ) {
 			return;
 		}
 
@@ -488,9 +489,12 @@ class Template_Modifications {
 	 * @return string The message with html to display
 	 */
 	public function get_settings_message_template( $message, $type = 'updated' ) {
-		return $this->admin_template->template( 'components/message', [
-			'message' => $message,
-			'type'    => $type,
-		] );
+		return $this->admin_template->template(
+			'components/message',
+			[
+				'message' => $message,
+				'type'    => $type,
+			]
+		);
 	}
 }

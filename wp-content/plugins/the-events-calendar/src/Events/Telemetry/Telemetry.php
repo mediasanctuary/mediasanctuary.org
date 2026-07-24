@@ -56,15 +56,7 @@ class Telemetry {
 			return $original_optin_args;
 		}
 
-		$intro_message = sprintf(
-			/* Translators: %1$s - the user name. */
-			__( 'Hi, %1$s! This is an invitation to help our StellarWP community.', 'the-events-calendar' ),
-			wp_get_current_user()->display_name // escaped after string is assembled, below.
-		);
-
-		$intro_message .= ' ' . __( 'If you opt-in, some data about your usage of The Events Calendar and future StellarWP Products will be shared with our teams (so they can work their butts off to improve).' , 'the-events-calendar');
-		$intro_message .= ' ' . __( 'We will also share some helpful info on WordPress, and our products from time to time.' , 'the-events-calendar');
-		$intro_message .= ' ' . __( 'And if you skip this, that’s okay! Our products still work just fine.', 'the-events-calendar' );
+		$intro_message = __( 'Want to help shape the future of The Events Calendar? Opting in shares anonymous usage data with our team at Liquid Web, the company behind The Events Calendar, giving us the insights we need to keep improving the tools you rely on.', 'the-events-calendar' );
 
 		$tec_optin_args = [
 			'plugin_logo_alt' => 'The Events Calendar Logo',
@@ -95,7 +87,7 @@ class Telemetry {
 			'tooltip'         => sprintf(
 			// Translators: 1: opening anchor tag, 2: opening anchor tag, 3: opening anchor tag, 4: closing anchor tags.
 				_x(
-					'Enable this option to share usage data with The Events Calendar and StellarWP.
+					'Enable this option to share usage data with The Events Calendar and Liquid Web.
         This activates access to TEC AI chatbot and in-app priority support for premium users.
         %1$sWhat permissions are being granted?%4$s
         %2$sRead our terms of service%4$s.
@@ -190,22 +182,30 @@ class Telemetry {
 		$current_screen = get_current_screen();
 		$helper = \Tribe__Admin__Helpers::instance();
 
-		// Are we on a tec post-type admin screen?
+		// If we are not on a tec post-type admin screen, bail.
 		if ( ! $helper->is_post_type_screen( TEC::POSTTYPE ) ) {
 			return false;
 		}
 
-		// Are we on a post edit screen?
+		// If we are on a post edit screen, bail.
 		if ( $current_screen instanceof \WP_Screen && tribe_get_request_var( 'action' ) === 'edit' ) {
 			return false;
 		}
 
-		// Are we on a new post screen?
+		// If we are on a new post screen, bail.
 		if ( $current_screen instanceof \WP_Screen && $current_screen->action === 'add' ) {
 			return false;
 		}
 
-		return true;
+		/**
+		 * Filter to determine if we are on a TEC admin page.
+		 * Allows other classes to hook in and modify the return value.
+		 *
+		 * @since 6.13.0
+		 *
+		 * @param bool $is_tec_admin_page Whether we are on a TEC admin page.
+		 */
+		return (bool) apply_filters( 'tec_telemetry_is_tec_admin_page', true );
 	}
 
 	/**

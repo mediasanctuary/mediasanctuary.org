@@ -1056,6 +1056,7 @@ class Events {
 	 * the current request is for the post ID.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $dtstart and $dtend explicitly nullable.
 	 *
 	 * @param int                             $post_id               The Event post ID to convert the rules and
 	 *                                                               exclusions for.
@@ -1076,8 +1077,8 @@ class Events {
 		int $post_id,
 		$rules_meta_value = null,
 		$exclusions_meta_value = null,
-		DateTimeImmutable $dtstart = null,
-		DateTimeImmutable $dtend = null
+		?DateTimeImmutable $dtstart = null,
+		?DateTimeImmutable $dtend = null
 	) {
 		try {
 			if ( is_null( $dtstart ) || is_null( $dtend ) ) {
@@ -1398,6 +1399,7 @@ class Events {
 	 * `_EventRecurrence` meta value.
 	 *
 	 * @since 6.0.0
+	 * @since 7.8.0 Made $request explicitly nullable.
 	 *
 	 * @param int                  $post_id The Event post ID to fetch the recurrence meta for.
 	 * @param WP_REST_Request|null $request A reference to the request object to fetch the recurrence
@@ -1407,7 +1409,7 @@ class Events {
 	 *                                  `false` to indicate no recurrence meta could be found in the
 	 *                                  request.
 	 */
-	public function get_event_recurrence_format_meta( int $post_id, WP_REST_Request $request = null ) {
+	public function get_event_recurrence_format_meta( int $post_id, ?WP_REST_Request $request = null ) {
 		$request_meta    = $this->get_request_meta( $request );
 		$recurrence_meta = $request !== null ? $request->get_param( 'recurrence' ) : null;
 

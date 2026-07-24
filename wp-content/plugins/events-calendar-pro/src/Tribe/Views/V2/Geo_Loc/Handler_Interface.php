@@ -24,6 +24,7 @@ interface Handler_Interface {
 	 * Applies geographic coordinates fencing to the repository arguments by altering them in any way.
 	 *
 	 * @since 4.7.9
+	 * @since 7.8.0 Made $context explicitly nullable.
 	 *
 	 * @param array|null           $repository_args An associative array of the current repository arguments.
 	 * @param \Tribe__Context|null $context         The context that should be used to fetch the geolocation
@@ -31,5 +32,5 @@ interface Handler_Interface {
 	 *
 	 * @return array An array of altered repository arguments.
 	 */
-	public function filter_repository_args( array $repository_args = [], Context $context = null );
+	public function filter_repository_args( array $repository_args = [], ?Context $context = null );
 }

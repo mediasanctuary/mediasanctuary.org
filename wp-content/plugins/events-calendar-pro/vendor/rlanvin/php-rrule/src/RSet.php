@@ -465,6 +465,7 @@ class RSet implements RRuleInterface
 	/**
 	 * @internal
 	 */
+    #[\ReturnTypeWillChange]
 	public function current()
 	{
 		return $this->current;
@@ -473,6 +474,7 @@ class RSet implements RRuleInterface
 	/**
 	 * @internal
 	 */
+    #[\ReturnTypeWillChange]
 	public function key()
 	{
 		return $this->key;
@@ -509,6 +511,7 @@ class RSet implements RRuleInterface
 	/**
 	 * @internal
 	 */
+    #[\ReturnTypeWillChange]
 	public function offsetGet($offset)
 	{
 		if ( ! is_numeric($offset) || $offset < 0 || is_float($offset) ) {

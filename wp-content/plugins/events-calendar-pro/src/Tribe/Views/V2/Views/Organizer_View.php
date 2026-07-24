@@ -88,12 +88,13 @@ class Organizer_View extends List_View {
 	 * Overrides the base View constructor to use PRO Rewrite handler.
 	 *
 	 * @since 5.0.1
+	 * @since 7.8.0 Made $messages explicitly nullable.
 	 *
 	 * {@inheritDoc}
 	 *
 	 * @param Messages|null $messages An instance of the messages collection.
 	 */
-	public function __construct( Messages $messages = null ) {
+	public function __construct( ?Messages $messages = null ) {
 		parent::__construct( $messages );
 		$this->rewrite = new Pro_Rewrite();
 	}
@@ -350,8 +351,10 @@ class Organizer_View extends List_View {
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @since 7.8.0 Made $context explicitly nullable.
 	 */
-	protected function setup_repository_args( Context $context = null ) {
+	protected function setup_repository_args( ?Context $context = null ) {
 		$args = parent::setup_repository_args( $context );
 
 		$context = null !== $context ? $context : $this->context;
@@ -374,7 +377,11 @@ class Organizer_View extends List_View {
 			// When Post ID not set we fall back into name.
 			if ( empty( $post_id ) ) {
 				$organizers = tribe_organizers()->by( 'name', $post_name )->fields( 'ids' );
-				$post_id = $organizers->first();
+				$post_id    = $organizers->first();
+			}
+
+			if ( empty( $post_id ) ) {
+				return $args;
 			}
 
 			$args['organizer'] = $post_id;
@@ -418,12 +425,12 @@ class Organizer_View extends List_View {
 
 
 		if ( ! $is_taxonomy_page ) {
-			$organizer_id = reset( $post_ids );
+			$organizer_id = is_array( $post_ids ) && ! empty( $post_ids ) ? reset( $post_ids ) : 0;
+			$organizer    = $organizer_id ? tribe_get_organizer_object( $organizer_id ) : null;
 
-			if ( ! empty( $organizer_id ) ) {
-				$organizer = tribe_get_organizer_object( $organizer_id );
+			if ( $organizer instanceof \WP_Post && ! empty( $organizer->post_name ) ) {
+				$query_args[ Organizer::POSTTYPE ] = $organizer->post_name;
 			}
-			$query_args[ Organizer::POSTTYPE ] = $organizer->post_name;
 		} else {
 			$query_args['post_type'] = Organizer::POSTTYPE;
 			$query_args[ $organizer_category_controller->get_wp_slug() ] = $this->context->get( $organizer_category_controller->get_wp_slug() );
@@ -490,6 +497,30 @@ class Organizer_View extends List_View {
 		];
 
 		return $breadcrumbs;
+	}
+
+	/**
+	 * Set up the default back link data for this View.
+	 *
+	 * This provides a structured array containing the URL and label
+	 * for the "Back to Events" link.
+	 *
+	 * @since 7.7.7
+	 *
+	 * @param array|false $back_link   Existing back link data, or false if none provided.
+	 * @param array       $breadcrumbs The breadcrumbs array (may be empty).
+	 *
+	 * @return array Back link data with 'url' and 'label' keys.
+	 */
+	public function setup_back_link( $back_link, $breadcrumbs ) {
+		return [
+			'url'   => tribe_get_events_link(),
+			'label' => sprintf(
+				/* translators: %s: Plural event label, e.g. "All Events" */
+				__( 'All %s', 'the-events-calendar' ),
+				tribe_get_event_label_plural()
+			),
+		];
 	}
 
 	/**
@@ -565,10 +596,11 @@ class Organizer_View extends List_View {
 	 * Updates the URL query arguments for the Organizer View to correctly build its URls.
 	 *
 	 * @since 5.0.1
+	 * @since 7.8.0 Made $args explicitly nullable.
 	 *
 	 * {@inheritDoc}
 	 */
-	public function set_url( array $args = null, $merge = false ) {
+	public function set_url( ?array $args = null, $merge = false ) {
 		parent::set_url( $args, $merge );
 		$url_query_args = $this->url->get_query_args();
 

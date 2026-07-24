@@ -5,6 +5,8 @@
  * @since 4.7
  */
 
+use Tribe\Events\Virtual\Event_Meta;
+
 /**
  * Class Tribe__Events__Pro__Repositories__Event
  *
@@ -69,18 +71,40 @@ class Tribe__Events__Pro__Repositories__Event extends Tribe__Events__Repositorie
 	public function __construct() {
 		parent::__construct();
 
-		$this->add_schema_entry( 'custom_field', array( $this, 'filter_by_custom_field' ) );
-		$this->add_schema_entry( 'custom_field_between', array( $this, 'filter_by_custom_field_between' ) );
-		$this->add_schema_entry( 'custom_field_less_than', array( $this, 'filter_by_custom_field_less_than' ) );
-		$this->add_schema_entry( 'custom_field_greater_than', array( $this, 'filter_by_custom_field_greater_than' ) );
-		$this->add_schema_entry( 'geoloc_lat', array( $this, 'filter_by_geoloc_lat' ) );
-		$this->add_schema_entry( 'geoloc_lng', array( $this, 'filter_by_geoloc_lng' ) );
-		$this->add_schema_entry( 'geoloc', array( $this, 'filter_by_geoloc' ) );
-		$this->add_schema_entry( 'has_geoloc', array( $this, 'filter_by_has_geoloc' ) );
-		$this->add_schema_entry( 'near', array( $this, 'filter_by_near' ) );
-		$this->add_schema_entry( 'series', array( $this, 'filter_by_in_series' ) );
-		$this->add_schema_entry( 'in_series', array( $this, 'filter_by_in_series' ) );
-		$this->add_schema_entry( 'related_to', array( $this, 'filter_by_related_to' ) );
+		$this->update_fields_aliases = array_merge(
+			$this->update_fields_aliases,
+			[
+				'lat'                  => Tribe__Events__Pro__Geo_Loc::LAT,
+				'lng'                  => Tribe__Events__Pro__Geo_Loc::LNG,
+				'hybrid'               => '_tribe_events_is_hybrid',
+				'is_hybrid'            => '_tribe_events_is_hybrid',
+				'virtual'              => Event_Meta::$key_virtual,
+				'is_virtual'           => Event_Meta::$key_virtual,
+				'virtual_video_source' => Event_Meta::$key_video_source,
+				'virtual_url'          => Event_Meta::$key_virtual_url,
+			]
+		);
+
+		$this->add_simple_meta_schema_entry( 'lat', Tribe__Events__Pro__Geo_Loc::LAT );
+		$this->add_simple_meta_schema_entry( 'lng', Tribe__Events__Pro__Geo_Loc::LNG );
+		$this->add_simple_meta_schema_entry( 'virtual', Event_Meta::$key_virtual );
+		$this->add_simple_meta_schema_entry( 'hybrid', '_tribe_events_is_hybrid' );
+		$this->add_simple_meta_schema_entry( 'virtual_video_source', Event_Meta::$key_video_source );
+		$this->add_simple_meta_schema_entry( 'virtual_url', Event_Meta::$key_virtual_url );
+
+		$this->add_schema_entry( 'custom_field', [ $this, 'filter_by_custom_field' ] );
+		$this->add_schema_entry( 'custom_field_between', [ $this, 'filter_by_custom_field_between' ] );
+		$this->add_schema_entry( 'custom_field_less_than', [ $this, 'filter_by_custom_field_less_than' ] );
+		$this->add_schema_entry( 'custom_field_greater_than', [ $this, 'filter_by_custom_field_greater_than' ] );
+		$this->add_schema_entry( 'geoloc_lat', [ $this, 'filter_by_geoloc_lat' ] );
+		$this->add_schema_entry( 'geoloc_lng', [ $this, 'filter_by_geoloc_lng' ] );
+		$this->add_schema_entry( 'geoloc', [ $this, 'filter_by_geoloc' ] );
+		$this->add_schema_entry( 'has_geoloc', [ $this, 'filter_by_has_geoloc' ] );
+		$this->add_schema_entry( 'near', [ $this, 'filter_by_near' ] );
+		$this->add_schema_entry( 'series', [ $this, 'filter_by_in_series' ] );
+		$this->add_schema_entry( 'in_series', [ $this, 'filter_by_in_series' ] );
+		$this->add_schema_entry( 'related_to', [ $this, 'filter_by_related_to' ] );
+		$this->add_schema_entry( 'recurring', [ $this, 'filter_by_recurring' ] );
 	}
 
 	/**
@@ -760,6 +784,7 @@ class Tribe__Events__Pro__Repositories__Event extends Tribe__Events__Repositorie
 	 * recurrences.
 	 *
 	 * @since 4.7
+	 * @since 7.8.0 Made $postarr explicitly nullable.
 	 *
 	 * @param int   $event_id              The post ID of the event that is currently being saved.
 	 * @param mixed $recurrence_payload    The recurrence data payload; there is no guarantee on the format
@@ -768,7 +793,7 @@ class Tribe__Events__Pro__Repositories__Event extends Tribe__Events__Repositorie
 	 *
 	 * @return callable The recurrence creation callback.
 	 */
-	protected function get_recurrence_creation_callback( $event_id, $recurrence_payload, array $postarr = null ) {
+	protected function get_recurrence_creation_callback( $event_id, $recurrence_payload, ?array $postarr = null ) {
 		/**
 		 * Filters the callback the Event repository should use to create recurrences.
 		 *
@@ -1043,7 +1068,7 @@ class Tribe__Events__Pro__Repositories__Event extends Tribe__Events__Repositorie
 	 * We use the `post__in` query argument when collapsing recurring event instances to show
 	 * only the first upcoming instance. In this method we "clean" the `post__in` clause
 	 *
-	 * @since TB
+	 * @since 4.7.0
 	 *
 	 * @param WP_Query $secondary_query The query object to update if required.
 	 */
@@ -1166,5 +1191,43 @@ class Tribe__Events__Pro__Repositories__Event extends Tribe__Events__Repositorie
 		$this->query_args['tribe_post__in'] = array_column( $winners, 'ID' );
 		$this->where( 'post__in', array_column( $winners, 'ID' ) );
 		$this->collapsing_recurring_event_instances = false;
+	}
+
+	/**
+	 * Filters events to include only those that are recurring.
+	 *
+	 * @since [your_version]
+	 *
+	 * @param bool $recurring Whether to include only recurring events (true) or non-recurring events (false).
+	 *
+	 * @return array An array of query arguments that should be added to the WP_Query object.
+	 */
+	public function filter_by_recurring( $recurring = true ) {
+		if ( (bool) $recurring ) {
+			return [
+				'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+					'recurring' => [
+						'key'     => '_EventRecurrence',
+						'compare' => '!=',
+						'value'   => '',
+					],
+				],
+			];
+		}
+
+		return [
+			'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				'relation'         => 'OR',
+				'no-recurrence'    => [
+					'key'     => '_EventRecurrence',
+					'compare' => 'NOT EXISTS',
+				],
+				'empty-recurrence' => [
+					'key'     => '_EventRecurrence',
+					'value'   => '',
+					'compare' => '=',
+				],
+			],
+		];
 	}
 }
