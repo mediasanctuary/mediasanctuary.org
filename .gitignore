@@ -7,3 +7,4 @@ node_modules/
 /wp-content/uploads/
 /*.xml
 /*.sql
+/files

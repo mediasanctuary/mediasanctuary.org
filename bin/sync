@@ -6,17 +6,16 @@ set -o nounset
 
 docker compose up -d
 
-server="devmediasan@claudette.mayfirst.org"
+server="mswww@shell.mayfirst.org"
 dir="$( cd "$(dirname "$( dirname "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && pwd )"
-file="dev.mediasanctuary.org-$( date +%Y-%m-%d ).sql"
+file="www.mediasanctuary.org-$( date +%Y-%m-%d ).sql"
 
 mkdir -p "$dir/wp-content/uploads/"
-ssh $server "cd ~/web && wp db export ~/$file"
-scp "$server:~/$file" "$dir/wp-content/uploads/"
+ssh $server "cd ~/web && wp db export ~/files/$file"
+scp "$server:~/files/$file" "$dir/wp-content/uploads/"
 
 # Note this is using the BSD-style arguments (i.e., works on macOS, not Linux)
 sed -i '' -E \
-	-e 's/https:\/\/dev.mediasanctuary.org/http:\/\/localhost:8080/g' \
 	-e 's/https:\/\/www.mediasanctuary.org/http:\/\/localhost:8080/g' \
 	"$dir/wp-content/uploads/$file"
 
@@ -35,7 +34,7 @@ EOF
 
 # We need this to be able to import the SQL file
 docker compose exec web wp core install --url="http://localhost:8080" --title="The Sanctuary for Independent Media" --admin_user="dev" --admin_email="web@mediasanctuary.org" --skip-email
-docker compose exec web wp db import "wp-content/uploads/$file"
+docker compose exec web wp db import "wp-content/uploads/$file" --skip_ssl
 
 #rm "$dir/wp-content/uploads/$file"
 

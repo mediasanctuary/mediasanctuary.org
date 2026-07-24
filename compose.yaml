@@ -20,17 +20,16 @@ services:
       - ./wp-content/uploads:/var/www/html/wp-content/uploads
 
   db:
-    image: mariadb:10.5.8
+    image: mariadb:11.5.2
     ports:
       - 3306:3306
-    restart: always
     environment:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: wordpress
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
-      - mediasanctuary:/var/lib/mysql
+      - db:/var/lib/mysql
 
 volumes:
-  mediasanctuary: {}
+  db: {}
